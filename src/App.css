@@ -1,0 +1,45 @@
+/* Custom styles for English Listening Practice App */
+
+/* Smooth transitions for inputs */
+input[type="text"] {
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Disable spellcheck styling */
+input[type="text"] {
+  text-transform: none;
+}
+
+/* Animation for speaking icon */
+@keyframes sound-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.5); }
+}
+
+/* Smooth page transitions */
+main {
+  min-height: calc(100vh - 64px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

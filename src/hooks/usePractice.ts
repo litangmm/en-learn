@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { Sentence } from '@/data/types';
+import type { Sentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 
 export interface UserAnswer {

@@ -1,4 +1,4 @@
-import { Dictionary } from './types';
+import type { Dictionary } from './types';
 
 export const dictionaries: Dictionary[] = [
   { id: 'junior', name: '初中词汇', description: '初中英语核心词汇', sentenceCount: 1600 },

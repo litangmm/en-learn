@@ -1,4 +1,4 @@
-import { Sentence } from './types';
+import type { Sentence } from './types';
 
 export async function loadDictionary(id: string): Promise<Sentence[]> {
   switch (id) {

@@ -1,4 +1,4 @@
-import { Sentence } from './types';
+import type { Sentence } from './types';
 
 export const sentences: Sentence[] = [
   {

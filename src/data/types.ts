@@ -41,3 +41,5 @@ export interface SessionHistory {
   correctCount: number;
   accuracy: number;
 }
+
+export type PracticeMode = 'fill-in-blanks' | 'dictation';

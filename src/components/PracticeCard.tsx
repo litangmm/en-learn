@@ -4,7 +4,7 @@ import { Volume2, CheckCircle2, XCircle, Lightbulb, ArrowRight, RotateCcw } from
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import type { Sentence } from '@/data/types';
+import type { Sentence, PracticeMode } from '@/data/types';
 
 interface PracticeCardProps {
   sentence: Sentence;
@@ -15,6 +15,7 @@ interface PracticeCardProps {
   isSpeaking: boolean;
   currentQuestion?: number;
   totalQuestions?: number;
+  mode?: PracticeMode;
   onInputChange: (index: number, value: string) => void;
   onCheck: () => void;
   onNext: () => void;
@@ -31,12 +32,14 @@ export function PracticeCard({
   isSpeaking,
   currentQuestion,
   totalQuestions,
+  mode = 'fill-in-blanks',
   onInputChange,
   onCheck,
   onNext,
   onRetry,
   onSpeak,
 }: PracticeCardProps) {
+  const isDictation = mode === 'dictation';
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Auto-focus first empty input on mount
@@ -61,6 +64,47 @@ export function PracticeCard({
       }
     }
   }, [showResult, isCorrect, onCheck, onNext, onRetry]);
+
+  // Render standalone inputs for dictation mode
+  const renderDictationInputs = () => {
+    return sentence.blanks.map((blank, idx) => {
+      const hasError = showResult && !isCorrect && inputs[idx]?.toLowerCase().trim() !== blank.word.toLowerCase();
+      const hasSuccess = showResult && inputs[idx]?.toLowerCase().trim() === blank.word.toLowerCase();
+
+      return (
+        <span key={`dictation-${idx}`} className="inline-block mx-1">
+          <Input
+            ref={el => { inputRefs.current[idx] = el; }}
+            type="text"
+            value={inputs[idx] || ''}
+            onChange={e => onInputChange(idx, e.target.value)}
+            onKeyDown={e => handleKeyDown(e)}
+            disabled={showResult && isCorrect}
+            placeholder={`${idx + 1}`}
+            className={`
+              inline-block w-32 text-center font-medium
+              transition-all duration-300 border-2
+              ${hasSuccess
+                ? 'border-green-500 bg-green-50 text-green-700'
+                : hasError
+                  ? 'border-red-400 bg-red-50 text-red-700'
+                  : 'border-slate-300 focus:border-blue-500 hover:border-slate-400'
+              }
+            `}
+          />
+          {showResult && !isCorrect && (
+            <motion.span
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="block text-xs text-green-600 font-medium mt-1"
+            >
+              {blank.word}
+            </motion.span>
+          )}
+        </span>
+      );
+    });
+  };
 
   // Parse English sentence and replace blanks with inputs
   const renderSentenceWithBlanks = () => {
@@ -155,13 +199,13 @@ export function PracticeCard({
             )}
           </div>
           <Button
-            variant="outline"
-            size="sm"
+            variant={isDictation && !showResult ? 'default' : 'outline'}
+            size={isDictation && !showResult ? 'default' : 'sm'}
             onClick={onSpeak}
             disabled={isSpeaking}
-            className="gap-2"
+            className={`gap-2 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
           >
-            <Volume2 className={`w-4 h-4 ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
+            <Volume2 className={`${isDictation && !showResult ? 'w-5 h-5' : 'w-4 h-4'} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
             {isSpeaking ? '播放中...' : '播放音频'}
           </Button>
         </div>
@@ -169,37 +213,50 @@ export function PracticeCard({
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Chinese Translation */}
-          <div className="text-center">
-            <p className="text-lg text-slate-600 font-medium leading-relaxed">
-              {sentence.chinese}
-            </p>
-          </div>
+          {(!isDictation || showResult) && (
+            <div className="text-center">
+              <p className="text-lg text-slate-600 font-medium leading-relaxed">
+                {sentence.chinese}
+              </p>
+            </div>
+          )}
 
           {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
+          {(!isDictation || showResult) && (
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-wider">
+                  英文句子
+                </span>
+              </div>
             </div>
-            <div className="relative flex justify-center">
-              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-wider">
-                英文句子
-              </span>
-            </div>
-          </div>
+          )}
 
-          {/* English Sentence with Blanks */}
-          <div className="text-center text-xl leading-loose">
-            {renderSentenceWithBlanks()}
+          {/* Dictation mode label */}
+          {isDictation && !showResult && (
+            <div className="text-center">
+              <p className="text-sm text-slate-400">
+                请听音频，在输入框中填写听到的单词
+              </p>
+            </div>
+          )}
+
+          {/* English Sentence with Blanks / Dictation Inputs */}
+          <div className={`text-center text-xl leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}>
+            {isDictation && !showResult ? renderDictationInputs() : renderSentenceWithBlanks()}
           </div>
 
           {/* Hints */}
-          {!showResult && (
+          {!showResult && !isDictation && (
             <div className="flex flex-wrap gap-2 justify-center">
               {sentence.blanks.map((blank, idx) => (
                 blank.hint && (
-                  <Badge 
-                    key={idx} 
-                    variant="outline" 
+                  <Badge
+                    key={idx}
+                    variant="outline"
                     className="text-xs text-slate-500 bg-slate-50"
                   >
                     <Lightbulb className="w-3 h-3 mr-1 text-amber-500" />

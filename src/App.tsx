@@ -15,6 +15,8 @@ import { DataManager } from '@/components/DataManager';
 import { SmartReview } from '@/components/SmartReview';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import type { PracticeMode } from '@/data/types';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -40,6 +42,7 @@ function App() {
   const [historyCount, setHistoryCount] = useState(storage.getHistoryCount());
   const [reviewDueCount, setReviewDueCount] = useState(storage.getReviewQueueCount());
   const [isReviewMode, setIsReviewMode] = useState(false);
+  const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
 
   const {
     state,
@@ -69,12 +72,13 @@ function App() {
   // Auto-play audio on new sentence
   useEffect(() => {
     if (currentSentence && !state.showResult && !state.isComplete) {
+      const delay = practiceMode === 'dictation' ? 300 : 800;
       const timer = setTimeout(() => {
         speak(currentSentence.english, 0.85);
-      }, 800);
+      }, delay);
       return () => clearTimeout(timer);
     }
-  }, [currentSentence?.id]);
+  }, [currentSentence?.id, practiceMode]);
 
   // Global keyboard shortcuts
   const stateRef = useRef(state);
@@ -131,6 +135,12 @@ function App() {
     if (currentSentence) {
       speak(currentSentence.english, 0.85);
     }
+  };
+
+  const handleModeChange = (mode: PracticeMode) => {
+    if (mode === practiceMode) return;
+    setPracticeMode(mode);
+    initializeInputs();
   };
 
   const handleDictionaryChange = (newId: string) => {
@@ -424,6 +434,24 @@ function App() {
         <main className="max-w-4xl mx-auto px-4 py-8">
           {!state.isComplete ? (
             <>
+              <div className="flex justify-center mb-6">
+                <ToggleGroup
+                  type="single"
+                  value={practiceMode}
+                  onValueChange={(value) => {
+                    if (value) handleModeChange(value as PracticeMode);
+                  }}
+                  variant="outline"
+                  spacing={0}
+                >
+                  <ToggleGroupItem value="fill-in-blanks" aria-label="填空模式">
+                    填空模式
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="dictation" aria-label="听写模式">
+                    听写模式
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
               <AnimatePresence mode="wait">
                 {currentSentence && (
@@ -437,6 +465,7 @@ function App() {
                     isSpeaking={isSpeaking}
                     currentQuestion={currentQuestion}
                     totalQuestions={totalQuestions}
+                    mode={practiceMode}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

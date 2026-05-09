@@ -8,6 +8,12 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-5)
+- **迭代**: iter-005「智能复习队列」
+- **技术决策**: Mistake 类型扩展采用可选字段（nextReviewAt?: number, lastReviewedAt?: number），确保旧数据向后兼容
+- **质量门禁通过**: lint 0 errors, build passed, 165/165 unit tests passed
+- **观察**: 类型扩展是低风险变更，但需确保后续 isValidMistake 校验函数同步更新以接受新字段。iter-005 的算法部分（scheduleNextReview）将是技术审查重点
+
 ### 2026-05-09 (cycle-2026-05-09-3)
 - **迭代**: iter-004「数据导入导出」
 - **技术决策**:

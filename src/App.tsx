@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, RefreshCw } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { PracticeCard } from '@/components/PracticeCard';
@@ -12,6 +12,7 @@ import { ErrorScreen } from '@/components/ErrorScreen';
 import { MistakeBook } from '@/components/MistakeBook';
 import { HistoryView } from '@/components/HistoryView';
 import { DataManager } from '@/components/DataManager';
+import { SmartReview } from '@/components/SmartReview';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -26,7 +27,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review';
 
 function App() {
   const [dictionaryId, setDictionaryId] = useState('cet4');
@@ -37,6 +38,8 @@ function App() {
   const [practiceSentenceIds, setPracticeSentenceIds] = useState<string[] | undefined>();
   const [mistakeCount, setMistakeCount] = useState(storage.getMistakeCount());
   const [historyCount, setHistoryCount] = useState(storage.getHistoryCount());
+  const [reviewDueCount, setReviewDueCount] = useState(storage.getReviewQueueCount());
+  const [isReviewMode, setIsReviewMode] = useState(false);
 
   const {
     state,
@@ -108,6 +111,22 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Auto-schedule next review in review mode
+  const processedReviewRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (!isReviewMode) {
+      processedReviewRef.current.clear();
+      return;
+    }
+    if (state.showResult && currentSentence) {
+      const sentenceId = currentSentence.id;
+      if (!processedReviewRef.current.has(sentenceId)) {
+        processedReviewRef.current.add(sentenceId);
+        storage.scheduleNextReview(sentenceId, state.isCorrect);
+      }
+    }
+  }, [isReviewMode, state.showResult, currentSentence, state.isCorrect]);
+
   const handleSpeak = () => {
     if (currentSentence) {
       speak(currentSentence.english, 0.85);
@@ -126,6 +145,7 @@ function App() {
       setDictionaryId(pendingDictionaryId);
       setPendingDictionaryId(null);
       setPracticeSentenceIds(undefined);
+      setIsReviewMode(false);
       setView('practice');
     }
     setShowConfirmDialog(false);
@@ -134,6 +154,7 @@ function App() {
   const handleRestart = () => {
     reset();
     setPracticeSentenceIds(undefined);
+    setIsReviewMode(false);
   };
 
   // Check for active session on mount
@@ -194,6 +215,25 @@ function App() {
     setView('practice');
     setHistoryCount(storage.getHistoryCount());
     setMistakeCount(storage.getMistakeCount());
+  };
+
+  const handleOpenSmartReview = () => {
+    setReviewDueCount(storage.getReviewQueueCount());
+    setView('review');
+  };
+
+  const handleBackFromSmartReview = () => {
+    setView('practice');
+    setReviewDueCount(storage.getReviewQueueCount());
+    setIsReviewMode(false);
+  };
+
+  const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
+    setDictionaryId(dictId);
+    setPracticeSentenceIds(sentenceIds);
+    setIsReviewMode(true);
+    setView('practice');
+    setReviewDueCount(storage.getReviewQueueCount());
   };
 
   const currentDict = getDictionaryById(dictionaryId);
@@ -292,6 +332,27 @@ function App() {
               <Database className="w-4 h-4" />
               数据管理
             </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleOpenSmartReview}
+              className="relative text-slate-500 gap-2"
+            >
+              {isReviewMode ? (
+                <RefreshCw className="w-4 h-4" />
+              ) : (
+                <Brain className="w-4 h-4" />
+              )}
+              智能复习
+              {reviewDueCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                >
+                  {reviewDueCount}
+                </Badge>
+              )}
+            </Button>
             {view === 'practice' && (
               <>
                 <DictionarySelector
@@ -354,6 +415,11 @@ function App() {
         <HistoryView onBack={handleBackFromHistory} />
       ) : view === 'data' ? (
         <DataManager onBack={handleBackFromDataManager} />
+      ) : view === 'review' ? (
+        <SmartReview
+          onPracticeReview={handlePracticeReview}
+          onBack={handleBackFromSmartReview}
+        />
       ) : (
         <main className="max-w-4xl mx-auto px-4 py-8">
           {!state.isComplete ? (

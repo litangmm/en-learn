@@ -26,6 +26,8 @@ export interface Mistake {
   timestamp: number;
   dictionaryId: string;
   reviewedCount: number;
+  nextReviewAt?: number;
+  lastReviewedAt?: number;
 }
 
 export interface SessionHistory {

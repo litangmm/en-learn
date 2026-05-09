@@ -182,6 +182,15 @@ function isValidMistake(data: unknown): data is Mistake {
     return false;
   }
 
+  // Optional fields: if present, must be number
+  if (obj.nextReviewAt !== undefined && typeof obj.nextReviewAt !== 'number') {
+    return false;
+  }
+
+  if (obj.lastReviewedAt !== undefined && typeof obj.lastReviewedAt !== 'number') {
+    return false;
+  }
+
   return true;
 }
 
@@ -448,6 +457,54 @@ export const StorageService = {
 
   getHistoryCount(): number {
     return loadHistory().length;
+  },
+
+  getReviewQueue(): Mistake[] {
+    const now = Date.now();
+    const mistakes = loadMistakes();
+    return mistakes
+      .filter((m) => m.nextReviewAt === undefined || m.nextReviewAt <= now)
+      .sort((a, b) => {
+        // Sort by nextReviewAt ascending; undefined (new) items come first
+        const aTime = a.nextReviewAt ?? 0;
+        const bTime = b.nextReviewAt ?? 0;
+        return aTime - bTime;
+      });
+  },
+
+  getReviewQueueCount(): number {
+    return this.getReviewQueue().length;
+  },
+
+  scheduleNextReview(sentenceId: string, isCorrect: boolean): void {
+    const mistakes = loadMistakes();
+    const index = mistakes.findIndex((m) => m.sentenceId === sentenceId);
+    if (index < 0) return;
+
+    const mistake = mistakes[index];
+    const intervals = [1, 3, 7, 14]; // days
+    const now = Date.now();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+
+    let reviewedCount = mistake.reviewedCount;
+    let daysInterval: number;
+
+    if (isCorrect) {
+      reviewedCount = reviewedCount + 1;
+      daysInterval = intervals[Math.min(reviewedCount - 1, intervals.length - 1)];
+    } else {
+      // Wrong answer: reset interval to 1 day, keep reviewedCount
+      daysInterval = intervals[0];
+    }
+
+    mistakes[index] = {
+      ...mistake,
+      reviewedCount,
+      nextReviewAt: now + daysInterval * oneDayMs,
+      lastReviewedAt: now,
+    };
+
+    saveMistakes(mistakes);
   },
 
   exportAllData(): ExportData {

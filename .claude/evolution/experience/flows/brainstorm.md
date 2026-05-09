@@ -8,6 +8,11 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-5)
+- **状态**: 本次未进行 brainstorm（沿用 cycle-2026-05-09-1 结果）
+- **原因**: epic-001 仍有 pending iteration（iter-005），直接继续执行
+- **观察**: 连续 4 个 cycle 沿用同一 brainstorm 结果。多个 Agent 连续未被选中（最长 4 次），下次 epic-001 完成后 brainstorm 时，需关注这些 Agent 的反思记录和调整后的提案方向
+
 ### 2026-05-09 (cycle-2026-05-09-3)
 - **状态**: 本次未进行 brainstorm（沿用 cycle-2026-05-09-1 结果）
 - **原因**: epic-001 仍有 pending iterations（iter-004, iter-005），直接继续执行

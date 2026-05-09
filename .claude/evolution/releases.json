@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.10.0",
+      "tag": "v0.10.0",
+      "commit": "ab247bd",
+      "date": "2026-05-09T10:17:07.769Z",
+      "iterationId": "iter-003b",
+      "title": "纯听写模式重新设计",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.9.0",
       "tag": "v0.9.0",
       "commit": "5c7770b",

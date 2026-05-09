@@ -61,6 +61,13 @@
 - **实际修改文件**: 与计划高度一致
 - **观察**: iter-002 和 iter-003 均依赖 iter-001 的存储服务基础，计划步骤自然延续了 V1→V2 的扩展路径。两个迭代可以串行执行但代码层面有独立性（mistakes 和 history 是并列的新增 key），实际在一个 cycle 内完成两个迭代效率较高
 
+### 2026-05-09 (cycle-2026-05-09-11)
+- **迭代**: epic-002 iter-003b「纯听写模式重新设计」—— **完整执行**
+- **计划步骤**: 6 步全部完成，涵盖 PracticeCard dictation 中文可见性、首字母提示渲染、指令文本更新、dictation 测试更新、App.mode 测试更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/components/PracticeCard.tsx, src/components/__tests__/PracticeCard.dictation.test.tsx, src/components/__tests__/App.mode.test.tsx, src/components/__tests__/PracticeCard.choice.test.tsx
+- **观察**: 计划清晰可执行，本次迭代是「体验优化型」而非「功能新增型」，步骤聚焦于现有组件的条件渲染逻辑调整和测试断言翻转。用户反馈直接驱动设计变更，改动范围极小但 UX 影响显著
+
 ### 2026-05-09 (cycle-2026-05-09-10)
 - **迭代**: epic-002 iter-003a「响应式 UI 适配（移动端 + 桌面端）」—— **完整执行**
 - **计划步骤**: 13 步全部完成，涵盖设计文档、测试 mock、MobileNav 组件、App.tsx 响应式重构、PracticeCard 触摸优化、各视图响应式适配、ResultModal 适配、CSS 安全区支持、响应式测试、全量验证

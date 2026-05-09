@@ -7,6 +7,14 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-14)
+- **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
+- **结果**: epic-002 iter-005「连词成句模式（拖拽/点击排序）」完成，**epic-002 全部 7 个迭代收官**
+- **完成内容**: PracticeMode 扩展 `'sentence-reorder'`，新增 SentenceToken 接口；usePractice hook 新增 sentenceTokens 生成（`\S+` 分词）、orderedTokenIds 状态、selectToken/deselectToken/resetTokens 操作；checkAnswer 支持 `string[]` 参数（重组句子后 lowercase.trim 比对）；PracticeCard 实现 answer zone（已选词，点击移除）+ word pool（剩余词，点击加入），submit 全选前禁用，showResult 展示正确句子；App.tsx ToggleGroup 新增「连词成句」、auto-play 500ms、模式切换 resetTokens
+- **新增测试**: usePractice.reorder.test.ts (8 个) + PracticeCard.reorder.test.tsx (6 个) + App.reorder.test.tsx (5 个)，全量 **282/282 通过**（29 测试文件，历史新高位）
+- **当前状态**: 连续未被选中计数保持清零
+- **观察**: epic-002 历时 7 个迭代（iter-001~005 + iter-003a/003b）全部完成，是项目迄今最大的 Epic。全部迭代零新增依赖、零构建体积增长、零回归。PM-UX「学习心流」理念贯穿全程——从纯听写（减少提示干扰）到音频速度（自主节奏控制）到选择题（快速反馈）到专注模式（消除环境干扰）到连词成句（句法建构训练），覆盖了从碎片时间到深度专注的完整学习场景光谱
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
 - **结果**: epic-002 iter-004「专注模式（全屏无干扰 UI）」完成

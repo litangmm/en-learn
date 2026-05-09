@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-14)
+- **相关质量门禁**: 单元测试回归、交互行为一致性、构建稳定性
+- **本次验证**: epic-002 iter-005「连词成句模式（拖拽/点击排序）」质量门禁验证
+  - usePractice reorder 测试：sentenceTokens 生成（分词数量、id、text）、selectToken 追加、deslectToken 按索引移除、resetTokens 清空、checkAnswer 正确顺序得 10 分、checkAnswer 错误顺序记录错题、nextSentence/reset 清空 orderedTokenIds
+  - PracticeCard reorder 测试：word pool 和空 answer zone 渲染、点击 token 移动到 answer zone、点击 answer token 返回 pool、submit 全选前禁用、正确答案显示成功反馈、错误答案显示正确句子
+  - App reorder 测试：四模式 ToggleGroup（连词成句）、sentence-reorder 模式 DOM 变化、模式切换清空状态、500ms auto-play 延迟
+  - 全量回归：**282/282 单元测试通过**（29 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 19 个专用测试，覆盖「token 生成 → 选词交互 → 提交校验 → 正误反馈 → 状态重置」完整链路。282 测试是项目历史新高位。4 个现有测试文件因 PracticeState 新增 orderedTokenIds 字段而更新，零行为回归
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **相关质量门禁**: 单元测试回归、交互行为一致性、构建稳定性
 - **本次验证**: epic-002 iter-004「专注模式（全屏无干扰 UI）」质量门禁验证

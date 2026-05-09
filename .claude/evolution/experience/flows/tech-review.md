@@ -76,6 +76,17 @@
 - **质量门禁通过**: lint 0 errors, build passed, 131/131 unit tests passed
 - **观察**: 两个迭代的技术决策均保持了与 iter-001 的一致性，没有出现架构偏离。组件层的视图切换逻辑（App.tsx）开始变得复杂（3 个视图），后续迭代需关注导航的可扩展性
 
+### 2026-05-09 (cycle-2026-05-09-10)
+- **迭代**: epic-002 iter-003a「响应式 UI 适配（移动端 + 桌面端）」—— **技术审查通过**
+- **技术决策**:
+  - 响应式断点完全使用 Tailwind 默认断点（sm: 640px, md: 768px, lg: 1024px），无自定义断点配置
+  - MobileNav 和桌面导航通过互斥的 `md:hidden` / `hidden md:flex` 实现，避免重复渲染
+  - 触摸目标 `h-11`（44px）符合 WCAG 2.1 AA 级要求（最小 44×44 CSS px）
+  - 主内容区 `min-height: calc(100vh - 4rem)` 在移动端通过 `--mobile-nav-height` 变量动态调整
+  - window.matchMedia mock 在 vitest.setup.ts 中全局配置，供所有响应式测试复用
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 255/255 unit tests passed
+- **观察**: 响应式改造零逻辑变更、零类型变更，仅涉及 CSS 类名和布局结构调整，风险极低。App.tsx 的视图切换逻辑复杂度未增加（条件渲染通过类名而非新增分支实现）
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **技术决策**: localStorage 优先（符合 MVP 原则），版本化 schema 预留 IndexedDB 迁移空间

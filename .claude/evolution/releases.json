@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.9.0",
+      "tag": "v0.9.0",
+      "commit": "5c7770b",
+      "date": "2026-05-09T09:17:09.643Z",
+      "iterationId": "iter-003a",
+      "title": "响应式 UI 适配（移动端 + 桌面端）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.8.0",
       "tag": "v0.8.0",
       "commit": "77307e9",

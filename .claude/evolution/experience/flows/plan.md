@@ -61,6 +61,14 @@
 - **实际修改文件**: 与计划高度一致
 - **观察**: iter-002 和 iter-003 均依赖 iter-001 的存储服务基础，计划步骤自然延续了 V1→V2 的扩展路径。两个迭代可以串行执行但代码层面有独立性（mistakes 和 history 是并列的新增 key），实际在一个 cycle 内完成两个迭代效率较高
 
+### 2026-05-09 (cycle-2026-05-09-10)
+- **迭代**: epic-002 iter-003a「响应式 UI 适配（移动端 + 桌面端）」—— **完整执行**
+- **计划步骤**: 13 步全部完成，涵盖设计文档、测试 mock、MobileNav 组件、App.tsx 响应式重构、PracticeCard 触摸优化、各视图响应式适配、ResultModal 适配、CSS 安全区支持、响应式测试、全量验证
+- **实际修改文件**: 与计划高度一致
+  - 修改: src/App.tsx, src/App.css, src/components/PracticeCard.tsx, src/components/MistakeBook.tsx, src/components/HistoryView.tsx, src/components/SmartReview.tsx, src/components/DataManager.tsx, src/components/ResultModal.tsx, vitest.setup.ts
+  - 创建: src/components/MobileNav.tsx, src/components/__tests__/MobileNav.test.tsx, src/components/__tests__/App.responsive.test.tsx, .claude/evolution/responsive-design.md
+- **观察**: 计划步骤清晰可执行，13 步覆盖了从设计文档到测试验证的完整响应式改造流程。所有修改均为纯 CSS/Tailwind 工具类调整，无逻辑变更，风险可控
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **计划步骤**: 6 步（创建 storage 服务 → hook 集成 → UI 恢复 → 边界处理 → 单元测试 → hook 测试）

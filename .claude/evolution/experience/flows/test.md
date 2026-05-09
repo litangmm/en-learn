@@ -72,6 +72,15 @@
 - **E2E**: skipped（非最后 pending iteration）
 - **观察**: 新增组件测试使用了统一的渲染辅助函数和 mock 模式，测试风格与已有测试保持一致。Audio 和 speechSynthesis 的全局 mock 在 vitest.setup.ts 中配置，避免了每个测试文件重复 mock
 
+### 2026-05-09 (cycle-2026-05-09-10)
+- **迭代**: epic-002 iter-003a「响应式 UI 适配（移动端 + 桌面端）」—— **全部测试通过**
+- **测试覆盖**: 255/255 单元测试通过（25 个测试文件，新增 15 个测试）
+  - MobileNav.test.tsx: 8 个测试（5 项渲染、激活态高亮、onNavigate 回调、徽章显示、md:hidden 类名）
+  - App.responsive.test.tsx: 7 个测试（MobileNav 条件渲染、桌面导航隐藏、DictionarySelector 位置、底部 padding）
+  - 全量回归: 之前 240 个测试全部通过
+- **E2E**: skipped（3 pending iterations remaining）
+- **观察**: 响应式测试的关键创新是使用 mock matchMedia 在 jsdom 中模拟断点，验证了组件的条件渲染逻辑。首次建立响应式测试基线，为后续迭代的移动端兼容性提供了回归保障
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **测试覆盖**: 72/72 单元测试通过

@@ -7,6 +7,14 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-10)
+- **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
+- **结果**: epic-002 iter-003a「响应式 UI 适配（移动端 + 桌面端）」完成
+- **完成内容**: 创建响应式设计文档（断点、触摸目标、间距令牌）；MobileNav 组件（固定底部导航、5 项图标+标签+徽章、safe-area-inset-bottom）；App.tsx 响应式重构（桌面顶部导航 / 移动端底部导航 + 简化头部 + 主内容区 pb-20 底部 clearance）；PracticeCard 触摸优化（h-11 44px 触摸目标、响应式字号/内边距/行高）；MistakeBook/HistoryView/SmartReview/DataManager/ResultModal 响应式容器内边距；vitest.setup.ts matchMedia mock
+- **新增测试**: MobileNav.test.tsx (8 个) + App.responsive.test.tsx (7 个)，全量 255/255 通过
+- **当前状态**: 连续未被选中计数保持清零
+- **观察**: iter-003a 是战略指令 dir-urgent-002 插入的紧急迭代，验证了「不做响应式基础则后续全部返工」的判断。MobileNav 的底部导航设计符合移动端单手操作习惯，5 个导航项覆盖全部功能视图。响应式改造零回归，255 个测试全部通过
+
 ### 2026-05-09 (cycle-2026-05-09-9)
 - **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
 - **结果**: epic-002 iter-003「选择题模式（四选一快速练习）」完成

@@ -50,6 +50,12 @@
 - **原因**: epic-001 仍有 pending iterations，直接继续执行
 - **观察**: 无需重复 brainstorm 节省了时间，epic-001 的 5 个迭代按顺序执行，流程顺畅
 
+### 2026-05-09 (cycle-2026-05-09-10)
+- **状态**: 本次未进行 brainstorm（epic-002 仍有 pending iterations）
+- **原因**: epic-002 仍有 pending iterations（iter-003b, iter-004, iter-005），直接继续执行
+- **战略指令影响**: dir-urgent-002 插入的两个紧急迭代（iter-003a 响应式UI + iter-003b 听写重设计）已在 iter-003a 中完成，iter-003b 将在下个 cycle 执行
+- **观察**: 连续 4 个 cycle 沿用 epic-002 的 brainstorm 结果。多个 Agent 连续未被选中（最长 9 次），下次 epic-002 完成后 brainstorm 时需重点关注这些 Agent 的反思记录和策略调整
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **参与 Agent**: 9 个（PM-Lean, PM-UX, PM-Mon, PM-Growth, PM-Eco, ARCH, UX, QA, EXP）
 - **产出 Epic**: 8 个

@@ -8,6 +8,15 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **完整执行**
+- **计划步骤**: 9 步全部完成，涵盖类型定义（XPProfile + LEVEL_THRESHOLDS）、存储服务扩展（XP_PROFILE_KEY、验证器、CRUD、addXP 算法）、useXP Hook（懒加载、addXP、firstTry 奖励、reset）、XPBar 组件（紧凑/全尺寸双模式）、App.tsx 集成（header/focus bar 显示、模式差异化基础 XP、awardedXPRef 防重）、存储层测试、Hook 测试、App 集成测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/services/storage.ts, src/App.tsx
+  - 创建: src/hooks/useXP.ts, src/components/XPBar.tsx, src/services/__tests__/xp-storage.test.ts, src/hooks/__tests__/useXP.test.ts, src/components/__tests__/App.xp.test.tsx
+  - 更新测试 mock: 6 个现有 App 测试文件 + DataManager.test.tsx + export-import.test.ts
+- **观察**: 计划清晰可执行，XP 系统作为全新数据维度，与现有 session/mistakes/history 并行存储，架构上无冲突。addXP 算法的等级计算（threshold 查找 + 进度百分比）边界明确，适合 comprehensive 单元测试覆盖。awardedXPRef 的防重复设计复用了智能复习的 processedReviewRef 模式
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **完整执行**
 - **计划步骤**: 7 步全部完成，涵盖状态管理、专注模式入口按钮、条件渲染（隐藏 Header/ToggleGroup/hint/MobileNav）、极简进度条、ESC 键退出、PracticeCard 沉浸优化、测试覆盖、全量验证

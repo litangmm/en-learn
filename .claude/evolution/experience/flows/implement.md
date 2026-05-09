@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **完整实现**
+- **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突
+- **关键决策**:
+  - XPProfile 数据模型采用 `{ totalXP, currentLevel, levelProgress }` 三字段，足够表达完整状态，无需额外冗余字段
+  - LEVEL_THRESHOLDS 使用累积 XP 数组 `[0, 100, 250, ...]`，等级计算通过 `findLastIndex` 找到最高满足阈值，简洁可解释
+  - addXP 算法中 progress 计算 `((totalXP - prevThreshold) / (nextThreshold - prevThreshold)) * 100`，最大等级时固定 100%，避免除零
+  - awardedXPRef 使用 `useRef<Set<string>>` 记录已奖励句子 ID，防止 retry 导致的重复奖励，复用 processedReviewRef 模式
+  - 模式差异化基础 XP（multiple-choice=8, sentence-reorder=12, others=10）直接在 App.tsx useEffect 中硬编码，简单直接，后续如需调整可提取为配置对象
+  - XPBar 组件 compact 模式仅显示 Lv. 徽章 + 迷你进度条，full 模式预留 future profile 视图扩展
+  - exportAllData / importAllData 纳入 xpProfile 字段，递归校验复用现有 isValidXPProfile
+- **观察**: 零新增依赖，零构建体积增长。XP 系统作为全新数据维度，与现有 session/mistakes/history 完全解耦，并行存储在 localStorage 中
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **完整实现**
 - **实现质量**: 高 — 状态管理简洁，条件渲染清晰

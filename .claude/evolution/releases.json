@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.13.0",
+      "tag": "v0.13.0",
+      "commit": "27947db",
+      "date": "2026-05-09T12:43:17.195Z",
+      "iterationId": "iter-001",
+      "title": "XP 积分与等级系统",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.12.0",
       "tag": "v0.12.0",
       "commit": "3f41c75",

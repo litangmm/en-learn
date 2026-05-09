@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **技术审查通过**
+- **技术决策**:
+  - XPProfile 三字段设计足够表达完整状态，levelProgress 为派生值但持久化存储，避免运行时重复计算
+  - LEVEL_THRESHOLDS 定义为常量数组，12 级设计简洁可解释，最大等级时 progress 固定 100%
+  - addXP 在 StorageService 中实现（非 hook），保持数据操作层与 UI 层的分离
+  - awardedXPRef 使用 useRef 防重复，复用 processedReviewRef 的 proven pattern
+  - useXP hook 的 addXP 方法接收 `baseXP` 和 `firstTry` 参数，将「业务规则计算」（基础 XP + 首试奖励）与「存储操作」分离
+  - XPBar 组件通过 `compact?: boolean` 单一 prop 控制两种展示模式，API 简洁
+  - exportAllData / importAllData 纳入 xpProfile，递归校验复用 isValidXPProfile，数据迁移路径清晰
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 318/318 unit tests passed
+- **观察**: App.tsx 的复杂度继续增加——新增 useXP hook 集成、XP 奖励 useEffect（含 mode 条件分支和 awardedXPRef 防重）、XPBar 渲染。当前管理：6 个视图 + 4 种练习模式 + 专注模式 + XP 系统 + 响应式断点。ARCH 此前多次提出的导航配置提取已成为极其紧迫的技术债务，建议在 epic-003 的某个迭代中插入导航重构
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **技术审查通过**
 - **技术决策**:

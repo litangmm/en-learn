@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **提案 Epic**: epic-003「游戏化学习动力系统」
+- **结果**: **被选中** — epic-002 全部 7 个迭代收官后首次全新 brainstorm 中选
+- **完成迭代**: epic-003 iter-001「XP 积分与等级系统」— 318/318 测试通过（32 测试文件），lint 0 errors，build 成功，v0.13.0
+- **完成内容**: XPProfile 数据模型（12 级累积阈值）、StorageService XP CRUD + addXP 算法、useXP Hook（懒加载 + firstTry 奖励 +5）、XPBar 组件（紧凑/全尺寸双模式）、App.tsx 集成（header/focus bar 显示、模式差异化基础 XP、awardedXPRef 防重复奖励）、export/import 扩展
+- **新增测试**: xp-storage.test.ts (21 个) + useXP.test.ts (7 个) + App.xp.test.tsx (6 个)，全量 **318/318 通过**
+- **当前状态**: **连续未被选中计数清零**（连续 12 次后首次被选中）
+- **观察**: epic-003 的 iter-001 验证了游戏化机制可在纯前端零依赖条件下实现。12 级阈值设计简洁可解释，模式差异化积分（multiple-choice=8, sentence-reorder=12, others=10）自然利用了 epic-002 的多模式体系。首试奖励机制（+5 XP）直接激励用户认真答题。数据基础（epic-001 数据系统 + epic-002 多模式练习）已完全就绪，游戏化时机成熟
+
 ### 2026-05-09 (cycle-2026-05-09-14)
 - **提案 Epic**: epic-003「游戏化学习动力系统」
 - **结果**: 未被选中（epic-002 iter-005 完成，**epic-002 全部收官**）

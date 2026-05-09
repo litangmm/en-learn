@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **全部测试通过**
+- **测试覆盖**: 318/318 单元测试通过（32 个测试文件，新增 34 个测试）
+  - xp-storage.test.ts: 21 个测试（profile 默认回退、有效/损坏恢复、addXP 增量、12 级阈值边界、进度百分比、最大等级封顶、export/import 含 xpProfile）
+  - useXP.test.ts: 7 个测试（懒加载初始化、addXP 状态更新、firstTry +5 奖励、等级升级、resetXPProfile）
+  - App.xp.test.tsx: 6 个测试（XPBar header 渲染、正确答题触发 addXP、firstTry 奖励、错误不触发、防重复奖励、focus mode XPBar）
+  - 全量回归: 之前 282 个测试全部通过
+- **E2E**: skipped（4 pending iterations remaining）
+- **观察**: 318 测试是项目历史最新高水位。XP 系统的算法测试覆盖全部 12 级阈值边界和进度百分比精度，是算法型迭代的测试典范。9 个现有测试文件因 storage mock 更新，零行为回归
+
 ### 2026-05-09 (cycle-2026-05-09-13)
 - **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **全部测试通过**
 - **测试覆盖**: 262/262 单元测试通过（26 个测试文件，新增 6 个测试）

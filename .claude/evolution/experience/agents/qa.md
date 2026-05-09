@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-16)
+- **相关质量门禁**: 单元测试回归、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-003 iter-001「XP 积分与等级系统」质量门禁验证
+  - xp-storage 测试：getXPProfile 默认回退、有效/损坏数据恢复、addXP 增量计算、12 级阈值边界（0, 100, 250...4000）、进度百分比精度、最大等级 100% 封顶、exportAllData 包含 xpProfile、importAllData 校验 xpProfile
+  - useXP 测试：懒加载初始化、addXP 状态更新、firstTry 奖励（+5）、等级升级反射、resetXPProfile
+  - App.xp 测试：XPBar header 渲染、正确答题触发 addXP、firstTry 奖励触发、错误答题不触发、同一题防重复奖励、focus mode XPBar 渲染
+  - 全量回归：**318/318 单元测试通过**（32 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 34 个专用测试，覆盖「profile CRUD → 等级计算（全部 12 级边界）→ 进度百分比 → 首试奖励 → 防重复 → export/import」完整链路。318 测试是项目历史新高位。9 个现有测试文件因 storage XP 方法 mock 更新，零行为回归。QA 注意到动画/过渡效果在 jsdom 环境中测试受限，后续 iter-002（连击动画）需要探索 CSS transition 的测试策略
+
 ### 2026-05-09 (cycle-2026-05-09-14)
 - **相关质量门禁**: 单元测试回归、交互行为一致性、构建稳定性
 - **本次验证**: epic-002 iter-005「连词成句模式（拖拽/点击排序）」质量门禁验证

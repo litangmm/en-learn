@@ -108,7 +108,7 @@ describe('DataManager', () => {
     vi.spyOn(storage, 'importAllData').mockReturnValue({
       success: true,
       message: '导入成功：共导入 1 条历史记录。',
-      importedCounts: { session: 0, mistakes: 0, history: 1, xpProfile: 0 },
+      importedCounts: { session: 0, mistakes: 0, history: 1, xpProfile: 0, dailyChallenges: 0 },
     });
 
     render(<DataManager onBack={mockOnBack} />);
@@ -144,7 +144,7 @@ describe('DataManager', () => {
     vi.spyOn(storage, 'importAllData').mockReturnValue({
       success: false,
       message: '导入失败：数据格式无效。',
-      importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
+      importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 },
     });
 
     render(<DataManager onBack={mockOnBack} />);

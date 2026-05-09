@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -22,6 +22,7 @@ const SESSION_KEY = 'en-learn-session';
 const MISTAKES_KEY = 'en-learn-mistakes';
 const HISTORY_KEY = 'en-learn-history';
 const XP_PROFILE_KEY = 'en-learn-xp-profile';
+const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -217,6 +218,74 @@ function isValidXPProfile(data: unknown): data is XPProfile {
   return true;
 }
 
+function isValidDailyChallenge(data: unknown): data is DailyChallenge {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.id !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.title !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.description !== 'string') {
+    return false;
+  }
+
+  if (obj.type !== 'correct' && obj.type !== 'answer' && obj.type !== 'streak') {
+    return false;
+  }
+
+  if (typeof obj.target !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.current !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.completed !== 'boolean') {
+    return false;
+  }
+
+  if (typeof obj.claimed !== 'boolean') {
+    return false;
+  }
+
+  if (typeof obj.rewardXP !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidDailyChallengeState(data: unknown): data is DailyChallengeState {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.date !== 'string') {
+    return false;
+  }
+
+  if (!Array.isArray(obj.challenges)) {
+    return false;
+  }
+
+  if (!obj.challenges.every(isValidDailyChallenge)) {
+    return false;
+  }
+
+  return true;
+}
+
 function isValidHistory(data: unknown): data is SessionHistory {
   if (typeof data !== 'object' || data === null) {
     return false;
@@ -335,6 +404,58 @@ function saveMistakes(mistakes: Mistake[]): void {
   } catch (error) {
     console.warn('[StorageService] Failed to save mistakes:', error);
   }
+}
+
+function loadDailyChallenges(): DailyChallengeState | null {
+  const raw = localStorage.getItem(DAILY_CHALLENGES_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted daily challenges data, clearing');
+    localStorage.removeItem(DAILY_CHALLENGES_KEY);
+    return null;
+  }
+
+  if (!isValidDailyChallengeState(parsed)) {
+    console.warn('[StorageService] Invalid daily challenges schema, clearing');
+    localStorage.removeItem(DAILY_CHALLENGES_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveDailyChallenges(state: DailyChallengeState): void {
+  try {
+    localStorage.setItem(DAILY_CHALLENGES_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save daily challenges:', error);
+  }
+}
+
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
+function seededShuffle<T>(array: T[], seed: number): T[] {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    seed = (seed * 16807 + 0) % 2147483647;
+    const j = seed % (i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
 }
 
 export const StorageService = {
@@ -552,6 +673,40 @@ export const StorageService = {
     return updated;
   },
 
+  getDailyChallenges(): DailyChallengeState | null {
+    return loadDailyChallenges();
+  },
+
+  saveDailyChallenges(state: DailyChallengeState): void {
+    saveDailyChallenges(state);
+  },
+
+  generateDailyChallenges(date: string): DailyChallengeState {
+    const pool: Omit<DailyChallenge, 'current' | 'completed' | 'claimed'>[] = [
+      { id: 'correct-5', title: '答对 5 题', description: '在练习中答对 5 道题', type: 'correct', target: 5, rewardXP: 20 },
+      { id: 'correct-10', title: '答对 10 题', description: '在练习中答对 10 道题', type: 'correct', target: 10, rewardXP: 40 },
+      { id: 'answer-10', title: '答题 10 道', description: '完成 10 道练习题', type: 'answer', target: 10, rewardXP: 15 },
+      { id: 'answer-20', title: '答题 20 道', description: '完成 20 道练习题', type: 'answer', target: 20, rewardXP: 30 },
+      { id: 'streak-3', title: '连对 3 题', description: '连续答对 3 道题', type: 'streak', target: 3, rewardXP: 25 },
+      { id: 'streak-5', title: '连对 5 题', description: '连续答对 5 道题', type: 'streak', target: 5, rewardXP: 50 },
+    ];
+
+    const seed = hashString(date);
+    const shuffled = seededShuffle(pool, seed);
+    const selected = shuffled.slice(0, 3);
+
+    const challenges: DailyChallenge[] = selected.map((c) => ({
+      ...c,
+      current: 0,
+      completed: false,
+      claimed: false,
+    }));
+
+    const state: DailyChallengeState = { date, challenges };
+    saveDailyChallenges(state);
+    return state;
+  },
+
   getReviewQueue(): Mistake[] {
     const now = Date.now();
     const mistakes = loadMistakes();
@@ -609,21 +764,22 @@ export const StorageService = {
         mistakes: loadMistakes(),
         history: loadHistory(),
         xpProfile: this.getXPProfile(),
+        dailyChallenges: loadDailyChallenges(),
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 },
       };
     }
 
-    const { session, mistakes, history, xpProfile } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0 };
+    const { session, mistakes, history, xpProfile, dailyChallenges } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 };
 
     try {
       if (session !== null) {
@@ -654,11 +810,19 @@ export const StorageService = {
         localStorage.removeItem(XP_PROFILE_KEY);
       }
 
+      if (dailyChallenges) {
+        localStorage.setItem(DAILY_CHALLENGES_KEY, JSON.stringify(dailyChallenges));
+        importedCounts.dailyChallenges = 1;
+      } else {
+        localStorage.removeItem(DAILY_CHALLENGES_KEY);
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
       if (importedCounts.history > 0) parts.push(`${importedCounts.history} 条历史记录`);
       if (importedCounts.xpProfile > 0) parts.push('1 个 XP 档案');
+      if (importedCounts.dailyChallenges > 0) parts.push('1 个每日挑战');
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -669,7 +833,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 },
       };
     }
   },
@@ -683,6 +847,7 @@ export interface ExportData {
     mistakes: Mistake[];
     history: SessionHistory[];
     xpProfile?: XPProfile;
+    dailyChallenges?: DailyChallengeState | null;
   };
 }
 
@@ -730,6 +895,11 @@ function isValidExportData(data: unknown): data is ExportData {
 
   // xpProfile is optional; if present, must be valid
   if (dataObj.xpProfile !== undefined && !isValidXPProfile(dataObj.xpProfile)) {
+    return false;
+  }
+
+  // dailyChallenges is optional; if present, must be valid
+  if (dataObj.dailyChallenges !== undefined && !isValidDailyChallengeState(dataObj.dailyChallenges)) {
     return false;
   }
 

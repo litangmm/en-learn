@@ -13,6 +13,8 @@ const mockRecordCorrectAnswer = vi.fn();
 const mockRecordWrongAnswer = vi.fn();
 const mockResetStreak = vi.fn();
 
+const mockTrackActivity = vi.fn();
+
 let mockShowResult = false;
 let mockIsCorrect = false;
 let mockAttempts = 0;
@@ -78,6 +80,19 @@ vi.mock('@/hooks/useXP', () => ({
     recordCorrectAnswer: mockRecordCorrectAnswer,
     recordWrongAnswer: mockRecordWrongAnswer,
     resetStreak: mockResetStreak,
+  })),
+}));
+
+vi.mock('@/hooks/useDailyChallenges', () => ({
+  useDailyChallenges: vi.fn(() => ({
+    state: {
+      date: '2026-05-10',
+      challenges: [],
+    },
+    unclaimedCount: 0,
+    trackActivity: mockTrackActivity,
+    claimReward: vi.fn(),
+    resetDailyChallenges: vi.fn(),
   })),
 }));
 

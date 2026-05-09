@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -19,6 +19,8 @@ import { XPBar } from '@/components/XPBar';
 import { StreakFeedback } from '@/components/StreakFeedback';
 import { XPGainPopup } from '@/components/XPGainPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useDailyChallenges } from '@/hooks/useDailyChallenges';
+import { DailyChallengePanel } from '@/components/DailyChallengePanel';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -35,7 +37,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges';
 
 function App() {
   const isMobile = useIsMobile();
@@ -79,6 +81,7 @@ function App() {
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
   const { profile, addXP, streak, recordCorrectAnswer, recordWrongAnswer, resetStreak } = useXP();
+  const { state: challengeState, unclaimedCount, trackActivity, claimReward } = useDailyChallenges();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -158,16 +161,21 @@ function App() {
         requestAnimationFrame(() => {
           setXpGainTrigger({ amount: finalXP, multiplier, key: Date.now() });
         });
+        trackActivity('answer');
+        trackActivity('correct');
+        trackActivity('streak', streak + 1);
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak]);
 
   // Reset streak on wrong answer
   useEffect(() => {
     if (state.showResult && !state.isCorrect) {
       recordWrongAnswer();
+      trackActivity('answer');
+      trackActivity('streak', 0);
     }
-  }, [state.showResult, state.isCorrect, recordWrongAnswer]);
+  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity]);
   useEffect(() => {
     if (!isReviewMode) {
       processedReviewRef.current.clear();
@@ -294,6 +302,14 @@ function App() {
     setIsReviewMode(false);
   };
 
+  const handleOpenChallenges = () => {
+    setView('challenges');
+  };
+
+  const handleBackFromChallenges = () => {
+    setView('practice');
+  };
+
   const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
@@ -322,6 +338,9 @@ function App() {
         setReviewDueCount(storage.getReviewQueueCount());
         setIsReviewMode(false);
         setView('review');
+        break;
+      case 'challenges':
+        setView('challenges');
         break;
     }
   };
@@ -379,6 +398,23 @@ function App() {
               <div className="flex items-center gap-3 mr-2">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
                 <StreakFeedback streak={streak} />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleOpenChallenges}
+                  className="relative text-slate-500 gap-1 p-1"
+                  data-testid="challenge-trophy-header"
+                >
+                  <Trophy className="w-4 h-4" />
+                  {unclaimedCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                    >
+                      {unclaimedCount}
+                    </Badge>
+                  )}
+                </Button>
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
                 </div>
@@ -446,6 +482,23 @@ function App() {
                     className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
                   >
                     {reviewDueCount}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenChallenges}
+                className="relative text-slate-500 gap-2"
+              >
+                <Trophy className="w-4 h-4" />
+                每日挑战
+                {unclaimedCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                  >
+                    {unclaimedCount}
                   </Badge>
                 )}
               </Button>
@@ -544,6 +597,12 @@ function App() {
         <SmartReview
           onPracticeReview={handlePracticeReview}
           onBack={handleBackFromSmartReview}
+        />
+      ) : view === 'challenges' ? (
+        <DailyChallengePanel
+          challenges={challengeState.challenges}
+          onClaim={claimReward}
+          onBack={handleBackFromChallenges}
         />
       ) : (
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>

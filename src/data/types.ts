@@ -56,3 +56,22 @@ export interface XPProfile {
 export const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000] as const;
 
 export type PracticeMode = 'fill-in-blanks' | 'dictation' | 'multiple-choice' | 'sentence-reorder';
+
+export type ChallengeType = 'correct' | 'answer' | 'streak';
+
+export interface DailyChallenge {
+  id: string;
+  title: string;
+  description: string;
+  type: ChallengeType;
+  target: number;
+  current: number;
+  completed: boolean;
+  claimed: boolean;
+  rewardXP: number;
+}
+
+export interface DailyChallengeState {
+  date: string;
+  challenges: DailyChallenge[];
+}

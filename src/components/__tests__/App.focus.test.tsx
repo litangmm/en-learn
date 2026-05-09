@@ -67,6 +67,19 @@ vi.mock('@/hooks/useXP', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useDailyChallenges', () => ({
+  useDailyChallenges: vi.fn(() => ({
+    state: {
+      date: '2026-05-10',
+      challenges: [],
+    },
+    unclaimedCount: 0,
+    trackActivity: vi.fn(),
+    claimReward: vi.fn(),
+    resetDailyChallenges: vi.fn(),
+  })),
+}));
+
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),

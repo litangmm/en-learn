@@ -7,7 +7,7 @@ import type { Sentence } from '../src/data/types.ts';
 const OUTPUT_DIR = 'src/data';
 const PROGRESS_DIR = 'scripts/.progress';
 const BASE_URL = 'https://dict.cn/search';
-const CONCURRENCY = 4;
+// const CONCURRENCY = 4;
 const PAGE_TIMEOUT = 10000;
 const NAV_TIMEOUT = 15000;
 
@@ -94,7 +94,7 @@ async function scrapeWord(
     }
 
     return sentences;
-  } catch (err) {
+  } catch {
     return [];
   } finally {
     await page.close().catch(() => {});

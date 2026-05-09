@@ -1,6 +1,7 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Sentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
+import { storage } from '@/services/storage';
 
 export interface UserAnswer {
   sentenceId: string;
@@ -54,24 +55,56 @@ export function usePractice(dictionaryId: string) {
   // Reset state when sentences load
   useEffect(() => {
     if (sentences.length > 0) {
-      setState({
-        currentIndex: 0,
-        userAnswers: [],
-        currentInputs: new Array(sentences[0].blanks.length).fill(''),
-        showResult: false,
-        isCorrect: false,
-        attempts: 0,
-        isComplete: false,
-        score: 0,
-      });
+      const persisted = storage.loadSession();
+      if (persisted && persisted.dictionaryId === dictionaryId && !persisted.session.isComplete) {
+        const restoredIndex = persisted.session.currentIndex;
+        const targetSentence = sentences[restoredIndex] ?? sentences[0];
+        setState({
+          ...persisted.session,
+          currentInputs: new Array(targetSentence.blanks.length).fill(''),
+        });
+      } else {
+        setState({
+          currentIndex: 0,
+          userAnswers: [],
+          currentInputs: new Array(sentences[0].blanks.length).fill(''),
+          showResult: false,
+          isCorrect: false,
+          attempts: 0,
+          isComplete: false,
+          score: 0,
+        });
+      }
     }
-  }, [sentences]);
+  }, [sentences, dictionaryId]);
 
   const shuffledSentences = useMemo(() => {
     if (sentences.length === 0) return [];
+    // eslint-disable-next-line react-hooks/purity
     const shuffled = [...sentences].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 10);
   }, [sentences]);
+
+  // Debounced save session
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (sentences.length === 0) return;
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    saveTimeoutRef.current = setTimeout(() => {
+      if (state.isComplete) {
+        storage.clearSession();
+      } else {
+        storage.saveSession(dictionaryId, state);
+      }
+    }, 500);
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [state, dictionaryId, sentences]);
 
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 

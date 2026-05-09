@@ -11,6 +11,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
 import { Button } from '@/components/ui/button';
 import { getDictionaryById } from '@/data/dictionaries';
+import { storage } from '@/services/storage';
 import {
   Dialog,
   DialogContent,
@@ -25,6 +26,7 @@ function App() {
   const [dictionaryId, setDictionaryId] = useState('cet4');
   const [pendingDictionaryId, setPendingDictionaryId] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [showRecoveryDialog, setShowRecoveryDialog] = useState(false);
 
   const {
     state,
@@ -75,6 +77,7 @@ function App() {
 
   const confirmSwitch = () => {
     if (pendingDictionaryId) {
+      storage.clearSession();
       setDictionaryId(pendingDictionaryId);
       setPendingDictionaryId(null);
     }
@@ -83,6 +86,30 @@ function App() {
 
   const handleRestart = () => {
     reset();
+  };
+
+  // Check for active session on mount
+  useEffect(() => {
+    const hasActive = storage.hasActiveSession();
+    if (hasActive) {
+      const timeoutId = setTimeout(() => {
+        setShowRecoveryDialog(true);
+      }, 0);
+      return () => clearTimeout(timeoutId);
+    }
+  }, []);
+
+  const handleContinueSession = () => {
+    const storedId = storage.getStoredDictionaryId();
+    if (storedId) {
+      setDictionaryId(storedId);
+    }
+    setShowRecoveryDialog(false);
+  };
+
+  const handleDiscardSession = () => {
+    storage.clearSession();
+    setShowRecoveryDialog(false);
   };
 
   const currentDict = getDictionaryById(dictionaryId);
@@ -164,6 +191,24 @@ function App() {
               取消
             </Button>
             <Button onClick={confirmSwitch}>确定</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Recovery Dialog */}
+      <Dialog open={showRecoveryDialog} onOpenChange={setShowRecoveryDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>继续上次练习？</DialogTitle>
+            <DialogDescription>
+              检测到您有未完成的练习进度。是否继续上次的练习？
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={handleDiscardSession}>
+              重新开始
+            </Button>
+            <Button onClick={handleContinueSession}>继续上次</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

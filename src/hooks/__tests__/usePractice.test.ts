@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { usePractice } from '../usePractice';
+import { storage } from '@/services/storage';
 
 const mockSentences = [
   {
@@ -424,5 +425,159 @@ describe('usePractice', () => {
     });
 
     expect(result.current.state.isCorrect).toBe(true);
+  });
+
+  it('should restore persisted session on mount', async () => {
+    const persistedSession = {
+      version: 1 as const,
+      dictionaryId: 'test',
+      session: {
+        currentIndex: 1,
+        userAnswers: [
+          {
+            sentenceId: '1',
+            answers: ['catches'],
+            isCorrect: true,
+            attempts: 1,
+          },
+        ],
+        currentInputs: ['old'],
+        showResult: false,
+        isCorrect: false,
+        attempts: 0,
+        isComplete: false,
+        score: 10,
+      },
+      timestamp: Date.now(),
+    };
+    vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.state.currentIndex).toBe(1);
+    expect(result.current.state.score).toBe(10);
+    expect(result.current.state.userAnswers).toHaveLength(1);
+    expect(result.current.state.currentInputs).toEqual(['', '']);
+  });
+
+  it('should initialize normally when no persisted session', async () => {
+    vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.state.currentIndex).toBe(0);
+    expect(result.current.state.score).toBe(0);
+    expect(result.current.state.currentInputs).toEqual(['']);
+  });
+
+  it('should not restore session from different dictionary', async () => {
+    const persistedSession = {
+      version: 1 as const,
+      dictionaryId: 'other-dict',
+      session: {
+        currentIndex: 2,
+        userAnswers: [],
+        currentInputs: [],
+        showResult: false,
+        isCorrect: false,
+        attempts: 0,
+        isComplete: false,
+        score: 0,
+      },
+      timestamp: Date.now(),
+    };
+    vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.state.currentIndex).toBe(0);
+    expect(result.current.state.score).toBe(0);
+  });
+
+  it('should not restore completed session', async () => {
+    const persistedSession = {
+      version: 1 as const,
+      dictionaryId: 'test',
+      session: {
+        currentIndex: 2,
+        userAnswers: [],
+        currentInputs: [],
+        showResult: false,
+        isCorrect: false,
+        attempts: 0,
+        isComplete: true,
+        score: 0,
+      },
+      timestamp: Date.now(),
+    };
+    vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.state.currentIndex).toBe(0);
+    expect(result.current.state.isComplete).toBe(false);
+  });
+
+  it('should save session on state changes', async () => {
+    const saveSpy = vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+    vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    act(() => {
+      result.current.setInput(0, 'catches');
+    });
+
+    await waitFor(() => {
+      expect(saveSpy).toHaveBeenCalledWith('test', expect.objectContaining({
+        currentInputs: ['catches'],
+      }));
+    });
+  });
+
+  it('should load new dictionary when dictionaryId changes', async () => {
+    vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+    const { rerender, result } = renderHook(({ dictId }) => usePractice(dictId), {
+      initialProps: { dictId: 'dict-a' },
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    // Verify initial state
+    expect(result.current.state.currentIndex).toBe(0);
+
+    // Re-render with different dictionary
+    rerender({ dictId: 'dict-b' });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    // Should reset to initial state for new dictionary
+    expect(result.current.state.currentIndex).toBe(0);
+    expect(result.current.state.score).toBe(0);
   });
 });

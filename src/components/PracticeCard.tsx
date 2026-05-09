@@ -46,7 +46,7 @@ export function PracticeCard({
   }, [sentence, showResult]);
 
   // Handle Enter key
-  const handleKeyDown = useCallback((e: React.KeyboardEvent, _index: number) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (!showResult) {
         onCheck();
@@ -87,7 +87,7 @@ export function PracticeCard({
                     type="text"
                     value={inputs[idx] || ''}
                     onChange={e => onInputChange(idx, e.target.value)}
-                    onKeyDown={e => handleKeyDown(e, idx)}
+                    onKeyDown={e => handleKeyDown(e)}
                     disabled={showResult && isCorrect}
                     placeholder={`${idx + 1}`}
                     className={`

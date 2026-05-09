@@ -7,6 +7,12 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-8)
+- **提案 Epic**: epic-006「极致性能与流量成本优化」
+- **结果**: 未被选中（epic-002 iter-002 完成，epic-006 background task）
+- **当前状态**: 连续 7 个 cycle 未被选中
+- **观察**: PM-Mon 支持的 epic-002 继续推进。iter-002 音频速度控制零新增依赖、零构建体积增长（仅增加 playbackRate 状态和 ToggleGroup 条件渲染）。useSpeech hook 的 speak 方法保留 rate 覆盖参数，API 设计简洁。epic-002 已完成的两个迭代均未引入大型依赖，构建体积仍然可控
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **提案 Epic**: epic-006「极致性能与流量成本优化」
 - **结果**: 未被选中（epic-002 iter-001 完成，epic-006 background task）

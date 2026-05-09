@@ -1,9 +1,9 @@
 {
   "version": "1.0",
-  "status": "IDLE",
+  "status": "REPORT",
   "commitHash": "558a53a",
-  "lastRun": "2026-05-09T07:33:25.000Z",
-  "cycleCount": 8,
+  "lastRun": "2026-05-09T15:26:07.000Z",
+  "cycleCount": 7,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentEpic": {
@@ -415,13 +415,6 @@
     }
   },
   "history": [
-    {
-      "id": "2026-05-09-8",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-002 iter-002 音频播放速度控制（0.5x~1.5x）— 219/219 测试通过，build 成功"
-    },
     {
       "id": "2026-05-09-7",
       "mode": "vision",

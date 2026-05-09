@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-8)
+- **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试、构建体积监控
+- **本次验证**: epic-002 iter-002「音频播放速度控制」质量门禁验证
+  - useSpeech rate 测试：playbackRate 默认 1.0、setPlaybackRate 状态更新、speak 未传 rate 时使用 playbackRate、speak 传 rate 时覆盖 playbackRate
+  - PracticeCard speed 测试：五档速度渲染、条件渲染（无 onSpeedChange 时不渲染）、当前速度高亮、点击回调参数正确、dictation 模式可见、showResult 时可见
+  - App speed 测试：默认 1.0x 选中、setPlaybackRate 被调用、auto-play 使用 playbackRate 无硬编码值
+  - 全量回归：219/219 单元测试通过，lint 0 errors，build 成功
+- **备注**: iter-002 的向后兼容设计（speak 保留 rate 覆盖参数）经测试验证无回归。useSpeech 默认速率从 0.9 调整为 1.0 的变更已同步更新现有测试
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试、构建体积监控
 - **本次验证**: epic-002 iter-001「纯听写模式」质量门禁验证

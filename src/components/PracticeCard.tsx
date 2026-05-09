@@ -146,6 +146,11 @@ export function PracticeCard({
               }
             `}
           />
+          {!showResult && (
+            <span className="block text-xs text-slate-400 font-medium mt-1">
+              {blank.word.charAt(0)}...
+            </span>
+          )}
           {showResult && !isCorrect && (
             <motion.span
               initial={{ opacity: 0, y: -5 }}
@@ -293,13 +298,11 @@ export function PracticeCard({
         {/* Content */}
         <div className="p-4 md:p-6 space-y-6">
           {/* Chinese Translation */}
-          {(!isDictation || showResult) && (
-            <div className="text-center">
-              <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed">
-                {sentence.chinese}
-              </p>
-            </div>
-          )}
+          <div className="text-center">
+            <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed">
+              {sentence.chinese}
+            </p>
+          </div>
 
           {/* Divider */}
           {(!isDictation || showResult) && !isMultipleChoice && (
@@ -319,7 +322,7 @@ export function PracticeCard({
           {isDictation && !showResult && !isMultipleChoice && (
             <div className="text-center">
               <p className="text-sm text-slate-400">
-                请听音频，在输入框中填写听到的单词
+                请听音频，根据中文提示和首字母提示填写单词
               </p>
             </div>
           )}

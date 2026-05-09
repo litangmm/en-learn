@@ -90,7 +90,7 @@ describe('App mode switching', () => {
     expect(screen.getByText('听写模式')).toBeInTheDocument();
   });
 
-  it('switches to dictation mode and hides chinese translation', () => {
+  it('switches to dictation mode and keeps chinese translation visible', () => {
     render(<App />);
     // Initially in fill-in-blanks mode, chinese is visible
     expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
@@ -99,8 +99,8 @@ describe('App mode switching', () => {
     const dictationButton = screen.getByText('听写模式');
     fireEvent.click(dictationButton);
 
-    // Chinese should be hidden
-    expect(screen.queryByText('早起的鸟儿有虫吃。')).not.toBeInTheDocument();
+    // Chinese should remain visible in dictation mode
+    expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
   });
 
   it('calls initializeInputs when switching mode', () => {
@@ -116,11 +116,11 @@ describe('App mode switching', () => {
     const dictationButton = screen.getByText('听写模式');
     const fillButton = screen.getByText('填空模式');
 
-    // Switch to dictation
+    // Switch to dictation — chinese remains visible
     fireEvent.click(dictationButton);
-    expect(screen.queryByText('早起的鸟儿有虫吃。')).not.toBeInTheDocument();
+    expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
 
-    // Switch back to fill-in-blanks
+    // Switch back to fill-in-blanks — chinese still visible
     fireEvent.click(fillButton);
     expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
   });

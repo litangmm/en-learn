@@ -318,8 +318,8 @@ describe('PracticeCard multiple-choice', () => {
       />,
     );
 
-    // Dictation should hide chinese
-    expect(screen.queryByText('早起的鸟儿有虫吃。')).not.toBeInTheDocument();
+    // Dictation should show chinese
+    expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
     // Should not show choice options
     expect(screen.queryByText('Actions speak louder than words.')).not.toBeInTheDocument();
   });

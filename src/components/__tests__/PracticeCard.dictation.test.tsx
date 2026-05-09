@@ -28,9 +28,9 @@ describe('PracticeCard dictation mode', () => {
     onSpeak: vi.fn(),
   };
 
-  it('does not render chinese translation in dictation mode before result', () => {
+  it('renders chinese translation in dictation mode before result', () => {
     render(<PracticeCard {...baseProps} mode="dictation" />);
-    expect(screen.queryByText('早起的鸟儿有虫吃。')).not.toBeInTheDocument();
+    expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
   });
 
   it('does not render english sentence text in dictation mode before result', () => {
@@ -46,7 +46,12 @@ describe('PracticeCard dictation mode', () => {
 
   it('shows dictation mode instruction text', () => {
     render(<PracticeCard {...baseProps} mode="dictation" />);
-    expect(screen.getByText('请听音频，在输入框中填写听到的单词')).toBeInTheDocument();
+    expect(screen.getByText('请听音频，根据中文提示和首字母提示填写单词')).toBeInTheDocument();
+  });
+
+  it('shows first-letter hint below each input in dictation mode', () => {
+    render(<PracticeCard {...baseProps} mode="dictation" />);
+    expect(screen.getByText('c...')).toBeInTheDocument();
   });
 
   it('shows chinese translation when showResult is true in dictation mode', () => {
@@ -100,7 +105,7 @@ describe('PracticeCard dictation mode', () => {
   it('does not show dictation instruction in fill-in-blanks mode', () => {
     render(<PracticeCard {...baseProps} mode="fill-in-blanks" />);
     expect(
-      screen.queryByText('请听音频，在输入框中填写听到的单词'),
+      screen.queryByText('请听音频，根据中文提示和首字母提示填写单词'),
     ).not.toBeInTheDocument();
   });
 

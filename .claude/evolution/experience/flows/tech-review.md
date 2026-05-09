@@ -121,6 +121,18 @@
 - **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 255/255 unit tests passed
 - **观察**: 响应式改造零逻辑变更、零类型变更，仅涉及 CSS 类名和布局结构调整，风险极低。App.tsx 的视图切换逻辑复杂度未增加（条件渲染通过类名而非新增分支实现）
 
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **技术审查通过**
+- **技术决策**:
+  - streak 为 session-only 状态（不持久化），useXP hook 内部 useState 管理，避免 localStorage 写入频率和跨设备同步问题
+  - getStreakMultiplier 为纯函数（streak → multiplier），无副作用，便于测试和后续调优
+  - addXP 返回完整奖励详情对象 { profile, finalXP, multiplier, streak }，调用方可灵活使用，解耦计算与展示
+  - StreakFeedback 组件 props 极简（streak + visible），无外部依赖，可复用于 header、focus bar 等任意位置
+  - XPGainPopup 使用 triggerKey 强制 re-mount 而非状态更新，确保每次 XP 奖励都播放完整动画
+  - awardedXPRef 和 processedReviewRef 的 proven pattern 继续复用，避免重复奖励和重复调度
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 348/348 unit tests passed
+- **观察**: App.tsx 复杂度继续累积——新增 xpGainTrigger 状态、两个 useEffect（correct/wrong）、StreakFeedback/XPGainPopup 渲染。当前管理：6 个视图 + 4 种练习模式 + 专注模式 + 响应式断点 + XP 系统 + 连击动画。ARCH 此前多次提出的「导航配置提取」已成为极其紧迫的技术债务，建议在 epic-003 的 iter-003 或 iter-004 中插入
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **技术决策**: localStorage 优先（符合 MVP 原则），版本化 schema 预留 IndexedDB 迁移空间

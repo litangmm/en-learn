@@ -89,6 +89,11 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (pathname === '/api/health') {
+    sendJSON(res, { status: 'ok', projects: Object.keys(PROJECTS) });
+    return;
+  }
+
   const projectMatch = pathname.match(/^\/api\/([^/]+)(?:\/(.+))?$/);
   if (!projectMatch) {
     sendError(res, 'Not found', 404);
@@ -97,6 +102,12 @@ const server = http.createServer((req, res) => {
 
   const projectKey = projectMatch[1];
   const subPath = projectMatch[2] || '';
+
+  if (!PROJECTS[projectKey]) {
+    sendError(res, 'Unknown project: ' + projectKey, 404);
+    return;
+  }
+
   const paths = getPaths(projectKey);
 
   if (!paths.state) {

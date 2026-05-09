@@ -121,5 +121,15 @@
 ## 失败教训
 （由进化引擎自动总结）
 
+### 2026-05-09 (cycle-2026-05-09-17)
+- **相关质量门禁**: 单元测试回归、动画组件测试、构建稳定性
+- **本次验证**: epic-003 iter-002「连击计数与正向反馈动画」质量门禁验证
+  - useXP streak 测试：streak 递增、wrong 重置、max 跟踪、倍率边界（2→3, 4→5, 9→10）、addXP 倍率集成、返回对象、resetStreak 保留 max、firstTry+multiplier 组合
+  - StreakFeedback 测试：streak <2 隐藏、icon/count 渲染、amber/red/purple 颜色类、连击标签、visible=false、motion.div
+  - XPGainPopup 测试：invisible 隐藏、amount 显示、倍率徽章条件、triggerKey 更新
+  - App.streak 测试：header badge DOM、recordCorrectAnswer 调用、recordWrongAnswer 调用、XP popup 触发、resetStreak 调用、focus mode badge
+  - 全量回归：**348/348 单元测试通过**（36 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 30 个专用测试，覆盖「连击状态 → 倍率计算 → 组件渲染 → App 集成 → 动画触发」完整链路。348 测试是项目历史新高位。7 个现有 App 测试文件因 useXP 新导出而更新 mock，零行为回归。动画组件通过 data-testid 和 aria 属性测试，CSS transition 的 jsdom 限制通过条件渲染断言绕过
+
 ## 改进方向
 （由进化引擎自动总结）

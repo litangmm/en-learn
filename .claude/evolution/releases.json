@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.14.0",
+      "tag": "v0.14.0",
+      "commit": "811c92a",
+      "date": "2026-05-09T13:12:57.594Z",
+      "iterationId": "iter-002",
+      "title": "连击计数与正向反馈动画",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.13.0",
       "tag": "v0.13.0",
       "commit": "27947db",

@@ -93,6 +93,15 @@
   - 创建: src/components/MobileNav.tsx, src/components/__tests__/MobileNav.test.tsx, src/components/__tests__/App.responsive.test.tsx, .claude/evolution/responsive-design.md
 - **观察**: 计划步骤清晰可执行，13 步覆盖了从设计文档到测试验证的完整响应式改造流程。所有修改均为纯 CSS/Tailwind 工具类调整，无逻辑变更，风险可控
 
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **完整执行**
+- **计划步骤**: 10 步全部完成，涵盖 useXP streak 扩展、StreakFeedback 组件、XPGainPopup 组件、App.tsx 集成、useXP streak 测试、StreakFeedback 测试、XPGainPopup 测试、App.streak 测试、现有测试 mock 更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/hooks/useXP.ts, src/App.tsx
+  - 创建: src/components/StreakFeedback.tsx, src/components/XPGainPopup.tsx, src/hooks/__tests__/useXP.streak.test.ts, src/components/__tests__/StreakFeedback.test.tsx, src/components/__tests__/XPGainPopup.test.tsx, src/components/__tests__/App.streak.test.tsx
+  - 更新测试 mock: 7 个现有 App 测试文件
+- **观察**: 计划清晰可执行，连击系统作为 XP 系统的自然扩展，与现有架构无冲突。session-only 的 streak 设计避免了持久化复杂度，framer-motion 动画复用已有依赖。10 步计划覆盖了从 hook 扩展 → 组件创建 → App 集成 → 全量测试的完整链路
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **计划步骤**: 6 步（创建 storage 服务 → hook 集成 → UI 恢复 → 边界处理 → 单元测试 → hook 测试）

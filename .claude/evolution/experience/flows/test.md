@@ -109,6 +109,17 @@
 - **E2E**: skipped（3 pending iterations remaining）
 - **观察**: 响应式测试的关键创新是使用 mock matchMedia 在 jsdom 中模拟断点，验证了组件的条件渲染逻辑。首次建立响应式测试基线，为后续迭代的移动端兼容性提供了回归保障
 
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **全部测试通过**
+- **测试覆盖**: 348/348 单元测试通过（36 个测试文件，新增 30 个测试）
+  - useXP.streak.test.ts: 9 个测试（streak 递增、wrong 重置、max 跟踪、倍率边界、addXP 倍率集成、返回对象、resetStreak、firstTry+multiplier）
+  - StreakFeedback.test.tsx: 8 个测试（<2 隐藏、icon/count、amber/red/purple 颜色、连击标签、visible=false、motion.div）
+  - XPGainPopup.test.tsx: 6 个测试（hidden、amount 显示、倍率徽章条件、triggerKey）
+  - App.streak.test.tsx: 6 个测试（header badge、recordCorrectAnswer、recordWrongAnswer、XP popup、resetStreak、focus mode badge）
+  - 全量回归: 之前 318 个测试全部通过
+- **E2E**: skipped（3 pending iterations remaining）
+- **观察**: 动画组件测试策略：StreakFeedback 通过 data-testid 和颜色类名断言；XPGainPopup 通过 queryByText 和条件渲染断言。framer-motion 的 motion.div 通过 getByTestId 验证存在性。requestAnimationFrame 在 jsdom 中同步执行，弹窗触发测试无需额外等待。7 个现有 App 测试文件的 mock 更新展示了 hook API 扩展时的大规模测试维护模式
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **测试覆盖**: 72/72 单元测试通过

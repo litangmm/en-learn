@@ -124,6 +124,18 @@
   - vitest.setup.ts 中 mock window.matchMedia 确保响应式测试在 jsdom 环境中可运行
 - **观察**: 响应式改造作为「技术债务前置」的成功案例——在功能迭代前建立跨端基础，避免了后续迭代的返工。所有响应式类名遵循 Tailwind 标准断点，无自定义 CSS media query
 
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **完整实现**
+- **实现质量**: 高 — 状态扩展自然，组件职责清晰
+- **关键决策**:
+  - streak 状态为 session-only（不持久化），重启后重置是合理 UX，避免了 localStorage 写入频率和跨设备同步问题
+  - getStreakMultiplier 使用离散分级而非连续函数，实现简洁且可解释，边界值在 2→3、4→5、9→10 处明确
+  - addXP 返回 { profile, finalXP, multiplier, streak } 对象，调用方可获知实际奖励详情，便于触发弹窗
+  - StreakFeedback 组件通过 streak 阈值条件渲染（≥2 才显示），避免空状态干扰
+  - XPGainPopup 使用 triggerKey 强制 re-mount 实现动画重播，避免 AnimatePresence 的 exit-before-enter 延迟
+  - requestAnimationFrame deferral 在 XP 奖励 useEffect 中触发弹窗，确保 DOM 更新后动画开始
+- **观察**: 零新增依赖（framer-motion 复用已有），零构建体积增长。连击系统与 XP 系统的融合通过 useXP hook 统一暴露，App.tsx 的集成改动最小化。7 个现有测试文件的 mock 更新展示了 hook API 扩展时的向后兼容策略
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **实现质量**: 高 — 代码结构清晰，错误处理完善

@@ -8,6 +8,14 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-6)
+- **迭代**: iter-005「智能复习队列」—— **完整执行**
+- **计划步骤**: 7 步全部完成，涵盖类型扩展、存储队列能力、SmartReview 组件、App.tsx 集成、复习调度、单元测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/services/storage.ts, src/App.tsx
+  - 创建: src/components/SmartReview.tsx, src/services/__tests__/review-queue.test.ts, src/components/__tests__/SmartReview.test.tsx
+- **观察**: iter-005 作为 epic-001 的收尾迭代，计划清晰且算法边界明确。间隔重复算法的 [1,3,7,14] 天参数设计简洁，后续可根据实际使用数据调优。
+
 ### 2026-05-09 (cycle-2026-05-09-5)
 - **迭代**: iter-005「智能复习队列」
 - **计划步骤**: 7 步，涵盖类型扩展、存储队列能力、SmartReview 组件、App.tsx 集成、复习调度、单元测试、全量验证

@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-6)
+- **相关 Epic**: epic-001「最小可行学习数据系统」—— **已完成全部迭代**
+- **结果**: epic-001 全部 6 个迭代（iter-001 ~ iter-005 + bugfix-001）已完成，状态标记为 `completed`
+- **完成内容**: iter-005「智能复习队列」完整实现 — Mistake 类型扩展（nextReviewAt/lastReviewedAt）、StorageService 复习队列能力（getReviewQueue/getReviewQueueCount/scheduleNextReview 间隔重复算法 [1,3,7,14] 天）、SmartReview 组件（按词典分组的到期错题列表、开始复习/全部复习按钮）、App.tsx 集成（review 视图、导航按钮带到期数量徽章、复习模式自动调度）、review-queue 单元测试（18 个）+ SmartReview 组件测试（6 个）
+- **累计测试**: 189/189 单元测试通过（15 个测试文件）
+- **备注**: epic-001 作为首个 Epic 成功收官，为项目奠定了完整的数据基础（会话持久化、错题记录、学习历史、数据导入导出、智能复习队列）。后续 Epic 选择将在下次 brainstorm 中重新开启
+
 ### 2026-05-09 (cycle-2026-05-09-5)
 - **相关 Epic**: epic-001「最小可行学习数据系统」持续实施中
 - **结果**: epic-001 仍为当前 Epic，iter-005「智能复习队列」已规划并启动 Step 1

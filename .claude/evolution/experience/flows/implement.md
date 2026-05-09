@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-6)
+- **迭代**: iter-005「智能复习队列」—— **完整实现**
+- **实现质量**: 高 — 算法实现严谨，UI 交互清晰
+- **关键决策**:
+  - Mistake 类型扩展采用可选字段，确保旧数据向后兼容
+  - scheduleNextReview 使用 [1,3,7,14] 天间隔数组，正确答题递增 reviewedCount，错误答题重置间隔为 1 天但保留 reviewedCount
+  - SmartReview 组件按 dictionaryId 分组加载和展示，复用 MistakeBook 的异步词典加载模式
+  - App.tsx 使用 processedReviewRef 防止 retry 导致的重复调度，useEffect 监听 showResult 自动触发 scheduleNextReview
+  - 复习模式通过 isReviewMode state 标记，与正常练习模式共用 practice 视图但数据源不同
+- **观察**: 算法型迭代的实现需要特别关注边界情况（reviewedCount 超限、时区、重复调度），iter-005 通过 ref 防抖和 comprehensive 单元测试有效覆盖了这些边界
+
 ### 2026-05-09 (cycle-2026-05-09-5)
 - **迭代**: iter-005「智能复习队列」
 - **实现进度**: Step 1 完成 — Mistake 类型扩展（nextReviewAt/lastReviewedAt 可选字段）

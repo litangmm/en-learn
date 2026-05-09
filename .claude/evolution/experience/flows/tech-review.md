@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-6)
+- **迭代**: iter-005「智能复习队列」—— **技术审查通过**
+- **技术决策**:
+  - 间隔重复算法使用固定间隔数组 [1,3,7,14] 天，简洁且可解释，便于后续调优
+  - processedReviewRef 防止同一题的重复调度，避免 retry 导致的逻辑错误
+  - 复习模式与普通练习模式共用 practice 视图，通过 isReviewMode 状态区分，最小化 UI 代码重复
+  - SmartReview 组件的异步词典加载使用 useEffect + useState 模式，与 MistakeBook 保持一致
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 189/189 unit tests passed
+- **观察**: App.tsx 的视图切换逻辑已扩展至 5 个视图（practice/mistake-book/history/data/review），导航结构仍清晰但接近复杂度阈值。后续迭代如需继续增加视图，应考虑提取导航配置到独立模块
+
 ### 2026-05-09 (cycle-2026-05-09-5)
 - **迭代**: iter-005「智能复习队列」
 - **技术决策**: Mistake 类型扩展采用可选字段（nextReviewAt?: number, lastReviewedAt?: number），确保旧数据向后兼容

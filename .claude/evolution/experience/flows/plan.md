@@ -8,6 +8,14 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-3)
+- **迭代**: iter-004「数据导入导出」
+- **计划步骤**: 7 步，涵盖类型定义、存储方法扩展、组件实现、导航集成、单元测试、组件测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/services/storage.ts, src/App.tsx
+  - 创建: src/components/DataManager.tsx, src/components/__tests__/DataManager.test.tsx, src/services/__tests__/export-import.test.ts
+- **观察**: iter-004 计划清晰，步骤复杂度适中，单一迭代在一个 cycle 内顺利完成。数据导入导出功能涉及用户文件操作，计划中包含了确认对话框和状态反馈的 UX 设计
+
 ### 2026-05-09 (cycle-2026-05-09-2)
 - **迭代**: iter-002「错题本 MVP」+ iter-003「学习历史记录」
 - **计划步骤**: iter-002 共 7 步，iter-003 共 7 步，每步清晰可执行

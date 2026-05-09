@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-3)
+- **迭代**: iter-004「数据导入导出」
+- **实现质量**: 高 — 校验严谨，用户体验完善
+- **关键决策**:
+  - ExportData 定义在 storage.ts 内避免循环依赖
+  - isValidExportData 递归校验各子结构（session/mistakes/history），拒绝任何非法输入
+  - importAllData 返回结构化结果（success + importedCounts + message），便于 UI 展示
+  - DataManager 组件使用 hidden input 触发文件选择，blob URL 实现浏览器下载，无需外部依赖
+  - 导入前确认对话框 + 成功/失败 inline alert，用户操作有明确反馈
+- **观察**: 数据导入导出是首个涉及文件 I/O 的迭代，测试需要 mock URL.createObjectURL 和 anchor click，测试模式为后续文件操作功能提供了参考
+
 ### 2026-05-09 (cycle-2026-05-09-2)
 - **迭代**: iter-002「错题本 MVP」+ iter-003「学习历史记录」
 - **实现质量**: 高 — 代码结构清晰，边界处理完善

@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "releases": [
+    {
+      "version": "v0.3.0",
+      "tag": "v0.3.0",
+      "commit": "355d91a",
+      "date": "2026-05-09T03:09:40Z",
+      "iterationId": "iter-003",
+      "title": "学习历史记录",
+      "features": [
+        "SessionHistory 类型定义",
+        "存储服务扩展支持历史记录",
+        "自动记录每次练习结果",
+        "HistoryView 历史查看组件"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.2.0",
+      "tag": "v0.2.0",
+      "commit": "3c2d3fd",
+      "date": "2026-05-09T02:30:22Z",
+      "iterationId": "iter-002",
+      "title": "错题本 MVP",
+      "features": [
+        "存储 schema V2 支持错题记录",
+        "练习过程中自动捕获错题",
+        "错题本视图组件",
+        "错题专项练习模式"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.1.0",
+      "tag": "v0.1.0",
+      "commit": "3e9def1",
+      "date": "2026-05-09T01:51:59Z",
+      "iterationId": "iter-001",
+      "title": "核心存储服务与会话持久化",
+      "features": [
+        "创建版本化 localStorage 存储服务",
+        "usePractice hook 集成持久化",
+        "会话恢复 UI（继续上次练习/重新开始）",
+        "边界情况处理：词典切换、写满降级"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    }
+  ]
+}

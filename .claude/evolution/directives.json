@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "pending": [],
+  "history": [
+    {
+      "id": "dir-urgent-001",
+      "type": "custom",
+      "target": null,
+      "action": "【高优先级 Bug 修复】暂停当前迭代开发，优先修复以下 3 个用户体验 Bug，修复完成后继续原迭代：\n\nBug 1 — 新开一组还是原来的题目\nBug 2 — 答完后要点下一题按钮，不方便\nBug 3 — CET4-African 题目标题泄露答案",
+      "reason": "用户反馈的 3 个高优先级体验 Bug，必须立即修复",
+      "createdAt": "2026-05-09T04:00:00Z",
+      "executedAt": "2026-05-09T12:35:00.000Z",
+      "executionNote": "已在 PLAN 阶段纳入 bugfix-001 计划：修复随机排序（shuffleSeed）、全局键盘快捷键（App.tsx window keydown）、题号显示（PracticeCard Badge 改为 第 X/Y 题）"
+    }
+  ]
+}

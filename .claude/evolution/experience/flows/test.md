@@ -8,6 +8,15 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-3)
+- **迭代**: iter-004「数据导入导出」
+- **测试覆盖**: 159/159 单元测试通过（新增 28 个测试）
+  - export-import.test.ts: 16 个测试（export 结构、import 覆盖、null session、空数据、错误 version、缺失 data、损坏子结构、非对象输入、混合消息）
+  - DataManager.test.tsx: 10 个测试（概览计数、活动会话、返回导航、导出下载、导入文件选择、成功/失败状态、无效 JSON、确认对话框、取消行为）
+  - 全量回归: 之前 131 个测试全部通过
+- **E2E**: skipped（iter-005 仍 pending）
+- **观察**: export-import 测试需要 mock URL.createObjectURL 和 anchor click，DataManager 测试需要 mock FileReader 和 window.alert。这些 mock 模式可作为后续文件操作组件的测试模板
+
 ### 2026-05-09 (cycle-2026-05-09-2)
 - **迭代**: iter-002「错题本 MVP」+ iter-003「学习历史记录」
 - **测试覆盖**: 131/131 单元测试通过（新增 59 个测试）

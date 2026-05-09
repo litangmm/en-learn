@@ -3,463 +3,744 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evolution Engine Dashboard</title>
+<title>Evolution Engine · Unified Dashboard</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0f172a;
+    background: #0b1120;
     color: #e2e8f0;
-    line-height: 1.6;
+    line-height: 1.5;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
   header {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px; padding-bottom: 16px;
-    border-bottom: 1px solid #334155;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid #1e293b;
   }
-  h1 { font-size: 24px; color: #38bdf8; }
-  .badge {
-    display: inline-block; padding: 4px 12px; border-radius: 12px;
-    font-size: 12px; font-weight: 600; text-transform: uppercase;
-  }
-  .badge-running { background: #166534; color: #86efac; }
-  .badge-idle { background: #713f12; color: #fde047; }
-  .badge-waiting { background: #7f1d1d; color: #fca5a5; }
+  h1 { font-size: 22px; color: #38bdf8; letter-spacing: -0.5px; }
+  .subtitle { font-size: 13px; color: #64748b; margin-top: 2px; }
 
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px; margin-bottom: 24px;
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
-  .card {
-    background: #1e293b; border-radius: 12px; padding: 20px;
-    border: 1px solid #334155;
+  @media (max-width: 960px) {
+    .projects-grid { grid-template-columns: 1fr; }
   }
-  .card h2 {
-    font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;
-    color: #94a3b8; margin-bottom: 12px;
+
+  .project-panel {
+    background: #151e32;
+    border-radius: 14px;
+    border: 1px solid #1e293b;
+    overflow: hidden;
+  }
+  .project-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+  }
+  .project-header h2 {
+    font-size: 16px; font-weight: 600;
     display: flex; align-items: center; gap: 8px;
   }
-  .card h2 .icon { font-size: 18px; }
-  .value {
-    font-size: 28px; font-weight: 700; color: #f8fafc;
-    font-family: 'SF Mono', Monaco, monospace;
-  }
-  .label { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  .project-header .tech { font-size: 12px; color: #64748b; font-weight: 400; }
 
-  .section { margin-bottom: 24px; }
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 10px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
   }
-  .section-header h2 { font-size: 18px; color: #e2e8f0; }
+  .badge-run { background: rgba(22,163,74,0.2); color: #4ade80; }
+  .badge-idle { background: rgba(180,83,9,0.2); color: #fbbf24; }
+  .badge-wait { background: rgba(185,28,28,0.2); color: #f87171; }
+
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; padding: 16px 20px;
+  }
+  .stat {
+    background: #0f172a; border-radius: 10px; padding: 14px;
+    border: 1px solid #1e293b;
+  }
+  .stat-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 20px; font-weight: 700; color: #f1f5f9; margin-top: 4px; }
+  .stat-sub { font-size: 12px; color: #475569; margin-top: 2px; }
+
+  .section { padding: 0 20px 16px; }
+  .section-title {
+    font-size: 13px; font-weight: 600; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
 
   .btn {
-    padding: 8px 16px; border-radius: 8px; border: none;
-    font-size: 14px; font-weight: 500; cursor: pointer;
-    transition: all 0.2s;
+    padding: 7px 14px; border-radius: 8px; border: none;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.15s;
   }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
   .btn-primary { background: #0ea5e9; color: white; }
   .btn-primary:hover { background: #0284c7; }
   .btn-danger { background: #dc2626; color: white; }
   .btn-danger:hover { background: #b91c1c; }
   .btn-success { background: #16a34a; color: white; }
   .btn-success:hover { background: #15803d; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
+  .btn-ghost:hover { background: #334155; color: #e2e8f0; }
 
-  .form-group { margin-bottom: 12px; }
-  .form-group label {
-    display: block; font-size: 13px; color: #94a3b8;
-    margin-bottom: 4px;
+  .controls { display: flex; gap: 8px; padding: 0 20px 16px; }
+
+  .card { background: #0f172a; border-radius: 10px; border: 1px solid #1e293b; }
+
+  .directive-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 12px 14px; margin-bottom: 8px;
+    background: #0f172a; border-radius: 8px; border: 1px solid #1e293b;
   }
+  .directive-item:last-child { margin-bottom: 0; }
+  .dir-type {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    background: #1d4ed8; color: #bfdbfe;
+  }
+  .dir-action { font-size: 13px; color: #e2e8f0; margin-top: 6px; }
+  .dir-meta { font-size: 11px; color: #475569; margin-top: 3px; }
+
+  .question-item {
+    padding: 14px; margin-bottom: 8px;
+    background: #0f172a; border-radius: 8px; border: 1px solid #1e293b;
+  }
+  .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .q-id { font-size: 11px; color: #64748b; }
+  .q-text { font-size: 13px; color: #e2e8f0; margin-bottom: 4px; }
+  .q-ctx { font-size: 11px; color: #475569; margin-bottom: 10px; }
+  .q-reply { display: flex; gap: 8px; }
+  .q-reply input {
+    flex: 1; padding: 7px 10px; border-radius: 6px;
+    border: 1px solid #334155; background: #0b1120; color: #e2e8f0; font-size: 13px;
+  }
+
+  .form-group { margin-bottom: 10px; }
+  .form-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 3px; }
   .form-group input, .form-group textarea, .form-group select {
-    width: 100%; padding: 10px 12px; border-radius: 8px;
-    border: 1px solid #475569; background: #0f172a; color: #e2e8f0;
-    font-size: 14px;
+    width: 100%; padding: 8px 10px; border-radius: 6px;
+    border: 1px solid #334155; background: #0b1120; color: #e2e8f0; font-size: 13px;
   }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
     outline: none; border-color: #38bdf8;
   }
 
-  .directive-item, .question-item {
-    background: #0f172a; border-radius: 8px; padding: 16px;
-    margin-bottom: 12px; border: 1px solid #334155;
-    display: flex; justify-content: space-between; align-items: flex-start;
-  }
-  .directive-item .info { flex: 1; }
-  .directive-item .type {
-    display: inline-block; padding: 2px 8px; border-radius: 4px;
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    background: #1d4ed8; color: #bfdbfe; margin-bottom: 8px;
-  }
-  .directive-item .action { font-size: 14px; color: #e2e8f0; margin-bottom: 4px; }
-  .directive-item .meta { font-size: 12px; color: #64748b; }
-
-  .question-item { flex-direction: column; }
-  .question-item .q-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 8px;
-  }
-  .question-item .q-text { font-size: 14px; color: #e2e8f0; margin-bottom: 8px; }
-  .question-item .q-context { font-size: 12px; color: #64748b; margin-bottom: 12px; }
-  .question-item .q-reply { display: flex; gap: 8px; }
-  .question-item .q-reply input {
-    flex: 1; padding: 8px 12px; border-radius: 6px;
-    border: 1px solid #475569; background: #0f172a; color: #e2e8f0;
-  }
-
-  .empty-state {
-    text-align: center; padding: 32px; color: #64748b; font-size: 14px;
-  }
-
   .log-box {
-    background: #0f172a; border-radius: 8px; padding: 16px;
-    font-family: 'SF Mono', Monaco, monospace; font-size: 12px;
-    color: #94a3b8; max-height: 300px; overflow-y: auto;
+    font-family: 'SF Mono', Monaco, monospace; font-size: 11px;
+    color: #94a3b8; max-height: 200px; overflow-y: auto;
     white-space: pre-wrap; word-break: break-all;
+    padding: 12px 14px;
   }
+
+  .release-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; margin-bottom: 8px;
+    background: #0f172a; border-radius: 8px; border: 1px solid #1e293b;
+  }
+  .release-version {
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 13px; font-weight: 700; color: #38bdf8;
+    min-width: 60px;
+  }
+  .release-info { flex: 1; }
+  .release-title { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+  .release-date { font-size: 11px; color: #475569; margin-top: 2px; }
+  .release-features {
+    font-size: 12px; color: #94a3b8; margin-top: 6px;
+    list-style: none; padding: 0;
+  }
+  .release-features li {
+    padding: 2px 0; padding-left: 14px; position: relative;
+  }
+  .release-features li::before {
+    content: "•"; position: absolute; left: 0;
+    color: #0ea5e9;
+  }
+  .release-link {
+    font-size: 11px; color: #0ea5e9; text-decoration: none;
+    margin-top: 6px; display: inline-block;
+  }
+  .release-link:hover { text-decoration: underline; }
+
+  .empty { text-align: center; padding: 20px; color: #475569; font-size: 13px; }
+
+  .hidden { display: none !important; }
 
   .toast {
-    position: fixed; bottom: 24px; right: 24px;
-    padding: 12px 20px; border-radius: 8px;
-    font-size: 14px; font-weight: 500;
-    animation: slideIn 0.3s ease;
-    z-index: 1000;
+    position: fixed; bottom: 20px; right: 20px;
+    padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 500;
+    animation: slideIn 0.25s ease; z-index: 1000;
   }
-  .toast-success { background: #166534; color: #86efac; }
-  .toast-error { background: #7f1d1d; color: #fca5a5; }
+  .toast-ok { background: #166534; color: #86efac; }
+  .toast-err { background: #7f1d1d; color: #fca5a5; }
   @keyframes slideIn {
-    from { transform: translateY(100px); opacity: 0; }
+    from { transform: translateY(80px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
   }
 
-  .hidden { display: none !important; }
+  /* Chat Widget */
+  .chat-widget {
+    position: fixed; bottom: 20px; right: 20px;
+    width: 380px; max-height: 600px;
+    background: #151e32; border-radius: 16px;
+    border: 1px solid #334155;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    z-index: 999;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .chat-widget.hidden {
+    transform: translateY(20px) scale(0.95);
+    opacity: 0; pointer-events: none;
+  }
+  .chat-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: #0f172a;
+    border-bottom: 1px solid #334155;
+    border-radius: 16px 16px 0 0;
+  }
+  .chat-header h3 {
+    font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chat-header .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4ade80; animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .chat-close {
+    background: none; border: none; color: #64748b;
+    font-size: 20px; cursor: pointer; padding: 0 4px;
+  }
+  .chat-close:hover { color: #e2e8f0; }
+
+  .chat-messages {
+    flex: 1; overflow-y: auto;
+    padding: 16px; min-height: 280px; max-height: 400px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .chat-msg {
+    max-width: 85%; padding: 10px 14px; border-radius: 12px;
+    font-size: 13px; line-height: 1.5;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .chat-msg.user {
+    align-self: flex-end;
+    background: #0ea5e9; color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.bot {
+    align-self: flex-start;
+    background: #1e293b; color: #e2e8f0;
+    border: 1px solid #334155;
+    border-bottom-left-radius: 4px;
+  }
+  .chat-msg.system {
+    align-self: center;
+    background: rgba(180,83,9,0.2); color: #fbbf24;
+    font-size: 11px; padding: 6px 12px;
+  }
+  .chat-msg .msg-time {
+    font-size: 10px; opacity: 0.6; margin-top: 4px;
+  }
+
+  .chat-input-area {
+    display: flex; gap: 8px;
+    padding: 12px 16px 16px;
+    border-top: 1px solid #334155;
+  }
+  .chat-input-area input {
+    flex: 1; padding: 10px 14px; border-radius: 10px;
+    border: 1px solid #334155; background: #0f172a; color: #e2e8f0;
+    font-size: 13px;
+  }
+  .chat-input-area input:focus { outline: none; border-color: #38bdf8; }
+  .chat-input-area input:disabled { opacity: 0.5; }
+
+  .chat-fab {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #0ea5e9; color: white;
+    border: none; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 20px rgba(14,165,233,0.4);
+    z-index: 998; transition: transform 0.2s;
+  }
+  .chat-fab:hover { transform: scale(1.1); }
+  .chat-fab.hidden { display: none; }
+
+  .typing-indicator {
+    display: flex; gap: 4px; padding: 10px 14px;
+  }
+  .typing-indicator span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #64748b; animation: typingBounce 1.4s infinite ease-in-out both;
+  }
+  .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+  .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+  @keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
     <div>
-      <h1>🧬 Evolution Engine Dashboard</h1>
-      <div style="font-size: 13px; color: #64748b; margin-top: 4px;">en-learn · React + Vite</div>
+      <h1>🧬 Evolution Engine · 统一控制台</h1>
+      <div class="subtitle">en-learn + clouth-ai-web 双项目监控</div>
     </div>
-    <div>
-      <span id="statusBadge" class="badge badge-idle">IDLE</span>
-    </div>
+    <div style="font-size:12px;color:#475569;">🔄 自动刷新 5s</div>
   </header>
 
-  <div class="grid">
-    <div class="card">
-      <h2><span class="icon">📊</span> 当前阶段</h2>
-      <div class="value" id="currentStage">—</div>
-      <div class="label" id="stageLabel">等待数据...</div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">🎯</span> 当前 Epic</h2>
-      <div class="value" id="currentEpic">—</div>
-      <div class="label" id="epicLabel">等待数据...</div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">🔄</span> 循环次数</h2>
-      <div class="value" id="cycleCount">—</div>
-      <div class="label">已完成的进化周期</div>
-    </div>
-    <div class="card">
-      <h2><span class="icon">📬</span> 待回复</h2>
-      <div class="value" id="pendingQuestions">—</div>
-      <div class="label">Agent 等待中的问题</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <h2>🎮 快速控制</h2>
-      <div>
-        <button class="btn btn-success" onclick="triggerRun()">▶ 立即触发运行</button>
-        <button class="btn btn-danger" onclick="pauseEngine()">⏸ 暂停进化</button>
+  <div class="projects-grid">
+    <!-- en-learn -->
+    <div class="project-panel" id="panel-en-learn">
+      <div class="project-header">
+        <h2>📚 en-learn <span class="tech">React + Vite</span></h2>
+        <span class="badge badge-idle" id="badge-en-learn">IDLE</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">当前阶段</div>
+          <div class="stat-value" id="stage-en-learn">—</div>
+          <div class="stat-sub" id="stage-sub-en-learn">等待数据</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">当前 Epic</div>
+          <div class="stat-value" id="epic-en-learn">—</div>
+          <div class="stat-sub" id="epic-sub-en-learn">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">循环次数</div>
+          <div class="stat-value" id="cycle-en-learn">—</div>
+          <div class="stat-sub">已完成周期</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">待回复</div>
+          <div class="stat-value" id="pending-en-learn">—</div>
+          <div class="stat-sub">Agent 问题</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-success btn-sm" onclick="trigger('en-learn')">▶ 触发运行</button>
+        <button class="btn btn-danger btn-sm" onclick="pause('en-learn')">⏸ 暂停</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleForm('en-learn')">+ 指令</button>
+      </div>
+      <div class="section">
+        <div id="form-en-learn" class="card hidden" style="padding:14px;margin-bottom:12px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;">添加战略指令</div>
+          <div class="form-group">
+            <label>类型</label>
+            <select id="type-en-learn">
+              <option value="skip_to_epic">跳到 Epic</option>
+              <option value="priority_change">调整优先级</option>
+              <option value="insert_epic">插入 Epic</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>目标</label>
+            <input type="text" id="target-en-learn" placeholder="epic-003">
+          </div>
+          <div class="form-group">
+            <label>动作描述</label>
+            <textarea id="action-en-learn" rows="2" placeholder="具体做什么..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>原因</label>
+            <input type="text" id="reason-en-learn" placeholder="为什么调整...">
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="addDir('en-learn')">添加</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleForm('en-learn')">取消</button>
+          </div>
+        </div>
+        <div class="section-title">🎯 战略指令</div>
+        <div id="dirs-en-learn"><div class="empty">暂无指令</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">🔄 双向沟通</div>
+        <div id="inbox-en-learn"><div class="empty">暂无问题</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">📦 发布历史</div>
+        <div id="releases-en-learn"><div class="empty">加载中...</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">📝 日志</div>
+        <div class="card"><div class="log-box" id="log-en-learn">加载中...</div></div>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-header">
-      <h2>🎯 战略指令 (Directives)</h2>
-      <button class="btn btn-primary" onclick="toggleDirectiveForm()">+ 新增指令</button>
-    </div>
-
-    <div id="directiveForm" class="card hidden" style="margin-bottom: 16px;">
-      <h2 style="margin-bottom: 16px;">添加战略指令</h2>
-      <div class="form-group">
-        <label>指令类型</label>
-        <select id="dirType">
-          <option value="skip_to_epic">跳过到指定 Epic</option>
-          <option value="priority_change">调整优先级</option>
-          <option value="insert_epic">插入新 Epic</option>
-          <option value="pause">暂停系统</option>
-          <option value="custom">自定义指令</option>
-        </select>
+    <!-- clouth-ai-web -->
+    <div class="project-panel" id="panel-clouth-ai-web">
+      <div class="project-header">
+        <h2>👗 clouth-ai-web <span class="tech">Vue + Node.js</span></h2>
+        <span class="badge badge-idle" id="badge-clouth-ai-web">IDLE</span>
       </div>
-      <div class="form-group">
-        <label>目标 (Epic ID 或其他)</label>
-        <input type="text" id="dirTarget" placeholder="例如: epic-003">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">当前阶段</div>
+          <div class="stat-value" id="stage-clouth-ai-web">—</div>
+          <div class="stat-sub" id="stage-sub-clouth-ai-web">等待数据</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">当前 Epic</div>
+          <div class="stat-value" id="epic-clouth-ai-web">—</div>
+          <div class="stat-sub" id="epic-sub-clouth-ai-web">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">循环次数</div>
+          <div class="stat-value" id="cycle-clouth-ai-web">—</div>
+          <div class="stat-sub">已完成周期</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">待回复</div>
+          <div class="stat-value" id="pending-clouth-ai-web">—</div>
+          <div class="stat-sub">Agent 问题</div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>动作描述</label>
-        <textarea id="dirAction" rows="2" placeholder="具体要做什么..."></textarea>
+      <div class="controls">
+        <button class="btn btn-success btn-sm" onclick="trigger('clouth-ai-web')">▶ 触发运行</button>
+        <button class="btn btn-danger btn-sm" onclick="pause('clouth-ai-web')">⏸ 暂停</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleForm('clouth-ai-web')">+ 指令</button>
       </div>
-      <div class="form-group">
-        <label>原因</label>
-        <input type="text" id="dirReason" placeholder="为什么要做这个调整...">
+      <div class="section">
+        <div id="form-clouth-ai-web" class="card hidden" style="padding:14px;margin-bottom:12px;">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;">添加战略指令</div>
+          <div class="form-group">
+            <label>类型</label>
+            <select id="type-clouth-ai-web">
+              <option value="skip_to_epic">跳到 Epic</option>
+              <option value="priority_change">调整优先级</option>
+              <option value="insert_epic">插入 Epic</option>
+              <option value="custom">自定义</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>目标</label>
+            <input type="text" id="target-clouth-ai-web" placeholder="epic-095">
+          </div>
+          <div class="form-group">
+            <label>动作描述</label>
+            <textarea id="action-clouth-ai-web" rows="2" placeholder="具体做什么..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>原因</label>
+            <input type="text" id="reason-clouth-ai-web" placeholder="为什么调整...">
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="addDir('clouth-ai-web')">添加</button>
+            <button class="btn btn-ghost btn-sm" onclick="toggleForm('clouth-ai-web')">取消</button>
+          </div>
+        </div>
+        <div class="section-title">🎯 战略指令</div>
+        <div id="dirs-clouth-ai-web"><div class="empty">暂无指令</div></div>
       </div>
-      <div>
-        <button class="btn btn-primary" onclick="addDirective()">确认添加</button>
-        <button class="btn" onclick="toggleDirectiveForm()" style="background: #334155; color: #e2e8f0; margin-left: 8px;">取消</button>
+      <div class="section">
+        <div class="section-title">🔄 双向沟通</div>
+        <div id="inbox-clouth-ai-web"><div class="empty">暂无问题</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">📝 日志</div>
+        <div class="card"><div class="log-box" id="log-clouth-ai-web">加载中...</div></div>
       </div>
     </div>
-
-    <div id="directivesList">
-      <div class="empty-state">暂无待执行的战略指令</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <h2>🔄 双向沟通 (Inbox)</h2>
-    </div>
-    <div id="inboxList">
-      <div class="empty-state">暂无待回复的问题</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <h2>📝 最近日志</h2>
-    </div>
-    <div class="log-box" id="logBox">加载中...</div>
   </div>
 </div>
 
 <script>
 const API = '';
+const PROJECTS = ['en-learn', 'clouth-ai-web'];
 
-async function fetchState() {
-  try {
-    const res = await fetch(API + '/api/state');
-    return await res.json();
-  } catch (e) {
-    return null;
-  }
+async function fetchState(p) {
+  try { const r = await fetch(`${API}/api/${p}/state`); return await r.json(); }
+  catch { return null; }
+}
+async function fetchDirs(p) {
+  try { const r = await fetch(`${API}/api/${p}/directives`); return await r.json(); }
+  catch { return { pending: [] }; }
+}
+async function fetchInbox(p) {
+  try { const r = await fetch(`${API}/api/${p}/inbox`); return await r.json(); }
+  catch { return { questions: [] }; }
+}
+async function fetchLog(p) {
+  try { const r = await fetch(`${API}/api/${p}/log`); const d = await r.json(); return d.log; }
+  catch { return '无法读取'; }
 }
 
-async function fetchDirectives() {
-  try {
-    const res = await fetch(API + '/api/directives');
-    return await res.json();
-  } catch (e) {
-    return { pending: [], history: [] };
-  }
+async function fetchReleases(p) {
+  try { const r = await fetch(`${API}/api/${p}/releases`); return await r.json(); }
+  catch { return { releases: [] }; }
 }
 
-async function fetchInbox() {
-  try {
-    const res = await fetch(API + '/api/inbox');
-    return await res.json();
-  } catch (e) {
-    return { questions: [] };
+function renderReleases(p, releases) {
+  const list = document.getElementById(`releases-${p}`);
+  const items = releases?.releases || [];
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty">暂无发布记录</div>';
+    return;
   }
+  list.innerHTML = items.slice(0, 10).map(r => `
+    <div class="release-item">
+      <div class="release-version">${r.version}</div>
+      <div class="release-info">
+        <div class="release-title">${r.title}</div>
+        <div class="release-date">${new Date(r.date).toLocaleString()} · ${r.iterationId} · ${r.commit?.slice(0,7) || ''}</div>
+        <ul class="release-features">${(r.features || []).map(f => `<li>${f}</li>`).join('')}</ul>
+        ${r.deployUrl ? `<a class="release-link" href="${r.deployUrl}" target="_blank">→ 查看部署</a>` : ''}
+      </div>
+    </div>
+  `).join('');
 }
-
-async function fetchLog() {
-  try {
-    const res = await fetch('/.claude/evolution/log.txt');
-    return await res.text();
-  } catch (e) {
-    return '无法读取日志';
-  }
-}
-
-function renderState(state) {
-  if (!state) return;
-
-  const status = state.status || 'IDLE';
-  const badge = document.getElementById('statusBadge');
+  const status = state?.status || 'IDLE';
+  const badge = document.getElementById(`badge-${p}`);
   badge.textContent = status;
-  badge.className = 'badge ' + (status === 'IDLE' || status === 'null' ? 'badge-idle' : status === 'AWAITING_INPUT' ? 'badge-waiting' : 'badge-running');
+  badge.className = 'badge ' + (status === 'IDLE' || status === 'null' ? 'badge-idle' : status === 'AWAITING_INPUT' ? 'badge-wait' : 'badge-run');
 
-  document.getElementById('currentStage').textContent = status;
-  document.getElementById('stageLabel').textContent = status === 'AWAITING_INPUT' ? '等待人类回复 ⏳' : '运行中';
+  document.getElementById(`stage-${p}`).textContent = status;
+  document.getElementById(`stage-sub-${p}`).textContent = status === 'AWAITING_INPUT' ? '等待回复 ⏳' : '运行中';
 
-  const epic = state.currentEpic;
-  document.getElementById('currentEpic').textContent = epic ? epic.id : '—';
-  document.getElementById('epicLabel').textContent = epic ? epic.title : '暂无活跃 Epic';
+  const epic = state?.currentEpic;
+  document.getElementById(`epic-${p}`).textContent = epic ? epic.id : '—';
+  document.getElementById(`epic-sub-${p}`).textContent = epic ? (epic.title || '').slice(0, 20) : '暂无';
 
-  document.getElementById('cycleCount').textContent = state.cycleCount || 0;
-  document.getElementById('pendingQuestions').textContent = (state.pendingQuestions || []).filter(q => q.blocking && !q.answer).length;
-}
+  document.getElementById(`cycle-${p}`).textContent = state?.cycleCount ?? '—';
+  document.getElementById(`pending-${p}`).textContent = (state?.pendingQuestions || []).filter(q => q.blocking && !q.answer).length;
 
-function renderDirectives(directives) {
-  const list = document.getElementById('directivesList');
-  const pending = directives.pending || [];
+  // Directives
+  const dList = document.getElementById(`dirs-${p}`);
+  const pending = dirs?.pending || [];
   if (pending.length === 0) {
-    list.innerHTML = '<div class="empty-state">暂无待执行的战略指令</div>';
-    return;
-  }
-  list.innerHTML = pending.map(d => `
-    <div class="directive-item">
-      <div class="info">
-        <div class="type">${d.type}</div>
-        <div class="action">${d.action}</div>
-        <div class="meta">Target: ${d.target || 'N/A'} · ${d.reason || '无原因'} · ${new Date(d.createdAt).toLocaleString()}</div>
+    dList.innerHTML = '<div class="empty">暂无指令</div>';
+  } else {
+    dList.innerHTML = pending.map(d => `
+      <div class="directive-item">
+        <div style="flex:1">
+          <span class="dir-type">${d.type}</span>
+          <div class="dir-action">${d.action}</div>
+          <div class="dir-meta">${d.target || '无目标'} · ${d.reason || '无理由'} · ${new Date(d.createdAt).toLocaleString()}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="delDir('${p}', '${d.id}')">删除</button>
       </div>
-      <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px;" onclick="deleteDirective('${d.id}')">删除</button>
-    </div>
-  `).join('');
-}
+    `).join('');
+  }
 
-function renderInbox(inbox) {
-  const list = document.getElementById('inboxList');
-  const questions = inbox.questions || [];
-  const blocking = questions.filter(q => q.blocking && !q.answer);
+  // Inbox
+  const iList = document.getElementById(`inbox-${p}`);
+  const blocking = (inbox?.questions || []).filter(q => q.blocking && !q.answer);
   if (blocking.length === 0) {
-    list.innerHTML = '<div class="empty-state">暂无待回复的问题</div>';
-    return;
+    iList.innerHTML = '<div class="empty">暂无问题</div>';
+  } else {
+    iList.innerHTML = blocking.map(q => `
+      <div class="question-item">
+        <div class="q-header">
+          <span class="q-id">${q.stage} · ${q.id}</span>
+          <span class="badge badge-wait">阻塞</span>
+        </div>
+        <div class="q-text">${q.question}</div>
+        <div class="q-ctx">${q.context || ''}</div>
+        <div class="q-reply">
+          <input type="text" id="reply-${p}-${q.id}" placeholder="输入回复...">
+          <button class="btn btn-primary btn-sm" onclick="reply('${p}', '${q.id}')">回复</button>
+        </div>
+      </div>
+    `).join('');
   }
-  list.innerHTML = blocking.map(q => `
-    <div class="question-item">
-      <div class="q-header">
-        <span class="type">${q.stage} · ${q.id}</span>
-        <span class="badge badge-waiting">阻塞中</span>
-      </div>
-      <div class="q-text">${q.question}</div>
-      <div class="q-context">${q.context || ''}</div>
-      <div class="q-reply">
-        <input type="text" id="reply-${q.id}" placeholder="输入你的回复...">
-        <button class="btn btn-primary" style="font-size: 12px;" onclick="replyQuestion('${q.id}')">回复</button>
-      </div>
-    </div>
-  `).join('');
+
+  // Log
+  document.getElementById(`log-${p}`).textContent = log ? log.trim().split('\n').slice(-15).join('\n') : '暂无日志';
 }
 
-function toggleDirectiveForm() {
-  document.getElementById('directiveForm').classList.toggle('hidden');
+function toggleForm(p) {
+  document.getElementById(`form-${p}`).classList.toggle('hidden');
 }
 
-async function addDirective() {
+async function addDir(p) {
   const body = {
-    type: document.getElementById('dirType').value,
-    target: document.getElementById('dirTarget').value || null,
-    action: document.getElementById('dirAction').value,
-    reason: document.getElementById('dirReason').value,
+    type: document.getElementById(`type-${p}`).value,
+    target: document.getElementById(`target-${p}`).value || null,
+    action: document.getElementById(`action-${p}`).value,
+    reason: document.getElementById(`reason-${p}`).value,
   };
   try {
-    const res = await fetch(API + '/api/directives', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
+    const r = await fetch(`${API}/api/${p}/directives`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
-    const data = await res.json();
-    if (data.success) {
-      showToast('指令已添加', 'success');
-      toggleDirectiveForm();
-      refresh();
-    } else {
-      showToast(data.error || '添加失败', 'error');
-    }
-  } catch (e) {
-    showToast('网络错误', 'error');
-  }
+    const d = await r.json();
+    if (d.success) { toast('指令已添加', 'ok'); toggleForm(p); refresh(); }
+    else toast(d.error || '失败', 'err');
+  } catch { toast('网络错误', 'err'); }
 }
 
-async function deleteDirective(id) {
-  if (!confirm('确认删除此指令？')) return;
+async function delDir(p, id) {
+  if (!confirm('确认删除？')) return;
   try {
-    const res = await fetch(API + '/api/directives/' + id, { method: 'DELETE' });
-    const data = await res.json();
-    if (data.success) {
-      showToast('指令已删除', 'success');
-      refresh();
-    }
-  } catch (e) {
-    showToast('删除失败', 'error');
-  }
+    const r = await fetch(`${API}/api/${p}/directives/${id}`, { method: 'DELETE' });
+    const d = await r.json();
+    if (d.success) { toast('已删除', 'ok'); refresh(); }
+  } catch { toast('删除失败', 'err'); }
 }
 
-async function replyQuestion(id) {
-  const answer = document.getElementById('reply-' + id).value;
+async function reply(p, id) {
+  const answer = document.getElementById(`reply-${p}-${id}`).value;
   if (!answer.trim()) return;
   try {
-    const res = await fetch(API + '/api/inbox', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ questionId: id, answer }),
+    const r = await fetch(`${API}/api/${p}/inbox`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questionId: id, answer })
     });
-    const data = await res.json();
-    if (data.success) {
-      showToast('回复已发送', 'success');
-      refresh();
-    }
-  } catch (e) {
-    showToast('发送失败', 'error');
-  }
+    const d = await r.json();
+    if (d.success) { toast('回复已发送', 'ok'); refresh(); }
+  } catch { toast('发送失败', 'err'); }
 }
 
-async function triggerRun() {
+async function trigger(p) {
   try {
-    const res = await fetch(API + '/api/control/trigger', { method: 'POST' });
-    const data = await res.json();
-    if (data.success) {
-      showToast('已触发运行', 'success');
-    } else {
-      showToast(data.error || '触发失败', 'error');
-    }
-  } catch (e) {
-    showToast('网络错误', 'error');
-  }
+    const r = await fetch(`${API}/api/${p}/control/trigger`, { method: 'POST' });
+    const d = await r.json();
+    if (d.success) toast('已触发运行', 'ok');
+    else toast(d.error || '失败', 'err');
+  } catch { toast('网络错误', 'err'); }
 }
 
-async function pauseEngine() {
+async function pause(p) {
   try {
-    const res = await fetch(API + '/api/control/pause', { method: 'POST' });
-    const data = await res.json();
-    if (data.success) {
-      showToast('已暂停', 'success');
-      refresh();
-    }
-  } catch (e) {
-    showToast('暂停失败', 'error');
-  }
+    const r = await fetch(`${API}/api/${p}/control/pause`, { method: 'POST' });
+    const d = await r.json();
+    if (d.success) { toast('已暂停', 'ok'); refresh(); }
+  } catch { toast('暂停失败', 'err'); }
 }
 
-function showToast(msg, type) {
-  const toast = document.createElement('div');
-  toast.className = 'toast toast-' + type;
-  toast.textContent = msg;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+function toast(msg, type) {
+  const t = document.createElement('div');
+  t.className = 'toast toast-' + (type === 'ok' ? 'ok' : 'err');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
 }
 
 async function refresh() {
-  const [state, directives, inbox] = await Promise.all([
-    fetchState(), fetchDirectives(), fetchInbox()
-  ]);
-  renderState(state);
-  renderDirectives(directives);
-  renderInbox(inbox);
-
-  // Try to read log via fetch (may fail due to CORS/path, that's ok)
-  fetch('.claude/evolution/log.txt')
-    .then(r => r.text())
-    .then(text => {
-      const lines = text.trim().split('\n').slice(-20).join('\n');
-      document.getElementById('logBox').textContent = lines || '暂无日志';
-    })
-    .catch(() => {
-      document.getElementById('logBox').textContent = '日志文件路径受限，请直接在项目目录查看 .claude/evolution/log.txt';
-    });
+  for (const p of PROJECTS) {
+    const [state, dirs, inbox, log, releases] = await Promise.all([
+      fetchState(p), fetchDirs(p), fetchInbox(p), fetchLog(p), fetchReleases(p)
+    ]);
+    renderProject(p, state, dirs, inbox, log);
+    renderReleases(p, releases);
+  }
 }
+
+// ─── Chat ──────────────────────────────────────────
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+
+function toggleChat() {
+  document.getElementById('chatWidget').classList.toggle('hidden');
+  document.getElementById('chatFab').classList.toggle('hidden');
+}
+
+function appendMsg(text, sender) {
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + sender;
+  if (sender === 'system') {
+    div.textContent = text;
+  } else {
+    div.innerHTML = text + `<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
+  }
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTyping() {
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.id = id; div.className = 'chat-msg bot';
+  div.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+async function sendChat() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = '';
+  appendMsg(text, 'user');
+
+  const tId = showTyping();
+  chatInput.disabled = true;
+
+  try {
+    const r = await fetch(API + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+    });
+    const d = await r.json();
+    removeTyping(tId);
+
+    if (d.error) {
+      appendMsg('抱歉，调用失败：' + d.reply, 'bot');
+    } else {
+      appendMsg(d.reply, 'bot');
+      if (d.executed && d.executed.length > 0) {
+        const actions = d.executed.map(a => `✅ ${a.type} (${a.project})`).join(' · ');
+        appendMsg(actions, 'system');
+        refresh(); // Refresh dashboard state
+      }
+    }
+  } catch (e) {
+    removeTyping(tId);
+    appendMsg('网络错误，请重试', 'bot');
+  } finally {
+    chatInput.disabled = false;
+    chatInput.focus();
+  }
+}
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+});
+
+appendMsg('你好，我是 Evolution Engine 秘书。你可以问我状态、下达指令，或者让我帮你调整战略。', 'bot');
 
 refresh();
 setInterval(refresh, 5000);
 </script>
+
+<!-- Chat Widget -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">💬</button>
+<div class="chat-widget hidden" id="chatWidget">
+  <div class="chat-header">
+    <h3><span class="status-dot"></span> 秘书 · Evolution Engine</h3>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="输入消息..." autocomplete="off">
+    <button class="btn btn-primary" onclick="sendChat()">发送</button>
+  </div>
+</div>
 </body>
 </html>

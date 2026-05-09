@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-3)
+- **迭代**: iter-004「数据导入导出」
+- **技术决策**:
+  - localStorage 4-key 架构（session/mistakes/history）保持不变，export 为运行时聚合不产生新 key
+  - ExportData schema 版本化为 1，预留未来扩展空间
+  - isValidExportData 采用递归校验策略，逐层验证 session（null 或 V2）、mistakes（isValidMistake）、history（isValidHistory）
+  - DataManager 组件纯前端实现，无外部依赖，blob 下载兼容现代浏览器
+  - App.tsx 视图切换扩展至 4 个视图（practice/mistake-book/history/data），导航结构仍清晰
+- **质量门禁通过**: lint 0 errors, build passed, 159/159 unit tests passed
+- **观察**: 数据导入导出是数据层的「出口」能力，与之前的「入口」（会话恢复、错题捕获、历史记录）形成完整闭环。递归校验模式可为后续自定义数据导入提供复用基础
+
 ### 2026-05-09 (cycle-2026-05-09-2)
 - **迭代**: iter-002「错题本 MVP」+ iter-003「学习历史记录」
 - **技术决策**:

@@ -54,7 +54,7 @@ describe('useSpeech', () => {
     const utterance = mockSpeak.mock.calls[0][0] as SpeechSynthesisUtterance;
     expect(utterance.text).toBe('Hello world');
     expect(utterance.lang).toBe('en-US');
-    expect(utterance.rate).toBe(0.9);
+    expect(utterance.rate).toBe(1.0);
     expect(utterance.pitch).toBe(1);
   });
 

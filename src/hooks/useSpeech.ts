@@ -2,9 +2,10 @@ import { useCallback, useRef, useState } from 'react';
 
 export function useSpeech() {
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1.0);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  const speak = useCallback((text: string, rate: number = 0.9) => {
+  const speak = useCallback((text: string, rate?: number) => {
     if (!window.speechSynthesis) {
       console.warn('Speech synthesis not supported');
       return;
@@ -15,7 +16,7 @@ export function useSpeech() {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
-    utterance.rate = rate;
+    utterance.rate = rate ?? playbackRate;
     utterance.pitch = 1;
 
     // Try to use a good English voice
@@ -23,7 +24,7 @@ export function useSpeech() {
     const englishVoice = voices.find(
       v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel'))
     ) || voices.find(v => v.lang.startsWith('en'));
-    
+
     if (englishVoice) {
       utterance.voice = englishVoice;
     }
@@ -34,12 +35,12 @@ export function useSpeech() {
 
     utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
-  }, []);
+  }, [playbackRate]);
 
   const stop = useCallback(() => {
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
   }, []);
 
-  return { speak, stop, isSpeaking };
+  return { speak, stop, isSpeaking, playbackRate, setPlaybackRate };
 }

@@ -4,7 +4,10 @@ import { Volume2, CheckCircle2, XCircle, Lightbulb, ArrowRight, RotateCcw } from
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { Sentence, PracticeMode } from '@/data/types';
+
+const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
 interface PracticeCardProps {
   sentence: Sentence;
@@ -16,6 +19,8 @@ interface PracticeCardProps {
   currentQuestion?: number;
   totalQuestions?: number;
   mode?: PracticeMode;
+  playbackRate?: number;
+  onSpeedChange?: (rate: number) => void;
   onInputChange: (index: number, value: string) => void;
   onCheck: () => void;
   onNext: () => void;
@@ -33,6 +38,8 @@ export function PracticeCard({
   currentQuestion,
   totalQuestions,
   mode = 'fill-in-blanks',
+  playbackRate = 1.0,
+  onSpeedChange,
   onInputChange,
   onCheck,
   onNext,
@@ -198,16 +205,41 @@ export function PracticeCard({
               </Badge>
             )}
           </div>
-          <Button
-            variant={isDictation && !showResult ? 'default' : 'outline'}
-            size={isDictation && !showResult ? 'default' : 'sm'}
-            onClick={onSpeak}
-            disabled={isSpeaking}
-            className={`gap-2 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
-          >
-            <Volume2 className={`${isDictation && !showResult ? 'w-5 h-5' : 'w-4 h-4'} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
-            {isSpeaking ? '播放中...' : '播放音频'}
-          </Button>
+          <div className="flex items-center gap-2">
+            {onSpeedChange && (
+              <ToggleGroup
+                type="single"
+                value={String(playbackRate)}
+                onValueChange={(value) => {
+                  if (value) onSpeedChange(Number(value));
+                }}
+                variant="outline"
+                spacing={0}
+                className="h-8"
+              >
+                {SPEEDS.map((speed) => (
+                  <ToggleGroupItem
+                    key={speed}
+                    value={String(speed)}
+                    aria-label={`${speed}x`}
+                    className="text-xs px-2 h-7"
+                  >
+                    {speed}x
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            )}
+            <Button
+              variant={isDictation && !showResult ? 'default' : 'outline'}
+              size={isDictation && !showResult ? 'default' : 'sm'}
+              onClick={onSpeak}
+              disabled={isSpeaking}
+              className={`gap-2 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
+            >
+              <Volume2 className={`${isDictation && !showResult ? 'w-5 h-5' : 'w-4 h-4'} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
+              {isSpeaking ? '播放中...' : '播放音频'}
+            </Button>
+          </div>
         </div>
 
         {/* Content */}

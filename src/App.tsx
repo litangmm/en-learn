@@ -60,7 +60,7 @@ function App() {
     error,
   } = usePractice(dictionaryId, practiceSentenceIds);
 
-  const { speak, isSpeaking } = useSpeech();
+  const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -74,7 +74,7 @@ function App() {
     if (currentSentence && !state.showResult && !state.isComplete) {
       const delay = practiceMode === 'dictation' ? 300 : 800;
       const timer = setTimeout(() => {
-        speak(currentSentence.english, 0.85);
+        speak(currentSentence.english);
       }, delay);
       return () => clearTimeout(timer);
     }
@@ -466,6 +466,8 @@ function App() {
                     currentQuestion={currentQuestion}
                     totalQuestions={totalQuestions}
                     mode={practiceMode}
+                    playbackRate={playbackRate}
+                    onSpeedChange={setPlaybackRate}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

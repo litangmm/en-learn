@@ -217,7 +217,7 @@ export function PracticeCard({
             disabled={showResult && isCorrect}
             placeholder={`${idx + 1}`}
             className={`
-              inline-block w-28 md:w-32 text-center font-medium
+              inline-block min-w-[60px] max-w-[120px] md:w-32 text-center font-medium
               h-11 md:h-10
               transition-all duration-300 border-2
               ${hasSuccess
@@ -280,7 +280,7 @@ export function PracticeCard({
                     disabled={showResult && isCorrect}
                     placeholder={`${idx + 1}`}
                     className={`
-                      inline-block w-28 md:w-32 text-center font-medium
+                      inline-block min-w-[60px] max-w-[120px] md:w-32 text-center font-medium
                       h-11 md:h-10
                       transition-all duration-300 border-2
                       ${hasSuccess
@@ -368,12 +368,12 @@ export function PracticeCard({
             )}
             <Button
               variant={isDictation && !showResult ? 'default' : 'outline'}
-              size={isDictation && !showResult ? 'default' : 'sm'}
+              size="sm"
               onClick={onSpeak}
               disabled={isSpeaking}
-              className={`gap-2 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
+              className={`gap-2 h-8 md:h-10 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
             >
-              <Volume2 className={`${isDictation && !showResult ? 'w-5 h-5' : 'w-4 h-4'} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
+              <Volume2 className={`w-4 h-4 ${isDictation && !showResult ? 'md:w-5 md:h-5' : ''} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
               {isSpeaking ? '播放中...' : '播放音频'}
             </Button>
           </div>
@@ -412,7 +412,7 @@ export function PracticeCard({
           )}
 
           {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options / Sentence Reorder */}
-          <div className={`${isMultipleChoice || isSentenceReorder ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
+          <div className={`${isMultipleChoice || isSentenceReorder ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : 'overflow-x-auto'}`}`}>
             {isMultipleChoice
               ? renderChoiceOptions()
               : isSentenceReorder

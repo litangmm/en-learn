@@ -199,4 +199,50 @@ describe('App responsive layout', () => {
     expect(main).toHaveClass('pb-20');
     expect(main).toHaveClass('md:pb-0');
   });
+
+  it('header score area has flex-wrap to prevent overflow on narrow screens', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const header = container.querySelector('header');
+    const flexWrapElements = header?.querySelectorAll('.flex-wrap');
+    expect(flexWrapElements && flexWrapElements.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('title uses text-base on mobile with md:text-lg for desktop', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const title = container.querySelector('h1');
+    expect(title).toHaveClass('text-base');
+    expect(title).toHaveClass('md:text-lg');
+  });
+
+  it('ToggleGroup is wrapped in overflow-x-auto container on mobile', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const toggleGroup = container.querySelector('[role="group"]');
+    expect(toggleGroup).toBeInTheDocument();
+    const parent = toggleGroup?.parentElement;
+    expect(parent).toHaveClass('overflow-x-auto');
+  });
+
+  it('PracticeCard inputs have responsive width classes', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const inputs = container.querySelectorAll('input[type="text"]');
+    expect(inputs.length).toBeGreaterThan(0);
+    inputs.forEach((input) => {
+      expect(input).toHaveClass('min-w-[60px]');
+      expect(input).toHaveClass('max-w-[120px]');
+      expect(input).toHaveClass('md:w-32');
+    });
+  });
+
+  it('audio button has responsive height classes', () => {
+    isMobileMock = true;
+    render(<App />);
+    const audioButton = screen.getByText('播放音频').closest('button');
+    expect(audioButton).toBeTruthy();
+    expect(audioButton).toHaveClass('h-8');
+    expect(audioButton).toHaveClass('md:h-10');
+  });
 });

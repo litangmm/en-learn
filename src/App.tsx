@@ -448,13 +448,13 @@ function App() {
               <Headphones className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-slate-800 text-lg leading-tight">听力词汇练习</h1>
+              <h1 className="font-bold text-slate-800 text-base md:text-lg leading-tight">听力词汇练习</h1>
               <p className="text-xs text-slate-500">听句子，填单词</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             {!state.isComplete && view === 'practice' && (
-              <div className="flex items-center gap-3 mr-2">
+              <div className="flex items-center gap-3 mr-2 flex-wrap">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
                 <StreakFeedback streak={streak} />
                 <Button
@@ -577,7 +577,7 @@ function App() {
                 className="relative text-slate-500 gap-2"
               >
                 <Trophy className="w-4 h-4" />
-                每日挑战
+                <span className="hidden lg:inline">每日挑战</span>
                 {unclaimedCount > 0 && (
                   <Badge
                     variant="destructive"
@@ -594,7 +594,7 @@ function App() {
                 className="relative text-slate-500 gap-2"
               >
                 <Award className="w-4 h-4" />
-                成就
+                <span className="hidden lg:inline">成就</span>
                 {unlockedCount > 0 && (
                   <Badge
                     variant="secondary"
@@ -748,29 +748,32 @@ function App() {
                 </div>
               )}
               {!isFocusMode && (
-                <div className="flex justify-center items-center gap-3 mb-6">
-                  <ToggleGroup
-                    type="single"
-                    value={practiceMode}
-                    onValueChange={(value) => {
-                      if (value) handleModeChange(value as PracticeMode);
-                    }}
-                    variant="outline"
-                    spacing={0}
-                  >
-                    <ToggleGroupItem value="fill-in-blanks" aria-label="填空模式">
-                      填空模式
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="dictation" aria-label="听写模式">
-                      听写模式
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
-                      选择题模式
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="sentence-reorder" aria-label="连词成句">
-                      连词成句
-                    </ToggleGroupItem>
-                  </ToggleGroup>
+                <div className="flex flex-col md:flex-row justify-center items-center gap-3 mb-6">
+                  <div className="w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+                    <ToggleGroup
+                      type="single"
+                      value={practiceMode}
+                      onValueChange={(value) => {
+                        if (value) handleModeChange(value as PracticeMode);
+                      }}
+                      variant="outline"
+                      spacing={0}
+                      className="w-max md:w-auto"
+                    >
+                      <ToggleGroupItem value="fill-in-blanks" aria-label="填空模式">
+                        填空模式
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="dictation" aria-label="听写模式">
+                        听写模式
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
+                        选择题模式
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="sentence-reorder" aria-label="连词成句">
+                        连词成句
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </div>
                   <Button
                     variant="outline"
                     size="sm"

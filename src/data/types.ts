@@ -117,3 +117,17 @@ export interface BadgeState {
   unlocked: UnlockedBadge[];
   progress: BadgeProgress;
 }
+
+export type LeaderboardCategory = 'score' | 'accuracy' | 'speed';
+
+export type LeaderboardTimeFilter = 'today' | 'week' | 'all';
+
+export interface LeaderboardEntry {
+  rank: number;
+  sessionId: string;
+  dictionaryName: string;
+  score: number;
+  accuracy: number;
+  speed: number; // points per minute, rounded to 1 decimal
+  timestamp: number;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy, Award } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy, Award, TrendingUp } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -21,13 +21,15 @@ import { XPGainPopup } from '@/components/XPGainPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
+import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { DailyChallengePanel } from '@/components/DailyChallengePanel';
 import { BadgePanel } from '@/components/BadgePanel';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
+import { Leaderboard } from '@/components/Leaderboard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { PracticeMode, BadgeDefinition } from '@/data/types';
+import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -40,7 +42,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges' | 'leaderboard';
 
 function App() {
   const isMobile = useIsMobile();
@@ -58,6 +60,8 @@ function App() {
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
   const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
+  const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
+  const [leaderboardTimeFilter, setLeaderboardTimeFilter] = useState<LeaderboardTimeFilter>('today');
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -87,6 +91,7 @@ function App() {
   const { profile, addXP, streak, recordCorrectAnswer, recordWrongAnswer, resetStreak } = useXP();
   const { state: challengeState, unclaimedCount, trackActivity, claimReward } = useDailyChallenges();
   const { unlockedIds, unlockedCount, trackProgress, checkBadges, getBadgeProgressPercent } = useBadges();
+  const { getLeaderboardEntries } = useLeaderboard();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -350,6 +355,14 @@ function App() {
     setView('practice');
   };
 
+  const handleOpenLeaderboard = () => {
+    setView('leaderboard');
+  };
+
+  const handleBackFromLeaderboard = () => {
+    setView('practice');
+  };
+
   const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
@@ -384,6 +397,9 @@ function App() {
         break;
       case 'badges':
         setView('badges');
+        break;
+      case 'leaderboard':
+        setView('leaderboard');
         break;
     }
   };
@@ -474,6 +490,15 @@ function App() {
                       {unlockedCount}
                     </Badge>
                   )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleOpenLeaderboard}
+                  className="relative text-slate-500 gap-1 p-1"
+                  data-testid="leaderboard-header-button"
+                >
+                  <TrendingUp className="w-4 h-4" />
                 </Button>
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
@@ -578,6 +603,16 @@ function App() {
                     {unlockedCount}
                   </Badge>
                 )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenLeaderboard}
+                className="text-slate-500 gap-2"
+                data-testid="leaderboard-nav-button"
+              >
+                <TrendingUp className="w-4 h-4" />
+                排行
               </Button>
               {view === 'practice' && (
                 <>
@@ -686,6 +721,15 @@ function App() {
           unlockedIds={unlockedIds}
           getProgress={getBadgeProgressPercent}
           onBack={handleBackFromBadges}
+        />
+      ) : view === 'leaderboard' ? (
+        <Leaderboard
+          entries={getLeaderboardEntries(leaderboardCategory, leaderboardTimeFilter)}
+          category={leaderboardCategory}
+          timeFilter={leaderboardTimeFilter}
+          onCategoryChange={setLeaderboardCategory}
+          onTimeFilterChange={setLeaderboardTimeFilter}
+          onBack={handleBackFromLeaderboard}
         />
       ) : (
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>

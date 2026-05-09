@@ -1,48 +1,56 @@
 {
   "version": "1.0",
-  "status": "REPORT",
-  "commitHash": "a276d6946f15e56ef89ad0b9f97e978700885445",
-  "lastRun": "2026-05-10T12:02:43.000Z",
-  "cycleCount": 20,
+  "status": "TEST",
+  "commitHash": "a54ed6f",
+  "lastRun": "2026-05-10T06:14:00.000Z",
+  "cycleCount": 24,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
+    "id": "2026-05-10-21",
+    "mode": "vision",
+    "stage": "TEST",
+    "startedAt": "2026-05-10T06:14:00.000Z",
+    "plan": {
+      "iterationId": "iter-005",
+      "iterationTitle": "学习排行榜（本地）",
+      "scope": "frontend-only",
+      "steps": [
+        "Step 1: Add LeaderboardCategory, LeaderboardTimeFilter, LeaderboardEntry types in src/data/types.ts",
+        "Step 2: Create src/hooks/useLeaderboard.ts with getLeaderboardEntries(category, timeFilter) deriving ranked entries from session history",
+        "Step 3: Create src/components/Leaderboard.tsx with category tabs (总分榜/准确率榜/速通榜), time filter tabs (今日/本周/全部), ranked list with top-3 medal styling, empty state, and back navigation",
+        "Step 4: Update src/App.tsx — add 'leaderboard' to View type, import useLeaderboard and Leaderboard, add TrendingUp nav button, handleOpenLeaderboard/handleBackFromLeaderboard handlers, leaderboard case in handleNavigate, conditionally render Leaderboard component",
+        "Step 5: Update src/components/MobileNav.tsx — add 'leaderboard' to View type and NAV_ITEMS with TrendingUp icon and '排行' label",
+        "Step 6: Create src/hooks/__tests__/useLeaderboard.test.ts covering score ranking, accuracy ranking, speed ranking (points per minute), time filtering (today/week/all), tie-breaking, empty history",
+        "Step 7: Create src/components/__tests__/Leaderboard.test.tsx covering category tab switching, time filter switching, top-3 medal rendering, entry list rendering, empty state, back navigation",
+        "Step 8: Create src/components/__tests__/App.leaderboard.test.tsx covering view switch via nav button, Leaderboard component presence, back navigation restoration",
+        "Step 9: Update existing App test files to include 'leaderboard' in View type mocks and new nav button mocks (App.xp, App.streak, App.challenges, App.badges, App.focus, App.responsive, App.keyboard, App.reorder, App.choice, App.speed, App.mode)",
+        "Step 10: Run full test suite (vitest + playwright), lint, and build verification"
+      ],
+      "filesToModify": [
+        "src/data/types.ts",
+        "src/App.tsx",
+        "src/components/MobileNav.tsx"
+      ],
+      "filesToCreate": [
+        "src/hooks/useLeaderboard.ts",
+        "src/components/Leaderboard.tsx",
+        "src/hooks/__tests__/useLeaderboard.test.ts",
+        "src/components/__tests__/Leaderboard.test.tsx",
+        "src/components/__tests__/App.leaderboard.test.tsx"
+      ],
+      "dependencies": [],
+      "testStrategy": "Unit tests for useLeaderboard hook (ranking algorithms, time filtering), component tests for Leaderboard (tabs, rendering, empty state), App integration tests (view switching). Update existing App test mocks for new View type. Target: +20~25 tests, total 425+ tests passing."
+    }
+  },
+  "previousCycle": {
     "id": "2026-05-10-20",
     "mode": "vision",
     "stage": "REPORT",
-    "startedAt": "2026-05-10T03:22:00.000Z",
+    "startedAt": "2026-05-10T12:30:00.000Z",
     "plan": {
       "iterationId": "iter-004",
       "iterationTitle": "成就徽章系统",
-      "scope": "frontend-only",
-      "steps": [],
-      "filesToModify": [],
-      "filesToCreate": [],
-      "dependencies": [],
-      "testStrategy": ""
-    },
-    "deployStatus": {
-      "deployed": true,
-      "target": "vercel",
-      "url": "https://en-learn.vercel.app",
-      "deployedAt": "2026-05-10T12:02:43.000Z",
-      "version": "v0.16.0",
-      "iterationId": "iter-004",
-      "iterationTitle": "成就徽章系统",
-      "gitTag": "v0.16.0",
-      "gitTagPushed": false,
-      "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
-    },
-    "summary": "epic-003 iter-004 成就徽章系统 — 404/404 测试通过，build 成功，v0.16.0 部署完成；经验档案已更新"
-  },
-  "previousCycle": {
-    "id": "2026-05-09-19",
-    "mode": "vision",
-    "stage": "REPORT",
-    "startedAt": "2026-05-09T23:45:00.000Z",
-    "plan": {
-      "iterationId": "iter-003",
-      "iterationTitle": "每日挑战任务面板",
       "scope": "frontend-only",
       "steps": [],
       "filesToModify": [],
@@ -53,10 +61,10 @@
     "testResults": {
       "lint": "passed (0 errors, 3 pre-existing warnings)",
       "build": "passed",
-      "unitTests": "375/375 passed (39 test files)",
-      "e2e": "skipped (2 pending iterations remaining)"
+      "unitTests": "404/404 passed (42 test files)",
+      "e2e": "skipped (1 pending iteration remaining)"
     },
-    "summary": "REPORT stage completed — epic-003 iter-003 每日挑战任务面板报告已生成，375/375 测试通过，v0.15.0 部署完成，经验档案已更新，状态归档为 IDLE"
+    "summary": "REPORT stage completed — epic-003 iter-004 成就徽章系统报告已生成，404/404 测试通过，v0.16.0 部署完成，经验档案已更新，状态归档为 IDLE"
   },
   "currentEpic": {
     "id": "epic-003",
@@ -91,51 +99,47 @@
         "id": "iter-005",
         "title": "学习排行榜（本地）",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "completed"
       }
     ],
     "currentIterationIndex": 4
   },
   "plan": {
-    "iterationId": "iter-004",
-    "iterationTitle": "成就徽章系统",
+    "iterationId": "iter-005",
+    "iterationTitle": "学习排行榜（本地）",
     "scope": "frontend-only",
     "steps": [
-      "Step 1: src/data/types.ts — Add badge type definitions. (a) Add `BadgeCategory` union: 'answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'. (b) Add `BadgeConditionType` union: 'total_answered' | 'total_correct' | 'max_streak' | 'level' | 'total_sessions' | 'perfect_sessions' | 'total_reviews' | 'total_challenges'. (c) Add `BadgeDefinition` interface with id, title, description, category, icon (lucide icon name), conditionType, conditionValue. (d) Add `UnlockedBadge` interface with id and unlockedAt timestamp. (e) Add `BadgeProgress` interface with totalAnswered, totalCorrect, totalSessions, maxStreakEver, perfectSessions, totalReviews, totalChallengesCompleted (all numbers, default 0). (f) Add `BadgeState` interface with unlocked: UnlockedBadge[] and progress: BadgeProgress.",
-      "Step 2: src/services/storage.ts — Extend storage with badge persistence. (a) Add `BADGES_KEY = 'en-learn-badges'` and `BADGE_PROGRESS_KEY = 'en-learn-badge-progress'`. (b) Define `DEFAULT_BADGE_PROGRESS: BadgeProgress` with all counters initialized to 0. (c) Add `BADGE_DEFINITIONS: BadgeDefinition[]` constant with 12 badges: first-steps(total_answered>=1), correct-10(total_correct>=10), correct-50(total_correct>=50), correct-100(total_correct>=100), streak-5(max_streak>=5), streak-10(max_streak>=10), level-3(level>=3), level-5(level>=5), session-10(total_sessions>=10), perfect-session(perfect_sessions>=1), review-10(total_reviews>=10), challenge-7(total_challenges>=7). (d) Add `isValidBadgeProgress(data)` and `isValidBadgeState(data)` validators. (e) Add `getBadgeProgress(): BadgeProgress` with corrupted JSON recovery and default fallback. (f) Add `saveBadgeProgress(progress): void` with try/catch. (g) Add `getBadges(): BadgeState` with default fallback (empty unlocked array + default progress). (h) Add `saveBadges(state): void`. (i) Add `updateBadgeProgress(updater: (prev) => Partial<BadgeProgress>): BadgeProgress` for atomic counter updates. (j) Update `exportAllData` to include `badgeProgress` and `badges`. (k) Update `importAllData` to handle `badgeProgress` and `badges` with validation and count tracking. (l) Update `isValidExportData` to accept optional `badgeProgress` and `badges` fields.",
-      "Step 3: src/hooks/useBadges.ts — Create badge management hook. (a) Initialize `badgeState` lazily from `storage.getBadges()` and `badgeProgress` from `storage.getBadgeProgress()`. (b) `trackProgress(type: 'correct' | 'wrong' | 'session_complete' | 'perfect_session' | 'streak' | 'review' | 'challenge', value?: number)` — updates badge counters atomically via `storage.updateBadgeProgress`: correct→totalCorrect++/totalAnswered++; wrong→totalAnswered++; session_complete→totalSessions++; perfect_session→perfectSessions++; streak→maxStreakEver=max(current,value); review→totalReviews++; challenge→totalChallengesCompleted++. (c) `checkBadges(level?: number)` — iterates `BADGE_DEFINITIONS`, checks condition against current `badgeProgress` and optional `level`, filters out already-unlocked, creates new `UnlockedBadge` entries with `unlockedAt: Date.now()`, persists updated `BadgeState` via `storage.saveBadges`, returns array of newly unlocked `BadgeDefinition`s. (d) `getBadgeProgressPercent(badgeId)` — looks up definition, computes progress ratio (current / threshold) capped at 1.0. (e) `resetBadges()` — for testing, clears storage and resets state. (f) Return: `unlockedIds` (Set<string>), `unlockedCount`, `badgeProgress`, `trackProgress`, `checkBadges`, `getBadgeProgressPercent`, `resetBadges`, `BADGE_DEFINITIONS`.",
-      "Step 4: src/components/BadgePanel.tsx — Create badge showcase panel. Props: `unlockedIds: Set<string>`, `getProgress: (id) => number`, `onBack: () => void`. (a) Header with Award icon (lucide-react), '成就徽章' title, and unlocked count badge (e.g., '3/12'). (b) Grid layout `grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4`. (c) Each badge card: icon area (48px), title, description. (d) Unlocked: amber/golden border (`border-amber-400`), colored icon (`text-amber-500`), subtle amber bg, display unlocked date formatted as 'YYYY-MM-DD 解锁'. (e) Locked: gray border (`border-slate-200`), gray icon (`text-slate-300`), no date, bottom thin progress bar showing progress percent. (f) Category grouping: optional section headers per category (answer/streak/level/session/review/challenge/special). (g) Back button at top with ChevronLeft icon. (h) Empty state not needed since all definitions always shown. (i) Responsive container padding `px-3 md:px-4 py-4 md:py-8`.",
-      "Step 5: src/components/BadgeUnlockToast.tsx — Create unlock notification toast. Props: `badge: BadgeDefinition | null`, `onDismiss: () => void`. (a) Fixed position bottom-center with `fixed bottom-8 left-1/2 -translate-x-1/2 z-50`. (b) AnimatePresence + motion.div: initial `{y: 50, opacity: 0}`, animate `{y: 0, opacity: 1}`, exit `{y: 30, opacity: 0}` with spring transition. (c) Card with amber/golden gradient border, white bg, shadow-lg, max-w-sm. (d) Content: Sparkles icon, '解锁新成就！' header, badge icon + title + description. (e) Auto-dismiss after 3000ms via useEffect + setTimeout. (f) Click to dismiss early. (g) Renders null when badge is null.",
-      "Step 6: src/App.tsx — Integrate badge system into app. (a) Import `useBadges` from '@/hooks/useBadges', `BadgePanel` from '@/components/BadgePanel', `BadgeUnlockToast` from '@/components/BadgeUnlockToast', `Award` icon from 'lucide-react'. (b) Add `'badges'` to `View` type. (c) Destructure `unlockedIds, unlockedCount, badgeProgress, trackProgress, checkBadges, getBadgeProgressPercent, BADGE_DEFINITIONS` from `useBadges()`. (d) Add `badgeUnlockTrigger` state similar to `xpGainTrigger` pattern. (e) Add `badgesRef` useRef to hold latest `trackProgress` and `checkBadges` to avoid stale closures. (f) In correct-answer useEffect (awardedXPRef block): after existing XP/daily-challenge code, call `badgesRef.current.trackProgress('correct')`, `badgesRef.current.trackProgress('streak', streak + 1)`, then `const newBadges = badgesRef.current.checkBadges(profile.currentLevel)`, if newBadges.length>0 trigger `setBadgeUnlockTrigger({badge: newBadges[0], key: Date.now()})`. (g) In wrong-answer useEffect: call `badgesRef.current.trackProgress('wrong')`, `badgesRef.current.trackProgress('streak', 0)`, then `checkBadges()`. (h) Add session-completion useEffect: when `state.isComplete` becomes true, call `trackProgress('session_complete')`, if accuracy===100 call `trackProgress('perfect_session')`, then `checkBadges(profile.currentLevel)`. (i) In review-mode scheduleNextReview useEffect: after `storage.scheduleNextReview`, call `trackProgress('review')` and `checkBadges()`. (j) Add '成就' nav button in header desktop nav row with Award icon and unlockedCount badge. (k) Add Award icon button in header score area (next to Trophy) with unlockedCount badge, visible when !isComplete && view==='practice'. (l) Add `handleOpenBadges` and `handleBackFromBadges` handlers. (m) Add `view === 'badges'` rendering `<BadgePanel />` in main content switch. (n) Add 'badges' case to `handleNavigate` switch. (o) Render `<BadgeUnlockToast />` in App root, outside main content area.",
-      "Step 7: src/hooks/__tests__/useBadges.test.ts — Test badge hook logic. (a) Test initial load with empty state. (b) Test trackProgress('correct') increments totalCorrect and totalAnswered. (c) Test trackProgress('wrong') increments totalAnswered only. (d) Test trackProgress('streak', 5) updates maxStreakEver. (e) Test trackProgress('streak', 3) then 5 updates maxStreakEver to 5. (f) Test checkBadges unlocks first-steps on totalAnswered>=1. (g) Test checkBadges unlocks correct-10 on totalCorrect>=10. (h) Test checkBadges unlocks level-3 when level>=3 passed. (i) Test checkBadges does not re-unlock already unlocked. (j) Test getBadgeProgressPercent returns correct ratio. (k) Test resetBadges clears all data.",
-      "Step 8: src/components/__tests__/BadgePanel.test.tsx — Test badge panel component. (a) Renders header with '成就徽章' and count. (b) Renders all 12 badge cards. (c) Unlocked badge shows amber border and date. (d) Locked badge shows gray border and progress bar. (e) Progress bar width matches getProgress return value. (f) Back button calls onBack. (g) Category sections render correctly.",
-      "Step 9: src/components/__tests__/App.badges.test.tsx — Test App badge integration. (a) Award button renders in header score area. (b) Unlocked count badge shows correct number. (c) Clicking award switches to badges view. (d) BadgePanel receives correct props. (e) trackProgress called on correct answer (mock useBadges, verify trackProgress called with 'correct' and 'streak'). (f) checkBadges called on correct answer with current level. (g) Back button from badges returns to practice.",
-      "Step 10: Update existing test mocks — 10 App test files rendering App.tsx need `vi.mock('@/hooks/useBadges')` with default mock: `{ unlockedIds: new Set(), unlockedCount: 0, badgeProgress: {totalAnswered:0,totalCorrect:0,totalSessions:0,maxStreakEver:0,perfectSessions:0,totalReviews:0,totalChallengesCompleted:0}, trackProgress: vi.fn(), checkBadges: vi.fn(() => []), getBadgeProgressPercent: vi.fn(() => 0), resetBadges: vi.fn(), BADGE_DEFINITIONS: [] }`. Files: App.xp.test.tsx, App.streak.test.tsx, App.focus.test.tsx, App.mode.test.tsx, App.choice.test.tsx, App.reorder.test.tsx, App.speed.test.tsx, App.responsive.test.tsx, App.keyboard.test.tsx, App.challenges.test.tsx.",
-      "Step 11: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all existing tests pass without regression."
+      "Step 1: Add LeaderboardCategory, LeaderboardTimeFilter, LeaderboardEntry types in src/data/types.ts",
+      "Step 2: Create src/hooks/useLeaderboard.ts with getLeaderboardEntries(category, timeFilter) deriving ranked entries from session history",
+      "Step 3: Create src/components/Leaderboard.tsx with category tabs (总分榜/准确率榜/速通榜), time filter tabs (今日/本周/全部), ranked list with top-3 medal styling, empty state, and back navigation",
+      "Step 4: Update src/App.tsx — add 'leaderboard' to View type, import useLeaderboard and Leaderboard, add TrendingUp nav button, handleOpenLeaderboard/handleBackFromLeaderboard handlers, leaderboard case in handleNavigate, conditionally render Leaderboard component",
+      "Step 5: Update src/components/MobileNav.tsx — add 'leaderboard' to View type and NAV_ITEMS with TrendingUp icon and '排行' label",
+      "Step 6: Create src/hooks/__tests__/useLeaderboard.test.ts covering score ranking, accuracy ranking, speed ranking (points per minute), time filtering (today/week/all), tie-breaking, empty history",
+      "Step 7: Create src/components/__tests__/Leaderboard.test.tsx covering category tab switching, time filter switching, top-3 medal rendering, entry list rendering, empty state, back navigation",
+      "Step 8: Create src/components/__tests__/App.leaderboard.test.tsx covering view switch via nav button, Leaderboard component presence, back navigation restoration",
+      "Step 9: Update existing App test files to include 'leaderboard' in View type mocks and new nav button mocks (App.xp, App.streak, App.challenges, App.badges, App.focus, App.responsive, App.keyboard, App.reorder, App.choice, App.speed, App.mode)",
+      "Step 10: Run full test suite (vitest + playwright), lint, and build verification"
     ],
     "filesToModify": [
       "src/data/types.ts",
-      "src/services/storage.ts",
-      "src/App.tsx"
+      "src/App.tsx",
+      "src/components/MobileNav.tsx"
     ],
     "filesToCreate": [
-      "src/hooks/useBadges.ts",
-      "src/components/BadgePanel.tsx",
-      "src/components/BadgeUnlockToast.tsx",
-      "src/hooks/__tests__/useBadges.test.ts",
-      "src/components/__tests__/BadgePanel.test.tsx",
-      "src/components/__tests__/App.badges.test.tsx"
+      "src/hooks/useLeaderboard.ts",
+      "src/components/Leaderboard.tsx",
+      "src/hooks/__tests__/useLeaderboard.test.ts",
+      "src/components/__tests__/Leaderboard.test.tsx",
+      "src/components/__tests__/App.leaderboard.test.tsx"
     ],
     "dependencies": [],
-    "testStrategy": "Badge system tests cover: (1) storage layer — badge progress CRUD, validation, corrupted data recovery, export/import integration with badgeProgress and badges fields; (2) useBadges hook — progress tracking (correct/wrong/streak/session/review/challenge events), badge condition checking for all 12 badges, duplicate unlock prevention, progress percent calculation, reset; (3) BadgePanel component — rendering all 12 badges, unlocked/locked visual states, progress bar width, back navigation; (4) App integration — award button with count badge, view switching, trackProgress and checkBadges called on answer events, toast trigger. Update 10 existing App test mocks for new useBadges hook. All 375 existing tests must pass without regression. Full lint + build + test validation."
+    "testStrategy": "Unit tests for useLeaderboard hook (ranking algorithms, time filtering), component tests for Leaderboard (tabs, rendering, empty state), App integration tests (view switching). Update existing App test mocks for new View type. Target: +20~25 tests, total 425+ tests passing."
   },
   "testResults": {
     "lint": "passed (0 errors, 3 pre-existing warnings)",
     "build": "passed",
-    "unitTests": "404/404 passed (42 test files)",
-    "e2e": "skipped (1 pending iteration remaining: iter-005)"
+    "unitTests": "429/429 passed (45 test files)"
   },
-  "status": "REPORT",
   "implementationStatus": {
     "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
     "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
@@ -153,9 +157,17 @@
     "epic-003-iter-001": "Implemented XP 积分与等级系统. src/data/types.ts: Added XPProfile interface { totalXP, currentLevel, levelProgress } and LEVEL_THRESHOLDS constant [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000] defining 12 cumulative XP levels. src/services/storage.ts: Added XP_PROFILE_KEY, isValidXPProfile validator, getXPProfile() with default fallback and corrupted data recovery, updateXPProfile() with error handling, addXP(amount) computing level from thresholds and progress percentage ((totalXP - prevThreshold) / (nextThreshold - prevThreshold)) * 100 capped 0-100. Updated exportAllData and importAllData to include xpProfile with validation. src/hooks/useXP.ts: Created hook with lazy-init state from storage, addXP(baseXP, firstTry) computing total = baseXP + (firstTry ? 5 : 0), resetXPProfile() for testing. src/components/XPBar.tsx: Presentational component with level badge and progress bar, compact mode for header/focus bar, full mode for future profile view. src/App.tsx: Integrated useXP hook, rendered XPBar compact in header score area and focus mode floating bar, added awardedXPRef useRef<Set<string>> for per-question deduplication, useEffect awards XP on correct answer with mode-dependent baseXP (multiple-choice=8, sentence-reorder=12, others=10) and firstTry bonus, clears award tracking on reset. Tests: xp-storage.test.ts (21 tests covering profile CRUD, level calculation at all threshold boundaries, progress percentage, max level cap, corrupted data recovery, export/import with xpProfile), useXP.test.ts (7 tests covering init load, addXP state update, firstTry bonus, level-up reflection, reset), App.xp.test.tsx (6 tests covering XPBar render, addXP call on correct answer, firstTry bonus, no award on wrong answer, no double-award, focus mode XPBar). Updated 6 existing App test files to mock new storage XP methods. Also updated export-import.test.ts and DataManager.test.tsx for new xpProfile field in importedCounts. Total: 318/318 tests pass (32 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-003-iter-002": "Implemented 连击计数与正向反馈动画. src/hooks/useXP.ts: Extended hook with streak state (session-only, not persisted), maxStreakReached tracking, recordCorrectAnswer (increments streak, updates max), recordWrongAnswer (resets streak to 0), resetStreak, getStreakMultiplier helper (1.0 for <3, 1.5 for 3-4, 2.0 for 5-9, 3.0 for 10+). Modified addXP to compute multiplier from current streak, calculate finalXP = Math.round(baseXP * multiplier) + firstTryBonus, return { profile, finalXP, multiplier, streak }. src/components/StreakFeedback.tsx: Combo badge with Flame icon (lucide-react), animated entrance via framer-motion spring, color tiers (amber for 2-4, red for 5-9 with pulse, purple gradient for 10+), '连击' label, renders null when streak < 2. src/components/XPGainPopup.tsx: Animated XP gain display using framer-motion AnimatePresence, upward float animation (y: 0→-40, opacity: 1→0 over 1.2s), shows '+XX XP' and conditional multiplier badge, keyed by triggerKey for re-animation. src/App.tsx: Destructured new useXP exports, added xpGainTrigger state, modified XP award useEffect to call recordCorrectAnswer before addXP and trigger XPGainPopup via requestAnimationFrame deferral, added wrong-answer useEffect calling recordWrongAnswer, integrated StreakFeedback in header and focus mode floating bar, added XPGainPopup overlay in main practice area, resetStreak called in handleRestart. Tests: useXP.streak.test.ts (9 tests covering streak increment, wrong reset, max tracking, multiplier boundaries, addXP multiplier integration, return object, resetStreak preserving max, firstTry+multiplier combined), StreakFeedback.test.tsx (8 tests covering null for <2, icon/count render, amber/red/purple color classes, 连击 label, visible=false, motion.div), XPGainPopup.test.tsx (6 tests covering hidden when invisible, amount display, multiplier badge conditional, triggerKey update), App.streak.test.tsx (6 tests covering badge DOM presence, recordCorrectAnswer call, recordWrongAnswer call, XP popup trigger, resetStreak call, focus mode badge). Updated 7 existing App test files with new useXP mock exports (streak, maxStreakReached, recordCorrectAnswer, recordWrongAnswer, resetStreak). Total: 348/348 tests pass (36 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-003-iter-003": "Implemented 每日挑战任务面板. src/data/types.ts: Added ChallengeType union ('correct' | 'answer' | 'streak'), DailyChallenge interface with id/title/description/type/target/current/completed/claimed/rewardXP, DailyChallengeState with date and challenges array. src/services/storage.ts: Extended with DAILY_CHALLENGES_KEY, isValidDailyChallenge/isValidDailyChallengeState validators, getDailyChallenges/saveDailyChallenges CRUD with corrupted JSON recovery, generateDailyChallenges(date) with 6-item pool and deterministic seeded shuffle (hashString + seededShuffle) selecting 3 daily challenges. Updated exportAllData/importAllData/isValidExportData to include dailyChallenges. src/hooks/useDailyChallenges.ts: Lazy-init from storage, auto-regenerate on date mismatch, trackActivity(type, value?) increments matching challenges (correct/answer +1 capped, streak sets min(value,target)), auto-completes when current >= target, persists after each update. claimReward validates completed+unclaimed, calls storage.addXP(rewardXP), marks claimed. unclaimedCount derived. resetDailyChallenges for testing. src/components/DailyChallengePanel.tsx: Trophy header with date badge, challenge cards with title/description/progress bar/status badge, in-progress blue bar + X/Y, completed-unclaimed green claim button, completed-claimed gray badge, empty state with Gift icon, responsive padding. src/App.tsx: Added 'challenges' View, imported useDailyChallenges/DailyChallengePanel, destructured challengeState/unclaimedCount/trackActivity/claimReward, trackActivity called on correct answer (answer/correct/streak) and wrong answer (answer/streak=0), Trophy button in header score area with unclaimed badge, '每日挑战' nav button in desktop nav with badge, handleOpenChallenges/handleBackFromChallenges, view rendering DailyChallengePanel, challenges case in handleNavigate. Tests: useDailyChallenges.test.ts (12 tests covering init generation, load existing, date rollover, trackActivity correct/answer/streak, completion cap, claimReward XP/add/claimed, unclaimedCount), DailyChallengePanel.test.tsx (9 tests covering header/date, cards, progress bar width, claim button, click claim, claimed badge, X/Y text, back button, empty state), App.challenges.test.tsx (6 tests covering trophy render, badge count, view switch, trackActivity on correct/wrong, back navigation). Updated 9 existing App test files with useDailyChallenges mock. Total: 375/375 tests pass (39 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-003-iter-004": "Implemented 成就徽章系统. src/data/types.ts: Added BadgeCategory union ('answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'), BadgeConditionType union, BadgeDefinition interface, UnlockedBadge interface, BadgeProgress interface, BadgeState interface. src/services/storage.ts: Extended with BADGES_KEY, BADGE_PROGRESS_KEY, DEFAULT_BADGE_PROGRESS, BADGE_DEFINITIONS (12 badges), isValidBadgeProgress/isValidUnlockedBadge/isValidBadgeState validators, getBadgeProgress/saveBadgeProgress/updateBadgeProgress, getBadges/saveBadges CRUD with corrupted JSON recovery. Updated exportAllData/importAllData/isValidExportData to include badgeProgress and badges. src/hooks/useBadges.ts: Lazy-init state from storage, trackProgress(type, value?) updates counters atomically via storage.updateBadgeProgress (correct→totalCorrect++/totalAnswered++, wrong→totalAnswered++, session_complete→totalSessions++, perfect_session→perfectSessions++, streak→maxStreakEver=max(current,value), review→totalReviews++, challenge→totalChallengesCompleted++), checkBadges(level?) iterates BADGE_DEFINITIONS checking conditions against progress and optional level, filters already-unlocked, persists new UnlockedBadge entries with unlockedAt timestamp, returns newly unlocked definitions, getBadgeProgressPercent computes current/threshold ratio capped at 1.0, resetBadges clears storage and state. src/components/BadgePanel.tsx: Award header with unlocked count badge, category-grouped grid layout (grid-cols-2 md:grid-cols-3 lg:grid-cols-4), unlocked cards with amber border/golden icon/unlocked date, locked cards with gray border/progress bar, back button with ChevronLeft. src/components/BadgeUnlockToast.tsx: Fixed bottom-center toast with AnimatePresence spring animation, amber gradient border, Sparkles icon, auto-dismiss 3000ms, click-to-dismiss. src/App.tsx: Integrated useBadges hook, added 'badges' View, badge tracking in correct-answer useEffect (trackProgress('correct') + trackProgress('streak', streak+1) + checkBadges), wrong-answer useEffect (trackProgress('wrong') + trackProgress('streak', 0) + checkBadges), session-completion useEffect (trackProgress('session_complete') + perfect_session when accuracy=100 + checkBadges), review-mode useEffect (trackProgress('review') + checkBadges), Award button in header score area and desktop nav with unlockedCount badge, handleOpenBadges/handleBackFromBadges, BadgeUnlockToast rendered in root. Tests: useBadges.test.ts (14 tests covering initial load, trackProgress correct/wrong/streak/session/perfect/review/challenge, checkBadges first-steps/correct-10/level-3, no re-unlock, getBadgeProgressPercent ratio, resetBadges), BadgePanel.test.tsx (7 tests covering header/count, 12 cards render, unlocked amber border+date, locked gray border+progress bar, progress width, back button, category sections), App.badges.test.tsx (7 tests covering award button render, unlocked count badge, view switch, BadgePanel presence, trackProgress on correct, checkBadges on correct, back navigation). Updated 10 existing App test files with useBadges mock. Total: 404/404 tests pass (42 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
+    "epic-003-iter-004": "Implemented 成就徽章系统. src/data/types.ts: Added BadgeCategory union ('answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'), BadgeConditionType union, BadgeDefinition interface, UnlockedBadge interface, BadgeProgress interface, BadgeState interface. src/services/storage.ts: Extended with BADGES_KEY, BADGE_PROGRESS_KEY, DEFAULT_BADGE_PROGRESS, BADGE_DEFINITIONS (12 badges), isValidBadgeProgress/isValidUnlockedBadge/isValidBadgeState validators, getBadgeProgress/saveBadgeProgress/updateBadgeProgress, getBadges/saveBadges CRUD with corrupted JSON recovery. Updated exportAllData/importAllData/isValidExportData to include badgeProgress and badges. src/hooks/useBadges.ts: Lazy-init state from storage, trackProgress(type, value?) updates counters atomically via storage.updateBadgeProgress (correct→totalCorrect++/totalAnswered++, wrong→totalAnswered++, session_complete→totalSessions++, perfect_session→perfectSessions++, streak→maxStreakEver=max(current,value), review→totalReviews++, challenge→totalChallengesCompleted++), checkBadges(level?) iterates BADGE_DEFINITIONS checking conditions against progress and optional level, filters already-unlocked, persists new UnlockedBadge entries with unlockedAt timestamp, returns newly unlocked definitions, getBadgeProgressPercent computes current/threshold ratio capped at 1.0, resetBadges clears storage and state. src/components/BadgePanel.tsx: Award header with unlocked count badge, category-grouped grid layout (grid-cols-2 md:grid-cols-3 lg:grid-cols-4), unlocked cards with amber border/golden icon/unlocked date, locked cards with gray border/progress bar, back button with ChevronLeft. src/components/BadgeUnlockToast.tsx: Fixed bottom-center toast with AnimatePresence spring animation, amber gradient border, Sparkles icon, auto-dismiss 3000ms, click-to-dismiss. src/App.tsx: Integrated useBadges hook, added 'badges' View, badge tracking in correct-answer useEffect (trackProgress('correct') + trackProgress('streak', streak+1) + checkBadges), wrong-answer useEffect (trackProgress('wrong') + trackProgress('streak', 0) + checkBadges), session-completion useEffect (trackProgress('session_complete') + perfect_session when accuracy=100 + checkBadges), review-mode useEffect (trackProgress('review') + checkBadges), Award button in header score area and desktop nav with unlockedCount badge, handleOpenBadges/handleBackFromBadges, BadgeUnlockToast rendered in root. Tests: useBadges.test.ts (14 tests covering initial load, trackProgress correct/wrong/streak/session/perfect/review/challenge, checkBadges first-steps/correct-10/level-3, no re-unlock, getBadgeProgressPercent ratio, resetBadges), BadgePanel.test.tsx (7 tests covering header/count, 12 cards render, unlocked amber border+date, locked gray border+progress bar, progress width, back button, category sections), App.badges.test.tsx (7 tests covering award button render, unlocked count badge, view switch, BadgePanel presence, trackProgress on correct, checkBadges on correct, back navigation). Updated 10 existing App test files with useBadges mock. Total: 404/404 tests pass (42 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-003-iter-005": "Implemented 学习排行榜（本地）. src/data/types.ts: Added LeaderboardCategory union ('score' | 'accuracy' | 'speed'), LeaderboardTimeFilter union ('today' | 'week' | 'all'), LeaderboardEntry interface with rank/sessionId/dictionaryName/score/accuracy/speed/timestamp fields. src/hooks/useLeaderboard.ts: Created hook exporting getLeaderboardEntries(category, timeFilter) pure function and useLeaderboard() hook. Filters session history by today/week/all time windows, maps to LeaderboardEntry with computed accuracy and speed (points per minute), sorts by category descending with tie-break by timestamp descending, assigns 1-based ranks. Speed computed as Math.round((score / (duration / 60)) * 10) / 10 with zero-duration guard returning 0. src/components/Leaderboard.tsx: Presentational component with props entries/category/timeFilter/onCategoryChange/onTimeFilterChange/onBack. Header with back button, '学习排行榜' title, TrendingUp icon. Category tabs: 总分榜/准确率榜/速通榜 with framer-motion layoutId animated indicator. Time filter pills: 今日/本周/全部. Ranked list with top-3 medal styling (amber/slate/orange backgrounds, Medal icon), ranks 4+ standard white bg with number display. Empty state with TrendingUp icon and '暂无记录' message. Back navigation via ChevronLeft button. Responsive padding and max-w-4xl container. src/App.tsx: Extended View type with 'leaderboard'. Imported useLeaderboard and Leaderboard, TrendingUp icon. Added leaderboardCategory ('score') and leaderboardTimeFilter ('today') state. Added handleOpenLeaderboard/handleBackFromLeaderboard handlers. Added 'leaderboard' case in handleNavigate. Added header buttons: compact leaderboard-header-button in score area and desktop nav leaderboard-nav-button. Conditional rendering for view === 'leaderboard' passing all props to Leaderboard component. src/components/MobileNav.tsx: Extended View type with 'leaderboard'. Added TrendingUp import and NAV_ITEMS entry { id: 'leaderboard', label: '排行', icon: TrendingUp }. Tests: useLeaderboard.test.ts (11 tests covering score/accuracy/speed ranking, today/week/all time filtering, tie-breaking by timestamp, empty history, zero duration, speed rounding), Leaderboard.test.tsx (7 tests covering header/back button, category tab switching, time filter switching, top-3 medal rendering, entry list with names/scores, empty state, back navigation callback), App.leaderboard.test.tsx (7 tests covering nav button render, header button render, click header to switch view, click nav to switch view, Leaderboard correct props passed, back navigation returns to practice, mobile nav renders '排行'). Total: 429/429 tests pass (45 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
   },
   "history": [
+    {
+      "id": "2026-05-10-21",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-003 iter-005 学习排行榜（本地）— 429/429 测试通过（45 个测试文件），build 成功；新增 LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry 类型、useLeaderboard hook（分数/准确率/速通排序 + 今日/本周/全部过滤）、Leaderboard 组件（前三名奖牌样式 + 分类标签页 + 时间过滤）、App/MobileNav 集成、25 个新测试用例"
+    },
     {
       "id": "2026-05-10-20",
       "mode": "vision",

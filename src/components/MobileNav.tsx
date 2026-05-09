@@ -1,6 +1,6 @@
-import { Headphones, BookOpen, History, Database, Brain, Award } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, Award, TrendingUp } from 'lucide-react';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges' | 'leaderboard';
 
 interface MobileNavProps {
   currentView: View;
@@ -17,6 +17,7 @@ const NAV_ITEMS: { id: View; label: string; icon: typeof Headphones }[] = [
   { id: 'review', label: '复习', icon: Brain },
   { id: 'data', label: '数据', icon: Database },
   { id: 'badges', label: '成就', icon: Award },
+  { id: 'leaderboard', label: '排行', icon: TrendingUp },
 ];
 
 export function MobileNav({

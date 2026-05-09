@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -21,6 +21,7 @@ export type PersistedSession = StorageSchemaV1 | StorageSchemaV2;
 const SESSION_KEY = 'en-learn-session';
 const MISTAKES_KEY = 'en-learn-mistakes';
 const HISTORY_KEY = 'en-learn-history';
+const XP_PROFILE_KEY = 'en-learn-xp-profile';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -188,6 +189,28 @@ function isValidMistake(data: unknown): data is Mistake {
   }
 
   if (obj.lastReviewedAt !== undefined && typeof obj.lastReviewedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidXPProfile(data: unknown): data is XPProfile {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.totalXP !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.currentLevel !== 'number' || obj.currentLevel < 1) {
+    return false;
+  }
+
+  if (typeof obj.levelProgress !== 'number') {
     return false;
   }
 
@@ -459,6 +482,76 @@ export const StorageService = {
     return loadHistory().length;
   },
 
+  getXPProfile(): XPProfile {
+    const raw = localStorage.getItem(XP_PROFILE_KEY);
+    if (raw === null) {
+      return { totalXP: 0, currentLevel: 1, levelProgress: 0 };
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.warn('[StorageService] Corrupted XP profile data, resetting');
+      localStorage.removeItem(XP_PROFILE_KEY);
+      return { totalXP: 0, currentLevel: 1, levelProgress: 0 };
+    }
+
+    if (isValidXPProfile(parsed)) {
+      return parsed;
+    }
+
+    console.warn('[StorageService] Invalid XP profile schema, resetting');
+    localStorage.removeItem(XP_PROFILE_KEY);
+    return { totalXP: 0, currentLevel: 1, levelProgress: 0 };
+  },
+
+  updateXPProfile(profile: XPProfile): void {
+    try {
+      localStorage.setItem(XP_PROFILE_KEY, JSON.stringify(profile));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save XP profile:', error);
+    }
+  },
+
+  addXP(amount: number): XPProfile {
+    const profile = this.getXPProfile();
+    const newTotalXP = profile.totalXP + amount;
+
+    // Find current level based on thresholds
+    const thresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000];
+    let currentLevel = 1;
+    for (let i = thresholds.length - 1; i >= 0; i--) {
+      if (newTotalXP >= thresholds[i]) {
+        currentLevel = i + 1;
+        break;
+      }
+    }
+
+    // Calculate progress percentage
+    const maxLevel = thresholds.length;
+    let levelProgress: number;
+    if (currentLevel >= maxLevel) {
+      levelProgress = 100;
+    } else {
+      const prevThreshold = thresholds[currentLevel - 1];
+      const nextThreshold = thresholds[currentLevel];
+      const progressInLevel = newTotalXP - prevThreshold;
+      const levelRange = nextThreshold - prevThreshold;
+      levelProgress = Math.round((progressInLevel / levelRange) * 100);
+      levelProgress = Math.max(0, Math.min(100, levelProgress));
+    }
+
+    const updated: XPProfile = {
+      totalXP: newTotalXP,
+      currentLevel,
+      levelProgress,
+    };
+
+    this.updateXPProfile(updated);
+    return updated;
+  },
+
   getReviewQueue(): Mistake[] {
     const now = Date.now();
     const mistakes = loadMistakes();
@@ -515,21 +608,22 @@ export const StorageService = {
         session: this.loadSession(),
         mistakes: loadMistakes(),
         history: loadHistory(),
+        xpProfile: this.getXPProfile(),
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
       };
     }
 
-    const { session, mistakes, history } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0 };
+    const { session, mistakes, history, xpProfile } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0 };
 
     try {
       if (session !== null) {
@@ -553,10 +647,18 @@ export const StorageService = {
         localStorage.removeItem(HISTORY_KEY);
       }
 
+      if (xpProfile) {
+        localStorage.setItem(XP_PROFILE_KEY, JSON.stringify(xpProfile));
+        importedCounts.xpProfile = 1;
+      } else {
+        localStorage.removeItem(XP_PROFILE_KEY);
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
       if (importedCounts.history > 0) parts.push(`${importedCounts.history} 条历史记录`);
+      if (importedCounts.xpProfile > 0) parts.push('1 个 XP 档案');
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -567,7 +669,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
       };
     }
   },
@@ -580,6 +682,7 @@ export interface ExportData {
     session: StorageSchemaV2 | null;
     mistakes: Mistake[];
     history: SessionHistory[];
+    xpProfile?: XPProfile;
   };
 }
 
@@ -622,6 +725,11 @@ function isValidExportData(data: unknown): data is ExportData {
   }
 
   if (!dataObj.history.every(isValidHistory)) {
+    return false;
+  }
+
+  // xpProfile is optional; if present, must be valid
+  if (dataObj.xpProfile !== undefined && !isValidXPProfile(dataObj.xpProfile)) {
     return false;
   }
 

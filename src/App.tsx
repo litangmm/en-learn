@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
+import { useXP } from '@/hooks/useXP';
 import { PracticeCard } from '@/components/PracticeCard';
 import { ProgressBar } from '@/components/ProgressBar';
 import { ResultModal } from '@/components/ResultModal';
@@ -14,6 +15,7 @@ import { HistoryView } from '@/components/HistoryView';
 import { DataManager } from '@/components/DataManager';
 import { SmartReview } from '@/components/SmartReview';
 import { MobileNav } from '@/components/MobileNav';
+import { XPBar } from '@/components/XPBar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -73,6 +75,7 @@ function App() {
   } = usePractice(dictionaryId, practiceSentenceIds);
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
+  const { profile, addXP } = useXP();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -137,6 +140,20 @@ function App() {
 
   // Auto-schedule next review in review mode
   const processedReviewRef = useRef<Set<string>>(new Set());
+
+  // Award XP on correct answer (deduplicated per question)
+  const awardedXPRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    if (state.showResult && state.isCorrect && currentSentence) {
+      const sentenceId = currentSentence.id;
+      if (!awardedXPRef.current.has(sentenceId)) {
+        awardedXPRef.current.add(sentenceId);
+        const baseXP = practiceMode === 'multiple-choice' ? 8 : practiceMode === 'sentence-reorder' ? 12 : 10;
+        const firstTry = state.attempts === 1;
+        addXP(baseXP, firstTry);
+      }
+    }
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP]);
   useEffect(() => {
     if (!isReviewMode) {
       processedReviewRef.current.clear();
@@ -188,6 +205,7 @@ function App() {
     reset();
     setPracticeSentenceIds(undefined);
     setIsReviewMode(false);
+    awardedXPRef.current.clear();
   };
 
   // Check for active session on mount
@@ -343,8 +361,11 @@ function App() {
           </div>
           <div className="flex items-center gap-3">
             {!state.isComplete && view === 'practice' && (
-              <div className="text-right mr-2">
-                <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
+              <div className="flex items-center gap-3 mr-2">
+                <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
+                <div className="text-right">
+                  <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
+                </div>
               </div>
             )}
             <div className="hidden md:flex items-center gap-3">
@@ -438,6 +459,7 @@ function App() {
               <span className="text-sm font-medium text-slate-700">
                 第 {currentQuestion}/{totalQuestions} 题
               </span>
+              <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
               <span className="text-sm text-slate-500">
                 得分: {state.score}
               </span>

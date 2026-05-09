@@ -128,6 +128,7 @@ describe('StorageService Export/Import', () => {
       expect(result.importedCounts.session).toBe(1);
       expect(result.importedCounts.mistakes).toBe(1);
       expect(result.importedCounts.history).toBe(1);
+      expect(result.importedCounts.xpProfile).toBe(0);
 
       // Verify data was overwritten
       expect(StorageService.loadSession()!.dictionaryId).toBe('new-dict');
@@ -172,7 +173,7 @@ describe('StorageService Export/Import', () => {
 
       expect(result.success).toBe(true);
       expect(result.message).toContain('不含任何数据');
-      expect(result.importedCounts).toEqual({ session: 0, mistakes: 0, history: 0 });
+      expect(result.importedCounts).toEqual({ session: 0, mistakes: 0, history: 0, xpProfile: 0 });
     });
 
     it('rejects missing version', () => {

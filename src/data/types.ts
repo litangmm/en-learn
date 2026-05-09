@@ -47,4 +47,12 @@ export interface SessionHistory {
   accuracy: number;
 }
 
+export interface XPProfile {
+  totalXP: number;
+  currentLevel: number;
+  levelProgress: number;
+}
+
+export const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000] as const;
+
 export type PracticeMode = 'fill-in-blanks' | 'dictation' | 'multiple-choice' | 'sentence-reorder';

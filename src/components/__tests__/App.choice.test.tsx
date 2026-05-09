@@ -103,6 +103,9 @@ vi.mock('@/services/storage', () => ({
     importAllData: vi.fn(() => ({ success: true, importedCounts: {}, message: '' })),
     getReviewQueue: vi.fn(() => []),
     scheduleNextReview: vi.fn(),
+    getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
+    updateXPProfile: vi.fn(),
+    addXP: vi.fn(),
   },
 }));
 

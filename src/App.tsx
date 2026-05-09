@@ -58,6 +58,8 @@ function App() {
     initializeInputs,
     isLoading,
     error,
+    options,
+    selectChoice,
   } = usePractice(dictionaryId, practiceSentenceIds);
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
@@ -72,7 +74,7 @@ function App() {
   // Auto-play audio on new sentence
   useEffect(() => {
     if (currentSentence && !state.showResult && !state.isComplete) {
-      const delay = practiceMode === 'dictation' ? 300 : 800;
+      const delay = practiceMode === 'dictation' ? 300 : practiceMode === 'multiple-choice' ? 500 : 800;
       const timer = setTimeout(() => {
         speak(currentSentence.english);
       }, delay);
@@ -133,7 +135,7 @@ function App() {
 
   const handleSpeak = () => {
     if (currentSentence) {
-      speak(currentSentence.english, 0.85);
+      speak(currentSentence.english);
     }
   };
 
@@ -450,6 +452,9 @@ function App() {
                   <ToggleGroupItem value="dictation" aria-label="听写模式">
                     听写模式
                   </ToggleGroupItem>
+                  <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
+                    选择题模式
+                  </ToggleGroupItem>
                 </ToggleGroup>
               </div>
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
@@ -468,6 +473,9 @@ function App() {
                     mode={practiceMode}
                     playbackRate={playbackRate}
                     onSpeedChange={setPlaybackRate}
+                    options={options}
+                    selectedChoiceId={state.selectedChoiceId}
+                    onSelectChoice={selectChoice}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

@@ -42,4 +42,4 @@ export interface SessionHistory {
   accuracy: number;
 }
 
-export type PracticeMode = 'fill-in-blanks' | 'dictation';
+export type PracticeMode = 'fill-in-blanks' | 'dictation' | 'multiple-choice';

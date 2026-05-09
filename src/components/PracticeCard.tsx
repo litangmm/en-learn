@@ -21,8 +21,11 @@ interface PracticeCardProps {
   mode?: PracticeMode;
   playbackRate?: number;
   onSpeedChange?: (rate: number) => void;
+  options?: Sentence[];
+  selectedChoiceId?: string | null;
+  onSelectChoice?: (choiceId: string) => void;
   onInputChange: (index: number, value: string) => void;
-  onCheck: () => void;
+  onCheck: (selectedOptionId?: string) => void;
   onNext: () => void;
   onRetry: () => void;
   onSpeak: () => void;
@@ -40,6 +43,9 @@ export function PracticeCard({
   mode = 'fill-in-blanks',
   playbackRate = 1.0,
   onSpeedChange,
+  options = [],
+  selectedChoiceId,
+  onSelectChoice,
   onInputChange,
   onCheck,
   onNext,
@@ -47,6 +53,7 @@ export function PracticeCard({
   onSpeak,
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
+  const isMultipleChoice = mode === 'multiple-choice';
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Auto-focus first empty input on mount
@@ -63,14 +70,53 @@ export function PracticeCard({
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (!showResult) {
-        onCheck();
+        if (isMultipleChoice && selectedChoiceId) {
+          onCheck(selectedChoiceId);
+        } else if (!isMultipleChoice) {
+          onCheck();
+        }
       } else if (isCorrect) {
         onNext();
-      } else {
+      } else if (!isMultipleChoice) {
         onRetry();
       }
     }
-  }, [showResult, isCorrect, onCheck, onNext, onRetry]);
+  }, [showResult, isCorrect, isMultipleChoice, selectedChoiceId, onCheck, onNext, onRetry]);
+
+  // Render multiple-choice options
+  const renderChoiceOptions = () => {
+    return (
+      <div className="grid grid-cols-1 gap-3">
+        {options.map((option) => {
+          const isSelected = selectedChoiceId === option.id;
+          const isCorrectOption = showResult && option.id === sentence.id;
+          const isWrongSelected = showResult && isSelected && option.id !== sentence.id;
+
+          return (
+            <button
+              key={option.id}
+              onClick={() => !showResult && onSelectChoice?.(option.id)}
+              disabled={showResult}
+              className={`
+                w-full p-4 rounded-xl border-2 text-left transition-all duration-200
+                ${isCorrectOption
+                  ? 'border-green-500 bg-green-50 text-green-800'
+                  : isWrongSelected
+                    ? 'border-red-500 bg-red-50 text-red-800'
+                    : isSelected
+                      ? 'border-blue-500 bg-blue-50 text-blue-800'
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-slate-50'
+                }
+                ${showResult ? 'cursor-default' : 'cursor-pointer'}
+              `}
+            >
+              <p className="text-base font-medium">{option.english}</p>
+            </button>
+          );
+        })}
+      </div>
+    );
+  };
 
   // Render standalone inputs for dictation mode
   const renderDictationInputs = () => {
@@ -254,7 +300,7 @@ export function PracticeCard({
           )}
 
           {/* Divider */}
-          {(!isDictation || showResult) && (
+          {(!isDictation || showResult) && !isMultipleChoice && (
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200"></div>
@@ -268,7 +314,7 @@ export function PracticeCard({
           )}
 
           {/* Dictation mode label */}
-          {isDictation && !showResult && (
+          {isDictation && !showResult && !isMultipleChoice && (
             <div className="text-center">
               <p className="text-sm text-slate-400">
                 请听音频，在输入框中填写听到的单词
@@ -276,13 +322,17 @@ export function PracticeCard({
             </div>
           )}
 
-          {/* English Sentence with Blanks / Dictation Inputs */}
-          <div className={`text-center text-xl leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}>
-            {isDictation && !showResult ? renderDictationInputs() : renderSentenceWithBlanks()}
+          {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options */}
+          <div className={`${isMultipleChoice ? '' : `text-center text-xl leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
+            {isMultipleChoice
+              ? renderChoiceOptions()
+              : isDictation && !showResult
+                ? renderDictationInputs()
+                : renderSentenceWithBlanks()}
           </div>
 
           {/* Hints */}
-          {!showResult && !isDictation && (
+          {!showResult && !isDictation && !isMultipleChoice && (
             <div className="flex flex-wrap gap-2 justify-center">
               {sentence.blanks.map((blank, idx) => (
                 blank.hint && (
@@ -337,15 +387,16 @@ export function PracticeCard({
         {/* Footer / Actions */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           {!showResult ? (
-            <Button 
-              onClick={onCheck}
+            <Button
+              onClick={() => isMultipleChoice ? onCheck(selectedChoiceId || undefined) : onCheck()}
+              disabled={isMultipleChoice && !selectedChoiceId}
               className="w-full gap-2"
               size="lg"
             >
               提交答案
             </Button>
           ) : isCorrect ? (
-            <Button 
+            <Button
               onClick={onNext}
               className="w-full gap-2 bg-green-600 hover:bg-green-700"
               size="lg"
@@ -353,8 +404,18 @@ export function PracticeCard({
               下一题
               <ArrowRight className="w-4 h-4" />
             </Button>
+          ) : isMultipleChoice ? (
+            <Button
+              onClick={onNext}
+              variant="outline"
+              className="w-full gap-2"
+              size="lg"
+            >
+              下一题
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           ) : (
-            <Button 
+            <Button
               onClick={onRetry}
               variant="outline"
               className="w-full gap-2"

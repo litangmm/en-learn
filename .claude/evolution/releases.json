@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.11.0",
+      "tag": "v0.11.0",
+      "commit": "ae2b826",
+      "date": "2026-05-09T11:09:50.928Z",
+      "iterationId": "iter-004",
+      "title": "专注模式（全屏无干扰 UI）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.10.0",
       "tag": "v0.10.0",
       "commit": "ab247bd",

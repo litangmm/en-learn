@@ -16,6 +16,8 @@ import { DataManager } from '@/components/DataManager';
 import { SmartReview } from '@/components/SmartReview';
 import { MobileNav } from '@/components/MobileNav';
 import { XPBar } from '@/components/XPBar';
+import { StreakFeedback } from '@/components/StreakFeedback';
+import { XPGainPopup } from '@/components/XPGainPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -49,6 +51,7 @@ function App() {
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -75,7 +78,7 @@ function App() {
   } = usePractice(dictionaryId, practiceSentenceIds);
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
-  const { profile, addXP } = useXP();
+  const { profile, addXP, streak, recordCorrectAnswer, recordWrongAnswer, resetStreak } = useXP();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -148,12 +151,23 @@ function App() {
       const sentenceId = currentSentence.id;
       if (!awardedXPRef.current.has(sentenceId)) {
         awardedXPRef.current.add(sentenceId);
+        recordCorrectAnswer();
         const baseXP = practiceMode === 'multiple-choice' ? 8 : practiceMode === 'sentence-reorder' ? 12 : 10;
         const firstTry = state.attempts === 1;
-        addXP(baseXP, firstTry);
+        const { finalXP, multiplier } = addXP(baseXP, firstTry);
+        requestAnimationFrame(() => {
+          setXpGainTrigger({ amount: finalXP, multiplier, key: Date.now() });
+        });
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer]);
+
+  // Reset streak on wrong answer
+  useEffect(() => {
+    if (state.showResult && !state.isCorrect) {
+      recordWrongAnswer();
+    }
+  }, [state.showResult, state.isCorrect, recordWrongAnswer]);
   useEffect(() => {
     if (!isReviewMode) {
       processedReviewRef.current.clear();
@@ -206,6 +220,7 @@ function App() {
     setPracticeSentenceIds(undefined);
     setIsReviewMode(false);
     awardedXPRef.current.clear();
+    resetStreak();
   };
 
   // Check for active session on mount
@@ -363,6 +378,7 @@ function App() {
             {!state.isComplete && view === 'practice' && (
               <div className="flex items-center gap-3 mr-2">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
+                <StreakFeedback streak={streak} />
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
                 </div>
@@ -460,6 +476,7 @@ function App() {
                 第 {currentQuestion}/{totalQuestions} 题
               </span>
               <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
+              <StreakFeedback streak={streak} />
               <span className="text-sm text-slate-500">
                 得分: {state.score}
               </span>
@@ -529,7 +546,7 @@ function App() {
           onBack={handleBackFromSmartReview}
         />
       ) : (
-        <main className={`max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
+        <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {!state.isComplete ? (
             <>
               {isMobile && view === 'practice' && (
@@ -618,6 +635,14 @@ function App() {
                     听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
                   </p>
                 </div>
+              )}
+              {xpGainTrigger && (
+                <XPGainPopup
+                  amount={xpGainTrigger.amount}
+                  multiplier={xpGainTrigger.multiplier}
+                  visible={true}
+                  triggerKey={xpGainTrigger.key}
+                />
               )}
             </>
           ) : (

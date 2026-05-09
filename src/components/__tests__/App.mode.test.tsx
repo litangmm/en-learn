@@ -47,6 +47,21 @@ vi.mock('@/hooks/useSpeech', () => ({
   useSpeech: vi.fn(() => ({
     speak: mockSpeak,
     isSpeaking: false,
+    playbackRate: 1.0,
+    setPlaybackRate: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useXP', () => ({
+  useXP: vi.fn(() => ({
+    profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
+    addXP: vi.fn(),
+    resetXPProfile: vi.fn(),
+    streak: 0,
+    maxStreakReached: 0,
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    resetStreak: vi.fn(),
   })),
 }));
 

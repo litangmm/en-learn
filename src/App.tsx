@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy, Award } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -20,11 +20,14 @@ import { StreakFeedback } from '@/components/StreakFeedback';
 import { XPGainPopup } from '@/components/XPGainPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
+import { useBadges } from '@/hooks/useBadges';
 import { DailyChallengePanel } from '@/components/DailyChallengePanel';
+import { BadgePanel } from '@/components/BadgePanel';
+import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { PracticeMode } from '@/data/types';
+import type { PracticeMode, BadgeDefinition } from '@/data/types';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -37,7 +40,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges';
 
 function App() {
   const isMobile = useIsMobile();
@@ -54,6 +57,7 @@ function App() {
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
+  const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -82,6 +86,7 @@ function App() {
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
   const { profile, addXP, streak, recordCorrectAnswer, recordWrongAnswer, resetStreak } = useXP();
   const { state: challengeState, unclaimedCount, trackActivity, claimReward } = useDailyChallenges();
+  const { unlockedIds, unlockedCount, trackProgress, checkBadges, getBadgeProgressPercent } = useBadges();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -107,10 +112,12 @@ function App() {
   const dialogRef = useRef({ showConfirmDialog, showRecoveryDialog });
   const nextSentenceRef = useRef(nextSentence);
   const isFocusModeRef = useRef(isFocusMode);
+  const badgesRef = useRef({ trackProgress, checkBadges });
 
   useEffect(() => { stateRef.current = state; }, [state]);
   useEffect(() => { isFocusModeRef.current = isFocusMode; }, [isFocusMode]);
   useEffect(() => { viewRef.current = view; }, [view]);
+  useEffect(() => { badgesRef.current = { trackProgress, checkBadges }; }, [trackProgress, checkBadges]);
   useEffect(() => { dialogRef.current = { showConfirmDialog, showRecoveryDialog }; }, [showConfirmDialog, showRecoveryDialog]);
   useEffect(() => { nextSentenceRef.current = nextSentence; }, [nextSentence]);
 
@@ -164,9 +171,17 @@ function App() {
         trackActivity('answer');
         trackActivity('correct');
         trackActivity('streak', streak + 1);
+        badgesRef.current.trackProgress('correct');
+        badgesRef.current.trackProgress('streak', streak + 1);
+        const newBadges = badgesRef.current.checkBadges(profile.currentLevel);
+        if (newBadges.length > 0) {
+          requestAnimationFrame(() => {
+            setBadgeUnlockTrigger({ badge: newBadges[0], key: Date.now() });
+          });
+        }
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel]);
 
   // Reset streak on wrong answer
   useEffect(() => {
@@ -174,8 +189,23 @@ function App() {
       recordWrongAnswer();
       trackActivity('answer');
       trackActivity('streak', 0);
+      badgesRef.current.trackProgress('wrong');
+      badgesRef.current.trackProgress('streak', 0);
+      badgesRef.current.checkBadges(profile.currentLevel);
     }
-  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity]);
+  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity, profile.currentLevel]);
+  // Session completion badge tracking
+  useEffect(() => {
+    if (state.isComplete) {
+      badgesRef.current.trackProgress('session_complete');
+      const accuracy = totalQuestions > 0 ? (state.score / (totalQuestions * 10)) * 100 : 0;
+      if (accuracy === 100) {
+        badgesRef.current.trackProgress('perfect_session');
+      }
+      badgesRef.current.checkBadges(profile.currentLevel);
+    }
+  }, [state.isComplete, totalQuestions, state.score, profile.currentLevel]);
+
   useEffect(() => {
     if (!isReviewMode) {
       processedReviewRef.current.clear();
@@ -186,9 +216,11 @@ function App() {
       if (!processedReviewRef.current.has(sentenceId)) {
         processedReviewRef.current.add(sentenceId);
         storage.scheduleNextReview(sentenceId, state.isCorrect);
+        badgesRef.current.trackProgress('review');
+        badgesRef.current.checkBadges(profile.currentLevel);
       }
     }
-  }, [isReviewMode, state.showResult, currentSentence, state.isCorrect]);
+  }, [isReviewMode, state.showResult, currentSentence, state.isCorrect, profile.currentLevel]);
 
   const handleSpeak = () => {
     if (currentSentence) {
@@ -310,6 +342,14 @@ function App() {
     setView('practice');
   };
 
+  const handleOpenBadges = () => {
+    setView('badges');
+  };
+
+  const handleBackFromBadges = () => {
+    setView('practice');
+  };
+
   const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
@@ -341,6 +381,9 @@ function App() {
         break;
       case 'challenges':
         setView('challenges');
+        break;
+      case 'badges':
+        setView('badges');
         break;
     }
   };
@@ -412,6 +455,23 @@ function App() {
                       className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
                     >
                       {unclaimedCount}
+                    </Badge>
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleOpenBadges}
+                  className="relative text-slate-500 gap-1 p-1"
+                  data-testid="badge-award-header"
+                >
+                  <Award className="w-4 h-4" />
+                  {unlockedCount > 0 && (
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                    >
+                      {unlockedCount}
                     </Badge>
                   )}
                 </Button>
@@ -499,6 +559,23 @@ function App() {
                     className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
                   >
                     {unclaimedCount}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenBadges}
+                className="relative text-slate-500 gap-2"
+              >
+                <Award className="w-4 h-4" />
+                成就
+                {unlockedCount > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                  >
+                    {unlockedCount}
                   </Badge>
                 )}
               </Button>
@@ -603,6 +680,12 @@ function App() {
           challenges={challengeState.challenges}
           onClaim={claimReward}
           onBack={handleBackFromChallenges}
+        />
+      ) : view === 'badges' ? (
+        <BadgePanel
+          unlockedIds={unlockedIds}
+          getProgress={getBadgeProgressPercent}
+          onBack={handleBackFromBadges}
         />
       ) : (
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
@@ -726,6 +809,8 @@ function App() {
           reviewDueCount={reviewDueCount}
         />
       )}
+
+      <BadgeUnlockToast badge={badgeUnlockTrigger?.badge ?? null} onDismiss={() => setBadgeUnlockTrigger(null)} />
     </div>
   );
 }

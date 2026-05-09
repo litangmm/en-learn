@@ -80,6 +80,27 @@ vi.mock('@/hooks/useDailyChallenges', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useBadges', () => ({
+  useBadges: vi.fn(() => ({
+    unlockedIds: new Set(),
+    unlockedCount: 0,
+    badgeProgress: {
+      totalAnswered: 0,
+      totalCorrect: 0,
+      totalSessions: 0,
+      maxStreakEver: 0,
+      perfectSessions: 0,
+      totalReviews: 0,
+      totalChallengesCompleted: 0,
+    },
+    trackProgress: vi.fn(),
+    checkBadges: vi.fn(() => []),
+    getBadgeProgressPercent: vi.fn(() => 0),
+    resetBadges: vi.fn(),
+    BADGE_DEFINITIONS: [],
+  })),
+}));
+
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),

@@ -12,7 +12,7 @@ import {
   Target,
   type LucideIcon,
 } from 'lucide-react';
-import type { BadgeDefinition } from '@/services/storage';
+import type { BadgeDefinition } from '@/data/types';
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Footprints,

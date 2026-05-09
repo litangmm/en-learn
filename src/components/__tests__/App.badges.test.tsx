@@ -8,12 +8,15 @@ const mockCheckAnswer = vi.fn();
 const mockNextSentence = vi.fn();
 const mockRetry = vi.fn();
 const mockReset = vi.fn();
-const mockAddXP = vi.fn(() => ({ finalXP: 15, multiplier: 1.0, streak: 0 }));
 const mockSpeak = vi.fn();
+
+const mockTrackProgress = vi.fn();
+const mockCheckBadges = vi.fn(() => []);
 
 let mockShowResult = false;
 let mockIsCorrect = false;
 let mockAttempts = 0;
+let mockUnlockedCount = 0;
 
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
@@ -68,7 +71,7 @@ vi.mock('@/hooks/useSpeech', () => ({
 vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
-    addXP: mockAddXP,
+    addXP: vi.fn(() => ({ finalXP: 15, multiplier: 1.0, streak: 0 })),
     resetXPProfile: vi.fn(),
     streak: 0,
     maxStreakReached: 0,
@@ -93,8 +96,8 @@ vi.mock('@/hooks/useDailyChallenges', () => ({
 
 vi.mock('@/hooks/useBadges', () => ({
   useBadges: vi.fn(() => ({
-    unlockedIds: new Set(),
-    unlockedCount: 0,
+    unlockedIds: new Set<string>(),
+    unlockedCount: mockUnlockedCount,
     badgeProgress: {
       totalAnswered: 0,
       totalCorrect: 0,
@@ -104,12 +107,27 @@ vi.mock('@/hooks/useBadges', () => ({
       totalReviews: 0,
       totalChallengesCompleted: 0,
     },
-    trackProgress: vi.fn(),
-    checkBadges: vi.fn(() => []),
+    trackProgress: mockTrackProgress,
+    checkBadges: mockCheckBadges,
     getBadgeProgressPercent: vi.fn(() => 0),
     resetBadges: vi.fn(),
     BADGE_DEFINITIONS: [],
   })),
+}));
+
+vi.mock('@/components/BadgePanel', () => ({
+  BadgePanel: vi.fn(({ onBack }: { onBack: () => void }) => (
+    <div data-testid="badge-panel">
+      <span>Badge Panel</span>
+      <button onClick={onBack} data-testid="badge-back-button">
+        返回
+      </button>
+    </div>
+  )),
+}));
+
+vi.mock('@/components/BadgeUnlockToast', () => ({
+  BadgeUnlockToast: vi.fn(() => <div data-testid="badge-unlock-toast" />),
 }));
 
 vi.mock('@/services/storage', () => ({
@@ -124,115 +142,118 @@ vi.mock('@/services/storage', () => ({
     getMistakes: vi.fn(() => []),
     addHistory: vi.fn(),
     getHistory: vi.fn(() => []),
-    exportAllData: vi.fn(() => ({ version: 1, exportedAt: '', data: { session: null, mistakes: [], history: [] } })),
-    importAllData: vi.fn(() => ({ success: true, importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 }, message: '' })),
+    exportAllData: vi.fn(() => ({
+      version: 1,
+      exportedAt: '',
+      data: { session: null, mistakes: [], history: [] },
+    })),
+    importAllData: vi.fn(() => ({
+      success: true,
+      importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 },
+      message: '',
+    })),
     getReviewQueue: vi.fn(() => []),
     scheduleNextReview: vi.fn(),
-    getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
+    getXPProfile: vi.fn(() => ({
+      totalXP: 0,
+      currentLevel: 1,
+      levelProgress: 0,
+    })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
   },
 }));
 
 vi.mock('@/data/dictionaries', () => ({
-  getDictionaryById: vi.fn(() => ({ id: 'cet4', name: 'CET-4', description: '', sentenceCount: 100 })),
-  dictionaries: [{ id: 'cet4', name: 'CET-4', description: '', sentenceCount: 100 }],
+  getDictionaryById: vi.fn(() => ({
+    id: 'cet4',
+    name: 'CET-4',
+    description: '',
+    sentenceCount: 100,
+  })),
+  dictionaries: [
+    { id: 'cet4', name: 'CET-4', description: '', sentenceCount: 100 },
+  ],
 }));
 
 vi.mock('@/data/loader', () => ({
   loadDictionary: vi.fn(() => Promise.resolve([])),
 }));
 
-describe('App XP integration', () => {
+describe('App badge integration', () => {
   beforeEach(() => {
     cleanup();
     vi.clearAllMocks();
     mockShowResult = false;
     mockIsCorrect = false;
     mockAttempts = 0;
+    mockUnlockedCount = 0;
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it('renders XPBar in header with correct level', () => {
+  it('(a) Award button renders in header score area', () => {
     render(<App />);
-    expect(screen.getByText('Lv.2')).toBeInTheDocument();
+    const awardButton = screen.getByTestId('badge-award-header');
+    expect(awardButton).toBeInTheDocument();
   });
 
-  it('calls addXP on correct answer with base XP and firstTry bonus', () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).toHaveBeenCalledWith(10, true);
-  });
-
-  it('calls addXP without firstTry bonus on multiple attempts', () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 2;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).toHaveBeenCalledWith(10, false);
-  });
-
-  it('does not award XP when answer is wrong', () => {
-    mockShowResult = true;
-    mockIsCorrect = false;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).not.toHaveBeenCalled();
-  });
-
-  it('does not double-award XP for same question', () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).toHaveBeenCalledTimes(1);
-  });
-
-  it('clears award tracking on reset', () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).toHaveBeenCalledTimes(1);
-
-    // Click reset button
-    const resetButton = screen.getByText('重置');
-    fireEvent.click(resetButton);
-
-    expect(mockReset).toHaveBeenCalled();
-
-    // After reset, same question should be awardable again
-    // (but we'd need to re-render with fresh state to verify)
-  });
-
-  it('renders XPBar in focus mode floating bar', () => {
+  it('(b) Unlocked count badge shows correct number', () => {
+    mockUnlockedCount = 3;
     render(<App />);
+    const awardButton = screen.getByTestId('badge-award-header');
+    expect(awardButton).toHaveTextContent('3');
+  });
 
-    // Enter focus mode
-    fireEvent.click(screen.getByText('专注模式'));
+  it('(c) Clicking award switches to badges view', () => {
+    render(<App />);
+    fireEvent.click(screen.getByTestId('badge-award-header'));
+    expect(screen.getByTestId('badge-panel')).toBeInTheDocument();
+  });
 
-    // XPBar should be visible in floating bar
-    expect(screen.getByText('Lv.2')).toBeInTheDocument();
+  it('(d) BadgePanel receives correct props (or is in document)', () => {
+    render(<App />);
+    fireEvent.click(screen.getByTestId('badge-award-header'));
+    expect(screen.getByTestId('badge-panel')).toBeInTheDocument();
+    expect(screen.getByText('Badge Panel')).toBeInTheDocument();
+  });
+
+  it('(e) trackProgress called on correct answer with correct and streak', () => {
+    mockShowResult = true;
+    mockIsCorrect = true;
+    mockAttempts = 1;
+
+    const { rerender } = render(<App />);
+    rerender(<App />);
+
+    expect(mockTrackProgress).toHaveBeenCalledWith('correct');
+    expect(mockTrackProgress).toHaveBeenCalledWith('streak', 1);
+  });
+
+  it('(f) checkBadges called on correct answer with current level', () => {
+    mockShowResult = true;
+    mockIsCorrect = true;
+    mockAttempts = 1;
+
+    const { rerender } = render(<App />);
+    rerender(<App />);
+
+    expect(mockCheckBadges).toHaveBeenCalledWith(2);
+  });
+
+  it('(g) Back button from badges returns to practice', () => {
+    render(<App />);
+    // Switch to badges view
+    fireEvent.click(screen.getByTestId('badge-award-header'));
+    expect(screen.getByTestId('badge-panel')).toBeInTheDocument();
+
+    // Click back
+    fireEvent.click(screen.getByTestId('badge-back-button'));
+
+    // Should return to practice view (score text visible)
+    expect(screen.getByText('得分: 0')).toBeInTheDocument();
+    expect(screen.queryByTestId('badge-panel')).not.toBeInTheDocument();
   });
 });

@@ -8,6 +8,11 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-13)
+- **状态**: 本次未进行 brainstorm（epic-002 仍有 pending iterations）
+- **原因**: epic-002 仍有 pending iteration（iter-005 连词成句），直接继续执行
+- **观察**: epic-002 iter-004 专注模式已完成，仅剩 iter-005。多个 Agent 连续未被选中（最长 11 次），下次 epic-002 完成后 brainstorm 时需重点关注这些 Agent 的反思记录和策略调整
+
 ### 2026-05-09 (cycle-2026-05-09-9)
 - **状态**: 本次未进行 brainstorm（epic-002 仍有 pending iterations）
 - **原因**: epic-002 仍有 pending iterations（iter-004, iter-005），直接继续执行。但收到两条高优先级战略指令（dir-urgent-002），要求在 iter-003 后、iter-004 前插入两个紧急迭代

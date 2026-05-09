@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-13)
+- **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **技术审查通过**
+- **技术决策**:
+  - isFocusMode 状态在 App.tsx 顶层管理，通过 props 向下传递至 PracticeCard，状态流清晰
+  - 条件渲染集中在 App.tsx 的 return 语句中，使用 isFocusMode 统一控制多个组件的显隐，避免分散的条件判断
+  - isFocusModeRef 用于 ESC 键事件监听，避免闭包捕获旧值，复用了 bugfix-001 的键盘快捷键实现模式
+  - PracticeCard 的 isFocusMode prop 为可选（默认 false），不破坏现有调用，向后兼容
+  - 专注模式下 PracticeCard 的样式变更通过条件类名实现（p-4 md:p-6 vs p-6 md:p-10），无额外 CSS 文件
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 262/262 unit tests passed
+- **观察**: App.tsx 的条件渲染复杂度继续增加——目前管理 6 个视图 + 3 种练习模式 + 专注模式状态 + 对话框状态，建议在 epic-002 完成后进行导航配置提取和组件渲染策略重构
+
 ### 2026-05-09 (cycle-2026-05-09-9)
 - **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **技术审查通过**
 - **技术决策**:

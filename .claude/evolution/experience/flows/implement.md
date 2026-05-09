@@ -8,6 +8,18 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-13)
+- **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **完整实现**
+- **实现质量**: 高 — 状态管理简洁，条件渲染清晰
+- **关键决策**:
+  - isFocusMode 状态与 toggleFocusMode 回调在 App.tsx 顶层管理，通过 props 向下传递
+  - 专注模式入口按钮使用 Eye 图标（lucide-react），位于练习模式 ToggleGroup 旁，视觉层级清晰
+  - 条件渲染通过 isFocusMode 统一控制：Header、ToggleGroup、bottom hint、MobileNav 全部隐藏，main content 区域使用更大垂直 padding
+  - 极简悬浮进度条固定在顶部，显示当前题目序号、分数和退出按钮，使用 X 图标
+  - ESC 键监听使用 isFocusModeRef 避免 stale closure，仅在 isFocusMode=true 时处理，INPUT/TEXTAREA 中跳过
+  - PracticeCard 的 isFocusMode prop 为可选（默认 false），专注模式下：简化 header（隐藏题号/尝试次数徽章）、增大内边距（p-6 md:p-10）、增大字号（中文 text-lg md:text-xl、英文 text-xl md:text-2xl）、更干净的卡片样式（shadow-xl border-slate-100）
+- **观察**: 零新增依赖，零新增组件（除测试外），零构建体积增长。专注模式作为「视图状态」的设计避免了路由变更或页面跳转的复杂度
+
 ### 2026-05-09 (cycle-2026-05-09-9)
 - **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **完整实现**
 - **实现质量**: 高 — 状态机扩展自然，UI 条件渲染清晰

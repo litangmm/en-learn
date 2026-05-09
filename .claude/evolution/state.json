@@ -1,48 +1,20 @@
 {
   "version": "1.0",
-  "status": "TEST",
-  "commitHash": "ab247bd79eb8453fc66c6ae47c555ac3300100b0",
-  "lastRun": "2026-05-09T18:35:00.000Z",
-  "cycleCount": 13,
+  "status": "IDLE",
+  "commitHash": "ae2b826d8a8e1a9e8d7f6c5b4a3928170654f3e2",
+  "lastRun": "2026-05-09T19:30:00.000Z",
+  "cycleCount": 14,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": {
+  "currentCycle": null,
+  "previousCycle": {
     "id": "2026-05-09-13",
     "mode": "vision",
-    "stage": "IMPLEMENT",
+    "stage": "REPORT",
     "startedAt": "2026-05-09T18:35:00.000Z",
     "plan": {
       "iterationId": "iter-004",
       "iterationTitle": "专注模式（全屏无干扰 UI）",
-      "scope": "frontend-only",
-      "steps": [
-        "Step 1: App.tsx — add `isFocusMode` state (default false) and `toggleFocusMode` callback. Add a '专注模式' entry button next to the practice mode ToggleGroup, using a Focus/Eye icon from lucide-react.",
-        "Step 2: App.tsx — implement focus mode conditional rendering. When `isFocusMode=true`: hide the full Header (logo, nav buttons, DictionarySelector, reset, score), hide the practice mode ToggleGroup, hide the bottom hint text, hide MobileNav. Render a minimal floating top bar showing only current progress (第 X/Y 题), score, and an exit focus mode button.",
-        "Step 3: App.tsx — add ESC key global listener to exit focus mode (only active when isFocusMode is true). Prevent interfering with input fields.",
-        "Step 4: PracticeCard.tsx — add optional `isFocusMode` prop (default false). When true: simplify header (hide question badge and attempts badge, keep only audio and speed controls), increase content padding and font sizes for immersion, use a cleaner card border/shadow style.",
-        "Step 5: App.tsx — pass `isFocusMode` prop to PracticeCard. Ensure main content area uses larger vertical padding in focus mode for immersive feel.",
-        "Step 6: Create `src/components/__tests__/App.focus.test.tsx` — test coverage: focus mode entry button renders; clicking enters focus mode (Header/ToggleGroup/MobileNav/hint hidden, minimal bar visible); ESC key exits focus mode; exiting restores normal UI; PracticeCard renders and is interactive in focus mode.",
-        "Step 7: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all 256+ existing tests still pass without regression."
-      ],
-      "filesToModify": [
-        "src/App.tsx",
-        "src/components/PracticeCard.tsx"
-      ],
-      "filesToCreate": [
-        "src/components/__tests__/App.focus.test.tsx"
-      ],
-      "dependencies": [],
-      "testStrategy": "Focus mode tests verify entry button rendering, state toggle on click, conditional hiding of Header/ToggleGroup/bottom hint/MobileNav, minimal progress bar visibility in focus mode, ESC key exit behavior, and PracticeCard interactivity within focus mode. All existing tests must pass without regression. Full lint + build + test validation."
-    }
-  },
-  "previousCycle": {
-    "id": "2026-05-09-11",
-    "mode": "vision",
-    "stage": "REPORT",
-    "startedAt": "2026-05-09T17:45:00.000Z",
-    "plan": {
-      "iterationId": "iter-003b",
-      "iterationTitle": "纯听写模式重新设计",
       "scope": "frontend-only",
       "steps": [],
       "filesToModify": [],
@@ -53,10 +25,10 @@
     "testResults": {
       "lint": "passed (0 errors, 3 pre-existing warnings)",
       "build": "passed",
-      "unitTests": "256/256 passed (25 test files)",
-      "e2e": "skipped - not last pending iteration (2 remaining: iter-004, iter-005)"
+      "unitTests": "262/262 passed (26 test files)",
+      "e2e": "skipped - not last pending iteration (1 remaining: iter-005)"
     },
-    "summary": "REPORT stage completed — epic-002 iter-003b 纯听写模式重新设计报告已生成，经验档案已更新，状态归档为 IDLE"
+    "summary": "REPORT stage completed — epic-002 iter-004 专注模式（全屏无干扰 UI）报告已生成，经验档案已更新，状态归档为 IDLE"
   },
   "currentEpic": {
     "id": "epic-002",
@@ -152,14 +124,21 @@
   },
   "history": [
     {
-      "id": "2026-05-09-11",
+      "id": "2026-05-09-13",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-004 专注模式（全屏无干扰 UI）— 262/262 测试通过，build 成功，v0.11.0 部署完成；经验档案已更新"
+    },
+    {
+      "id": "2026-05-09-12",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
       "summary": "epic-002 iter-003b 纯听写模式重新设计 — 256/256 测试通过，build 成功，v0.10.0 部署完成；战略指令 dir-urgent-002 两个紧急迭代全部收官"
     },
     {
-      "id": "2026-05-09-10",
+      "id": "2026-05-09-11",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
@@ -273,11 +252,11 @@
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
     "productionUrl": "https://en-learn-9l3nqgvp6-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-09T10:17:07.000Z",
-    "version": "v0.10.0",
-    "iterationId": "iter-003b",
-    "iterationTitle": "纯听写模式重新设计",
-    "gitTag": "v0.10.0",
+    "deployedAt": "2026-05-09T11:09:50.928Z",
+    "version": "v0.11.0",
+    "iterationId": "iter-004",
+    "iterationTitle": "专注模式（全屏无干扰 UI）",
+    "gitTag": "v0.11.0",
     "gitTagPushed": false,
     "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
   }

@@ -7,6 +7,12 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-13)
+- **提案 Epic**: epic-004「PWA 化与离线优先学习」
+- **结果**: 未被选中（epic-002 iter-004 完成）
+- **当前状态**: 连续 11 个 cycle 未被选中
+- **观察**: iter-004 的专注模式条件渲染进一步增加了 App.tsx 的复杂度——新增 isFocusMode 状态和 4 组条件渲染（Header、ToggleGroup、hint、MobileNav 的显隐控制）。ARCH 此前多次提出的「App.tsx 导航复杂度」问题持续恶化。epic-002 仅剩 iter-005，完成后 ARCH 应强烈推动导航配置提取和 PracticeCard 模式渲染的策略模式重构，否则后续 Epic（尤其是 epic-003 游戏化、epic-004 PWA）将在混乱的导航基础上叠加更多复杂度
+
 ### 2026-05-09 (cycle-2026-05-09-11)
 - **提案 Epic**: epic-004「PWA 化与离线优先学习」
 - **结果**: 未被选中（epic-002 iter-003b 完成）

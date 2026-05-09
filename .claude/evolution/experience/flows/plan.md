@@ -8,6 +8,14 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-13)
+- **迭代**: epic-002 iter-004「专注模式（全屏无干扰 UI）」—— **完整执行**
+- **计划步骤**: 7 步全部完成，涵盖状态管理、专注模式入口按钮、条件渲染（隐藏 Header/ToggleGroup/hint/MobileNav）、极简进度条、ESC 键退出、PracticeCard 沉浸优化、测试覆盖、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/App.tsx, src/components/PracticeCard.tsx
+  - 创建: src/components/__tests__/App.focus.test.tsx
+- **观察**: 计划清晰可执行，专注模式作为「视图状态」而非独立页面，条件渲染逻辑集中在 App.tsx，PracticeCard 通过可选 prop 实现沉浸式样式。ESC 键退出复用了 bugfix-001 的 ref 防 stale closure 模式
+
 ### 2026-05-09 (cycle-2026-05-09-9)
 - **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **完整执行**
 - **计划步骤**: 6 步全部完成，涵盖类型定义、hook 扩展、组件扩展、App 集成、单元测试、全量验证

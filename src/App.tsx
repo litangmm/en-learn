@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History } from 'lucide-react';
+import { Headphones, BookOpen, History, Database } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { PracticeCard } from '@/components/PracticeCard';
@@ -11,6 +11,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
 import { MistakeBook } from '@/components/MistakeBook';
 import { HistoryView } from '@/components/HistoryView';
+import { DataManager } from '@/components/DataManager';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -25,7 +26,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book' | 'history';
+type View = 'practice' | 'mistake-book' | 'history' | 'data';
 
 function App() {
   const [dictionaryId, setDictionaryId] = useState('cet4');
@@ -150,6 +151,16 @@ function App() {
     setHistoryCount(storage.getHistoryCount());
   };
 
+  const handleOpenDataManager = () => {
+    setView('data');
+  };
+
+  const handleBackFromDataManager = () => {
+    setView('practice');
+    setHistoryCount(storage.getHistoryCount());
+    setMistakeCount(storage.getMistakeCount());
+  };
+
   const currentDict = getDictionaryById(dictionaryId);
 
   // Loading state
@@ -237,6 +248,15 @@ function App() {
                 </Badge>
               )}
             </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleOpenDataManager}
+              className="text-slate-500 gap-2"
+            >
+              <Database className="w-4 h-4" />
+              数据管理
+            </Button>
             {view === 'practice' && (
               <>
                 <DictionarySelector
@@ -297,6 +317,8 @@ function App() {
         />
       ) : view === 'history' ? (
         <HistoryView onBack={handleBackFromHistory} />
+      ) : view === 'data' ? (
+        <DataManager onBack={handleBackFromDataManager} />
       ) : (
         <main className="max-w-4xl mx-auto px-4 py-8">
           {!state.isComplete ? (

@@ -449,6 +449,126 @@ export const StorageService = {
   getHistoryCount(): number {
     return loadHistory().length;
   },
+
+  exportAllData(): ExportData {
+    return {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      data: {
+        session: this.loadSession(),
+        mistakes: loadMistakes(),
+        history: loadHistory(),
+      },
+    };
+  },
+
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number } } {
+    if (!isValidExportData(data)) {
+      return {
+        success: false,
+        message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
+        importedCounts: { session: 0, mistakes: 0, history: 0 },
+      };
+    }
+
+    const { session, mistakes, history } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0 };
+
+    try {
+      if (session !== null) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        importedCounts.session = 1;
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+      }
+
+      if (mistakes.length > 0) {
+        localStorage.setItem(MISTAKES_KEY, JSON.stringify(mistakes));
+        importedCounts.mistakes = mistakes.length;
+      } else {
+        localStorage.removeItem(MISTAKES_KEY);
+      }
+
+      if (history.length > 0) {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        importedCounts.history = history.length;
+      } else {
+        localStorage.removeItem(HISTORY_KEY);
+      }
+
+      const parts: string[] = [];
+      if (importedCounts.session > 0) parts.push('1 个会话');
+      if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
+      if (importedCounts.history > 0) parts.push(`${importedCounts.history} 条历史记录`);
+
+      const message = parts.length > 0
+        ? `导入成功：共导入 ${parts.join('、')}。`
+        : '导入成功：备份文件中不含任何数据，已清空现有数据。';
+
+      return { success: true, message, importedCounts };
+    } catch (error) {
+      return {
+        success: false,
+        message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
+        importedCounts: { session: 0, mistakes: 0, history: 0 },
+      };
+    }
+  },
 } as const;
+
+export interface ExportData {
+  version: 1;
+  exportedAt: string;
+  data: {
+    session: StorageSchemaV2 | null;
+    mistakes: Mistake[];
+    history: SessionHistory[];
+  };
+}
+
+function isValidExportData(data: unknown): data is ExportData {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (obj.version !== 1) {
+    return false;
+  }
+
+  if (typeof obj.exportedAt !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.data !== 'object' || obj.data === null) {
+    return false;
+  }
+
+  const dataObj = obj.data as Record<string, unknown>;
+
+  // session can be null or a valid V2 session
+  if (dataObj.session !== null && !isValidV2Session(dataObj.session)) {
+    return false;
+  }
+
+  if (!Array.isArray(dataObj.mistakes)) {
+    return false;
+  }
+
+  if (!dataObj.mistakes.every(isValidMistake)) {
+    return false;
+  }
+
+  if (!Array.isArray(dataObj.history)) {
+    return false;
+  }
+
+  if (!dataObj.history.every(isValidHistory)) {
+    return false;
+  }
+
+  return true;
+}
 
 export const storage = StorageService;

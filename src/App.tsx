@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones } from 'lucide-react';
+import { Headphones, BookOpen } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { PracticeCard } from '@/components/PracticeCard';
@@ -9,7 +9,9 @@ import { ResultModal } from '@/components/ResultModal';
 import { DictionarySelector } from '@/components/DictionarySelector';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
+import { MistakeBook } from '@/components/MistakeBook';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -22,11 +24,16 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
+type View = 'practice' | 'mistake-book';
+
 function App() {
   const [dictionaryId, setDictionaryId] = useState('cet4');
   const [pendingDictionaryId, setPendingDictionaryId] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showRecoveryDialog, setShowRecoveryDialog] = useState(false);
+  const [view, setView] = useState<View>('practice');
+  const [practiceSentenceIds, setPracticeSentenceIds] = useState<string[] | undefined>();
+  const [mistakeCount, setMistakeCount] = useState(storage.getMistakeCount());
 
   const {
     state,
@@ -42,7 +49,7 @@ function App() {
     initializeInputs,
     isLoading,
     error,
-  } = usePractice(dictionaryId);
+  } = usePractice(dictionaryId, practiceSentenceIds);
 
   const { speak, isSpeaking } = useSpeech();
 
@@ -80,12 +87,15 @@ function App() {
       storage.clearSession();
       setDictionaryId(pendingDictionaryId);
       setPendingDictionaryId(null);
+      setPracticeSentenceIds(undefined);
+      setView('practice');
     }
     setShowConfirmDialog(false);
   };
 
   const handleRestart = () => {
     reset();
+    setPracticeSentenceIds(undefined);
   };
 
   // Check for active session on mount
@@ -112,15 +122,31 @@ function App() {
     setShowRecoveryDialog(false);
   };
 
+  const handleOpenMistakeBook = () => {
+    setView('mistake-book');
+  };
+
+  const handleBackFromMistakeBook = () => {
+    setView('practice');
+    setMistakeCount(storage.getMistakeCount());
+  };
+
+  const handlePracticeMistakes = (sentenceIds: string[], dictId: string) => {
+    setDictionaryId(dictId);
+    setPracticeSentenceIds(sentenceIds);
+    setView('practice');
+    setMistakeCount(storage.getMistakeCount());
+  };
+
   const currentDict = getDictionaryById(dictionaryId);
 
   // Loading state
-  if (isLoading) {
+  if (isLoading && view === 'practice') {
     return <LoadingScreen dictionaryName={currentDict?.name} />;
   }
 
   // Error state
-  if (error) {
+  if (error && view === 'practice') {
     return (
       <ErrorScreen
         message={error}
@@ -134,7 +160,7 @@ function App() {
   }
 
   // Empty data state
-  if (!currentSentence && !state.isComplete) {
+  if (!currentSentence && !state.isComplete && view === 'practice' && !practiceSentenceIds) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -160,19 +186,40 @@ function App() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            {!state.isComplete && (
+            {!state.isComplete && view === 'practice' && (
               <div className="text-right mr-2">
                 <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
               </div>
             )}
-            <DictionarySelector
-              value={dictionaryId}
-              onChange={handleDictionaryChange}
-              disabled={state.isComplete}
-            />
-            <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
-              重置
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleOpenMistakeBook}
+              className="relative text-slate-500 gap-2"
+            >
+              <BookOpen className="w-4 h-4" />
+              错题本
+              {mistakeCount > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                >
+                  {mistakeCount}
+                </Badge>
+              )}
             </Button>
+            {view === 'practice' && (
+              <>
+                <DictionarySelector
+                  value={dictionaryId}
+                  onChange={handleDictionaryChange}
+                  disabled={state.isComplete}
+                />
+                <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
+                  重置
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -214,46 +261,53 @@ function App() {
       </Dialog>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        {!state.isComplete ? (
-          <>
-            <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
-            <AnimatePresence mode="wait">
-              {currentSentence && (
-                <PracticeCard
-                  key={currentSentence.id}
-                  sentence={currentSentence}
-                  inputs={state.currentInputs}
-                  showResult={state.showResult}
-                  isCorrect={state.isCorrect}
-                  attempts={state.attempts}
-                  isSpeaking={isSpeaking}
-                  onInputChange={setInput}
-                  onCheck={checkAnswer}
-                  onNext={nextSentence}
-                  onRetry={retry}
-                  onSpeak={handleSpeak}
-                />
-              )}
-            </AnimatePresence>
+      {view === 'mistake-book' ? (
+        <MistakeBook
+          onPracticeMistakes={handlePracticeMistakes}
+          onBack={handleBackFromMistakeBook}
+        />
+      ) : (
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          {!state.isComplete ? (
+            <>
+              <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
+              <AnimatePresence mode="wait">
+                {currentSentence && (
+                  <PracticeCard
+                    key={currentSentence.id}
+                    sentence={currentSentence}
+                    inputs={state.currentInputs}
+                    showResult={state.showResult}
+                    isCorrect={state.isCorrect}
+                    attempts={state.attempts}
+                    isSpeaking={isSpeaking}
+                    onInputChange={setInput}
+                    onCheck={checkAnswer}
+                    onNext={nextSentence}
+                    onRetry={retry}
+                    onSpeak={handleSpeak}
+                  />
+                )}
+              </AnimatePresence>
 
-            <div className="mt-8 text-center">
-              <p className="text-sm text-slate-400">
-                听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
-              </p>
-            </div>
-          </>
-        ) : (
-          <AnimatePresence>
-            <ResultModal
-              score={state.score}
-              totalQuestions={totalQuestions}
-              userAnswers={state.userAnswers}
-              onRestart={handleRestart}
-            />
-          </AnimatePresence>
-        )}
-      </main>
+              <div className="mt-8 text-center">
+                <p className="text-sm text-slate-400">
+                  听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
+                </p>
+              </div>
+            </>
+          ) : (
+            <AnimatePresence>
+              <ResultModal
+                score={state.score}
+                totalQuestions={totalQuestions}
+                userAnswers={state.userAnswers}
+                onRestart={handleRestart}
+              />
+            </AnimatePresence>
+          )}
+        </main>
+      )}
     </div>
   );
 }

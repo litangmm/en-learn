@@ -17,3 +17,13 @@ export interface Dictionary {
   description: string;
   sentenceCount: number;
 }
+
+export interface Mistake {
+  sentenceId: string;
+  wrongAnswers: string[];
+  correctAnswers: string[];
+  attempts: number;
+  timestamp: number;
+  dictionaryId: string;
+  reviewedCount: number;
+}

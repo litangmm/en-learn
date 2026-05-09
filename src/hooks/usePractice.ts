@@ -10,6 +10,14 @@ export interface UserAnswer {
   attempts: number;
 }
 
+export interface SessionMistake {
+  sentenceId: string;
+  wrongAnswers: string[];
+  correctAnswers: string[] | null;
+  attempts: number;
+  dictionaryId: string;
+}
+
 export interface PracticeState {
   currentIndex: number;
   userAnswers: UserAnswer[];
@@ -21,10 +29,11 @@ export interface PracticeState {
   score: number;
 }
 
-export function usePractice(dictionaryId: string) {
+export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [pendingMistakes, setPendingMistakes] = useState<Record<string, SessionMistake>>({});
 
   const [state, setState] = useState<PracticeState>({
     currentIndex: 0,
@@ -75,15 +84,21 @@ export function usePractice(dictionaryId: string) {
           score: 0,
         });
       }
+      setPendingMistakes({});
     }
   }, [sentences, dictionaryId]);
 
   const shuffledSentences = useMemo(() => {
     if (sentences.length === 0) return [];
+    if (sentenceIds && sentenceIds.length > 0) {
+      const idSet = new Set(sentenceIds);
+      const filtered = sentences.filter((s) => idSet.has(s.id));
+      return filtered.length > 0 ? filtered : sentences.slice(0, 10);
+    }
     // eslint-disable-next-line react-hooks/purity
     const shuffled = [...sentences].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 10);
-  }, [sentences]);
+  }, [sentences, sentenceIds]);
 
   // Debounced save session
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -105,6 +120,24 @@ export function usePractice(dictionaryId: string) {
       }
     };
   }, [state, dictionaryId, sentences]);
+
+  // Persist mistakes when session completes
+  useEffect(() => {
+    if (state.isComplete && Object.keys(pendingMistakes).length > 0) {
+      Object.values(pendingMistakes).forEach((m) => {
+        storage.addMistake({
+          sentenceId: m.sentenceId,
+          wrongAnswers: m.wrongAnswers,
+          correctAnswers: m.correctAnswers || [],
+          attempts: m.attempts,
+          timestamp: Date.now(),
+          dictionaryId: m.dictionaryId,
+          reviewedCount: 0,
+        });
+      });
+      setPendingMistakes({});
+    }
+  }, [state.isComplete, pendingMistakes]);
 
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 
@@ -156,6 +189,19 @@ export function usePractice(dictionaryId: string) {
           },
         ],
       }));
+
+      // Update pending mistake with correct answers if there was one
+      setPendingMistakes((prev) => {
+        if (!prev[currentSentence.id]) return prev;
+        return {
+          ...prev,
+          [currentSentence.id]: {
+            ...prev[currentSentence.id],
+            correctAnswers: [...state.currentInputs],
+            attempts: newAttempts,
+          },
+        };
+      });
     } else {
       setState((prev) => ({
         ...prev,
@@ -163,8 +209,20 @@ export function usePractice(dictionaryId: string) {
         isCorrect: false,
         attempts: newAttempts,
       }));
+
+      // Record/update pending mistake
+      setPendingMistakes((prev) => ({
+        ...prev,
+        [currentSentence.id]: {
+          sentenceId: currentSentence.id,
+          wrongAnswers: [...state.currentInputs],
+          correctAnswers: prev[currentSentence.id]?.correctAnswers ?? null,
+          attempts: newAttempts,
+          dictionaryId,
+        },
+      }));
     }
-  }, [currentSentence, state.currentInputs, state.attempts]);
+  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId]);
 
   const nextSentence = useCallback(() => {
     setState((prev) => {
@@ -209,6 +267,7 @@ export function usePractice(dictionaryId: string) {
       isComplete: false,
       score: 0,
     });
+    setPendingMistakes({});
   }, [shuffledSentences]);
 
   const progress = useMemo(() => {

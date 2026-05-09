@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { StorageService, storage, type PersistedSession } from '../storage';
+import { StorageService, storage, type StorageSchemaV1, type StorageSchemaV2 } from '../storage';
 import type { PracticeState } from '@/hooks/usePractice';
 
 const STORAGE_KEY = 'en-learn-session';
@@ -32,11 +32,12 @@ describe('StorageService', () => {
       const raw = localStorage.getItem(STORAGE_KEY);
       expect(raw).not.toBeNull();
 
-      const parsed = JSON.parse(raw!) as PersistedSession;
-      expect(parsed.version).toBe(1);
+      const parsed = JSON.parse(raw!) as StorageSchemaV2;
+      expect(parsed.version).toBe(2);
       expect(parsed.dictionaryId).toBe('dict-1');
       expect(parsed.session).toEqual(session);
       expect(typeof parsed.timestamp).toBe('number');
+      expect(parsed.mistakes).toEqual([]);
     });
 
     it('clears storage when session.isComplete is true', () => {
@@ -73,7 +74,7 @@ describe('StorageService', () => {
   describe('loadSession', () => {
     it('returns parsed data', () => {
       const session = createMockPracticeState();
-      const payload: PersistedSession = {
+      const payload: StorageSchemaV1 = {
         version: 1,
         dictionaryId: 'dict-1',
         session,
@@ -83,9 +84,10 @@ describe('StorageService', () => {
 
       const result = StorageService.loadSession();
       expect(result).not.toBeNull();
-      expect(result!.version).toBe(1);
+      expect(result!.version).toBe(2);
       expect(result!.dictionaryId).toBe('dict-1');
       expect(result!.session).toEqual(session);
+      expect(result!.mistakes).toEqual([]);
     });
 
     it('returns null when no data', () => {

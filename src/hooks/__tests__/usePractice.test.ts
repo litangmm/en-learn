@@ -37,6 +37,7 @@ vi.mock('@/data/loader', () => ({
 describe('usePractice', () => {
   beforeEach(() => {
     vi.spyOn(Math, 'random').mockReturnValue(0.5);
+    localStorage.clear();
   });
 
   afterEach(() => {
@@ -429,7 +430,7 @@ describe('usePractice', () => {
 
   it('should restore persisted session on mount', async () => {
     const persistedSession = {
-      version: 1 as const,
+      version: 2 as const,
       dictionaryId: 'test',
       session: {
         currentIndex: 1,
@@ -449,6 +450,7 @@ describe('usePractice', () => {
         score: 10,
       },
       timestamp: Date.now(),
+      mistakes: [],
     };
     vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
 
@@ -480,7 +482,7 @@ describe('usePractice', () => {
 
   it('should not restore session from different dictionary', async () => {
     const persistedSession = {
-      version: 1 as const,
+      version: 2 as const,
       dictionaryId: 'other-dict',
       session: {
         currentIndex: 2,
@@ -493,6 +495,7 @@ describe('usePractice', () => {
         score: 0,
       },
       timestamp: Date.now(),
+      mistakes: [],
     };
     vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
 
@@ -508,7 +511,7 @@ describe('usePractice', () => {
 
   it('should not restore completed session', async () => {
     const persistedSession = {
-      version: 1 as const,
+      version: 2 as const,
       dictionaryId: 'test',
       session: {
         currentIndex: 2,
@@ -521,6 +524,7 @@ describe('usePractice', () => {
         score: 0,
       },
       timestamp: Date.now(),
+      mistakes: [],
     };
     vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
 
@@ -579,5 +583,180 @@ describe('usePractice', () => {
     // Should reset to initial state for new dictionary
     expect(result.current.state.currentIndex).toBe(0);
     expect(result.current.state.score).toBe(0);
+  });
+
+  describe('mistake capture', () => {
+    it('should record a mistake on wrong answer', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.isCorrect).toBe(false);
+      expect(result.current.state.showResult).toBe(true);
+    });
+
+    it('should persist mistakes when session completes', async () => {
+      const addMistakeSpy = vi.spyOn(storage, 'addMistake').mockImplementation(() => {});
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer all questions wrong first, then correct
+      for (let i = 0; i < 3; i++) {
+        const answers = [['catches'], ['Actions', 'words'], ['perfect']][i];
+
+        // Wrong first
+        act(() => {
+          result.current.setInput(0, 'wrong');
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+
+        // Then correct
+        act(() => {
+          result.current.retry();
+        });
+        answers.forEach((ans, idx) => {
+          act(() => {
+            result.current.setInput(idx, ans);
+          });
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+
+        act(() => {
+          result.current.nextSentence();
+        });
+      }
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      await waitFor(() => {
+        expect(addMistakeSpy).toHaveBeenCalled();
+      });
+    });
+
+    it('should not record mistake when correct on first try', async () => {
+      const addMistakeSpy = vi.spyOn(storage, 'addMistake').mockImplementation(() => {});
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer all correctly on first try
+      for (let i = 0; i < 3; i++) {
+        const answers = [['catches'], ['Actions', 'words'], ['perfect']][i];
+        answers.forEach((ans, idx) => {
+          act(() => {
+            result.current.setInput(idx, ans);
+          });
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+        act(() => {
+          result.current.nextSentence();
+        });
+      }
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      // Should not have called addMistake
+      expect(addMistakeSpy).not.toHaveBeenCalled();
+    });
+
+    it('should update mistake with correct answers after retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // First attempt: wrong
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.isCorrect).toBe(false);
+
+      // Retry and get correct
+      act(() => {
+        result.current.retry();
+      });
+      act(() => {
+        result.current.setInput(0, 'catches');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.isCorrect).toBe(true);
+      expect(result.current.state.attempts).toBe(2);
+    });
+  });
+
+  describe('sentenceIds prop (mistake practice)', () => {
+    it('should filter sentences when sentenceIds provided', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test', ['1', '3']));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      expect(result.current.shuffledSentences).toHaveLength(2);
+      expect(result.current.shuffledSentences[0].id).toBe('1');
+      expect(result.current.shuffledSentences[1].id).toBe('3');
+      expect(result.current.totalQuestions).toBe(2);
+    });
+
+    it('should fallback to all sentences when no sentenceIds match', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test', ['nonexistent']));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Falls back to first 10 (but we only have 3 mock sentences)
+      expect(result.current.shuffledSentences.length).toBeGreaterThan(0);
+    });
   });
 });

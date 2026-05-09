@@ -8,6 +8,14 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-7)
+- **迭代**: epic-002 iter-001「纯听写模式」
+- **计划步骤**: 5 步全部完成，涵盖类型定义、组件扩展、App 集成、单元测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/components/PracticeCard.tsx, src/App.tsx
+  - 创建: src/components/__tests__/PracticeCard.dictation.test.tsx, src/components/__tests__/App.mode.test.tsx
+- **观察**: epic-002 首个迭代作为纯 UI 功能，计划清晰且与数据层零耦合。PracticeMode 类型设计为联合类型，为后续 4 种模式扩展预留了类型空间。ToggleGroup 模式切换的 UX 设计在计划中即考虑了「切换时重置输入」的心流保护
+
 ### 2026-05-09 (cycle-2026-05-09-6)
 - **迭代**: iter-005「智能复习队列」—— **完整执行**
 - **计划步骤**: 7 步全部完成，涵盖类型扩展、存储队列能力、SmartReview 组件、App.tsx 集成、复习调度、单元测试、全量验证

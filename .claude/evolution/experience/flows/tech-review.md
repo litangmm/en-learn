@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-7)
+- **迭代**: epic-002 iter-001「纯听写模式」—— **技术审查通过**
+- **技术决策**:
+  - PracticeMode 联合类型设计简洁，后续扩展新模式无需修改现有组件 props 接口
+  - dictation 模式下 audio 自动播放由 App.tsx 控制（通过 useEffect + mode 依赖），PracticeCard 保持纯展示逻辑
+  - 模式切换重置输入的设计避免了跨模式状态残留问题
+  - 无新增依赖，构建体积零增长
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 205/205 unit tests passed
+- **观察**: App.tsx 的视图切换逻辑已扩展至 6 个视图（practice/mistake-book/history/data/review + 模式切换），导航状态管理复杂度继续增加。后续迭代如需增加新视图或模式，应考虑将导航配置提取到独立模块。PracticeCard 的条件渲染逻辑当前为 if/else，4+ 模式时建议重构为配置驱动的渲染策略
+
 ### 2026-05-09 (cycle-2026-05-09-6)
 - **迭代**: iter-005「智能复习队列」—— **技术审查通过**
 - **技术决策**:

@@ -8,6 +8,15 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-7)
+- **迭代**: epic-002 iter-001「纯听写模式」—— **全部测试通过**
+- **测试覆盖**: 205/205 单元测试通过（17 个测试文件，新增 16 个测试）
+  - PracticeCard.dictation.test.tsx: 11 个测试（中文隐藏、英文文本隐藏、输入框渲染、指令文本显示、showResult 揭示全部内容、fill-in-blanks 模式正常渲染、hints 行为差异）
+  - App.mode.test.tsx: 5 个测试（ToggleGroup 渲染、dictation 模式 DOM 变化、initializeInputs 调用、切回 fill-in-blanks、默认模式验证）
+  - 全量回归: 之前 189 个测试全部通过
+- **E2E**: skipped（4 pending iterations remaining）
+- **观察**: 条件渲染测试的关键在于「断言某元素不存在」时避免过于具体的选择器，使用 getByText + expect(...).not.toBeInTheDocument() 模式可靠。Audio 和 speechSynthesis 的全局 mock 继续生效，测试静默运行
+
 ### 2026-05-09 (cycle-2026-05-09-6)
 - **迭代**: iter-005「智能复习队列」—— **全部测试通过**
 - **测试覆盖**: 189/189 单元测试通过（15 个测试文件，新增 24 个测试）

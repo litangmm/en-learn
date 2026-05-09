@@ -1,9 +1,9 @@
 {
   "version": "1.0",
-  "status": "IDLE",
+  "status": "REPORT",
   "commitHash": "739929e",
-  "lastRun": "2026-05-09T07:08:33.000Z",
-  "cycleCount": 7,
+  "lastRun": "2026-05-09T14:39:00.000Z",
+  "cycleCount": 6,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentEpic": {
@@ -17,7 +17,7 @@
       {"id": "iter-004", "title": "专注模式（全屏无干扰 UI）", "scope": "frontend-only", "status": "pending"},
       {"id": "iter-005", "title": "连词成句模式（拖拽/点击排序）", "scope": "frontend-only", "status": "pending"}
     ],
-    "currentIterationIndex": 1
+    "currentIterationIndex": 0
   },
   "plan": {
     "iterationId": "iter-001",
@@ -57,8 +57,7 @@
     "iter-005": "Extended Mistake type with nextReviewAt and lastReviewedAt optional fields for spaced repetition scheduling. Extended StorageService with getReviewQueue() (filters due mistakes by nextReviewAt <= now, sorts ascending), getReviewQueueCount(), and scheduleNextReview(sentenceId, isCorrect) implementing spaced repetition with [1,3,7,14] day intervals — reviewedCount increments on correct answers, resets to 1-day interval on wrong answers while preserving reviewedCount. Updated isValidMistake to accept optional fields. Created SmartReview component with dictionary-grouped due mistake listing, async sentence loading, '开始复习' per-group buttons, '全部复习' for single-group case, empty state, and back navigation. Integrated SmartReview into App.tsx with 'review' view, Brain/RefreshCw navigation button with red due-count badge, review mode state, and auto-scheduling useEffect that calls scheduleNextReview when showResult=true in review mode (with processedReviewRef deduplication). Created review-queue.test.ts (18 tests) covering getReviewQueue empty/ filtering/sorting, getReviewQueueCount, scheduleNextReview interval calculation for all reviewedCount levels, wrong-answer reset, non-existent ID safety, lastReviewedAt update, and isValidMistake backward/forward compatibility. Created SmartReview.test.tsx (6 tests) covering empty state, grouped rendering by dictionary, start-review callback params, back navigation, reviewed count display, and all-review button conditional visibility. Total: 189/189 tests pass (15 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-002-iter-001": "Added PracticeMode type ('fill-in-blanks' | 'dictation') in src/data/types.ts. Extended PracticeCard component with optional mode prop (default 'fill-in-blanks'): dictation mode hides chinese translation and english sentence text (shows only standalone input boxes), increases audio button prominence with blue filled style and larger icon, shows instruction text '请听音频，在输入框中填写听到的单词', hides hints, and reveals all content (chinese + english + correct answers) when showResult is true for review. Added renderDictationInputs() helper for dictation-only input layout. Updated App.tsx with practiceMode state, ToggleGroup mode switcher (填空模式/听写模式) in main content area, auto-play delay adjusted to 300ms in dictation mode (800ms in fill-in-blanks), mode switch triggers initializeInputs() to reset current question inputs. Created PracticeCard.dictation.test.tsx (11 tests) covering chinese hidden in dictation mode, english text hidden, inputs rendered, instruction text shown, showResult reveals chinese/english/correct answers, fill-in-blanks mode normal rendering, hints behavior per mode. Created App.mode.test.tsx (5 tests) covering toggle rendering, dictation mode DOM changes, initializeInputs call on mode switch, switching back to fill-in-blanks, default mode verification. Total: 205/205 tests pass (17 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
   },
-  "currentCycle": null,
-  "previousCycle": {
+  "currentCycle": {
     "id": "2026-05-09-7",
     "mode": "vision",
     "stage": "REPORT",
@@ -545,13 +544,6 @@
     }
   },
   "history": [
-    {
-      "id": "2026-05-09-7",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-002 iter-001 纯听写模式 — 205/205 测试通过，build 成功，PM-UX 连续 5 次未选中后首次中选"
-    },
     {
       "id": "2026-05-09-1",
       "mode": "vision",

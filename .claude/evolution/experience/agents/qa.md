@@ -7,6 +7,14 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-7)
+- **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试、构建体积监控
+- **本次验证**: epic-002 iter-001「纯听写模式」质量门禁验证
+  - PracticeCard dictation 模式测试：中文隐藏、英文文本隐藏、输入框渲染、showResult 揭示全部内容
+  - App 模式切换测试：ToggleGroup 渲染、切换触发 initializeInputs、dictation 模式 DOM 变化
+  - 全量回归：205/205 单元测试通过，lint 0 errors，build 成功
+- **备注**: QA 首次独立提出 Epic（epic-010「质量基础设施升级」），虽被列为 background task，但反映了 QA 对自动化测试覆盖不足的长期关注
+
 ### 2026-05-09 (cycle-2026-05-09-6)
 - **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试
 - **本次验证**: iter-005「智能复习队列」完整质量门禁验证

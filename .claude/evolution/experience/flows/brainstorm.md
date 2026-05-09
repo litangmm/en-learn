@@ -16,6 +16,8 @@
 - **观察**: epic-001 全部 6 个迭代完成后，所有 Agent 对 epic-002『沉浸式多模态练习模式』作为下一优先级达成高度共识。PM-UX 连续 5 个 cycle 未被选中后，其反思建议（拆分数据无关/数据依赖子功能）被采纳。PM-Growth 的分享卡片 MVP、ARCH 的渐进式 PWA、PM-Eco 的个人数据主权重新定位、EXP 的纯前端自适应算法，均体现了 Agent 反思后的策略调整。QA 首次独立提出 Epic（质量基础设施升级），但被明确列为 background task。
 
 ### 2026-05-09 (cycle-2026-05-09-6)
+
+### 2026-05-09 (cycle-2026-05-09-6)
 - **状态**: 本次未进行 brainstorm（epic-001 最后一个迭代 iter-005 执行中）
 - **原因**: epic-001 仍有 pending iteration（iter-005），直接继续执行
 - **观察**: epic-001 已完成全部 6 个迭代，下次 cycle 将触发全新 brainstorm。连续 5 个 cycle 沿用同一 brainstorm 结果。多个 Agent 连续未被选中（最长 5 次），下次 brainstorm 时需关注这些 Agent 的反思记录。

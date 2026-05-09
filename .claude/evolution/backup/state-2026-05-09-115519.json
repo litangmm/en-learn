@@ -1,0 +1,462 @@
+{
+  "version": "1.0",
+  "status": "PLAN",
+  "commitHash": "05e23d9",
+  "lastRun": "2026-05-09T12:10:00.000Z",
+  "cycleCount": 3,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentEpic": {
+    "id": "epic-001",
+    "title": "最小可行学习数据系统",
+    "description": "解决当前学习进度完全丢失的核心痛点。通过 localStorage 持久化学习状态、错题记录和历史数据，为游戏化、自适应学习和留存闭环提供数据基础。",
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "核心存储服务与会话持久化",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-002",
+        "title": "错题本 MVP",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003",
+        "title": "学习历史记录",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-004",
+        "title": "数据导入导出",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-005",
+        "title": "智能复习队列",
+        "scope": "frontend-only",
+        "status": "pending"
+      }
+    ],
+    "currentIterationIndex": 3
+  },
+  "plan": {
+    "iterationId": "iter-004",
+    "iterationTitle": "数据导入导出",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 在 src/data/types.ts 中新增 ExportData 类型：包含 version(固定1)、exportedAt 时间戳、以及 data 对象（session: StorageSchemaV2 | null, mistakes: Mistake[], history: SessionHistory[]）。",
+      "Step 2: 扩展 src/services/storage.ts：新增 exportAllData() 方法，聚合当前 session、mistakes、history 为 ExportData JSON 对象并返回；新增 importAllData(data: unknown) 方法，校验 ExportData schema（version、exportedAt、data 结构及各子项合法性），校验通过后写入对应 localStorage key（en-learn-session、en-learn-mistakes、en-learn-history），返回成功/失败及详情（成功时各数据项导入数量；失败时具体错误原因）。",
+      "Step 3: 创建 src/components/DataManager.tsx：展示当前数据概览（学习记录条数、错题数量、是否有未完成会话）；提供『导出数据』按钮，点击后触发浏览器下载 JSON 文件（文件名格式 en-learn-backup-YYYY-MM-DD.json，内容 blob 化）；提供『导入数据』按钮，通过隐藏的 <input type=file accept=.json> 选择文件，读取后调用 storage.importAllData，显示导入结果（成功/失败的 toast 或 inline message）；导入前显示确认对话框，提示将覆盖现有数据。",
+      "Step 4: 更新 src/App.tsx：扩展 View 类型为 'practice' | 'mistake-book' | 'history' | 'data'；在顶部导航添加『数据管理』按钮（使用 Database 或 Settings 图标），实现视图切换逻辑；处理从 data 视图返回 practice 时刷新历史记录和错题数量。",
+      "Step 5: 编写单元测试：export-import.test.ts 测试覆盖 exportAllData 返回结构正确、importAllData 正常导入并覆盖现有数据、importAllData 拒绝无效 schema（缺少 version、缺少 data、损坏的子结构）、importAllData 拒绝非 JSON 输入、空数据导入处理。",
+      "Step 6: 编写组件测试：DataManager.test.tsx 测试覆盖数据概览渲染（各计数正确）、导出按钮触发下载（mock URL.createObjectURL 和 anchor click）、导入按钮打开文件选择、导入成功/失败状态显示、确认对话框交互。",
+      "Step 7: 运行 lint + build + unit tests 全量验证，确保 0 错误。"
+    ],
+    "filesToModify": [
+      "src/data/types.ts",
+      "src/services/storage.ts",
+      "src/App.tsx"
+    ],
+    "filesToCreate": [
+      "src/components/DataManager.tsx",
+      "src/components/__tests__/DataManager.test.tsx",
+      "src/services/__tests__/export-import.test.ts"
+    ],
+    "dependencies": [],
+    "testStrategy": "storage export/import 单元测试覆盖 exportAllData 返回完整数据结构、importAllData 正常写入并覆盖现有 localStorage 数据、拒绝无效 schema（version 错误、data 缺失、子结构损坏）、拒绝非对象输入、空数据 graceful 处理；DataManager 组件测试覆盖概览计数渲染、导出按钮触发文件下载（mock blob URL）、导入文件选择后调用 storage.importAllData、成功/失败状态渲染、确认对话框交互；全量 lint + build + unit tests 通过。"
+  },
+  "testResults": {
+    "lint": "passed (0 errors, 3 pre-existing warnings)",
+    "build": "passed",
+    "unitTests": "159/159 passed (12 test files)",
+    "e2e": "skipped - iter-005 still pending"
+  },
+  "implementationStatus": {
+    "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
+    "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
+    "iter-003": "Added SessionHistory type in src/data/types.ts with id, timestamp, duration, dictionaryId, dictionaryName, score, totalQuestions, correctCount, accuracy fields. Extended storage service with en-learn-history key, addHistory/getHistory/clearHistory/getHistoryCount methods, isValidHistory validation, 100-entry limit with auto-truncation, and corrupted JSON recovery. Updated usePractice hook with sessionStartTimeRef to track fresh session start time; auto-records history on isComplete=true with duration, score, correctCount, accuracy, and totalQuestions computed from shuffledSentences.length. Created HistoryView component with date grouping (今天/昨天/更早), entry cards showing dictionary name, score, accuracy, duration, question count, clear-all with confirmation dialog, and empty state. Updated App.tsx with 'history' view type, learning history navigation button with count badge, and view switching. Added history-storage.test.ts (18 tests), HistoryView.test.tsx (8 tests), and usePractice history recording tests (4 tests). Total: 131/131 tests pass. Lint 0 errors. Build succeeds.",
+    "iter-004": "Added ExportData type in src/services/storage.ts (defined there to avoid circular dependency with StorageSchemaV2) with version:1, exportedAt ISO string, and data object containing session (StorageSchemaV2|null), mistakes (Mistake[]), and history (SessionHistory[]). Extended StorageService with exportAllData() method that aggregates all localStorage data into ExportData JSON object, and importAllData(data:unknown) method with isValidExportData schema validator checking version, exportedAt, data structure, and recursive validation of session (null or V2), mistakes (isValidMistake), and history (isValidHistory) sub-structures. importAllData writes validated data to corresponding localStorage keys, returns success/failure with importedCounts per category and human-readable message. Created DataManager component with data overview cards (history count, mistake count, active session status), export button triggering browser download of en-learn-backup-YYYY-MM-DD.json blob, import button with hidden file input, confirmation dialog before overwrite, and inline alert for success/error status. Updated App.tsx with 'data' view type, Database icon navigation button, and view switching with count refresh on back. Added export-import.test.ts (16 tests) covering export structure, import overwrite, null session, empty data, missing/wrong version, missing data field, corrupted session/mistakes/history sub-structures, non-object inputs, and mixed import messages. Added DataManager.test.tsx (10 tests) covering overview counts, active session badge, back navigation, export download trigger, import file input, success/error status display, invalid JSON handling, confirmation dialog, and cancel behavior. Total: 159/159 tests pass (12 test files). Lint 0 errors. Build succeeds."
+  },
+  "currentCycle": {
+    "id": "2026-05-09-4",
+    "mode": "vision",
+    "stage": "PLAN",
+    "startedAt": "2026-05-09T03:54:32.332Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-09-1",
+    "mode": "vision",
+    "stage": "REPORT",
+    "startedAt": "2026-05-09T01:03:33.975Z",
+    "brainstormResults": {
+      "brainstormResults": [
+        {
+          "id": "epic-001",
+          "title": "最小可行学习数据系统",
+          "description": "解决当前学习进度完全丢失的核心痛点。通过 localStorage 持久化学习状态、错题记录和历史数据，为游戏化、自适应学习和留存闭环提供数据基础。这是几乎所有其他 Epic 的前置依赖。",
+          "proposedBy": "PM-Lean",
+          "supportedBy": [
+            "PM-Growth",
+            "UX",
+            "ARCH",
+            "QA",
+            "PM-Mon",
+            "EXP"
+          ],
+          "concerns": "无显著反对意见。需注意 localStorage 容量限制（~5MB）和未来向 IndexedDB 迁移的兼容性。",
+          "priority": "high",
+          "estimatedEffort": "small",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：会话状态持久化",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：错题本 MVP",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：学习历史记录",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：数据导入导出",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：智能复习队列",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-002",
+          "title": "沉浸式多模态练习模式",
+          "description": "从单一的填空听写扩展到多种练习模式（纯听写、选择题、连词成句），降低认知疲劳，适应不同学习场景（碎片时间快速练习 vs 深度专注练习）。",
+          "proposedBy": "PM-UX",
+          "supportedBy": [
+            "PM-Lean",
+            "EXP",
+            "UX"
+          ],
+          "concerns": "PM-Mon 担心增加代码体积；QA 指出每种模式需独立测试覆盖；ARCH 提醒需清晰的状态管理模式切换。",
+          "priority": "high",
+          "estimatedEffort": "medium",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：纯听写模式（无中文提示）",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：选择题模式（四选一快速练习）",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：音频播放速度控制",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：全局键盘快捷键体系",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：专注模式（全屏无干扰 UI）",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-003",
+          "title": "游戏化学习动力系统",
+          "description": "通过 XP 等级、成就徽章、每日目标和连击反馈等游戏化机制，提升学习动机和长期留存。建立在数据系统之上，让进步可视化、可感知。",
+          "proposedBy": "UX",
+          "supportedBy": [
+            "PM-Growth",
+            "PM-Lean",
+            "ARCH",
+            "EXP"
+          ],
+          "concerns": "PM-Mon 担心动画和图标增加构建体积；需避免过度游戏化分散学习注意力。",
+          "priority": "medium",
+          "estimatedEffort": "medium",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：XP 与等级系统",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：成就徽章系统",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：每日目标与进度环",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：连击激励反馈",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：学习数据可视化仪表盘",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-004",
+          "title": "PWA 化与离线优先学习",
+          "description": "将应用升级为 PWA，支持离线词典缓存、桌面安装和后台同步。解决网络不稳定场景下的使用问题，同时减少重复下载的流量成本。",
+          "proposedBy": "ARCH",
+          "supportedBy": [
+            "PM-Mon",
+            "PM-Lean",
+            "PM-Growth",
+            "UX"
+          ],
+          "concerns": "iOS 对 PWA 支持有限（无推送、存储易清除）；service worker 缓存策略维护有成本。",
+          "priority": "medium",
+          "estimatedEffort": "medium",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：Vite PWA 插件集成",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：IndexedDB 离线词典存储",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：应用壳与即时加载骨架屏",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：离线学习数据同步机制",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：桌面安装与独立运行模式",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-005",
+          "title": "学习社交裂变与留存闭环",
+          "description": "通过打卡 streak、结果分享和挑战链接等功能建立用户留存和社交传播机制。纯前端实现分享卡片和挑战链接（seed-based 题目同步）。",
+          "proposedBy": "PM-Growth",
+          "supportedBy": [
+            "PM-Lean",
+            "UX"
+          ],
+          "concerns": "PM-UX 担心分享打断学习心流；ARCH 提醒 PWA push 增加复杂度；匿名场景下社交裂变效果天然受限。",
+          "priority": "medium",
+          "estimatedEffort": "medium",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：每日打卡 streak 系统",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：学习结果分享卡片",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：挑战链接生成（同题 PK）",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：周学习报告",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：错题复习提醒",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-006",
+          "title": "极致性能与流量成本优化",
+          "description": "优化构建产物体积、实现词典按需分片加载、完善资源缓存策略。当前构建体积不大，属于持续优化的 background task。",
+          "proposedBy": "PM-Mon",
+          "supportedBy": [
+            "ARCH",
+            "PM-Growth",
+            "UX"
+          ],
+          "concerns": "当前项目构建体积可能不大，过早优化风险。但按需加载词典数据（而非全部打包）确实有实际价值。",
+          "priority": "low",
+          "estimatedEffort": "small",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：构建产物分析与 tree-shaking",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：词典数据按需懒加载",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：大词典分片加载",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：Service Worker 资源缓存",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：字体与动画资源压缩",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-007",
+          "title": "开放词典与学习社区",
+          "description": "支持用户导入自定义词典、贡献例句和导出数据。纯前端场景下社区功能受限（无后端审核），适合作为远期差异化能力。",
+          "proposedBy": "PM-Eco",
+          "supportedBy": [
+            "PM-Growth"
+          ],
+          "concerns": "PM-Lean 和 ARCH 强烈反对：自定义导入使用频率低，格式兼容性维护成本高；纯前端无法做真正的社区（无审核、无协作）。",
+          "priority": "low",
+          "estimatedEffort": "large",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：自定义词典导入（CSV/JSON）",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：用户例句提交界面",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：词典数据开源导出",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：例句评分与反馈",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：本地词典编辑器",
+              "scope": "frontend-only"
+            }
+          ]
+        },
+        {
+          "id": "epic-008",
+          "title": "AI 驱动的自适应学习",
+          "description": "基于答题历史和错误模式实现难度自适应、薄弱词针对性训练和个性化学习路径。长期愿景，但当前数据量和纯前端限制下难以完全落地。",
+          "proposedBy": "EXP",
+          "supportedBy": [
+            "PM-Growth",
+            "UX"
+          ],
+          "concerns": "PM-Lean 反对：AI 生成例句需要后端或外部 API，违背纯前端零依赖原则；ARCH 指出自适应算法需要大量数据积累才能生效；语音识别在各浏览器差异大。",
+          "priority": "low",
+          "estimatedEffort": "large",
+          "iterationsPreview": [
+            {
+              "title": "迭代1：基于答题历史的难度自适应",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代2：薄弱词识别与针对性出题",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代3：个性化学习路径",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代4：语音输入答题",
+              "scope": "frontend-only"
+            },
+            {
+              "title": "迭代5：AI 生成个性化例句",
+              "scope": "frontend-only"
+            }
+          ]
+        }
+      ],
+      "discussionSummary": "本次 brainstorm 共 9 个角色参与，产出 8 个 Epic 方向（QA 的稳定性保障被判定为跨 Epic 质量门禁，不单独列为 Epic）。经三轮讨论，所有角色一致认为 PM-Lean 提出的『最小可行学习数据系统』应作为最高优先级，因为它是游戏化、自适应学习、留存闭环和 PWA 离线化的共同数据基础。其次 PM-UX 的『多模态练习模式』直接解决当前核心痛点（练习方式单一）。 UX 的『游戏化』和 ARCH 的『PWA』作为中等优先级。PM-Growth 的社交裂变、PM-Mon 的性能优化、PM-Eco 的开放生态和 EXP 的 AI 自适应作为低优先级或长期储备。所有 Epic 均可在纯前端范围内实现，符合项目技术原则。",
+      "qualityGates": [
+        "语音 API 兼容性检测与降级",
+        "localStorage 数据完整性保护（损坏恢复）",
+        "跨浏览器测试覆盖（Chrome/Safari/Firefox/微信）",
+        "边界情况自动化测试"
+      ]
+    },
+    "plan": {
+      "iterationId": "iter-001",
+      "iterationTitle": "核心存储服务与会话持久化",
+      "scope": "frontend-only",
+      "steps": [
+        "Step 1: 创建 src/services/storage.ts，定义版本化存储 schema（StorageSchemaV1）和 localStorage 封装，包含 saveSession/loadSession/clearSession/migrate 方法，处理数据损坏时的优雅降级",
+        "Step 2: 在 usePractice hook 中集成存储服务：mount 时尝试 loadSession 恢复状态，state 变化时 debounce 保存到 localStorage，dictionaryId 变化时清除旧会话",
+        "Step 3: 在 App.tsx 中添加会话恢复 UI：检测到本地存在未完成会话时，显示『继续上次练习』/『重新开始』选项对话框",
+        "Step 4: 处理边界情况：已完成会话自动清除；词典切换时清除不匹配的旧会话；localStorage 写满时降级处理（仅保留当前会话）",
+        "Step 5: 编写 storage.test.ts 单元测试：save/load  roundtrip、版本迁移、 corrupted data 恢复、quota exceeded 行为",
+        "Step 6: 补充 usePractice 持久化相关测试：恢复 persisted state、保存 state changes、dictionary 变化时清除会话"
+      ],
+      "filesToModify": [
+        "src/hooks/usePractice.ts",
+        "src/App.tsx"
+      ],
+      "filesToCreate": [
+        "src/services/storage.ts",
+        "src/services/__tests__/storage.test.ts"
+      ],
+      "dependencies": [],
+      "testStrategy": "storage service 单元测试覆盖正常读写、schema 版本迁移、JSON 损坏恢复；usePractice hook 测试覆盖状态恢复、保存触发、dictionary 切换清理；E2E 测试覆盖页面刷新后恢复进度"
+    }
+  },
+  "history": [
+    {
+      "id": "2026-05-09-1",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-001 核心存储服务与会话持久化 — 72/72 测试通过，build 成功"
+    },
+    {
+      "id": "2026-05-09-2",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-002 错题本 MVP + iter-003 学习历史记录 — 131/131 测试通过，build 成功，epic-001 3/5 迭代完成"
+    }
+  ],
+  "pendingQuestions": [],
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "directives": {
+    "version": "1.0",
+    "pending": [],
+    "history": [
+      {
+        "id": "dir-1778292031198",
+        "type": "insert_epic",
+        "target": null,
+        "action": "测试的时候电脑有声音，想办法不出声测试",
+        "reason": "",
+        "createdAt": "2026-05-09T02:00:31.198Z",
+        "executedAt": "2026-05-09T02:01:00.000Z",
+        "executionNote": "已纳入 iter-002 测试策略：mock Audio 确保测试静默运行"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "url": "https://en-learn.vercel.app",
+    "productionUrl": "https://en-learn-4cmvk3za7-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-09T03:41:14.449Z"
+  }
+}

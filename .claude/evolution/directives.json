@@ -3,6 +3,16 @@
   "pending": [],
   "history": [
     {
+      "id": "dir-user-review-001",
+      "type": "custom",
+      "target": null,
+      "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」，将 9 大问题按 P0/P1/P2/P3 优先级拆分为 5 个迭代",
+      "reason": "用户以真实学习者身份完整体验后给出的系统性反馈，是当前产品从 demo 升级为日常学习工具的最大瓶颈",
+      "createdAt": "2026-05-09T19:40:00Z",
+      "executedAt": "2026-05-10T12:02:00.000Z",
+      "executionNote": "已创建 Epic 提案文档：docs/superpowers/specs/2026-05-10-user-review-feedback-spec.md 和 docs/superpowers/plans/2026-05-10-experience-optimization.md。拆分为 iter-001~iter-005，将在 epic-003 iter-005 完成后进入 PLAN 阶段执行"
+    },
+    {
       "id": "dir-urgent-001",
       "type": "custom"
     },

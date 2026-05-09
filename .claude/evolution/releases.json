@@ -2,6 +2,26 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.16.0",
+      "tag": "v0.16.0",
+      "commit": "a276d69",
+      "date": "2026-05-09T20:02:43.841Z",
+      "iterationId": "iter-004",
+      "title": "成就徽章系统",
+      "features": [
+        "Add 'badges' to View union type and MobileNav",
+        "Integrate useBadges hook with trackProgress/checkBadges calls on:",
+        "Add badge unlock toast trigger on new badge unlock",
+        "Add Award icon button in header (desktop + score area)",
+        "Add BadgePanel rendering for badges view",
+        "Add BadgeUnlockToast at app root",
+        "Fix BadgePanel/BadgeUnlockToast to import BadgeDefinition from @/data/types",
+        "Create App.badges.test.tsx with 7 integration tests",
+        "Add useBadges mock to 9 existing App test files"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.15.0",
       "tag": "v0.15.0",
       "commit": "5c5e07b",

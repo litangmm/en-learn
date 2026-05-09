@@ -1,12 +1,40 @@
 {
   "version": "1.0",
-  "status": "IMPLEMENT",
-  "commitHash": "5c5e07ba7d651962f755d16696d6ff3252ecc0e9",
-  "lastRun": "2026-05-10T02:00:00.000Z",
-  "cycleCount": 19,
+  "status": "REPORT",
+  "commitHash": "a276d6946f15e56ef89ad0b9f97e978700885445",
+  "lastRun": "2026-05-10T12:02:43.000Z",
+  "cycleCount": 20,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-10-20",
+    "mode": "vision",
+    "stage": "REPORT",
+    "startedAt": "2026-05-10T03:22:00.000Z",
+    "plan": {
+      "iterationId": "iter-004",
+      "iterationTitle": "成就徽章系统",
+      "scope": "frontend-only",
+      "steps": [],
+      "filesToModify": [],
+      "filesToCreate": [],
+      "dependencies": [],
+      "testStrategy": ""
+    },
+    "deployStatus": {
+      "deployed": true,
+      "target": "vercel",
+      "url": "https://en-learn.vercel.app",
+      "deployedAt": "2026-05-10T12:02:43.000Z",
+      "version": "v0.16.0",
+      "iterationId": "iter-004",
+      "iterationTitle": "成就徽章系统",
+      "gitTag": "v0.16.0",
+      "gitTagPushed": false,
+      "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
+    },
+    "summary": "epic-003 iter-004 成就徽章系统 — 404/404 测试通过，build 成功，v0.16.0 部署完成；经验档案已更新"
+  },
   "previousCycle": {
     "id": "2026-05-09-19",
     "mode": "vision",
@@ -57,7 +85,7 @@
         "id": "iter-004",
         "title": "成就徽章系统",
         "scope": "frontend-only",
-        "status": "in_progress"
+        "status": "completed"
       },
       {
         "id": "iter-005",
@@ -66,7 +94,7 @@
         "status": "pending"
       }
     ],
-    "currentIterationIndex": 3
+    "currentIterationIndex": 4
   },
   "plan": {
     "iterationId": "iter-004",
@@ -101,7 +129,13 @@
     "dependencies": [],
     "testStrategy": "Badge system tests cover: (1) storage layer — badge progress CRUD, validation, corrupted data recovery, export/import integration with badgeProgress and badges fields; (2) useBadges hook — progress tracking (correct/wrong/streak/session/review/challenge events), badge condition checking for all 12 badges, duplicate unlock prevention, progress percent calculation, reset; (3) BadgePanel component — rendering all 12 badges, unlocked/locked visual states, progress bar width, back navigation; (4) App integration — award button with count badge, view switching, trackProgress and checkBadges called on answer events, toast trigger. Update 10 existing App test mocks for new useBadges hook. All 375 existing tests must pass without regression. Full lint + build + test validation."
   },
-  "testResults": {},
+  "testResults": {
+    "lint": "passed (0 errors, 3 pre-existing warnings)",
+    "build": "passed",
+    "unitTests": "404/404 passed (42 test files)",
+    "e2e": "skipped (1 pending iteration remaining: iter-005)"
+  },
+  "status": "REPORT",
   "implementationStatus": {
     "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
     "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
@@ -118,9 +152,17 @@
     "epic-002-iter-005": "Implemented sentence-reorder mode (click-to-order word arrangement). src/data/types.ts: Extended PracticeMode union to include 'sentence-reorder', added SentenceToken interface. src/hooks/usePractice.ts: (a) Added sentenceTokens useMemo from currentSentence.english via /\\S+/g split. (b) Extended PracticeState with orderedTokenIds. (c) Added selectToken (append), deselectToken (remove by index), resetTokens (clear). (d) Extended checkAnswer(param?: string | string[]) with Array.isArray branch for sentence-reorder: reconstructs sentence from orderedTokenIds, compares lowercase.trim() against currentSentence.english, correct awards 10 points, wrong records pendingMistake with wrongAnswers=[userSentence]. (e) Updated initializeInputs, nextSentence, reset to clear orderedTokenIds. src/components/PracticeCard.tsx: Added sentenceTokens, orderedTokenIds, onSelectToken, onDeselectToken props; renderSentenceReorder() with answer zone (clickable selected tokens) and word pool (clickable remaining tokens); submit disabled until all tokens selected; showResult reveals correct sentence for wrong answers; Enter key submits when all tokens selected. src/App.tsx: Added '连词成句' ToggleGroupItem; destructured new hook methods; passed new props to PracticeCard; handleModeChange calls resetTokens() for sentence-reorder; auto-play delay 500ms for reorder mode. Tests: usePractice.reorder.test.ts (8 tests), PracticeCard.reorder.test.tsx (6 tests), App.reorder.test.tsx (5 tests). Fixed PracticeState orderedTokenIds requirement in all existing test files (storage, history-storage, mistake-storage, export-import, usePractice). Total: 282/282 tests pass (29 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-003-iter-001": "Implemented XP 积分与等级系统. src/data/types.ts: Added XPProfile interface { totalXP, currentLevel, levelProgress } and LEVEL_THRESHOLDS constant [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000] defining 12 cumulative XP levels. src/services/storage.ts: Added XP_PROFILE_KEY, isValidXPProfile validator, getXPProfile() with default fallback and corrupted data recovery, updateXPProfile() with error handling, addXP(amount) computing level from thresholds and progress percentage ((totalXP - prevThreshold) / (nextThreshold - prevThreshold)) * 100 capped 0-100. Updated exportAllData and importAllData to include xpProfile with validation. src/hooks/useXP.ts: Created hook with lazy-init state from storage, addXP(baseXP, firstTry) computing total = baseXP + (firstTry ? 5 : 0), resetXPProfile() for testing. src/components/XPBar.tsx: Presentational component with level badge and progress bar, compact mode for header/focus bar, full mode for future profile view. src/App.tsx: Integrated useXP hook, rendered XPBar compact in header score area and focus mode floating bar, added awardedXPRef useRef<Set<string>> for per-question deduplication, useEffect awards XP on correct answer with mode-dependent baseXP (multiple-choice=8, sentence-reorder=12, others=10) and firstTry bonus, clears award tracking on reset. Tests: xp-storage.test.ts (21 tests covering profile CRUD, level calculation at all threshold boundaries, progress percentage, max level cap, corrupted data recovery, export/import with xpProfile), useXP.test.ts (7 tests covering init load, addXP state update, firstTry bonus, level-up reflection, reset), App.xp.test.tsx (6 tests covering XPBar render, addXP call on correct answer, firstTry bonus, no award on wrong answer, no double-award, focus mode XPBar). Updated 6 existing App test files to mock new storage XP methods. Also updated export-import.test.ts and DataManager.test.tsx for new xpProfile field in importedCounts. Total: 318/318 tests pass (32 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-003-iter-002": "Implemented 连击计数与正向反馈动画. src/hooks/useXP.ts: Extended hook with streak state (session-only, not persisted), maxStreakReached tracking, recordCorrectAnswer (increments streak, updates max), recordWrongAnswer (resets streak to 0), resetStreak, getStreakMultiplier helper (1.0 for <3, 1.5 for 3-4, 2.0 for 5-9, 3.0 for 10+). Modified addXP to compute multiplier from current streak, calculate finalXP = Math.round(baseXP * multiplier) + firstTryBonus, return { profile, finalXP, multiplier, streak }. src/components/StreakFeedback.tsx: Combo badge with Flame icon (lucide-react), animated entrance via framer-motion spring, color tiers (amber for 2-4, red for 5-9 with pulse, purple gradient for 10+), '连击' label, renders null when streak < 2. src/components/XPGainPopup.tsx: Animated XP gain display using framer-motion AnimatePresence, upward float animation (y: 0→-40, opacity: 1→0 over 1.2s), shows '+XX XP' and conditional multiplier badge, keyed by triggerKey for re-animation. src/App.tsx: Destructured new useXP exports, added xpGainTrigger state, modified XP award useEffect to call recordCorrectAnswer before addXP and trigger XPGainPopup via requestAnimationFrame deferral, added wrong-answer useEffect calling recordWrongAnswer, integrated StreakFeedback in header and focus mode floating bar, added XPGainPopup overlay in main practice area, resetStreak called in handleRestart. Tests: useXP.streak.test.ts (9 tests covering streak increment, wrong reset, max tracking, multiplier boundaries, addXP multiplier integration, return object, resetStreak preserving max, firstTry+multiplier combined), StreakFeedback.test.tsx (8 tests covering null for <2, icon/count render, amber/red/purple color classes, 连击 label, visible=false, motion.div), XPGainPopup.test.tsx (6 tests covering hidden when invisible, amount display, multiplier badge conditional, triggerKey update), App.streak.test.tsx (6 tests covering badge DOM presence, recordCorrectAnswer call, recordWrongAnswer call, XP popup trigger, resetStreak call, focus mode badge). Updated 7 existing App test files with new useXP mock exports (streak, maxStreakReached, recordCorrectAnswer, recordWrongAnswer, resetStreak). Total: 348/348 tests pass (36 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-003-iter-003": "Implemented 每日挑战任务面板. src/data/types.ts: Added ChallengeType union ('correct' | 'answer' | 'streak'), DailyChallenge interface with id/title/description/type/target/current/completed/claimed/rewardXP, DailyChallengeState with date and challenges array. src/services/storage.ts: Extended with DAILY_CHALLENGES_KEY, isValidDailyChallenge/isValidDailyChallengeState validators, getDailyChallenges/saveDailyChallenges CRUD with corrupted JSON recovery, generateDailyChallenges(date) with 6-item pool and deterministic seeded shuffle (hashString + seededShuffle) selecting 3 daily challenges. Updated exportAllData/importAllData/isValidExportData to include dailyChallenges. src/hooks/useDailyChallenges.ts: Lazy-init from storage, auto-regenerate on date mismatch, trackActivity(type, value?) increments matching challenges (correct/answer +1 capped, streak sets min(value,target)), auto-completes when current >= target, persists after each update. claimReward validates completed+unclaimed, calls storage.addXP(rewardXP), marks claimed. unclaimedCount derived. resetDailyChallenges for testing. src/components/DailyChallengePanel.tsx: Trophy header with date badge, challenge cards with title/description/progress bar/status badge, in-progress blue bar + X/Y, completed-unclaimed green claim button, completed-claimed gray badge, empty state with Gift icon, responsive padding. src/App.tsx: Added 'challenges' View, imported useDailyChallenges/DailyChallengePanel, destructured challengeState/unclaimedCount/trackActivity/claimReward, trackActivity called on correct answer (answer/correct/streak) and wrong answer (answer/streak=0), Trophy button in header score area with unclaimed badge, '每日挑战' nav button in desktop nav with badge, handleOpenChallenges/handleBackFromChallenges, view rendering DailyChallengePanel, challenges case in handleNavigate. Tests: useDailyChallenges.test.ts (12 tests covering init generation, load existing, date rollover, trackActivity correct/answer/streak, completion cap, claimReward XP/add/claimed, unclaimedCount), DailyChallengePanel.test.tsx (9 tests covering header/date, cards, progress bar width, claim button, click claim, claimed badge, X/Y text, back button, empty state), App.challenges.test.tsx (6 tests covering trophy render, badge count, view switch, trackActivity on correct/wrong, back navigation). Updated 9 existing App test files with useDailyChallenges mock. Total: 375/375 tests pass (39 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
+    "epic-003-iter-003": "Implemented 每日挑战任务面板. src/data/types.ts: Added ChallengeType union ('correct' | 'answer' | 'streak'), DailyChallenge interface with id/title/description/type/target/current/completed/claimed/rewardXP, DailyChallengeState with date and challenges array. src/services/storage.ts: Extended with DAILY_CHALLENGES_KEY, isValidDailyChallenge/isValidDailyChallengeState validators, getDailyChallenges/saveDailyChallenges CRUD with corrupted JSON recovery, generateDailyChallenges(date) with 6-item pool and deterministic seeded shuffle (hashString + seededShuffle) selecting 3 daily challenges. Updated exportAllData/importAllData/isValidExportData to include dailyChallenges. src/hooks/useDailyChallenges.ts: Lazy-init from storage, auto-regenerate on date mismatch, trackActivity(type, value?) increments matching challenges (correct/answer +1 capped, streak sets min(value,target)), auto-completes when current >= target, persists after each update. claimReward validates completed+unclaimed, calls storage.addXP(rewardXP), marks claimed. unclaimedCount derived. resetDailyChallenges for testing. src/components/DailyChallengePanel.tsx: Trophy header with date badge, challenge cards with title/description/progress bar/status badge, in-progress blue bar + X/Y, completed-unclaimed green claim button, completed-claimed gray badge, empty state with Gift icon, responsive padding. src/App.tsx: Added 'challenges' View, imported useDailyChallenges/DailyChallengePanel, destructured challengeState/unclaimedCount/trackActivity/claimReward, trackActivity called on correct answer (answer/correct/streak) and wrong answer (answer/streak=0), Trophy button in header score area with unclaimed badge, '每日挑战' nav button in desktop nav with badge, handleOpenChallenges/handleBackFromChallenges, view rendering DailyChallengePanel, challenges case in handleNavigate. Tests: useDailyChallenges.test.ts (12 tests covering init generation, load existing, date rollover, trackActivity correct/answer/streak, completion cap, claimReward XP/add/claimed, unclaimedCount), DailyChallengePanel.test.tsx (9 tests covering header/date, cards, progress bar width, claim button, click claim, claimed badge, X/Y text, back button, empty state), App.challenges.test.tsx (6 tests covering trophy render, badge count, view switch, trackActivity on correct/wrong, back navigation). Updated 9 existing App test files with useDailyChallenges mock. Total: 375/375 tests pass (39 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-003-iter-004": "Implemented 成就徽章系统. src/data/types.ts: Added BadgeCategory union ('answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'), BadgeConditionType union, BadgeDefinition interface, UnlockedBadge interface, BadgeProgress interface, BadgeState interface. src/services/storage.ts: Extended with BADGES_KEY, BADGE_PROGRESS_KEY, DEFAULT_BADGE_PROGRESS, BADGE_DEFINITIONS (12 badges), isValidBadgeProgress/isValidUnlockedBadge/isValidBadgeState validators, getBadgeProgress/saveBadgeProgress/updateBadgeProgress, getBadges/saveBadges CRUD with corrupted JSON recovery. Updated exportAllData/importAllData/isValidExportData to include badgeProgress and badges. src/hooks/useBadges.ts: Lazy-init state from storage, trackProgress(type, value?) updates counters atomically via storage.updateBadgeProgress (correct→totalCorrect++/totalAnswered++, wrong→totalAnswered++, session_complete→totalSessions++, perfect_session→perfectSessions++, streak→maxStreakEver=max(current,value), review→totalReviews++, challenge→totalChallengesCompleted++), checkBadges(level?) iterates BADGE_DEFINITIONS checking conditions against progress and optional level, filters already-unlocked, persists new UnlockedBadge entries with unlockedAt timestamp, returns newly unlocked definitions, getBadgeProgressPercent computes current/threshold ratio capped at 1.0, resetBadges clears storage and state. src/components/BadgePanel.tsx: Award header with unlocked count badge, category-grouped grid layout (grid-cols-2 md:grid-cols-3 lg:grid-cols-4), unlocked cards with amber border/golden icon/unlocked date, locked cards with gray border/progress bar, back button with ChevronLeft. src/components/BadgeUnlockToast.tsx: Fixed bottom-center toast with AnimatePresence spring animation, amber gradient border, Sparkles icon, auto-dismiss 3000ms, click-to-dismiss. src/App.tsx: Integrated useBadges hook, added 'badges' View, badge tracking in correct-answer useEffect (trackProgress('correct') + trackProgress('streak', streak+1) + checkBadges), wrong-answer useEffect (trackProgress('wrong') + trackProgress('streak', 0) + checkBadges), session-completion useEffect (trackProgress('session_complete') + perfect_session when accuracy=100 + checkBadges), review-mode useEffect (trackProgress('review') + checkBadges), Award button in header score area and desktop nav with unlockedCount badge, handleOpenBadges/handleBackFromBadges, BadgeUnlockToast rendered in root. Tests: useBadges.test.ts (14 tests covering initial load, trackProgress correct/wrong/streak/session/perfect/review/challenge, checkBadges first-steps/correct-10/level-3, no re-unlock, getBadgeProgressPercent ratio, resetBadges), BadgePanel.test.tsx (7 tests covering header/count, 12 cards render, unlocked amber border+date, locked gray border+progress bar, progress width, back button, category sections), App.badges.test.tsx (7 tests covering award button render, unlocked count badge, view switch, BadgePanel presence, trackProgress on correct, checkBadges on correct, back navigation). Updated 10 existing App test files with useBadges mock. Total: 404/404 tests pass (42 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
   },
   "history": [
+    {
+      "id": "2026-05-10-20",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-003 iter-004 成就徽章系统 — 404/404 测试通过，build 成功，v0.16.0 部署完成；经验档案已更新，战略指令 dir-user-review-001 已归档为 Epic-004 提案"
+    },
     {
       "id": "2026-05-09-19",
       "mode": "vision",
@@ -263,6 +305,16 @@
         "createdAt": "2026-05-09T16:30:00.000Z",
         "executedAt": "2026-05-09T16:35:00.000Z",
         "executionNote": "已插入 iter-003a '响应式 UI 适配' 和 iter-003b '纯听写模式重新设计' 到 epic-002 迭代列表中，位于 iter-003 之后、iter-004 之前"
+      },
+      {
+        "id": "dir-user-review-001",
+        "type": "custom",
+        "target": null,
+        "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」，将 9 大问题按 P0/P1/P2/P3 优先级拆分为 5 个迭代",
+        "reason": "用户以真实学习者身份完整体验后给出的系统性反馈，是当前产品从 demo 升级为日常学习工具的最大瓶颈",
+        "createdAt": "2026-05-09T19:40:00Z",
+        "executedAt": "2026-05-10T12:02:00.000Z",
+        "executionNote": "已创建 Epic 提案文档：docs/superpowers/specs/2026-05-10-user-review-feedback-spec.md 和 docs/superpowers/plans/2026-05-10-experience-optimization.md。拆分为 iter-001~iter-005，将在 epic-003 iter-005 完成后进入 PLAN 阶段执行"
       }
     ]
   },
@@ -271,11 +323,11 @@
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
     "productionUrl": "https://en-learn-9l3nqgvp6-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T00:51:56.000Z",
-    "version": "v0.15.0",
-    "iterationId": "iter-003",
-    "iterationTitle": "每日挑战任务面板",
-    "gitTag": "v0.15.0",
+    "deployedAt": "2026-05-10T12:02:43.000Z",
+    "version": "v0.16.0",
+    "iterationId": "iter-004",
+    "iterationTitle": "成就徽章系统",
+    "gitTag": "v0.16.0",
     "gitTagPushed": false,
     "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
   }

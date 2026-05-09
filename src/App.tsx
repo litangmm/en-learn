@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen } from 'lucide-react';
+import { Headphones, BookOpen, History } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { PracticeCard } from '@/components/PracticeCard';
@@ -10,6 +10,7 @@ import { DictionarySelector } from '@/components/DictionarySelector';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
 import { MistakeBook } from '@/components/MistakeBook';
+import { HistoryView } from '@/components/HistoryView';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -24,7 +25,7 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
-type View = 'practice' | 'mistake-book';
+type View = 'practice' | 'mistake-book' | 'history';
 
 function App() {
   const [dictionaryId, setDictionaryId] = useState('cet4');
@@ -34,6 +35,7 @@ function App() {
   const [view, setView] = useState<View>('practice');
   const [practiceSentenceIds, setPracticeSentenceIds] = useState<string[] | undefined>();
   const [mistakeCount, setMistakeCount] = useState(storage.getMistakeCount());
+  const [historyCount, setHistoryCount] = useState(storage.getHistoryCount());
 
   const {
     state,
@@ -138,6 +140,16 @@ function App() {
     setMistakeCount(storage.getMistakeCount());
   };
 
+  const handleOpenHistory = () => {
+    setView('history');
+    setHistoryCount(storage.getHistoryCount());
+  };
+
+  const handleBackFromHistory = () => {
+    setView('practice');
+    setHistoryCount(storage.getHistoryCount());
+  };
+
   const currentDict = getDictionaryById(dictionaryId);
 
   // Loading state
@@ -208,6 +220,23 @@ function App() {
                 </Badge>
               )}
             </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleOpenHistory}
+              className="relative text-slate-500 gap-2"
+            >
+              <History className="w-4 h-4" />
+              学习记录
+              {historyCount > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                >
+                  {historyCount}
+                </Badge>
+              )}
+            </Button>
             {view === 'practice' && (
               <>
                 <DictionarySelector
@@ -266,6 +295,8 @@ function App() {
           onPracticeMistakes={handlePracticeMistakes}
           onBack={handleBackFromMistakeBook}
         />
+      ) : view === 'history' ? (
+        <HistoryView onBack={handleBackFromHistory} />
       ) : (
         <main className="max-w-4xl mx-auto px-4 py-8">
           {!state.isComplete ? (

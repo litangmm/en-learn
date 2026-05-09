@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake } from '@/data/types';
+import type { Mistake, SessionHistory } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -20,6 +20,8 @@ export type PersistedSession = StorageSchemaV1 | StorageSchemaV2;
 
 const SESSION_KEY = 'en-learn-session';
 const MISTAKES_KEY = 'en-learn-mistakes';
+const HISTORY_KEY = 'en-learn-history';
+const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
   if (typeof data !== 'object' || data === null) {
@@ -183,6 +185,89 @@ function isValidMistake(data: unknown): data is Mistake {
   return true;
 }
 
+function isValidHistory(data: unknown): data is SessionHistory {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.id !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.timestamp !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.duration !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.dictionaryId !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.dictionaryName !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.score !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.totalQuestions !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.correctCount !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.accuracy !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function loadHistory(): SessionHistory[] {
+  const raw = localStorage.getItem(HISTORY_KEY);
+  if (raw === null) {
+    return [];
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted history data, clearing');
+    localStorage.removeItem(HISTORY_KEY);
+    return [];
+  }
+
+  if (!Array.isArray(parsed)) {
+    console.warn('[StorageService] Invalid history schema, clearing');
+    localStorage.removeItem(HISTORY_KEY);
+    return [];
+  }
+
+  const validHistory = parsed.filter(isValidHistory);
+  if (validHistory.length !== parsed.length) {
+    console.warn('[StorageService] Some history entries were invalid and filtered out');
+  }
+
+  return validHistory;
+}
+
+function saveHistory(history: SessionHistory[]): void {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save history:', error);
+  }
+}
+
 function loadMistakes(): Mistake[] {
   const raw = localStorage.getItem(MISTAKES_KEY);
   if (raw === null) {
@@ -342,6 +427,27 @@ export const StorageService = {
       };
       saveMistakes(mistakes);
     }
+  },
+
+  addHistory(entry: SessionHistory): void {
+    const history = loadHistory();
+    history.unshift(entry);
+    if (history.length > MAX_HISTORY_ENTRIES) {
+      history.length = MAX_HISTORY_ENTRIES;
+    }
+    saveHistory(history);
+  },
+
+  getHistory(): SessionHistory[] {
+    return loadHistory();
+  },
+
+  clearHistory(): void {
+    localStorage.removeItem(HISTORY_KEY);
+  },
+
+  getHistoryCount(): number {
+    return loadHistory().length;
   },
 } as const;
 

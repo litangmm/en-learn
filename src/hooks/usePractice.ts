@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Sentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
+import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 
 export interface UserAnswer {
@@ -34,6 +35,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pendingMistakes, setPendingMistakes] = useState<Record<string, SessionMistake>>({});
+  const sessionStartTimeRef = useRef<number | null>(null);
 
   const [state, setState] = useState<PracticeState>({
     currentIndex: 0,
@@ -72,6 +74,8 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           ...persisted.session,
           currentInputs: new Array(targetSentence.blanks.length).fill(''),
         });
+        // Don't set start time for restored sessions — duration would be inaccurate
+        sessionStartTimeRef.current = null;
       } else {
         setState({
           currentIndex: 0,
@@ -83,6 +87,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           isComplete: false,
           score: 0,
         });
+        sessionStartTimeRef.current = Date.now();
       }
       setPendingMistakes({});
     }
@@ -138,6 +143,33 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
       setPendingMistakes({});
     }
   }, [state.isComplete, pendingMistakes]);
+
+  // Record history when session completes
+  useEffect(() => {
+    if (state.isComplete && sessionStartTimeRef.current !== null) {
+      const duration = Math.floor((Date.now() - sessionStartTimeRef.current) / 1000);
+      const correctCount = state.userAnswers.filter((a) => a.isCorrect).length;
+      const totalQuestions = shuffledSentences.length;
+      const accuracy = totalQuestions > 0
+        ? Math.round((correctCount / totalQuestions) * 100)
+        : 0;
+      const dict = getDictionaryById(dictionaryId);
+
+      storage.addHistory({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        timestamp: Date.now(),
+        duration: Math.max(duration, 1),
+        dictionaryId,
+        dictionaryName: dict?.name || dictionaryId,
+        score: state.score,
+        totalQuestions,
+        correctCount,
+        accuracy,
+      });
+
+      sessionStartTimeRef.current = null;
+    }
+  }, [state.isComplete, state.userAnswers, state.score, dictionaryId, shuffledSentences.length]);
 
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 
@@ -268,6 +300,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
       score: 0,
     });
     setPendingMistakes({});
+    sessionStartTimeRef.current = Date.now();
   }, [shuffledSentences]);
 
   const progress = useMemo(() => {

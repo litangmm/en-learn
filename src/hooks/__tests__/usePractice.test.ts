@@ -759,4 +759,220 @@ describe('usePractice', () => {
       expect(result.current.shuffledSentences.length).toBeGreaterThan(0);
     });
   });
+
+  describe('history recording', () => {
+    it('should record history when session completes', async () => {
+      const addHistorySpy = vi.spyOn(storage, 'addHistory').mockImplementation(() => {});
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer all questions correctly on first try
+      for (let i = 0; i < 3; i++) {
+        const answers = [['catches'], ['Actions', 'words'], ['perfect']][i];
+        answers.forEach((ans, idx) => {
+          act(() => {
+            result.current.setInput(idx, ans);
+          });
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+        act(() => {
+          result.current.nextSentence();
+        });
+      }
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      await waitFor(() => {
+        expect(addHistorySpy).toHaveBeenCalled();
+      });
+
+      const callArg = addHistorySpy.mock.calls[0][0];
+      expect(callArg.dictionaryId).toBe('test');
+      expect(callArg.score).toBe(30); // 10 points per question * 3
+      expect(callArg.totalQuestions).toBe(3);
+      expect(callArg.correctCount).toBe(3);
+      expect(callArg.accuracy).toBe(100);
+      expect(callArg.duration).toBeGreaterThanOrEqual(1);
+      expect(typeof callArg.id).toBe('string');
+      expect(typeof callArg.timestamp).toBe('number');
+    });
+
+    it('should calculate correctCount and accuracy correctly with wrong answers', async () => {
+      const addHistorySpy = vi.spyOn(storage, 'addHistory').mockImplementation(() => {});
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Question 1: wrong then correct
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+      act(() => {
+        result.current.retry();
+      });
+      act(() => {
+        result.current.setInput(0, 'catches');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      // Question 2: correct
+      act(() => {
+        result.current.setInput(0, 'Actions');
+        result.current.setInput(1, 'words');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      // Question 3: wrong (don't retry, just move on)
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      await waitFor(() => {
+        expect(addHistorySpy).toHaveBeenCalled();
+      });
+
+      const callArg = addHistorySpy.mock.calls[0][0];
+      expect(callArg.correctCount).toBe(2); // Q1 and Q2 correct
+      expect(callArg.totalQuestions).toBe(3);
+      expect(callArg.accuracy).toBe(67); // round(2/3 * 100) = 67
+    });
+
+    it('should not record history for restored sessions', async () => {
+      const addHistorySpy = vi.spyOn(storage, 'addHistory').mockImplementation(() => {});
+      const persistedSession = {
+        version: 2 as const,
+        dictionaryId: 'test',
+        session: {
+          currentIndex: 0,
+          userAnswers: [],
+          currentInputs: [''],
+          showResult: false,
+          isCorrect: false,
+          attempts: 0,
+          isComplete: false,
+          score: 0,
+        },
+        timestamp: Date.now(),
+        mistakes: [],
+      };
+      vi.spyOn(storage, 'loadSession').mockReturnValue(persistedSession);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer all questions
+      for (let i = 0; i < 3; i++) {
+        const answers = [['catches'], ['Actions', 'words'], ['perfect']][i];
+        answers.forEach((ans, idx) => {
+          act(() => {
+            result.current.setInput(idx, ans);
+          });
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+        act(() => {
+          result.current.nextSentence();
+        });
+      }
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      // History should not be recorded for restored sessions
+      expect(addHistorySpy).not.toHaveBeenCalled();
+    });
+
+    it('should record history after reset and completion', async () => {
+      const addHistorySpy = vi.spyOn(storage, 'addHistory').mockImplementation(() => {});
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+      vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+      vi.spyOn(storage, 'clearSession').mockImplementation(() => {});
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Reset first
+      act(() => {
+        result.current.reset();
+      });
+
+      // Answer all questions
+      for (let i = 0; i < 3; i++) {
+        const answers = [['catches'], ['Actions', 'words'], ['perfect']][i];
+        answers.forEach((ans, idx) => {
+          act(() => {
+            result.current.setInput(idx, ans);
+          });
+        });
+        act(() => {
+          result.current.checkAnswer();
+        });
+        act(() => {
+          result.current.nextSentence();
+        });
+      }
+
+      await waitFor(() => {
+        expect(result.current.state.isComplete).toBe(true);
+      });
+
+      await waitFor(() => {
+        expect(addHistorySpy).toHaveBeenCalled();
+      });
+
+      const callArg = addHistorySpy.mock.calls[0][0];
+      expect(callArg.duration).toBeGreaterThanOrEqual(1);
+      expect(callArg.correctCount).toBe(3);
+    });
+  });
 });

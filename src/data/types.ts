@@ -27,3 +27,15 @@ export interface Mistake {
   dictionaryId: string;
   reviewedCount: number;
 }
+
+export interface SessionHistory {
+  id: string;
+  timestamp: number;
+  duration: number;
+  dictionaryId: string;
+  dictionaryName: string;
+  score: number;
+  totalQuestions: number;
+  correctCount: number;
+  accuracy: number;
+}

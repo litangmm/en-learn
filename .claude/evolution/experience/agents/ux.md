@@ -7,6 +7,14 @@
 
 ## 历史提案
 
+### 2026-05-10 (cycle-2026-05-10-20)
+- **相关 Epic**: epic-003「游戏化学习动力系统」—— 作为提议者
+- **结果**: epic-003 iter-004「成就徽章系统」完成，404/404 测试通过（42 测试文件），lint 0 errors，build 成功，v0.16.0
+- **完成内容**: BadgeCategory/BadgeConditionType/BadgeDefinition/UnlockedBadge/BadgeProgress/BadgeState 类型定义；StorageService 徽章持久化（12 枚徽章定义、进度原子更新、损坏恢复、导出导入）；useBadges hook（trackProgress 按事件类型更新、checkBadges 条件检查、getBadgeProgressPercent 进度计算）；BadgePanel 组件（分类网格布局、解锁/锁定视觉状态、进度条、响应式断点）；BadgeUnlockToast 组件（弹簧动画、琥珀渐变、自动消失）；App.tsx 全学习链路集成（正确/错误/会话/复习/挑战事件追踪、Award 导航按钮、视图切换、Toast 触发）
+- **新增测试**: useBadges.test.ts (14) + BadgePanel.test.tsx (7) + App.badges.test.tsx (7)，全量 **404/404 通过**
+- **当前状态**: **连续未被选中计数清零**（epic-003 执行中）
+- **观察**: epic-003 的 iter-004 完成了游戏化动力系统的「长期积累」维度——XP（长期）+ 连击（即时）+ 每日挑战（中期）+ 徽章（长期成就）。12 枚徽章覆盖了答题、连击、等级、会话、复习、挑战六个维度，与现有学习行为完全对齐。徽章解锁 Toast 复用了 framer-motion AnimatePresence 动画体系，与 XP 弹窗形成统一的「获得感」视觉语言。iter-005（排行榜）将为游戏化体系增加「社会比较」维度，是 epic-003 最后一个迭代
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **提案 Epic**: epic-003「游戏化学习动力系统」
 - **结果**: **被选中** — epic-003 第三个迭代执行中

@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-10 (cycle-2026-05-10-20)
+- **相关质量门禁**: 单元测试回归、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-003 iter-004「成就徽章系统」质量门禁验证
+  - useBadges 测试：初始加载空状态、trackProgress correct/wrong/streak/session/perfect/review/challenge 事件、checkBadges first-steps/correct-10/level-3 条件、已解锁过滤、getBadgeProgressPercent 比例计算、resetBadges 清除
+  - BadgePanel 测试：标题/计数渲染、12 枚卡片渲染、解锁状态琥珀边框+日期、锁定状态灰度边框+进度条、进度条宽度、返回按钮、分类区块
+  - App.badges 测试：Award 按钮渲染、解锁计数徽章、视图切换、BadgePanel 存在性、trackProgress 正确调用、checkBadges 正确调用、返回导航
+  - 全量回归：**404/404 单元测试通过**（42 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 28 个专用测试。10 个现有 App 测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护策略，零行为回归验证了向后兼容设计的正确性。404 测试是项目历史新高位
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **相关质量门禁**: 单元测试回归、边界情况自动化测试、构建稳定性
 - **本次验证**: epic-003 iter-003「每日挑战任务面板」质量门禁验证

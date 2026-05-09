@@ -7,6 +7,12 @@
 
 ## 历史提案
 
+### 2026-05-10 (cycle-2026-05-10-20)
+- **提案 Epic**: epic-006「前端架构债务清理与性能基线」
+- **结果**: 未被选中（epic-003 iter-004 完成，epic-006 为 medium 优先级储备）
+- **当前状态**: **连续 16 个 cycle 未被选中**（cycle-19 时 15 次 + 本次 1 次）
+- **观察**: epic-003 iter-004 在现有架构内自然扩展（新增 useBadges hook + BadgePanel + BadgeUnlockToast + storage 徽章能力），未引入架构变更。但 App.tsx 的复杂度已达灾难级临界点——现在管理 8 个视图（practice/mistake-book/history/data/review/challenges/badges + focus mode overlay）+ 4 种练习模式 × 专注模式 × 响应式断点 + XP 系统 + 连击动画 + 每日挑战 + 徽章追踪。条件渲染代码已接近 300 行，任何新增功能都面临极高的回归风险。**反思建议**：epic-003 仅剩 1 个迭代，完成后 MUST 立即优先处理架构债务。建议将 epic-006 优先级从 medium 提升为 critical，首个迭代必须实施「App.tsx 导航配置提取」和「视图级路由抽象」，否则后续所有 Epic（包括用户反馈驱动的 epic-004）将在不可维护的代码基础上叠加更多复杂度
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **提案 Epic**: epic-006「前端架构债务清理与性能基线」
 - **结果**: 未被选中（epic-003 iter-003 完成，epic-006 为 medium 优先级储备）

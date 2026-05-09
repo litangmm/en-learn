@@ -38,14 +38,16 @@ Object.defineProperty(globalThis, 'speechSynthesis', {
 Object.defineProperty(globalThis, 'SpeechSynthesisUtterance', {
   writable: true,
   configurable: true,
-  value: vi.fn((text: string) => ({
-    text,
-    lang: 'en-US',
-    rate: 1,
-    pitch: 1,
-    voice: null,
-    onstart: null,
-    onend: null,
-    onerror: null,
-  })),
+  value: function (this: unknown, text: string) {
+    return {
+      text,
+      lang: 'en-US',
+      rate: 1,
+      pitch: 1,
+      voice: null,
+      onstart: null,
+      onend: null,
+      onerror: null,
+    };
+  },
 });

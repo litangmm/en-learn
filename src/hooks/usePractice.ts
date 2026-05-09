@@ -36,6 +36,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const [error, setError] = useState<string | null>(null);
   const [pendingMistakes, setPendingMistakes] = useState<Record<string, SessionMistake>>({});
   const sessionStartTimeRef = useRef<number | null>(null);
+  const [shuffleSeed, setShuffleSeed] = useState(0);
 
   const [state, setState] = useState<PracticeState>({
     currentIndex: 0,
@@ -100,10 +101,10 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
       const filtered = sentences.filter((s) => idSet.has(s.id));
       return filtered.length > 0 ? filtered : sentences.slice(0, 10);
     }
-    // eslint-disable-next-line react-hooks/purity
     const shuffled = [...sentences].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 10);
-  }, [sentences, sentenceIds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sentences, sentenceIds, shuffleSeed]);
 
   // Debounced save session
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -289,6 +290,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   }, []);
 
   const reset = useCallback(() => {
+    setShuffleSeed((prev) => prev + 1);
     setState({
       currentIndex: 0,
       userAnswers: [],

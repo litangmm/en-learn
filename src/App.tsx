@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Headphones, BookOpen, History, Database } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
@@ -72,6 +72,41 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [currentSentence?.id]);
+
+  // Global keyboard shortcuts
+  const stateRef = useRef(state);
+  const viewRef = useRef(view);
+  const dialogRef = useRef({ showConfirmDialog, showRecoveryDialog });
+  const nextSentenceRef = useRef(nextSentence);
+
+  useEffect(() => { stateRef.current = state; }, [state]);
+  useEffect(() => { viewRef.current = view; }, [view]);
+  useEffect(() => { dialogRef.current = { showConfirmDialog, showRecoveryDialog }; }, [showConfirmDialog, showRecoveryDialog]);
+  useEffect(() => { nextSentenceRef.current = nextSentence; }, [nextSentence]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Space') return;
+
+      // Don't handle when typing in an input
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      if (viewRef.current !== 'practice') return;
+      if (dialogRef.current.showConfirmDialog || dialogRef.current.showRecoveryDialog) return;
+
+      const { showResult, isCorrect, isComplete } = stateRef.current;
+      if (showResult && isCorrect && !isComplete) {
+        e.preventDefault();
+        nextSentenceRef.current();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const handleSpeak = () => {
     if (currentSentence) {
@@ -334,6 +369,8 @@ function App() {
                     isCorrect={state.isCorrect}
                     attempts={state.attempts}
                     isSpeaking={isSpeaking}
+                    currentQuestion={currentQuestion}
+                    totalQuestions={totalQuestions}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

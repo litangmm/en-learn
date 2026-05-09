@@ -377,6 +377,30 @@ describe('usePractice', () => {
     expect(result.current.state.isComplete).toBe(false);
   });
 
+  it('should change shuffled order after reset', async () => {
+    let callCount = 0;
+    const sequence = [0.1, 0.1, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9];
+    vi.spyOn(Math, 'random').mockImplementation(() => sequence[callCount++] ?? 0.5);
+    vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+    vi.spyOn(storage, 'saveSession').mockImplementation(() => {});
+
+    const { result } = renderHook(() => usePractice('test'));
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    const firstId = result.current.shuffledSentences[0].id;
+
+    act(() => {
+      result.current.reset();
+    });
+
+    await waitFor(() => {
+      expect(result.current.shuffledSentences[0].id).not.toBe(firstId);
+    });
+  });
+
   it('should not advance progress on wrong answer', async () => {
     const { result } = renderHook(() => usePractice('test'));
 

@@ -13,6 +13,8 @@ interface PracticeCardProps {
   isCorrect: boolean;
   attempts: number;
   isSpeaking: boolean;
+  currentQuestion?: number;
+  totalQuestions?: number;
   onInputChange: (index: number, value: string) => void;
   onCheck: () => void;
   onNext: () => void;
@@ -27,6 +29,8 @@ export function PracticeCard({
   isCorrect,
   attempts,
   isSpeaking,
+  currentQuestion,
+  totalQuestions,
   onInputChange,
   onCheck,
   onNext,
@@ -140,7 +144,9 @@ export function PracticeCard({
         <div className="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs font-medium">
-              第 {sentence.id} 题
+              {currentQuestion !== undefined && totalQuestions !== undefined
+                ? `第 ${currentQuestion}/${totalQuestions} 题`
+                : `第 ${sentence.id} 题`}
             </Badge>
             {attempts > 0 && (
               <Badge variant="outline" className="text-xs">

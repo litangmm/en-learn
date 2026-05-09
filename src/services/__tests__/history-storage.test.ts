@@ -156,6 +156,7 @@ describe('StorageService History', () => {
         attempts: 0,
         isComplete: false,
         score: 0,
+        orderedTokenIds: [],
       });
 
       StorageService.clearSession();
@@ -174,6 +175,7 @@ describe('StorageService History', () => {
         attempts: 0,
         isComplete: false,
         score: 0,
+        orderedTokenIds: [],
       });
 
       StorageService.clearHistory();

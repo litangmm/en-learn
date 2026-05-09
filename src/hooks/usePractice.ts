@@ -29,6 +29,7 @@ export interface PracticeState {
   isComplete: boolean;
   score: number;
   selectedChoiceId?: string | null;
+  orderedTokenIds: string[];
 }
 
 export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
@@ -49,6 +50,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     isComplete: false,
     score: 0,
     selectedChoiceId: null,
+    orderedTokenIds: [],
   });
 
   // Load dictionary data when id changes
@@ -77,6 +79,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           ...persisted.session,
           currentInputs: new Array(targetSentence.blanks.length).fill(''),
           selectedChoiceId: null,
+          orderedTokenIds: [],
         });
         // Don't set start time for restored sessions — duration would be inaccurate
         sessionStartTimeRef.current = null;
@@ -91,6 +94,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           isComplete: false,
           score: 0,
           selectedChoiceId: null,
+          orderedTokenIds: [],
         });
         sessionStartTimeRef.current = Date.now();
       }
@@ -188,6 +192,16 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     return [currentSentence, ...distractors].sort(() => Math.random() - 0.5);
   }, [currentSentence, sentences]);
 
+  // Generate tokens from current sentence for sentence-reorder mode
+  const sentenceTokens = useMemo(() => {
+    if (!currentSentence) return [];
+    const words = currentSentence.english.match(/\S+/g) || [];
+    return words.map((text, idx) => ({
+      id: `${currentSentence.id}-token-${idx}`,
+      text,
+    }));
+  }, [currentSentence]);
+
   const initializeInputs = useCallback(() => {
     if (currentSentence) {
       setState((prev) => ({
@@ -197,6 +211,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
         isCorrect: false,
         attempts: 0,
         selectedChoiceId: null,
+        orderedTokenIds: [],
       }));
     }
   }, [currentSentence]);
@@ -208,6 +223,27 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     }));
   }, []);
 
+  const selectToken = useCallback((tokenId: string) => {
+    setState((prev) => ({
+      ...prev,
+      orderedTokenIds: [...prev.orderedTokenIds, tokenId],
+    }));
+  }, []);
+
+  const deselectToken = useCallback((index: number) => {
+    setState((prev) => ({
+      ...prev,
+      orderedTokenIds: prev.orderedTokenIds.filter((_, i) => i !== index),
+    }));
+  }, []);
+
+  const resetTokens = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      orderedTokenIds: [],
+    }));
+  }, []);
+
   const setInput = useCallback((index: number, value: string) => {
     setState((prev) => {
       const newInputs = [...prev.currentInputs];
@@ -216,14 +252,17 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     });
   }, []);
 
-  const checkAnswer = useCallback((selectedOptionId?: string) => {
+  const checkAnswer = useCallback((param?: string | string[]) => {
     if (!currentSentence) return;
 
     const newAttempts = state.attempts + 1;
 
-    // Multiple-choice mode: compare selected option ID
-    if (selectedOptionId !== undefined) {
-      const isCorrect = selectedOptionId === currentSentence.id;
+    // Sentence-reorder mode: compare reconstructed sentence
+    if (Array.isArray(param)) {
+      const userSentence = param
+        .map((tokenId) => sentenceTokens.find((t) => t.id === tokenId)?.text || '')
+        .join(' ');
+      const isCorrect = userSentence.toLowerCase().trim() === currentSentence.english.toLowerCase().trim();
 
       if (isCorrect) {
         setState((prev) => ({
@@ -236,7 +275,50 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
             ...prev.userAnswers,
             {
               sentenceId: currentSentence.id,
-              answers: [selectedOptionId],
+              answers: [userSentence],
+              isCorrect: true,
+              attempts: newAttempts,
+            },
+          ],
+        }));
+      } else {
+        setState((prev) => ({
+          ...prev,
+          showResult: true,
+          isCorrect: false,
+          attempts: newAttempts,
+        }));
+
+        setPendingMistakes((prev) => ({
+          ...prev,
+          [currentSentence.id]: {
+            sentenceId: currentSentence.id,
+            wrongAnswers: [userSentence],
+            correctAnswers: [currentSentence.english],
+            attempts: newAttempts,
+            dictionaryId,
+          },
+        }));
+      }
+      return;
+    }
+
+    // Multiple-choice mode: compare selected option ID
+    if (param !== undefined) {
+      const isCorrect = param === currentSentence.id;
+
+      if (isCorrect) {
+        setState((prev) => ({
+          ...prev,
+          showResult: true,
+          isCorrect: true,
+          attempts: newAttempts,
+          score: prev.score + 10,
+          userAnswers: [
+            ...prev.userAnswers,
+            {
+              sentenceId: currentSentence.id,
+              answers: [param],
               isCorrect: true,
               attempts: newAttempts,
             },
@@ -255,7 +337,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           ...prev,
           [currentSentence.id]: {
             sentenceId: currentSentence.id,
-            wrongAnswers: [selectedOptionId],
+            wrongAnswers: [param],
             correctAnswers: [currentSentence.id],
             attempts: newAttempts,
             dictionaryId,
@@ -323,7 +405,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
         },
       }));
     }
-  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId]);
+  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens]);
 
   const nextSentence = useCallback(() => {
     setState((prev) => {
@@ -346,6 +428,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
         attempts: 0,
         currentInputs: new Array(shuffledSentences[nextIndex].blanks.length).fill(''),
         selectedChoiceId: null,
+        orderedTokenIds: [],
       };
     });
   }, [shuffledSentences]);
@@ -370,6 +453,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
       isComplete: false,
       score: 0,
       selectedChoiceId: null,
+      orderedTokenIds: [],
     });
     setPendingMistakes({});
     sessionStartTimeRef.current = Date.now();
@@ -400,5 +484,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     error,
     options,
     selectChoice,
+    sentenceTokens,
+    selectToken,
+    deselectToken,
+    resetTokens,
   };
 }

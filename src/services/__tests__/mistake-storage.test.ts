@@ -38,6 +38,7 @@ describe('StorageService Mistakes', () => {
           attempts: 0,
           isComplete: false,
           score: 0,
+          orderedTokenIds: [],
         },
         timestamp: Date.now(),
       };
@@ -60,6 +61,7 @@ describe('StorageService Mistakes', () => {
         attempts: 0,
         isComplete: false,
         score: 0,
+        orderedTokenIds: [],
       };
       StorageService.saveSession('dict-1', session);
 
@@ -269,6 +271,7 @@ describe('StorageService Mistakes', () => {
         attempts: 0,
         isComplete: false,
         score: 0,
+        orderedTokenIds: [],
       });
 
       StorageService.clearSession();
@@ -288,6 +291,7 @@ describe('StorageService Mistakes', () => {
         attempts: 0,
         isComplete: false,
         score: 0,
+        orderedTokenIds: [],
       });
 
       const raw = localStorage.getItem(SESSION_KEY);

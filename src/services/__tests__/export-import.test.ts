@@ -12,6 +12,7 @@ function createMockPracticeState(overrides: Record<string, unknown> = {}) {
     attempts: 0,
     isComplete: false,
     score: 0,
+    orderedTokenIds: [],
     ...overrides,
   };
 }

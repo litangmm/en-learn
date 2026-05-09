@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { Sentence, PracticeMode } from '@/data/types';
+import type { Sentence, PracticeMode, SentenceToken } from '@/data/types';
 
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
@@ -25,8 +25,12 @@ interface PracticeCardProps {
   options?: Sentence[];
   selectedChoiceId?: string | null;
   onSelectChoice?: (choiceId: string) => void;
+  sentenceTokens?: SentenceToken[];
+  orderedTokenIds?: string[];
+  onSelectToken?: (tokenId: string) => void;
+  onDeselectToken?: (index: number) => void;
   onInputChange: (index: number, value: string) => void;
-  onCheck: (selectedOptionId?: string) => void;
+  onCheck: (param?: string | string[]) => void;
   onNext: () => void;
   onRetry: () => void;
   onSpeak: () => void;
@@ -48,6 +52,10 @@ export function PracticeCard({
   options = [],
   selectedChoiceId,
   onSelectChoice,
+  sentenceTokens = [],
+  orderedTokenIds = [],
+  onSelectToken,
+  onDeselectToken,
   onInputChange,
   onCheck,
   onNext,
@@ -56,6 +64,7 @@ export function PracticeCard({
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
   const isMultipleChoice = mode === 'multiple-choice';
+  const isSentenceReorder = mode === 'sentence-reorder';
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Auto-focus first empty input on mount
@@ -74,16 +83,18 @@ export function PracticeCard({
       if (!showResult) {
         if (isMultipleChoice && selectedChoiceId) {
           onCheck(selectedChoiceId);
-        } else if (!isMultipleChoice) {
+        } else if (isSentenceReorder && orderedTokenIds.length === sentenceTokens.length && sentenceTokens.length > 0) {
+          onCheck(orderedTokenIds);
+        } else if (!isMultipleChoice && !isSentenceReorder) {
           onCheck();
         }
       } else if (isCorrect) {
         onNext();
-      } else if (!isMultipleChoice) {
+      } else if (!isMultipleChoice && !isSentenceReorder) {
         onRetry();
       }
     }
-  }, [showResult, isCorrect, isMultipleChoice, selectedChoiceId, onCheck, onNext, onRetry]);
+  }, [showResult, isCorrect, isMultipleChoice, isSentenceReorder, selectedChoiceId, orderedTokenIds, sentenceTokens, onCheck, onNext, onRetry]);
 
   // Render multiple-choice options
   const renderChoiceOptions = () => {
@@ -116,6 +127,75 @@ export function PracticeCard({
             </button>
           );
         })}
+      </div>
+    );
+  };
+
+  // Render sentence-reorder mode
+  const renderSentenceReorder = () => {
+    const selectedTokens = orderedTokenIds
+      .map((id) => sentenceTokens.find((t) => t.id === id))
+      .filter(Boolean) as SentenceToken[];
+
+    const remainingTokens = sentenceTokens.filter(
+      (t) => !orderedTokenIds.includes(t.id)
+    );
+
+    return (
+      <div className="space-y-6">
+        {/* Answer zone */}
+        <div className="min-h-[60px] p-4 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
+          <p className="text-xs text-slate-400 mb-2">按正确顺序排列句子：</p>
+          <div className="flex flex-wrap gap-2">
+            {selectedTokens.length === 0 ? (
+              <span className="text-sm text-slate-400">点击下方单词排列句子</span>
+            ) : (
+              selectedTokens.map((token, idx) => (
+                <button
+                  key={token.id}
+                  onClick={() => onDeselectToken?.(idx)}
+                  disabled={showResult}
+                  className={`
+                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                    ${showResult
+                      ? 'bg-slate-100 text-slate-600 cursor-default'
+                      : 'bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer'
+                    }
+                  `}
+                >
+                  {token.text}
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Word pool */}
+        {!showResult && remainingTokens.length > 0 && (
+          <div className="flex flex-wrap gap-2 justify-center">
+            {remainingTokens.map((token) => (
+              <button
+                key={token.id}
+                onClick={() => onSelectToken?.(token.id)}
+                className="px-3 py-2 rounded-lg text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 cursor-pointer"
+              >
+                {token.text}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Correct sentence reveal on wrong answer */}
+        {showResult && !isCorrect && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 bg-green-50 rounded-xl border border-green-200"
+          >
+            <p className="text-sm text-green-700 font-medium mb-1">正确答案：</p>
+            <p className="text-base text-green-800">{sentence.english}</p>
+          </motion.div>
+        )}
       </div>
     );
   };
@@ -309,7 +389,7 @@ export function PracticeCard({
           </div>
 
           {/* Divider */}
-          {(!isDictation || showResult) && !isMultipleChoice && (
+          {(!isDictation || showResult) && !isMultipleChoice && !isSentenceReorder && (
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200"></div>
@@ -331,17 +411,19 @@ export function PracticeCard({
             </div>
           )}
 
-          {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options */}
-          <div className={`${isMultipleChoice ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
+          {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options / Sentence Reorder */}
+          <div className={`${isMultipleChoice || isSentenceReorder ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
             {isMultipleChoice
               ? renderChoiceOptions()
-              : isDictation && !showResult
-                ? renderDictationInputs()
-                : renderSentenceWithBlanks()}
+              : isSentenceReorder
+                ? renderSentenceReorder()
+                : isDictation && !showResult
+                  ? renderDictationInputs()
+                  : renderSentenceWithBlanks()}
           </div>
 
           {/* Hints */}
-          {!showResult && !isDictation && !isMultipleChoice && (
+          {!showResult && !isDictation && !isMultipleChoice && !isSentenceReorder && (
             <div className="flex flex-wrap gap-2 justify-center">
               {sentence.blanks.map((blank, idx) => (
                 blank.hint && (
@@ -397,8 +479,19 @@ export function PracticeCard({
         <div className="px-4 py-3 md:px-6 md:py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           {!showResult ? (
             <Button
-              onClick={() => isMultipleChoice ? onCheck(selectedChoiceId || undefined) : onCheck()}
-              disabled={isMultipleChoice && !selectedChoiceId}
+              onClick={() => {
+                if (isMultipleChoice) {
+                  onCheck(selectedChoiceId || undefined);
+                } else if (isSentenceReorder) {
+                  onCheck(orderedTokenIds);
+                } else {
+                  onCheck();
+                }
+              }}
+              disabled={
+                (isMultipleChoice && !selectedChoiceId) ||
+                (isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length)
+              }
               className="w-full gap-2"
               size="lg"
             >
@@ -413,7 +506,7 @@ export function PracticeCard({
               下一题
               <ArrowRight className="w-4 h-4" />
             </Button>
-          ) : isMultipleChoice ? (
+          ) : isMultipleChoice || isSentenceReorder ? (
             <Button
               onClick={onNext}
               variant="outline"

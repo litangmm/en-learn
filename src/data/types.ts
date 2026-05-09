@@ -30,6 +30,11 @@ export interface Mistake {
   lastReviewedAt?: number;
 }
 
+export interface SentenceToken {
+  id: string;
+  text: string;
+}
+
 export interface SessionHistory {
   id: string;
   timestamp: number;
@@ -42,4 +47,4 @@ export interface SessionHistory {
   accuracy: number;
 }
 
-export type PracticeMode = 'fill-in-blanks' | 'dictation' | 'multiple-choice';
+export type PracticeMode = 'fill-in-blanks' | 'dictation' | 'multiple-choice' | 'sentence-reorder';

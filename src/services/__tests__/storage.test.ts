@@ -14,6 +14,7 @@ function createMockPracticeState(overrides: Partial<PracticeState> = {}): Practi
     attempts: 0,
     isComplete: false,
     score: 0,
+    orderedTokenIds: [],
     ...overrides,
   };
 }

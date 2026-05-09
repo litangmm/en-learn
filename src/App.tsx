@@ -66,6 +66,10 @@ function App() {
     error,
     options,
     selectChoice,
+    sentenceTokens,
+    selectToken,
+    deselectToken,
+    resetTokens,
   } = usePractice(dictionaryId, practiceSentenceIds);
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
@@ -80,7 +84,7 @@ function App() {
   // Auto-play audio on new sentence
   useEffect(() => {
     if (currentSentence && !state.showResult && !state.isComplete) {
-      const delay = practiceMode === 'dictation' ? 300 : practiceMode === 'multiple-choice' ? 500 : 800;
+      const delay = practiceMode === 'dictation' ? 300 : practiceMode === 'multiple-choice' ? 500 : practiceMode === 'sentence-reorder' ? 500 : 800;
       const timer = setTimeout(() => {
         speak(currentSentence.english);
       }, delay);
@@ -157,6 +161,9 @@ function App() {
     if (mode === practiceMode) return;
     setPracticeMode(mode);
     initializeInputs();
+    if (mode === 'sentence-reorder') {
+      resetTokens();
+    }
   };
 
   const handleDictionaryChange = (newId: string) => {
@@ -535,6 +542,9 @@ function App() {
                     <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
                       选择题模式
                     </ToggleGroupItem>
+                    <ToggleGroupItem value="sentence-reorder" aria-label="连词成句">
+                      连词成句
+                    </ToggleGroupItem>
                   </ToggleGroup>
                   <Button
                     variant="outline"
@@ -567,6 +577,10 @@ function App() {
                     options={options}
                     selectedChoiceId={state.selectedChoiceId}
                     onSelectChoice={selectChoice}
+                    sentenceTokens={sentenceTokens}
+                    orderedTokenIds={state.orderedTokenIds}
+                    onSelectToken={selectToken}
+                    onDeselectToken={deselectToken}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

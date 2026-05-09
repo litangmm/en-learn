@@ -1,7 +1,7 @@
 {
   "version": "1.0",
-  "status": "TEST",
-  "commitHash": "a54ed6f",
+  "status": "DEPLOY",
+  "commitHash": "7484f7d",
   "lastRun": "2026-05-10T06:14:00.000Z",
   "cycleCount": 24,
   "nextMode": "vision",
@@ -9,7 +9,7 @@
   "currentCycle": {
     "id": "2026-05-10-21",
     "mode": "vision",
-    "stage": "TEST",
+    "stage": "DEPLOY",
     "startedAt": "2026-05-10T06:14:00.000Z",
     "plan": {
       "iterationId": "iter-005",
@@ -138,7 +138,8 @@
   "testResults": {
     "lint": "passed (0 errors, 3 pre-existing warnings)",
     "build": "passed",
-    "unitTests": "429/429 passed (45 test files)"
+    "unitTests": "429/429 passed (45 test files)",
+    "e2e": "1 passed, 1 flaky (pre-existing: 空数据 empty-state test unrelated to leaderboard)"
   },
   "implementationStatus": {
     "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",

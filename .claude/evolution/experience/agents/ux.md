@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-19)
+- **提案 Epic**: epic-003「游戏化学习动力系统」
+- **结果**: **被选中** — epic-003 第三个迭代执行中
+- **完成迭代**: epic-003 iter-003「每日挑战任务面板」— 375/375 测试通过（39 测试文件），lint 0 errors，build 成功，v0.15.0
+- **完成内容**: ChallengeType/DailyChallenge/DailyChallengeState 类型定义；StorageService 扩展（DAILY_CHALLENGES_KEY/validators/CRUD/确定性种子洗牌生成算法/export-import）；useDailyChallenges hook（懒加载/日期滚动自动重生成/trackActivity 按类型匹配/claimReward/addXP/未领取计数）；DailyChallengePanel 组件（Trophy 标题/进度条/领取按钮/状态徽章/空状态）；App.tsx 集成（challenges 视图/trackActivity 正误调用/Trophy 导航按钮+徽章/handleNavigate）
+- **新增测试**: useDailyChallenges.test.ts (12 个) + DailyChallengePanel.test.tsx (9 个) + App.challenges.test.tsx (6 个)，全量 **375/375 通过**
+- **当前状态**: **连续未被选中计数清零**（epic-003 执行中）
+- **观察**: epic-003 第三个迭代完成后，XP（长期积累）+ 连击（即时反馈）+ 每日挑战（中期目标）形成三层游戏化反馈体系。每日挑战的「未领取徽章」设计利用损失厌恶心理驱动用户回访。确定性种子洗牌确保所有用户同一天看到相同挑战组合，公平性设计避免了刷题套利。数据基础（epic-001 + epic-002）支撑游戏化机制运行良好，零架构冲突
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **提案 Epic**: epic-003「游戏化学习动力系统」
 - **结果**: **被选中** — epic-002 全部 7 个迭代收官后首次全新 brainstorm 中选

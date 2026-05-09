@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **全部测试通过**
+- **测试覆盖**: 375/375 单元测试通过（39 个测试文件，新增 27 个测试）
+  - useDailyChallenges.test.ts: 12 个测试（初始化生成/加载现有/日期滚动/trackActivity correct/answer/streak/完成封顶/claimReward XP 添加/claimed 标记/未领取计数）
+  - DailyChallengePanel.test.tsx: 9 个测试（标题/日期/挑战卡片/进度条宽度/领取按钮/点击领取/已领取徽章/X-Y 文本/返回/空状态）
+  - App.challenges.test.tsx: 6 个测试（Trophy 渲染/徽章计数/视图切换/trackActivity 正误/返回导航）
+  - 全量回归: 之前 348 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining）
+- **观察**: 375 测试是项目历史最新高水位。存储层测试覆盖了确定性种子洗牌的边界——相同日期生成相同挑战、不同日期生成不同挑战。9 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护策略
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **全部测试通过**
 - **测试覆盖**: 318/318 单元测试通过（32 个测试文件，新增 34 个测试）

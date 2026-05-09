@@ -75,3 +75,45 @@ export interface DailyChallengeState {
   date: string;
   challenges: DailyChallenge[];
 }
+
+export type BadgeCategory = 'answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special';
+
+export type BadgeConditionType =
+  | 'total_answered'
+  | 'total_correct'
+  | 'max_streak'
+  | 'level'
+  | 'total_sessions'
+  | 'perfect_sessions'
+  | 'total_reviews'
+  | 'total_challenges';
+
+export interface BadgeDefinition {
+  id: string;
+  title: string;
+  description: string;
+  category: BadgeCategory;
+  icon: string;
+  conditionType: BadgeConditionType;
+  conditionValue: number;
+}
+
+export interface UnlockedBadge {
+  id: string;
+  unlockedAt: number;
+}
+
+export interface BadgeProgress {
+  totalAnswered: number;
+  totalCorrect: number;
+  totalSessions: number;
+  maxStreakEver: number;
+  perfectSessions: number;
+  totalReviews: number;
+  totalChallengesCompleted: number;
+}
+
+export interface BadgeState {
+  unlocked: UnlockedBadge[];
+  progress: BadgeProgress;
+}

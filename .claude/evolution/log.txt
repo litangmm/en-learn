@@ -1,0 +1,512 @@
+[2026-05-09T01:03:33Z] [INFO] Starting new cycle: vision (stage: BRAINSTORM)
+[2026-05-09T01:03:33Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:11:40Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:11:51Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:12:19Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:12:46Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:13:54Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:17:17Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T01:18:06Z] [INFO] Stage BRAINSTORM completed successfully
+[2026-05-09T01:18:06Z] [INFO] Executing stage: PLAN
+[2026-05-09T01:19:33Z] [INFO] Stage BRAINSTORM completed successfully
+[2026-05-09T01:19:33Z] [INFO] Executing stage: PLAN
+[2026-05-09T01:22:58Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T01:22:58Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T01:37:56Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T01:37:56Z] [INFO] Executing stage: TEST
+[2026-05-09T01:49:20Z] [INFO] Stage TEST completed successfully
+[2026-05-09T01:49:20Z] [INFO] Executing stage: COMMIT
+[2026-05-09T01:51:59Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T01:51:59Z] [INFO] Executing stage: REPORT
+[2026-05-09T01:58:32Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T01:58:32Z] [INFO] Epic has 4 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T01:58:32Z] [INFO] Executing stage: PLAN
+[2026-05-09T02:03:30Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T02:03:30Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T02:28:24Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T02:28:24Z] [INFO] Executing stage: TEST
+[2026-05-09T02:30:22Z] [INFO] Stage TEST completed successfully
+[2026-05-09T02:30:22Z] [INFO] Executing stage: COMMIT
+[2026-05-09T02:50:07Z] [INFO] Resuming Epic with 3 pending iterations. Skipping BRAINSTORM.
+[2026-05-09T02:50:07Z] [INFO] Executing stage: PLAN
+[2026-05-09T02:53:50Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T02:53:50Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T03:05:37Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T03:05:37Z] [INFO] Executing stage: TEST
+[2026-05-09T03:08:05Z] [INFO] Stage TEST completed successfully
+[2026-05-09T03:08:05Z] [INFO] Executing stage: COMMIT
+[2026-05-09T03:09:40Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T03:09:40Z] [INFO] Executing stage: REPORT
+[2026-05-09T03:35:03Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T03:35:03Z] [INFO] Epic has 2 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T03:35:03Z] [INFO] Executing stage: PLAN
+[2026-05-09T03:39:15Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T03:39:15Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T03:49:23Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T03:49:23Z] [INFO] Executing stage: TEST
+[2026-05-09T03:51:21Z] [INFO] Stage TEST completed successfully
+[2026-05-09T03:51:21Z] [INFO] Executing stage: COMMIT
+[2026-05-09T03:52:54Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T03:52:54Z] [INFO] Executing stage: REPORT
+[2026-05-09T03:54:32Z] [INFO] Resuming Epic with 1 pending iterations. Skipping BRAINSTORM.
+[2026-05-09T03:54:32Z] [INFO] Executing stage: PLAN
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T04:00:56Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T04:00:56Z] [INFO] Epic has 1 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T04:00:56Z] [INFO] Executing stage: PLAN
+**PLAN stage complete.** Status updated to `IMPLEMENT`.
+
+**Bug-fix plan (`bugfix-001`) created:**
+
+| Bug | File | Fix |
+|-----|------|-----|
+| **1 — 新开一组还是原来的题目** | `usePractice.ts` | Add `shuffleSeed` state, include in `shuffledSentences` useMemo deps, increment in `reset()` |
+| **2 — 答完后要点下一题按钮** | `App.tsx` | Global `window` keydown listener with refs for fresh state/nextSentence; Enter/Space triggers `nextSentence()` when `showResult && isCorrect` |
+| **3 — CET4-African 标题泄露答案** | `PracticeCard.tsx` + `App.tsx` | Add `currentQuestion`/`totalQuestions` props; Badge shows `第 X/Y 题` instead of `sentence.id` |
+
+**Files to modify:** `usePractice.ts`, `App.tsx`, `PracticeCard.tsx`, plus their test files.  
+**File to create:** `src/__tests__/App.keyboard.test.tsx`
+
+The strategic directive `dir-urgent-001` has been moved to history. Epic-001's `iter-005` (智能复习队列) remains pending and will be planned after these bugs are fixed.
+[2026-05-09T04:03:48Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T04:03:48Z] [INFO] Executing stage: IMPLEMENT
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T04:08:46Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T04:08:46Z] [INFO] Executing stage: IMPLEMENT
+The IMPLEMENT stage for bugfix-001 is fully complete. Here's what was accomplished:
+
+- **Bug 1 (shuffle)**: `usePractice.ts` now uses a `shuffleSeed` state that increments on `reset()`, forcing `useMemo` to recompute the random order.
+- **Bug 2 (keyboard shortcuts)**: `App.tsx` has a global `keydown` listener (via refs to avoid stale closures) that advances to the next sentence on Enter/Space when the answer is correct.
+- **Bug 3 (title badge)**: `PracticeCard.tsx` now displays `第 X/Y 题` using props from `usePractice`, falling back to `sentence.id` for standalone usage.
+
+Tests: 169/169 passing (14 test files), including new coverage for shuffle re-ordering, keyboard advancement, and badge display. Lint: 0 errors. Build: succeeds.
+
+The commit `a5f5af8 [EVOLUTION] fix: 紧急体验 Bug 修复` is already recorded, and `state.json` shows status `TEST` with bugfix-001 marked completed.
+
+Ready to proceed to the TEST stage, or shall I move forward with the next iteration (iter-005 智能复习队列)?
+[2026-05-09T04:26:10Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T04:26:10Z] [INFO] Executing stage: TEST
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+TEST stage completed successfully.
+
+**Results:**
+- **Lint**: passed (0 errors, 3 pre-existing warnings)
+- **Build**: passed
+- **Unit tests**: 165/165 passed (13 test files)
+- **E2E**: skipped — iter-005 is still pending, so this is not the final iteration
+
+**State updated:**
+- `status` → `COMMIT`
+- `lastRun` → `2026-05-09T12:26:54.000Z`
+- `testResults` refreshed with latest run data
+
+**Note:** The working tree is clean — all code changes from bugfix-001 were already committed at `a5f5af8`, and docs were committed at `07969a1`. The COMMIT stage would be a no-op since there are no remaining changes to commit (only `state.json` was modified, which is excluded from commits per the commit prompt).
+[2026-05-09T04:29:52Z] [INFO] Stage TEST completed successfully
+[2026-05-09T04:29:52Z] [INFO] Executing stage: COMMIT
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T04:30:42Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T04:30:42Z] [INFO] Epic has 1 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T04:30:42Z] [INFO] Executing stage: PLAN
+COMMIT 阶段已完成。
+
+**执行摘要：**
+
+1. **代码提交** — 无需新提交，代码变更已在 `a5f5af8` 提交（bugfix-001 修复）
+2. **文档提交** — 新提交 `a942719`：
+   - 新增 `history/2026-05-09-4.md`（bugfix-001 周期报告）
+   - 新增 8 个阶段提示文件（`prompts/*.md`）
+3. **状态更新** — `state.json` 已更新：
+   - `status`: `PLAN` → `REPORT`
+   - `commitHash`: `07969a1` → `a942719`
+   - `lastRun`: 已更新为当前时间
+
+**提交历史：**
+```
+a942719 [EVOLUTION] docs: add evolution stage prompts and bugfix-001 history
+07969a1 [EVOLUTION] docs: update agent experiences, evolution history, and dashboard...
+a5f5af8 [EVOLUTION] fix: 紧急体验 Bug 修复 — 随机排序、键盘快捷键、标题泄露
+```
+
+阶段已成功完成，状态已推进至 **REPORT**。
+[2026-05-09T04:32:47Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T04:32:47Z] [INFO] Executing stage: REPORT
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T04:35:30Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T04:35:30Z] [INFO] Executing stage: IMPLEMENT
+API Error: Request rejected (429) · You've reached your usage limit for this period. Your quota will be refreshed in the next period. Upgrade to get more: https://www.kimi.com/code/console?from=limit-upgrade
+[2026-05-09T04:59:23Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T05:17:27Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T05:35:32Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T05:41:21Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T05:41:21Z] [INFO] Executing stage: TEST
+[2026-05-09T05:43:39Z] [INFO] Stage TEST completed successfully
+[2026-05-09T05:43:39Z] [INFO] Executing stage: COMMIT
+[2026-05-09T05:45:12Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T05:45:12Z] [INFO] Executing stage: REPORT
+[2026-05-09T05:56:37Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T05:56:37Z] [INFO] Cycle complete (status: IDLE). Exiting continuous loop.
+[2026-05-09T06:11:37Z] [INFO] Starting new cycle: vision (stage: BRAINSTORM)
+[2026-05-09T06:11:37Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T06:17:38Z] [INFO] Stage BRAINSTORM completed successfully
+[2026-05-09T06:17:38Z] [INFO] Executing stage: PLAN
+[2026-05-09T06:24:33Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T06:24:33Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T06:38:11Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T06:38:11Z] [INFO] Executing stage: TEST
+[2026-05-09T06:40:23Z] [INFO] Stage TEST completed successfully
+[2026-05-09T06:40:23Z] [INFO] Executing stage: COMMIT
+[2026-05-09T07:00:04Z] [INFO] Executing stage: COMMIT
+[2026-05-09T07:02:32Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T07:02:32Z] [INFO] Executing stage: REPORT
+[2026-05-09T07:10:00Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T07:10:00Z] [INFO] Epic has 4 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T07:10:00Z] [INFO] Executing stage: PLAN
+[2026-05-09T07:16:19Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T07:16:19Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T07:25:00Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T07:25:00Z] [INFO] Executing stage: TEST
+[2026-05-09T07:26:37Z] [INFO] Stage TEST completed successfully
+[2026-05-09T07:26:37Z] [INFO] Executing stage: COMMIT
+[2026-05-09T07:28:15Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T07:28:15Z] [INFO] Executing stage: REPORT
+[2026-05-09T07:35:02Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T07:35:02Z] [INFO] Epic has 3 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T07:35:02Z] [INFO] Executing stage: PLAN
+[2026-05-09T07:48:44Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T07:48:44Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T08:14:18Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T08:14:18Z] [INFO] Executing stage: TEST
+[2026-05-09T08:21:25Z] [INFO] Stage TEST completed successfully
+[2026-05-09T08:21:25Z] [INFO] Executing stage: COMMIT
+[2026-05-09T08:24:26Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T08:24:26Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T08:31:00Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T08:31:00Z] [INFO] Executing stage: REPORT
+[2026-05-09T08:48:26Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T08:48:27Z] [INFO] Epic has 4 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T08:48:27Z] [INFO] Executing stage: PLAN
+[2026-05-09T08:56:25Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T08:56:25Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T09:11:25Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T09:11:25Z] [INFO] Executing stage: TEST
+[2026-05-09T09:12:27Z] [INFO] Stage TEST completed successfully
+[2026-05-09T09:12:27Z] [INFO] Executing stage: COMMIT
+[2026-05-09T09:14:00Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T09:14:00Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T09:21:52Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T09:21:52Z] [INFO] Executing stage: REPORT
+[2026-05-09T09:38:34Z] [INFO] Executing stage: REPORT
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T09:41:33Z] [INFO] Executing stage: REPORT
+REPORT 阶段已完成。以下是执行摘要：
+
+**生成报告**：`.claude/evolution/history/2026-05-09-10.md` — 涵盖 iter-003a「响应式 UI 适配」的实现摘要、修改文件列表（12 个修改 + 4 个新增）、255/255 测试通过结果、未选中 Epic 优先级表、下一轮预测。
+
+**经验沉淀更新**：
+- 9 个 Agent 经验档案各追加 cycle-2026-05-09-10 条目
+- 5 个流程经验档案（brainstorm/plan/implement/test/tech-review）各追加本轮记录
+- UX/ARCH/EXP/PM-Growth/PM-Mon/PM-Eco 连续未选中计数更新为 9 cycles
+
+**归档与备份**：
+- 运行归档脚本：`node scripts/evolution/archive-agent-exp.js` — 修复了 ESM 兼容性问题（`require` → `import`），所有档案条目数 ≤9，无需归档
+- 创建 state 备份：`.claude/evolution/backup/state-2026-05-09-094350.json`
+
+**State 更新**：
+- `status`: `IDLE`
+- `cycleCount`: 11
+- `lastRun`: `2026-05-09T09:43:50.000Z`
+- `currentCycle`: `null`
+- 追加 history 条目：cycle-2026-05-09-10 REPORT 阶段完成
+
+**Epic 状态**：epic-002 仍有 3 个 pending iterations（iter-003b 纯听写重设计、iter-004 专注模式、iter-005 连词成句），`currentEpic` 保持不变。下次触发时将自动检测 pending iterations 并继续 PLAN 阶段。
+[2026-05-09T09:44:38Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T09:44:38Z] [INFO] Epic has 3 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T09:44:38Z] [INFO] Executing stage: PLAN
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+## ✅ PLAN 阶段完成
+
+**当前分支**: A（已有 active Epic）  
+**选中迭代**: `iter-003b` — 纯听写模式重新设计
+
+### 问题分析
+
+当前 dictation 模式的核心问题（来自用户反馈"完全隐藏句子，用户不知所云"）：
+- ❌ 隐藏中文翻译 — 用户不知道要听什么内容
+- ❌ 隐藏英文句子 — 零上下文
+- ❌ 只显示带数字的输入框 — 完全无从下手
+
+### 重新设计方案
+
+| 变更项 | 之前 | 之后 |
+|--------|------|------|
+| 中文翻译 | 完全隐藏 | **显示**（提供语境） |
+| 英文句子 | 完全隐藏 | 保持隐藏（维持听写挑战） |
+| 输入提示 | 仅数字占位符 | **首字母提示**（如 `c...`） |
+| 引导文案 | "请听音频，在输入框中填写听到的单词" | "请听音频，根据中文提示和首字母提示填写单词" |
+
+### 计划概要（6 步）
+
+1. **PracticeCard.tsx** — 显示中文翻译（移除 dictation 隐藏条件）
+2. **PracticeCard.tsx** — 每个输入框下方添加首字母提示
+3. **PracticeCard.tsx** — 更新引导文案
+4. **PracticeCard.dictation.test.tsx** — 更新测试断言（中文可见、首字母提示可见）
+5. **App.mode.test.tsx** — 更新测试（dictation 模式下中文保持可见）
+6. 全量验证（lint + build + test）
+
+### 修改文件
+
+- `src/components/PracticeCard.tsx`
+- `src/components/__tests__/PracticeCard.dictation.test.tsx`
+- `src/components/__tests__/App.mode.test.tsx`
+
+### State 更新
+
+- `status` → **IMPLEMENT**
+- `currentEpic.currentIterationIndex` → **4**
+- `iter-003b.status` → **in_progress**
+- 新建 `currentCycle: 2026-05-09-11`
+
+---
+
+**阶段已推进至 IMPLEMENT，等待执行实现。**
+[2026-05-09T09:49:17Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T09:49:17Z] [INFO] Executing stage: IMPLEMENT
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+[2026-05-09T09:53:24Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T09:53:24Z] [INFO] Executing stage: TEST
+**IMPLEMENT stage completed for iter-003b — 纯听写模式重新设计**
+
+**Changes made:**
+
+1. **PracticeCard.tsx** (`src/components/PracticeCard.tsx`):
+   - Chinese translation now always visible in dictation mode (removed `isDictation` guard)
+   - Added first-letter hints below each input in `renderDictationInputs` — e.g., `c...` for `catches`
+   - Updated instruction text to `请听音频，根据中文提示和首字母提示填写单词`
+
+2. **PracticeCard.dictation.test.tsx** — 3 test updates + 1 new test:
+   - Chinese now expected to be visible in dictation mode
+   - Added first-letter hint assertion (`c...`)
+   - Instruction text assertion updated
+
+3. **App.mode.test.tsx** — 2 test updates:
+   - Dictation mode Chinese assertion changed from hidden to visible
+   - Test names updated to reflect new behavior
+
+4. **PracticeCard.choice.test.tsx** — 1 test fix:
+   - Dictation rendering test now expects Chinese visible
+
+**Validation results:**
+- Lint: 0 errors (3 pre-existing warnings)
+- Build: passed
+- Unit tests: **256/256 passed** (25 test files)
+
+**State updated:**
+- `status` → `TEST`
+- `iter-003b.status` → `completed`
+- `implementationStatus["epic-002-iter-003b"]` recorded
+[2026-05-09T09:53:51Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T09:53:51Z] [INFO] Executing stage: TEST
+scripts/evolution/run.sh: line 379: json: command not found
+scripts/evolution/run.sh: line 381: status:: command not found
+scripts/evolution/run.sh: line 382: resumedStatus:: command not found
+scripts/evolution/run.sh: line 383: awaitingInputSince:: command not found
+scripts/evolution/run.sh: line 384: pendingQuestions:: command not found
+scripts/evolution/run.sh: line 386: id:: command not found
+scripts/evolution/run.sh: line 387: stage:: command not found
+scripts/evolution/run.sh: line 388: question:: command not found
+scripts/evolution/run.sh: line 389: blocking:: command not found
+scripts/evolution/run.sh: line 390: context:: command not found
+scripts/evolution/run.sh: line 391: createdAt:: command not found
+scripts/evolution/run.sh: line 393: ]: command not found
+无法将问题写入 `state.json` — 磁盘空间已满导致所有文件操作都失败。
+
+**阻塞问题：** 系统磁盘空间已满（`ENOSPC: no space left on device`），无法运行任何命令或写入文件。
+
+**需要您执行的操作：**
+1. 清理磁盘空间（例如删除临时文件、清理 `node_modules/.cache`、清空废纸篓等）
+2. 运行 `df -h` 确认有足够可用空间
+3. 告知我已完成清理，我将继续执行 TEST 阶段
+
+当前进化周期：**2026-05-09-11**（iter-003b 纯听写模式重新设计）
+[2026-05-09T09:56:59Z] [INFO] Stage TEST completed successfully
+[2026-05-09T09:57:13Z] [INFO] Stage TEST completed successfully
+[2026-05-09T10:12:14Z] [INFO] Executing stage: TEST
+[2026-05-09T10:14:26Z] [INFO] Stage TEST completed successfully
+[2026-05-09T10:14:26Z] [INFO] Executing stage: COMMIT
+[2026-05-09T10:15:30Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T10:15:30Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T10:17:45Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T10:17:45Z] [INFO] Executing stage: REPORT
+[2026-05-09T10:37:14Z] [INFO] Executing stage: REPORT
+[2026-05-09T10:41:59Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T10:41:59Z] [INFO] Epic has 2 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T10:41:59Z] [INFO] Executing stage: PLAN
+[2026-05-09T10:45:01Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T10:45:01Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T11:00:28Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T11:00:28Z] [INFO] Executing stage: TEST
+[2026-05-09T11:04:59Z] [INFO] Stage TEST completed successfully
+[2026-05-09T11:04:59Z] [INFO] Executing stage: COMMIT
+[2026-05-09T11:07:12Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T11:07:12Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T11:12:19Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T11:12:19Z] [INFO] Executing stage: REPORT
+[2026-05-09T11:20:48Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T11:20:49Z] [INFO] Epic has 1 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T11:20:49Z] [INFO] Executing stage: PLAN
+[2026-05-09T11:23:59Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T11:23:59Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T11:35:30Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T11:35:30Z] [INFO] Executing stage: TEST
+[2026-05-09T11:37:10Z] [INFO] Stage TEST completed successfully
+[2026-05-09T11:37:10Z] [INFO] Executing stage: COMMIT
+[2026-05-09T11:38:34Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T11:38:34Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T11:41:16Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T11:41:16Z] [INFO] Executing stage: REPORT
+[2026-05-09T12:00:47Z] [INFO] Executing stage: REPORT
+[2026-05-09T12:05:05Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T12:05:05Z] [INFO] Cycle complete (status: IDLE). Exiting continuous loop.
+[2026-05-09T12:20:05Z] [INFO] Starting new cycle: vision (stage: BRAINSTORM)
+[2026-05-09T12:20:05Z] [INFO] Executing stage: BRAINSTORM
+[2026-05-09T12:25:01Z] [INFO] Stage BRAINSTORM completed successfully
+[2026-05-09T12:25:01Z] [INFO] Executing stage: PLAN
+[2026-05-09T12:30:05Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T12:30:05Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T12:39:05Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T12:39:05Z] [INFO] Executing stage: TEST
+[2026-05-09T12:40:15Z] [INFO] Stage TEST completed successfully
+[2026-05-09T12:40:15Z] [INFO] Executing stage: COMMIT
+[2026-05-09T12:41:36Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T12:41:36Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T12:43:59Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T12:43:59Z] [INFO] Executing stage: REPORT
+[2026-05-09T12:51:01Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T12:51:01Z] [INFO] Epic has 4 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T12:51:01Z] [INFO] Executing stage: PLAN
+[2026-05-09T12:55:30Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T12:55:30Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T13:05:48Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T13:05:48Z] [INFO] Executing stage: TEST
+[2026-05-09T13:07:09Z] [INFO] Stage TEST completed successfully
+[2026-05-09T13:07:09Z] [INFO] Executing stage: COMMIT
+[2026-05-09T13:11:34Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T13:11:34Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T13:13:31Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T13:13:31Z] [INFO] Executing stage: REPORT
+[2026-05-09T13:26:22Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T13:26:22Z] [INFO] Cycle complete (status: null). Exiting continuous loop.
+[2026-05-09T13:41:22Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T13:56:22Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T14:11:22Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T14:26:22Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T14:41:23Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T14:56:23Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T15:11:23Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T15:26:23Z] [WARN] state.json is corrupted. Attempting recovery from backup...
+[2026-05-09T15:37:49Z] [INFO] Resuming Epic with 3 pending iterations. Skipping BRAINSTORM.
+[2026-05-09T15:37:50Z] [INFO] Executing stage: PLAN
+[2026-05-09T15:54:11Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T15:54:11Z] [INFO] Executing stage: IMPLEMENT
+[2026-05-09T16:32:58Z] [INFO] Stage IMPLEMENT completed successfully
+[2026-05-09T16:32:58Z] [INFO] Executing stage: TEST
+[2026-05-09T16:45:32Z] [INFO] Stage TEST completed successfully
+[2026-05-09T16:45:32Z] [INFO] Executing stage: COMMIT
+[2026-05-09T16:48:23Z] [INFO] Stage COMMIT completed successfully
+[2026-05-09T16:48:23Z] [INFO] Executing stage: DEPLOY
+[2026-05-09T16:55:00Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-09T16:55:00Z] [INFO] Executing stage: REPORT
+[2026-05-09T17:44:00Z] [INFO] Executing stage: REPORT
+[2026-05-09T17:53:34Z] [INFO] Stage REPORT completed successfully
+[2026-05-09T17:53:34Z] [INFO] Epic has 2 pending iterations. Continuing to next iteration PLAN.
+[2026-05-09T17:53:34Z] [INFO] Executing stage: PLAN
+[2026-05-09T18:09:07Z] [INFO] Stage PLAN completed successfully
+[2026-05-09T18:09:07Z] [INFO] Executing stage: IMPLEMENT

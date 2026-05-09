@@ -8,6 +8,20 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **技术审查通过**
+- **技术决策**:
+  - ChallengeType 联合类型与现有学习行为自然对齐，无需新增交互模式类型
+  - DailyChallengeState 的 date 字段使用 YYYY-MM-DD 字符串格式，与本地日期判断简单直接，无时区复杂性
+  - generateDailyChallenges 的确定性种子洗牌算法：hashString 生成数字种子，seededShuffle 复用 Fisher-Yates，确保相同日期始终产生相同挑战组合
+  - trackActivity 的通用接口（type + value）为后续「自适应挑战」（动态调整 target）预留扩展点
+  - claimReward 直接调用 storage.addXP，复用现有 XP 系统的等级计算和持久化，避免重复实现
+  - useDailyChallenges hook 的懒加载初始化：空存储自动生成、日期不匹配自动重新生成，无需外部触发重置
+  - DailyChallengePanel 的进度条通过内联 style width 百分比实现，无需额外 CSS 或图表库
+  - exportAllData / importAllData 纳入 dailyChallenges，递归校验复用 isValidDailyChallengeState
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 375/375 unit tests passed
+- **观察**: App.tsx 的复杂度已达临界点——现在管理 7 个视图 + 4 种练习模式 + 专注模式 + 响应式断点 + XP 系统 + 连击动画 + 每日挑战。ARCH 此前多次提出的「导航配置提取」警告已持续 5 个 cycle 未被响应，技术债务呈指数级增长。epic-003 仅剩 2 个迭代，完成后 MUST 优先处理架构债务
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **技术审查通过**
 - **技术决策**:

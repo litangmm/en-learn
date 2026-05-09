@@ -1,0 +1,297 @@
+{
+  "version": "1.0",
+  "status": "REPORT",
+  "commitHash": "ae2b826d8a8e1a9e8d7f6c5b4a3928170654f3e2",
+  "lastRun": "2026-05-09T19:09:50.000Z",
+  "cycleCount": 13,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentCycle": {
+    "id": "2026-05-09-13",
+    "mode": "vision",
+    "stage": "DEPLOY",
+    "startedAt": "2026-05-09T18:35:00.000Z",
+    "plan": {
+      "iterationId": "iter-004",
+      "iterationTitle": "专注模式（全屏无干扰 UI）",
+      "scope": "frontend-only",
+      "steps": [
+        "Step 1: App.tsx — add `isFocusMode` state (default false) and `toggleFocusMode` callback. Add a '专注模式' entry button next to the practice mode ToggleGroup, using a Focus/Eye icon from lucide-react.",
+        "Step 2: App.tsx — implement focus mode conditional rendering. When `isFocusMode=true`: hide the full Header (logo, nav buttons, DictionarySelector, reset, score), hide the practice mode ToggleGroup, hide the bottom hint text, hide MobileNav. Render a minimal floating top bar showing only current progress (第 X/Y 题), score, and an exit focus mode button.",
+        "Step 3: App.tsx — add ESC key global listener to exit focus mode (only active when isFocusMode is true). Prevent interfering with input fields.",
+        "Step 4: PracticeCard.tsx — add optional `isFocusMode` prop (default false). When true: simplify header (hide question badge and attempts badge, keep only audio and speed controls), increase content padding and font sizes for immersion, use a cleaner card border/shadow style.",
+        "Step 5: App.tsx — pass `isFocusMode` prop to PracticeCard. Ensure main content area uses larger vertical padding in focus mode for immersive feel.",
+        "Step 6: Create `src/components/__tests__/App.focus.test.tsx` — test coverage: focus mode entry button renders; clicking enters focus mode (Header/ToggleGroup/MobileNav/hint hidden, minimal bar visible); ESC key exits focus mode; exiting restores normal UI; PracticeCard renders and is interactive in focus mode.",
+        "Step 7: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all 256+ existing tests still pass without regression."
+      ],
+      "filesToModify": [
+        "src/App.tsx",
+        "src/components/PracticeCard.tsx"
+      ],
+      "filesToCreate": [
+        "src/components/__tests__/App.focus.test.tsx"
+      ],
+      "dependencies": [],
+      "testStrategy": "Focus mode tests verify entry button rendering, state toggle on click, conditional hiding of Header/ToggleGroup/bottom hint/MobileNav, minimal progress bar visibility in focus mode, ESC key exit behavior, and PracticeCard interactivity within focus mode. All existing tests must pass without regression. Full lint + build + test validation."
+    },
+    "testResults": {
+      "lint": "passed (0 errors, 3 pre-existing warnings)",
+      "build": "passed",
+      "unitTests": "262/262 passed (26 test files)",
+      "e2e": "skipped - not last pending iteration (1 remaining: iter-005)"
+    }
+  },
+  "previousCycle": {
+    "id": "2026-05-09-12",
+    "mode": "vision",
+    "stage": "REPORT",
+    "startedAt": "2026-05-09T18:35:00.000Z",
+    "plan": {
+      "iterationId": "iter-004",
+      "iterationTitle": "专注模式（全屏无干扰 UI）",
+      "scope": "frontend-only",
+      "steps": [],
+      "filesToModify": [],
+      "filesToCreate": [],
+      "dependencies": [],
+      "testStrategy": ""
+    },
+    "testResults": {
+      "lint": "passed (0 errors, 3 pre-existing warnings)",
+      "build": "passed",
+      "unitTests": "262/262 passed (26 test files)",
+      "e2e": "skipped - not last pending iteration (1 remaining: iter-005)"
+    },
+    "summary": "REPORT stage completed — epic-002 iter-004 专注模式（全屏无干扰 UI）报告已生成，经验档案已更新，状态归档为 IDLE"
+  },
+  "currentEpic": {
+    "id": "epic-002",
+    "title": "沉浸式多模态练习模式",
+    "description": "从单一的填空听写扩展到多种练习模式（纯听写、选择题、连词成句、音频速度控制、专注模式），降低认知疲劳，适应不同学习场景（碎片时间快速练习 vs 深度专注练习）。直接回应产品愿景中『核心练习模式从单一听写扩展到多样化』的当前阶段重点，是数据基础完成后最自然的下一步。",
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "纯听写模式（隐藏中文提示，仅播放音频）",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-002",
+        "title": "音频播放速度控制（0.5x~1.5x）",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003",
+        "title": "选择题模式（四选一快速练习）",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003a",
+        "title": "响应式 UI 适配（移动端 + 桌面端）",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003b",
+        "title": "纯听写模式重新设计",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-004",
+        "title": "专注模式（全屏无干扰 UI）",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-005",
+        "title": "连词成句模式（拖拽/点击排序）",
+        "scope": "frontend-only",
+        "status": "pending"
+      }
+    ],
+    "currentIterationIndex": 5
+  },
+  "plan": {
+    "iterationId": "iter-004",
+    "iterationTitle": "专注模式（全屏无干扰 UI）",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: App.tsx — add `isFocusMode` state (default false) and `toggleFocusMode` callback. Add a '专注模式' entry button next to the practice mode ToggleGroup, using a Focus/Eye icon from lucide-react.",
+      "Step 2: App.tsx — implement focus mode conditional rendering. When `isFocusMode=true`: hide the full Header (logo, nav buttons, DictionarySelector, reset, score), hide the practice mode ToggleGroup, hide the bottom hint text, hide MobileNav. Render a minimal floating top bar showing only current progress (第 X/Y 题), score, and an exit focus mode button.",
+      "Step 3: App.tsx — add ESC key global listener to exit focus mode (only active when isFocusMode is true). Prevent interfering with input fields.",
+      "Step 4: PracticeCard.tsx — add optional `isFocusMode` prop (default false). When true: simplify header (hide question badge and attempts badge, keep only audio and speed controls), increase content padding and font sizes for immersion, use a cleaner card border/shadow style.",
+      "Step 5: App.tsx — pass `isFocusMode` prop to PracticeCard. Ensure main content area uses larger vertical padding in focus mode for immersive feel.",
+      "Step 6: Create `src/components/__tests__/App.focus.test.tsx` — test coverage: focus mode entry button renders; clicking enters focus mode (Header/ToggleGroup/bottom hint/MobileNav/hint hidden, minimal bar visible); ESC key exits focus mode; exiting restores normal UI; PracticeCard renders and is interactive in focus mode.",
+      "Step 7: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all 256+ existing tests still pass without regression."
+    ],
+    "filesToModify": [
+      "src/App.tsx",
+      "src/components/PracticeCard.tsx"
+    ],
+    "filesToCreate": [
+      "src/components/__tests__/App.focus.test.tsx"
+    ],
+    "dependencies": [],
+    "testStrategy": "Focus mode tests verify entry button rendering, state toggle on click, conditional hiding of Header/ToggleGroup/bottom hint/MobileNav, minimal progress bar visibility in focus mode, ESC key exit behavior, and PracticeCard interactivity within focus mode. All existing tests must pass without regression. Full lint + build + test validation."
+  },
+  "testResults": {
+    "lint": "passed (0 errors, 3 pre-existing warnings)",
+    "build": "passed",
+    "unitTests": "262/262 passed (26 test files)"
+  },
+  "implementationStatus": {
+    "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
+    "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
+    "iter-003": "Added SessionHistory type in src/data/types.ts with id, timestamp, duration, dictionaryId, dictionaryName, score, totalQuestions, correctCount, accuracy fields. Extended storage service with en-learn-history key, addHistory/getHistory/clearHistory/getHistoryCount methods, isValidHistory validation, 100-entry limit with auto-truncation, and corrupted JSON recovery. Updated usePractice hook with sessionStartTimeRef to track fresh session start time; auto-records history on isComplete=true with duration, score, correctCount, accuracy, and totalQuestions computed from shuffledSentences.length. Created HistoryView component with date grouping (今天/昨天/更早), entry cards showing dictionary name, score, accuracy, duration, question count, clear-all with confirmation dialog, and empty state. Updated App.tsx with 'history' view type, learning history navigation button with count badge, and view switching. Added history-storage.test.ts (18 tests), HistoryView.test.tsx (8 tests), and usePractice history recording tests (4 tests). Total: 131/131 tests pass. Lint 0 errors. Build succeeds.",
+    "iter-004": "Added ExportData type in src/services/storage.ts (defined there to avoid circular dependency with StorageSchemaV2) with version:1, exportedAt ISO string, and data object containing session (StorageSchemaV2|null), mistakes (Mistake[]), and history (SessionHistory[]). Extended StorageService with exportAllData() method that aggregates all localStorage data into ExportData JSON object, and importAllData(data:unknown) method with isValidExportData schema validator checking version, exportedAt, data structure, and recursive validation of session (null or V2), mistakes (isValidMistake), and history (isValidHistory) sub-structures. importAllData writes validated data to corresponding localStorage keys, returns success/failure with importedCounts per category and human-readable message. Created DataManager component with data overview cards (history count, mistake count, active session status), export button triggering browser download of en-learn-backup-YYYY-MM-DD.json blob, import button with hidden file input, confirmation dialog before overwrite, and inline alert for success/error status. Updated App.tsx with 'data' view type, Database icon navigation button, and view switching with count refresh on back. Added export-import.test.ts (16 tests) covering export structure, import overwrite, null session, empty data, missing/wrong version, missing data field, corrupted session/mistakes/history sub-structures, non-object inputs, and mixed import messages. Added DataManager.test.tsx (10 tests) covering overview counts, active session badge, back navigation, export download trigger, import file input, success/error status display, invalid JSON handling, confirmation dialog, and cancel behavior. Total: 159/159 tests pass (12 test files). Lint 0 errors. Build succeeds.",
+    "bugfix-001": "Fixed 3 high-priority UX bugs: (1) Shuffle seed bug — usePractice.ts shuffleSeed state was already added to dependency array and reset() increments it, ensuring new random order on each reset. Added test verifying shuffledSentences[0].id changes after reset() with mocked Math.random sequence. (2) Keyboard shortcuts — App.tsx global keydown listener using refs (stateRef, viewRef, dialogRef, nextSentenceRef) to avoid stale closures and frequent re-registration; triggers nextSentence() on Enter/Space when showResult && isCorrect && !isComplete in practice view with no dialog open; skips handling when target is INPUT/TEXTAREA to avoid interfering with form input. (3) Question badge leak — PracticeCard.tsx added optional currentQuestion/totalQuestions props; Badge displays '第 X/Y 题' when props provided, falling back to '第 {sentence.id} 题' for backward compatibility; App.tsx passes currentQuestion/totalQuestions from usePractice hook. Updated PracticeCard.test.tsx with currentQuestion/totalQuestions props on all renders, added test for '第 1/3 题' format and fallback to sentence.id. Created App.keyboard.test.tsx (4 tests) covering Enter/Space advancement on correct answer, no advancement when answer not shown, no advancement when answer wrong. Fixed test stability by adding cleanup + vi.restoreAllMocks() in afterEach and vi.spyOn(Math.random) for deterministic shuffle. Total: 169/169 tests pass (14 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "iter-005": "Extended Mistake type with nextReviewAt and lastReviewedAt optional fields for spaced repetition scheduling. Extended StorageService with getReviewQueue() (filters due mistakes by nextReviewAt <= now, sorts ascending), getReviewQueueCount(), and scheduleNextReview(sentenceId, isCorrect) implementing spaced repetition with [1,3,7,14] day intervals — reviewedCount increments on correct answers, resets to 1-day interval on wrong answers while preserving reviewedCount. Updated isValidMistake to accept optional fields. Created SmartReview component with dictionary-grouped due mistake listing, async sentence loading, '开始复习' per-group buttons, '全部复习' for single-group case, empty state, and back navigation. Integrated SmartReview into App.tsx with 'review' view, Brain/RefreshCw navigation button with red due-count badge, review mode state, and auto-scheduling useEffect that calls scheduleNextReview when showResult=true in review mode (with processedReviewRef deduplication). Created review-queue.test.ts (18 tests) covering getReviewQueue empty/ filtering/sorting, getReviewQueueCount, scheduleNextReview interval calculation for all reviewedCount levels, wrong-answer reset, non-existent ID safety, lastReviewedAt update, and isValidMistake backward/forward compatibility. Created SmartReview.test.tsx (6 tests) covering empty state, grouped rendering by dictionary, start-review callback params, back navigation, reviewed count display, and all-review button conditional visibility. Total: 189/189 tests pass (15 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-001": "Added PracticeMode type ('fill-in-blanks' | 'dictation') in src/data/types.ts. Extended PracticeCard component with optional mode prop (default 'fill-in-blanks'): dictation mode hides chinese translation and english sentence text (shows only standalone input boxes), increases audio button prominence with blue filled style and larger icon, shows instruction text '请听音频，在输入框中填写听到的单词', hides hints, and reveals all content (chinese + english + correct answers) when showResult is true for review. Added renderDictationInputs() helper for dictation-only input layout. Updated App.tsx with practiceMode state, ToggleGroup mode switcher (填空模式/听写模式) in main content area, auto-play delay adjusted to 300ms in dictation mode (800ms in fill-in-blanks), mode switch triggers initializeInputs() to reset current question inputs. Created PracticeCard.dictation.test.tsx (11 tests) covering chinese hidden in dictation mode, english text hidden, inputs rendered, instruction text shown, showResult reveals chinese/english/correct answers, fill-in-blanks mode normal rendering, hints behavior per mode. Created App.mode.test.tsx (5 tests) covering toggle rendering, dictation mode DOM changes, initializeInputs call on mode switch, switching back to fill-in-blanks, default mode verification. Total: 205/205 tests pass (17 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-002": "Extended useSpeech hook with playbackRate state (default 1.0), setPlaybackRate method, and modified speak(text, rate?) to use playbackRate when no rate argument is provided while preserving override capability. Updated PracticeCard with optional playbackRate and onSpeedChange props; added SPEEDS constant [0.5, 0.75, 1.0, 1.25, 1.5]; rendered compact ToggleGroup speed selector in Header next to audio button with five speed badges (0.5x~1.5x), current speed highlighted via aria-checked, click triggers onSpeedChange. Speed selector visible in both fill-in-blanks and dictation modes, not disabled on showResult. Updated App.tsx to destructure playbackRate and setPlaybackRate from useSpeech, pass them to PracticeCard, and removed hardcoded 0.85 rate from auto-play and handleSpeak so they use the user's selected playbackRate. Updated existing useSpeech.test.ts to expect default rate 1.0 instead of 0.9. Created useSpeech.rate.test.ts (5 tests) covering default playbackRate, setPlaybackRate state update, speak without rate using playbackRate, speak with rate overriding playbackRate, and default behavior. Created PracticeCard.speed.test.tsx (6 tests) covering five speed options rendering, conditional rendering without onSpeedChange, current speed selection state, onSpeedChange callback with correct rate, dictation mode visibility, and showResult visibility. Created App.speed.test.tsx (3 tests) covering default 1.0x selected, setPlaybackRate called on speed change, and auto-play using playbackRate without hardcoded value. Total: 219/219 tests pass (20 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-003": "Extended PracticeMode type to 'fill-in-blanks' | 'dictation' | 'multiple-choice' in src/data/types.ts. Extended usePractice hook with selectedChoiceId in PracticeState (optional for backward compatibility), options useMemo generating 4 choices (current sentence + 3 random distractors from full dictionary, shuffled), selectChoice callback, and modified checkAnswer(selectedOptionId?: string) supporting multiple-choice mode: correct choice awards 10 points flat (no attempt penalty), wrong choice records to pendingMistakes. nextSentence/initializeInputs/reset all clear selectedChoiceId. Session restoration sets selectedChoiceId: null. Extended PracticeCard with optional options, selectedChoiceId, onSelectChoice props; added isMultipleChoice mode rendering: Chinese translation shown, audio button, 4 option cards with full English sentences, blue highlight on selection, green highlight on correct answer, red highlight on wrong selection, disabled after submission, disabled submit button until selected, next button on correct (green) and wrong (gray outline, no retry). Updated App.tsx ToggleGroup with '选择题模式' option, destructured options/selectChoice from usePractice, passed them to PracticeCard, handleModeChange triggers initializeInputs for all modes, auto-play delay 500ms for multiple-choice, removed hardcoded 0.85 rate from handleSpeak. Created usePractice.choice.test.ts (6 tests) covering options generation (4 options with current sentence), selectChoice state update, checkAnswer correct ID (10 points), checkAnswer wrong ID (records mistake), nextSentence/reset clear selectedChoiceId. Created PracticeCard.choice.test.tsx (10 tests) covering 4 options render, option click callback, submit disabled before selection, enabled after selection, correct option green highlight, wrong selected red highlight, unselected default style, next button for wrong answer (no retry), fill-in-blanks/dictation unaffected. Created App.choice.test.tsx (5 tests) covering three-mode ToggleGroup, multiple-choice mode DOM, initializeInputs on mode switch, options passed to PracticeCard, 500ms auto-play delay. Total: 240/240 tests pass (23 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-003a": "Responsive UI adaptation for mobile + desktop. Created responsive design document at .claude/evolution/responsive-design.md documenting breakpoints, touch targets, spacing tokens, and component guidelines. Added window.matchMedia mock to vitest.setup.ts for responsive testing. Created MobileNav component (src/components/MobileNav.tsx) with fixed bottom nav bar (md:hidden), 5 nav items with icon+label, active state highlighting, safe-area-inset-bottom padding, count badges for mistakes/history/review, and onNavigate callback. Updated App.tsx: imported useIsMobile and MobileNav, wrapped desktop nav buttons in hidden md:flex container, conditionally render MobileNav on mobile, moved DictionarySelector+重置 to main content area on mobile, added pb-20 md:pb-0 bottom padding for mobile nav clearance, added handleNavigate for unified view switching. Updated PracticeCard: input min-height h-11 md:h-10 (44px mobile touch target), width w-28 md:w-32, content padding p-4 md:p-6, english sentence text-lg md:text-xl with leading-relaxed md:leading-loose, chinese translation text-base md:text-lg, speed selector h-9 md:h-8, header/footer padding px-4 py-3 md:px-6 md:py-4. Updated MistakeBook/HistoryView/SmartReview/DataManager: container padding px-3 md:px-4 py-4 md:py-8, answer badges flex-col sm:flex-row, history stats flex-wrap gap-3 md:gap-6. Updated ResultModal: mx-auto px-4 wrapper, stats grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6, header/content responsive padding. Updated App.css: mobile-nav safe-area support, main min-height calc for mobile bottom nav. Created MobileNav.test.tsx (8 tests) covering 5 nav items, active state, onNavigate callback, badges, md:hidden class. Created App.responsive.test.tsx (7 tests) covering MobileNav conditional rendering, desktop nav hidden class, DictionarySelector in main content, bottom padding. Total: 255/255 tests pass (25 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-003b": "Redesigned dictation mode for better usability. PracticeCard.tsx: (1) Chinese translation now always visible in dictation mode — removed isDictation condition from Chinese rendering so users have context about what to listen for. (2) Added first-letter hints below each input box in renderDictationInputs — displays first letter of blank word followed by dots (e.g., 'c...' for 'catches'), giving users an anchor without spoiling the full word. (3) Updated dictation mode instruction text from '请听音频，在输入框中填写听到的单词' to '请听音频，根据中文提示和首字母提示填写单词'. English sentence text remains hidden in dictation mode before result (inputs shown instead), showResult still reveals all content for review. Updated PracticeCard.dictation.test.tsx: changed Chinese visibility assertion from 'not in document' to 'in document', added first-letter hint test ('c...'), updated instruction text assertion. Updated App.mode.test.tsx: changed dictation mode Chinese assertion from hidden to visible, updated test names accordingly. Fixed PracticeCard.choice.test.tsx dictation rendering test to expect Chinese visible. Total: 256/256 tests pass (25 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-002-iter-004": "Implemented focus mode (fullscreen distraction-free UI). App.tsx: (1) Added isFocusMode state (default false) and toggleFocusMode callback. (2) Added '专注模式' entry button with Eye icon next to practice mode ToggleGroup. (3) Conditional rendering: when isFocusMode=true, hide full Header (logo, nav, DictionarySelector, reset, score), hide practice mode ToggleGroup, hide bottom hint text, hide MobileNav. Render minimal floating top bar showing current progress (第 X/Y 题), score, and exit button with X icon. (4) Added ESC key global listener to exit focus mode (using isFocusModeRef to avoid stale closures), skips handling when target is INPUT/TEXTAREA. PracticeCard.tsx: (5) Added optional isFocusMode prop (default false). When true: simplify header (hide question badge and attempts badge, keep only audio and speed controls), increase content padding (p-6 md:p-10 vs p-4 md:p-6) and font sizes (chinese text-lg md:text-xl, english text-xl md:text-2xl), use cleaner card border/shadow style (shadow-xl border-slate-100). (6) Wired isFocusMode prop from App.tsx to PracticeCard. Created App.focus.test.tsx with 6 tests: focus mode entry button renders, clicking enters focus mode (Header/ToggleGroup/hint hidden, floating bar visible), exit button restores normal UI, ESC key exits focus mode, ESC ignored when typing in input, PracticeCard remains interactive in focus mode. Total: 262/262 tests pass (26 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
+  },
+  "history": [
+    {
+      "id": "2026-05-09-13",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-002 iter-004 专注模式（全屏无干扰 UI）— 262/262 测试通过，build 成功，部署到 Vercel v0.11.0"
+    },
+    {
+      "id": "2026-05-09-12",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-003b 纯听写模式重新设计 — 256/256 测试通过，build 成功，v0.10.0 部署完成；战略指令 dir-urgent-002 两个紧急迭代全部收官"
+    },
+    {
+      "id": "2026-05-09-11",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-003a 响应式 UI 适配（移动端 + 桌面端）— 255/255 测试通过，build 成功，v0.9.0 部署完成；战略指令 dir-urgent-002 第一个紧急迭代已执行"
+    },
+    {
+      "id": "2026-05-09-10",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-002 iter-003a 响应式 UI 适配（移动端 + 桌面端）— 255/255 测试通过，build 成功，部署到 Vercel v0.9.0"
+    },
+    {
+      "id": "2026-05-09-9",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-003 选择题模式（四选一快速练习）— 240/240 测试通过，build 成功；战略指令 dir-urgent-002 已执行，插入 iter-003a 响应式UI适配和 iter-003b 纯听写模式重设计两个紧急迭代"
+    },
+    {
+      "id": "2026-05-09-8",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-002 音频播放速度控制（0.5x~1.5x）— 219/219 测试通过，build 成功"
+    },
+    {
+      "id": "2026-05-09-7",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-002 iter-001 纯听写模式 — 205/205 测试通过，build 成功，PM-UX 连续 5 次未选中后首次中选"
+    },
+    {
+      "id": "2026-05-09-1",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-001 核心存储服务与会话持久化 — 72/72 测试通过，build 成功"
+    },
+    {
+      "id": "2026-05-09-2",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-002 错题本 MVP + iter-003 学习历史记录 — 131/131 测试通过，build 成功，epic-001 3/5 迭代完成"
+    },
+    {
+      "id": "2026-05-09-3",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-004 数据导入导出 — 159/159 测试通过，build 成功，epic-001 4/5 迭代完成"
+    },
+    {
+      "id": "2026-05-09-4",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "bugfix-001 紧急体验 Bug 修复 — 165/165 测试通过，build 成功，修复 shuffle 不重置、键盘快捷键、题目标签泄露 3 个 Bug"
+    },
+    {
+      "id": "2026-05-09-6",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "iter-005 智能复习队列 — 189/189 测试通过，build 成功，epic-001 全部 6 个迭代完成"
+    }
+  ],
+  "pendingQuestions": [],
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "directives": {
+    "version": "1.0",
+    "pending": [],
+    "history": [
+      {
+        "id": "dir-1778292031198",
+        "type": "insert_epic",
+        "target": null,
+        "action": "测试的时候电脑有声音，想办法不出声测试",
+        "reason": "",
+        "createdAt": "2026-05-09T02:00:31.198Z",
+        "executedAt": "2026-05-09T02:01:00.000Z",
+        "executionNote": "已纳入 iter-002 测试策略：mock Audio 确保测试静默运行"
+      },
+      {
+        "id": "dir-urgent-001",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【高优先级 Bug 修复】暂停当前迭代开发，优先修复以下 3 个用户体验 Bug，修复完成后继续原迭代：Bug 1 — 新开一组还是原来的题目；Bug 2 — 答完后要点下一题按钮，不方便；Bug 3 — CET4-African 题目标题泄露答案",
+        "reason": "用户反馈的 3 个高优先级体验 Bug，必须立即修复",
+        "createdAt": "2026-05-09T12:30:00.000Z",
+        "executedAt": "2026-05-09T12:30:00.000Z",
+        "executionNote": "已插入 bugfix-001 '紧急体验 Bug 修复' 到当前 Epic，原 iter-005 '智能复习队列' 顺延"
+      },
+      {
+        "id": "dir-urgent-002",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【高优先级】插入两个紧急迭代到当前 epic-002 中，在 iter-003（已完成）之后、iter-004 之前执行：紧急迭代 A：响应式 UI 适配（移动端 + 桌面端）；紧急迭代 B：纯听写模式重新设计",
+        "reason": "用户反馈纯听写模式无法使用 + UI 必须做响应式基础，否则后续所有功能返工",
+        "createdAt": "2026-05-09T16:30:00.000Z",
+        "executedAt": "2026-05-09T16:35:00.000Z",
+        "executionNote": "已插入 iter-003a '响应式 UI 适配' 和 iter-003b '纯听写模式重新设计' 到 epic-002 迭代列表中，位于 iter-003 之后、iter-004 之前"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "url": "https://en-learn.vercel.app",
+    "productionUrl": "https://en-learn-9l3nqgvp6-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-09T11:09:50.928Z",
+    "version": "v0.11.0",
+    "iterationId": "iter-004",
+    "iterationTitle": "专注模式（全屏无干扰 UI）",
+    "gitTag": "v0.11.0",
+    "gitTagPushed": false,
+    "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
+  }
+}

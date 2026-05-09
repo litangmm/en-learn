@@ -1,20 +1,25 @@
 {
   "version": "1.0",
-  "status": "IMPLEMENT",
+  "status": "REPORT",
   "commitHash": "5c5e07ba7d651962f755d16696d6ff3252ecc0e9",
-  "lastRun": "2026-05-10T02:00:00.000Z",
-  "cycleCount": 19,
+  "lastRun": "2026-05-10T00:51:56.000Z",
+  "cycleCount": 18,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": {
+  "currentCycle": {
     "id": "2026-05-09-19",
     "mode": "vision",
+    "stage": "DEPLOY",
+    "startedAt": "2026-05-09T15:37:50.030Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-09-17",
+    "mode": "vision",
     "stage": "REPORT",
-    "startedAt": "2026-05-09T23:45:00.000Z",
+    "startedAt": "2026-05-09T21:15:00.000Z",
     "plan": {
-      "iterationId": "iter-003",
-      "iterationTitle": "每日挑战任务面板",
+      "iterationId": "iter-002",
+      "iterationTitle": "连击计数与正向反馈动画",
       "scope": "frontend-only",
       "steps": [],
       "filesToModify": [],
@@ -25,10 +30,10 @@
     "testResults": {
       "lint": "passed (0 errors, 3 pre-existing warnings)",
       "build": "passed",
-      "unitTests": "375/375 passed (39 test files)",
-      "e2e": "skipped (2 pending iterations remaining)"
+      "unitTests": "348/348 passed (36 test files)",
+      "e2e": "skipped (3 pending iterations remaining)"
     },
-    "summary": "REPORT stage completed — epic-003 iter-003 每日挑战任务面板报告已生成，375/375 测试通过，v0.15.0 部署完成，经验档案已更新，状态归档为 IDLE"
+    "summary": "REPORT stage completed — epic-003 iter-002 连击计数与正向反馈动画报告已生成，348/348 测试通过，v0.14.0 部署完成，经验档案已更新，状态归档为 IDLE"
   },
   "currentEpic": {
     "id": "epic-003",
@@ -57,7 +62,7 @@
         "id": "iter-004",
         "title": "成就徽章系统",
         "scope": "frontend-only",
-        "status": "in_progress"
+        "status": "pending"
       },
       {
         "id": "iter-005",
@@ -69,21 +74,20 @@
     "currentIterationIndex": 3
   },
   "plan": {
-    "iterationId": "iter-004",
-    "iterationTitle": "成就徽章系统",
+    "iterationId": "iter-003",
+    "iterationTitle": "每日挑战任务面板",
     "scope": "frontend-only",
     "steps": [
-      "Step 1: src/data/types.ts — Add badge type definitions. (a) Add `BadgeCategory` union: 'answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'. (b) Add `BadgeConditionType` union: 'total_answered' | 'total_correct' | 'max_streak' | 'level' | 'total_sessions' | 'perfect_sessions' | 'total_reviews' | 'total_challenges'. (c) Add `BadgeDefinition` interface with id, title, description, category, icon (lucide icon name), conditionType, conditionValue. (d) Add `UnlockedBadge` interface with id and unlockedAt timestamp. (e) Add `BadgeProgress` interface with totalAnswered, totalCorrect, totalSessions, maxStreakEver, perfectSessions, totalReviews, totalChallengesCompleted (all numbers, default 0). (f) Add `BadgeState` interface with unlocked: UnlockedBadge[] and progress: BadgeProgress.",
-      "Step 2: src/services/storage.ts — Extend storage with badge persistence. (a) Add `BADGES_KEY = 'en-learn-badges'` and `BADGE_PROGRESS_KEY = 'en-learn-badge-progress'`. (b) Define `DEFAULT_BADGE_PROGRESS: BadgeProgress` with all counters initialized to 0. (c) Add `BADGE_DEFINITIONS: BadgeDefinition[]` constant with 12 badges: first-steps(total_answered>=1), correct-10(total_correct>=10), correct-50(total_correct>=50), correct-100(total_correct>=100), streak-5(max_streak>=5), streak-10(max_streak>=10), level-3(level>=3), level-5(level>=5), session-10(total_sessions>=10), perfect-session(perfect_sessions>=1), review-10(total_reviews>=10), challenge-7(total_challenges>=7). (d) Add `isValidBadgeProgress(data)` and `isValidBadgeState(data)` validators. (e) Add `getBadgeProgress(): BadgeProgress` with corrupted JSON recovery and default fallback. (f) Add `saveBadgeProgress(progress): void` with try/catch. (g) Add `getBadges(): BadgeState` with default fallback (empty unlocked array + default progress). (h) Add `saveBadges(state): void`. (i) Add `updateBadgeProgress(updater: (prev) => Partial<BadgeProgress>): BadgeProgress` for atomic counter updates. (j) Update `exportAllData` to include `badgeProgress` and `badges`. (k) Update `importAllData` to handle `badgeProgress` and `badges` with validation and count tracking. (l) Update `isValidExportData` to accept optional `badgeProgress` and `badges` fields.",
-      "Step 3: src/hooks/useBadges.ts — Create badge management hook. (a) Initialize `badgeState` lazily from `storage.getBadges()` and `badgeProgress` from `storage.getBadgeProgress()`. (b) `trackProgress(type: 'correct' | 'wrong' | 'session_complete' | 'perfect_session' | 'streak' | 'review' | 'challenge', value?: number)` — updates badge counters atomically via `storage.updateBadgeProgress`: correct→totalCorrect++/totalAnswered++; wrong→totalAnswered++; session_complete→totalSessions++; perfect_session→perfectSessions++; streak→maxStreakEver=max(current,value); review→totalReviews++; challenge→totalChallengesCompleted++. (c) `checkBadges(level?: number)` — iterates `BADGE_DEFINITIONS`, checks condition against current `badgeProgress` and optional `level`, filters out already-unlocked, creates new `UnlockedBadge` entries with `unlockedAt: Date.now()`, persists updated `BadgeState` via `storage.saveBadges`, returns array of newly unlocked `BadgeDefinition`s. (d) `getBadgeProgressPercent(badgeId)` — looks up definition, computes progress ratio (current / threshold) capped at 1.0. (e) `resetBadges()` — for testing, clears storage and resets state. (f) Return: `unlockedIds` (Set<string>), `unlockedCount`, `badgeProgress`, `trackProgress`, `checkBadges`, `getBadgeProgressPercent`, `resetBadges`, `BADGE_DEFINITIONS`.",
-      "Step 4: src/components/BadgePanel.tsx — Create badge showcase panel. Props: `unlockedIds: Set<string>`, `getProgress: (id) => number`, `onBack: () => void`. (a) Header with Award icon (lucide-react), '成就徽章' title, and unlocked count badge (e.g., '3/12'). (b) Grid layout `grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4`. (c) Each badge card: icon area (48px), title, description. (d) Unlocked: amber/golden border (`border-amber-400`), colored icon (`text-amber-500`), subtle amber bg, display unlocked date formatted as 'YYYY-MM-DD 解锁'. (e) Locked: gray border (`border-slate-200`), gray icon (`text-slate-300`), no date, bottom thin progress bar showing progress percent. (f) Category grouping: optional section headers per category (answer/streak/level/session/review/challenge/special). (g) Back button at top with ChevronLeft icon. (h) Empty state not needed since all definitions always shown. (i) Responsive container padding `px-3 md:px-4 py-4 md:py-8`.",
-      "Step 5: src/components/BadgeUnlockToast.tsx — Create unlock notification toast. Props: `badge: BadgeDefinition | null`, `onDismiss: () => void`. (a) Fixed position bottom-center with `fixed bottom-8 left-1/2 -translate-x-1/2 z-50`. (b) AnimatePresence + motion.div: initial `{y: 50, opacity: 0}`, animate `{y: 0, opacity: 1}`, exit `{y: 30, opacity: 0}` with spring transition. (c) Card with amber/golden gradient border, white bg, shadow-lg, max-w-sm. (d) Content: Sparkles icon, '解锁新成就！' header, badge icon + title + description. (e) Auto-dismiss after 3000ms via useEffect + setTimeout. (f) Click to dismiss early. (g) Renders null when badge is null.",
-      "Step 6: src/App.tsx — Integrate badge system into app. (a) Import `useBadges` from '@/hooks/useBadges', `BadgePanel` from '@/components/BadgePanel', `BadgeUnlockToast` from '@/components/BadgeUnlockToast', `Award` icon from 'lucide-react'. (b) Add `'badges'` to `View` type. (c) Destructure `unlockedIds, unlockedCount, badgeProgress, trackProgress, checkBadges, getBadgeProgressPercent, BADGE_DEFINITIONS` from `useBadges()`. (d) Add `badgeUnlockTrigger` state similar to `xpGainTrigger` pattern. (e) Add `badgesRef` useRef to hold latest `trackProgress` and `checkBadges` to avoid stale closures. (f) In correct-answer useEffect (awardedXPRef block): after existing XP/daily-challenge code, call `badgesRef.current.trackProgress('correct')`, `badgesRef.current.trackProgress('streak', streak + 1)`, then `const newBadges = badgesRef.current.checkBadges(profile.currentLevel)`, if newBadges.length>0 trigger `setBadgeUnlockTrigger({badge: newBadges[0], key: Date.now()})`. (g) In wrong-answer useEffect: call `badgesRef.current.trackProgress('wrong')`, `badgesRef.current.trackProgress('streak', 0)`, then `checkBadges()`. (h) Add session-completion useEffect: when `state.isComplete` becomes true, call `trackProgress('session_complete')`, if accuracy===100 call `trackProgress('perfect_session')`, then `checkBadges(profile.currentLevel)`. (i) In review-mode scheduleNextReview useEffect: after `storage.scheduleNextReview`, call `trackProgress('review')` and `checkBadges()`. (j) Add '成就' nav button in header desktop nav row with Award icon and unlockedCount badge. (k) Add Award icon button in header score area (next to Trophy) with unlockedCount badge, visible when !isComplete && view==='practice'. (l) Add `handleOpenBadges` and `handleBackFromBadges` handlers. (m) Add `view === 'badges'` rendering `<BadgePanel />` in main content switch. (n) Add 'badges' case to `handleNavigate` switch. (o) Render `<BadgeUnlockToast />` in App root, outside main content area.",
-      "Step 7: src/hooks/__tests__/useBadges.test.ts — Test badge hook logic. (a) Test initial load with empty state. (b) Test trackProgress('correct') increments totalCorrect and totalAnswered. (c) Test trackProgress('wrong') increments totalAnswered only. (d) Test trackProgress('streak', 5) updates maxStreakEver. (e) Test trackProgress('streak', 3) then 5 updates maxStreakEver to 5. (f) Test checkBadges unlocks first-steps on totalAnswered>=1. (g) Test checkBadges unlocks correct-10 on totalCorrect>=10. (h) Test checkBadges unlocks level-3 when level>=3 passed. (i) Test checkBadges does not re-unlock already unlocked. (j) Test getBadgeProgressPercent returns correct ratio. (k) Test resetBadges clears all data.",
-      "Step 8: src/components/__tests__/BadgePanel.test.tsx — Test badge panel component. (a) Renders header with '成就徽章' and count. (b) Renders all 12 badge cards. (c) Unlocked badge shows amber border and date. (d) Locked badge shows gray border and progress bar. (e) Progress bar width matches getProgress return value. (f) Back button calls onBack. (g) Category sections render correctly.",
-      "Step 9: src/components/__tests__/App.badges.test.tsx — Test App badge integration. (a) Award button renders in header score area. (b) Unlocked count badge shows correct number. (c) Clicking award switches to badges view. (d) BadgePanel receives correct props. (e) trackProgress called on correct answer (mock useBadges, verify trackProgress called with 'correct' and 'streak'). (f) checkBadges called on correct answer with current level. (g) Back button from badges returns to practice.",
-      "Step 10: Update existing test mocks — 10 App test files rendering App.tsx need `vi.mock('@/hooks/useBadges')` with default mock: `{ unlockedIds: new Set(), unlockedCount: 0, badgeProgress: {totalAnswered:0,totalCorrect:0,totalSessions:0,maxStreakEver:0,perfectSessions:0,totalReviews:0,totalChallengesCompleted:0}, trackProgress: vi.fn(), checkBadges: vi.fn(() => []), getBadgeProgressPercent: vi.fn(() => 0), resetBadges: vi.fn(), BADGE_DEFINITIONS: [] }`. Files: App.xp.test.tsx, App.streak.test.tsx, App.focus.test.tsx, App.mode.test.tsx, App.choice.test.tsx, App.reorder.test.tsx, App.speed.test.tsx, App.responsive.test.tsx, App.keyboard.test.tsx, App.challenges.test.tsx.",
-      "Step 11: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all existing tests pass without regression."
+      "Step 1: src/data/types.ts — Add daily challenge types. (a) Add `export type ChallengeType = 'correct' | 'answer' | 'streak'`. (b) Add `DailyChallenge` interface with id, title, description, type, target, current, completed, claimed, rewardXP. (c) Add `DailyChallengeState` interface with date (YYYY-MM-DD) and challenges array.",
+      "Step 2: src/services/storage.ts — Extend storage with daily challenge persistence. (a) Add `DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges'`. (b) Add `isValidDailyChallenge(data)` and `isValidDailyChallengeState(data)` validators checking all required fields and types. (c) Add `getDailyChallenges(): DailyChallengeState | null` with corrupted JSON recovery and schema validation. (d) Add `saveDailyChallenges(state): void` with try/catch error handling. (e) Add `generateDailyChallenges(date: string): DailyChallengeState` with a 6-item challenge pool (correct-5/20XP, correct-10/40XP, answer-10/15XP, answer-20/30XP, streak-3/25XP, streak-5/50XP), deterministic seeded shuffle based on date hash, selecting first 3. (f) Update `exportAllData` to include `dailyChallenges`. (g) Update `importAllData` to handle `dailyChallenges` with validation and count tracking. (h) Update `isValidExportData` to accept optional `dailyChallenges`.",
+      "Step 3: src/hooks/useDailyChallenges.ts — Create daily challenges hook. (a) Initialize state lazily from `storage.getDailyChallenges()`; if null or date mismatch, call `storage.generateDailyChallenges(getToday())`. (b) `trackActivity(type: 'correct' | 'answer' | 'streak', value?: number)` — updates matching challenges: 'correct'/'answer' increment current by 1 (capped at target), 'streak' sets current to min(value, target) when value >= current. Auto-sets completed=true when current >= target. Persists via `storage.saveDailyChallenges()` after each update. (c) `claimReward(challengeId: string)` — validates challenge is completed and unclaimed, calls `storage.addXP(rewardXP)`, marks claimed=true, persists. (d) `unclaimedCount` — derived from challenges.filter(c => c.completed && !c.claimed).length. (e) `resetDailyChallenges()` — for testing, clears and regenerates.",
+      "Step 4: src/components/DailyChallengePanel.tsx — Create daily challenge panel component. Props: `challenges: DailyChallenge[]`, `onClaim: (id: string) => void`, `onBack: () => void`. (a) Header with Trophy icon (lucide-react), '每日挑战' title, and today's date. (b) Challenge cards with title, description, progress bar (current/target percentage), status badge. (c) In-progress: blue progress bar + 'X/Y' text. (d) Completed unclaimed: green '领取 XX XP' button calling onClaim. (e) Completed claimed: gray '已领取' badge with checkmark. (f) Back button at top with ChevronLeft icon. (g) Empty state when no challenges. (h) Responsive container padding px-3 md:px-4 py-4 md:py-8.",
+      "Step 5: src/App.tsx — Integrate daily challenges into app. (a) Add 'challenges' to View type. (b) Import `useDailyChallenges` from '@/hooks/useDailyChallenges'. (c) Destructure `challenges, unclaimedCount, trackActivity, claimReward`. (d) In correct-answer useEffect (awardedXPRef block): after recordCorrectAnswer, add `trackActivity('answer')`, `trackActivity('correct')`, `trackActivity('streak', streak + 1)`. (e) Refactor wrong-answer useEffect to use awardedXPRef guard: add sentenceId check, call `trackActivity('answer')` and `trackActivity('streak', 0)`. (f) Add '每日挑战' nav button in header desktop nav row (next to SmartReview) with Trophy icon and red unclaimed count badge. (g) Add Trophy icon button in header score area (visible on all screen sizes when !isComplete && view==='practice') with unclaimed badge. (h) Add `handleOpenChallenges` and `handleBackFromChallenges` handlers. (i) Add `view === 'challenges'` rendering `<DailyChallengePanel />` in main content switch. (j) Add 'challenges' case to `handleNavigate` switch and MobileNav props if adding to mobile nav (decision: add to header score area instead to avoid overcrowding bottom nav).",
+      "Step 6: src/hooks/__tests__/useDailyChallenges.test.ts — Test hook logic. (a) Test initial generation when storage empty. (b) Test loading existing today's challenges. (c) Test date rollover generates new challenges. (d) Test trackActivity('correct') increments correct-type challenges. (e) Test trackActivity('answer') increments answer-type challenges. (f) Test trackActivity('streak', 3) completes streak-3 challenge. (g) Test trackActivity('streak', 2) does not complete streak-3. (h) Test completed challenge stops accepting increments. (i) Test claimReward adds XP and marks claimed. (j) Test claimReward on uncompleted does nothing. (k) Test claimReward on already claimed does nothing. (l) Test unclaimedCount updates correctly.",
+      "Step 7: src/components/__tests__/DailyChallengePanel.test.tsx — Test panel component. (a) Renders header with '每日挑战' and date. (b) Renders challenge cards with correct titles. (c) Progress bar width matches current/target ratio. (d) Completed unclaimed shows claim button with '领取 20 XP'. (e) Clicking claim calls onClaim with challenge id. (f) Completed claimed shows '已领取'. (g) In-progress shows 'X/Y' progress text. (h) Back button calls onBack. (i) Empty state when challenges array empty.",
+      "Step 8: src/components/__tests__/App.challenges.test.tsx — Test App integration. (a) Trophy button renders in header score area. (b) Unclaimed badge shows correct count. (c) Clicking trophy switches to challenges view. (d) trackActivity called on correct answer (mock useDailyChallenges, verify trackActivity called with 'correct', 'answer', 'streak'). (e) trackActivity called on wrong answer. (f) Back button from challenges returns to practice.",
+      "Step 9: Update existing test mocks — 9 App test files rendering App.tsx need `vi.mock('@/hooks/useDailyChallenges')` with default mock: `{ challenges: [], unclaimedCount: 0, trackActivity: vi.fn(), claimReward: vi.fn() }`. Files: App.xp.test.tsx, App.streak.test.tsx, App.focus.test.tsx, App.mode.test.tsx, App.choice.test.tsx, App.reorder.test.tsx, App.speed.test.tsx, App.responsive.test.tsx, src/__tests__/App.keyboard.test.tsx.",
+      "Step 10: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all existing tests pass without regression."
     ],
     "filesToModify": [
       "src/data/types.ts",
@@ -91,17 +95,21 @@
       "src/App.tsx"
     ],
     "filesToCreate": [
-      "src/hooks/useBadges.ts",
-      "src/components/BadgePanel.tsx",
-      "src/components/BadgeUnlockToast.tsx",
-      "src/hooks/__tests__/useBadges.test.ts",
-      "src/components/__tests__/BadgePanel.test.tsx",
-      "src/components/__tests__/App.badges.test.tsx"
+      "src/hooks/useDailyChallenges.ts",
+      "src/components/DailyChallengePanel.tsx",
+      "src/hooks/__tests__/useDailyChallenges.test.ts",
+      "src/components/__tests__/DailyChallengePanel.test.tsx",
+      "src/components/__tests__/App.challenges.test.tsx"
     ],
     "dependencies": [],
-    "testStrategy": "Badge system tests cover: (1) storage layer — badge progress CRUD, validation, corrupted data recovery, export/import integration with badgeProgress and badges fields; (2) useBadges hook — progress tracking (correct/wrong/streak/session/review/challenge events), badge condition checking for all 12 badges, duplicate unlock prevention, progress percent calculation, reset; (3) BadgePanel component — rendering all 12 badges, unlocked/locked visual states, progress bar width, back navigation; (4) App integration — award button with count badge, view switching, trackProgress and checkBadges called on answer events, toast trigger. Update 10 existing App test mocks for new useBadges hook. All 375 existing tests must pass without regression. Full lint + build + test validation."
+    "testStrategy": "Daily challenge tests cover: (1) storage layer — challenge generation determinism, date rollover, CRUD, validation, export/import integration; (2) useDailyChallenges hook — activity tracking (correct/answer/streak types), completion logic, claim reward, XP integration, unclaimed count; (3) DailyChallengePanel component — rendering, progress display, claim button conditional, back navigation, empty state; (4) App integration — nav button with badge, view switching, trackActivity called on answer events. Update 9 existing App test mocks for new useDailyChallenges hook. All 348 existing tests must pass without regression. Full lint + build + test validation."
   },
-  "testResults": {},
+  "testResults": {
+    "lint": "passed (0 errors, 3 pre-existing warnings)",
+    "build": "passed",
+    "unitTests": "375/375 passed (39 test files)",
+    "e2e": "skipped (2 pending iterations remaining)"
+  },
   "implementationStatus": {
     "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
     "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
@@ -124,9 +132,9 @@
     {
       "id": "2026-05-09-19",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "DEPLOY",
       "status": "completed",
-      "summary": "epic-003 iter-003 每日挑战任务面板 — 375/375 测试通过，build 成功，v0.15.0 部署完成；经验档案已更新，状态归档为 IDLE"
+      "summary": "epic-003 iter-003 每日挑战任务面板 — 375/375 测试通过，build 成功，v0.15.0 部署完成"
     },
     {
       "id": "2026-05-09-17",

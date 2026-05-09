@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **完整实现**
+- **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突
+- **关键决策**:
+  - ChallengeType 联合类型设计为 `'correct' | 'answer' | 'streak'`，与现有学习行为自然对齐，无需用户学习新交互模式
+  - DailyChallenge 接口包含 id/title/description/type/target/current/completed/claimed/rewardXP，足够表达完整挑战状态，无需额外冗余字段
+  - generateDailyChallenges 使用确定性种子洗牌：日期字符串哈希作为种子，Fisher-Yates seeded shuffle 从 6 题池选 3 题，确保所有用户同一天看到相同挑战组合
+  - trackActivity 接口设计为 `(type: 'correct' | 'answer' | 'streak', value?: number)`，通用 enough 支持未来自适应挑战（动态调整 target）
+  - claimReward 通过 storage.addXP 直接发放奖励，复用现有 XP 系统，避免重复实现奖励逻辑
+  - DailyChallengePanel 的进度条使用 `(current / target) * 100` 百分比宽度，视觉反馈直观
+  - App.tsx 集成中，trackActivity 在正确/错误答题的 useEffect 中调用，与现有答题逻辑自然融合
+- **观察**: 零新增依赖，零构建体积增长。每日挑战作为全新数据维度，与现有 session/mistakes/history/xpProfile 完全解耦，并行存储在 localStorage 中。9 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护成本
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **完整实现**
 - **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突

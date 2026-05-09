@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -23,6 +23,8 @@ const MISTAKES_KEY = 'en-learn-mistakes';
 const HISTORY_KEY = 'en-learn-history';
 const XP_PROFILE_KEY = 'en-learn-xp-profile';
 const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
+const BADGES_KEY = 'en-learn-badges';
+const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -285,6 +287,77 @@ function isValidDailyChallengeState(data: unknown): data is DailyChallengeState 
 
   return true;
 }
+
+function isValidBadgeProgress(data: unknown): data is BadgeProgress {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.totalAnswered !== 'number') return false;
+  if (typeof obj.totalCorrect !== 'number') return false;
+  if (typeof obj.totalSessions !== 'number') return false;
+  if (typeof obj.maxStreakEver !== 'number') return false;
+  if (typeof obj.perfectSessions !== 'number') return false;
+  if (typeof obj.totalReviews !== 'number') return false;
+  if (typeof obj.totalChallengesCompleted !== 'number') return false;
+
+  return true;
+}
+
+function isValidUnlockedBadge(data: unknown): data is UnlockedBadge {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.id !== 'string') return false;
+  if (typeof obj.unlockedAt !== 'number') return false;
+
+  return true;
+}
+
+function isValidBadgeState(data: unknown): data is BadgeState {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (!Array.isArray(obj.unlocked)) return false;
+  if (!obj.unlocked.every(isValidUnlockedBadge)) return false;
+  if (typeof obj.progress !== 'object' || obj.progress === null) return false;
+  if (!isValidBadgeProgress(obj.progress)) return false;
+
+  return true;
+}
+
+export const DEFAULT_BADGE_PROGRESS: BadgeProgress = {
+  totalAnswered: 0,
+  totalCorrect: 0,
+  totalSessions: 0,
+  maxStreakEver: 0,
+  perfectSessions: 0,
+  totalReviews: 0,
+  totalChallengesCompleted: 0,
+};
+
+export const BADGE_DEFINITIONS: BadgeDefinition[] = [
+  { id: 'first-steps', title: '初次尝试', description: '完成第一道题', category: 'answer', icon: 'Footprints', conditionType: 'total_answered', conditionValue: 1 },
+  { id: 'correct-10', title: '答对 10 题', description: '累计答对 10 道题', category: 'answer', icon: 'CheckCircle2', conditionType: 'total_correct', conditionValue: 10 },
+  { id: 'correct-50', title: '答对 50 题', description: '累计答对 50 道题', category: 'answer', icon: 'CheckCircle2', conditionType: 'total_correct', conditionValue: 50 },
+  { id: 'correct-100', title: '答对 100 题', description: '累计答对 100 道题', category: 'answer', icon: 'CheckCircle2', conditionType: 'total_correct', conditionValue: 100 },
+  { id: 'streak-5', title: '连对 5 题', description: '连续答对 5 道题', category: 'streak', icon: 'Flame', conditionType: 'max_streak', conditionValue: 5 },
+  { id: 'streak-10', title: '连对 10 题', description: '连续答对 10 道题', category: 'streak', icon: 'Flame', conditionType: 'max_streak', conditionValue: 10 },
+  { id: 'level-3', title: '等级 3', description: '达到等级 3', category: 'level', icon: 'Trophy', conditionType: 'level', conditionValue: 3 },
+  { id: 'level-5', title: '等级 5', description: '达到等级 5', category: 'level', icon: 'Trophy', conditionType: 'level', conditionValue: 5 },
+  { id: 'session-10', title: '完成 10 次练习', description: '累计完成 10 次练习', category: 'session', icon: 'BookOpen', conditionType: 'total_sessions', conditionValue: 10 },
+  { id: 'perfect-session', title: '完美练习', description: '完成一次全对练习', category: 'session', icon: 'Star', conditionType: 'perfect_sessions', conditionValue: 1 },
+  { id: 'review-10', title: '复习 10 次', description: '累计复习 10 次', category: 'review', icon: 'RefreshCw', conditionType: 'total_reviews', conditionValue: 10 },
+  { id: 'challenge-7', title: '挑战 7 次', description: '累计完成 7 次每日挑战', category: 'challenge', icon: 'Target', conditionType: 'total_challenges', conditionValue: 7 },
+];
 
 function isValidHistory(data: unknown): data is SessionHistory {
   if (typeof data !== 'object' || data === null) {
@@ -755,6 +828,78 @@ export const StorageService = {
     saveMistakes(mistakes);
   },
 
+  getBadgeProgress(): BadgeProgress {
+    const raw = localStorage.getItem(BADGE_PROGRESS_KEY);
+    if (raw === null) {
+      return { ...DEFAULT_BADGE_PROGRESS };
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.warn('[StorageService] Corrupted badge progress data, resetting');
+      localStorage.removeItem(BADGE_PROGRESS_KEY);
+      return { ...DEFAULT_BADGE_PROGRESS };
+    }
+
+    if (isValidBadgeProgress(parsed)) {
+      return parsed;
+    }
+
+    console.warn('[StorageService] Invalid badge progress schema, resetting');
+    localStorage.removeItem(BADGE_PROGRESS_KEY);
+    return { ...DEFAULT_BADGE_PROGRESS };
+  },
+
+  saveBadgeProgress(progress: BadgeProgress): void {
+    try {
+      localStorage.setItem(BADGE_PROGRESS_KEY, JSON.stringify(progress));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save badge progress:', error);
+    }
+  },
+
+  updateBadgeProgress(updater: (prev: BadgeProgress) => Partial<BadgeProgress>): BadgeProgress {
+    const current = this.getBadgeProgress();
+    const updates = updater(current);
+    const updated: BadgeProgress = { ...current, ...updates };
+    this.saveBadgeProgress(updated);
+    return updated;
+  },
+
+  getBadges(): BadgeState {
+    const raw = localStorage.getItem(BADGES_KEY);
+    if (raw === null) {
+      return { unlocked: [], progress: { ...DEFAULT_BADGE_PROGRESS } };
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.warn('[StorageService] Corrupted badges data, resetting');
+      localStorage.removeItem(BADGES_KEY);
+      return { unlocked: [], progress: { ...DEFAULT_BADGE_PROGRESS } };
+    }
+
+    if (isValidBadgeState(parsed)) {
+      return parsed;
+    }
+
+    console.warn('[StorageService] Invalid badges schema, resetting');
+    localStorage.removeItem(BADGES_KEY);
+    return { unlocked: [], progress: { ...DEFAULT_BADGE_PROGRESS } };
+  },
+
+  saveBadges(state: BadgeState): void {
+    try {
+      localStorage.setItem(BADGES_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save badges:', error);
+    }
+  },
+
   exportAllData(): ExportData {
     return {
       version: 1,
@@ -765,21 +910,23 @@ export const StorageService = {
         history: loadHistory(),
         xpProfile: this.getXPProfile(),
         dailyChallenges: loadDailyChallenges(),
+        badgeProgress: this.getBadgeProgress(),
+        badges: this.getBadges(),
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 },
       };
     }
 
-    const { session, mistakes, history, xpProfile, dailyChallenges } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 };
+    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 };
 
     try {
       if (session !== null) {
@@ -817,12 +964,28 @@ export const StorageService = {
         localStorage.removeItem(DAILY_CHALLENGES_KEY);
       }
 
+      if (badgeProgress) {
+        localStorage.setItem(BADGE_PROGRESS_KEY, JSON.stringify(badgeProgress));
+        importedCounts.badgeProgress = 1;
+      } else {
+        localStorage.removeItem(BADGE_PROGRESS_KEY);
+      }
+
+      if (badges) {
+        localStorage.setItem(BADGES_KEY, JSON.stringify(badges));
+        importedCounts.badges = 1;
+      } else {
+        localStorage.removeItem(BADGES_KEY);
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
       if (importedCounts.history > 0) parts.push(`${importedCounts.history} 条历史记录`);
       if (importedCounts.xpProfile > 0) parts.push('1 个 XP 档案');
       if (importedCounts.dailyChallenges > 0) parts.push('1 个每日挑战');
+      if (importedCounts.badgeProgress > 0) parts.push('1 个徽章进度');
+      if (importedCounts.badges > 0) parts.push('1 个徽章状态');
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -833,7 +996,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 },
       };
     }
   },
@@ -848,6 +1011,8 @@ export interface ExportData {
     history: SessionHistory[];
     xpProfile?: XPProfile;
     dailyChallenges?: DailyChallengeState | null;
+    badgeProgress?: BadgeProgress;
+    badges?: BadgeState;
   };
 }
 
@@ -900,6 +1065,16 @@ function isValidExportData(data: unknown): data is ExportData {
 
   // dailyChallenges is optional; if present, must be valid
   if (dataObj.dailyChallenges !== undefined && !isValidDailyChallengeState(dataObj.dailyChallenges)) {
+    return false;
+  }
+
+  // badgeProgress is optional; if present, must be valid
+  if (dataObj.badgeProgress !== undefined && !isValidBadgeProgress(dataObj.badgeProgress)) {
+    return false;
+  }
+
+  // badges is optional; if present, must be valid
+  if (dataObj.badges !== undefined && !isValidBadgeState(dataObj.badges)) {
     return false;
   }
 

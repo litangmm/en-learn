@@ -40,4 +40,4 @@ git diff --cached --quiet || git commit -m "[EVOLUTION] docs: update agent exper
 
 ## 输出
 1. 记录 commit hash 到 `.claude/evolution/state.json`
-2. 更新 `status` 为 `REPORT`
+2. 更新 `status` 为 `DEPLOY`

@@ -74,4 +74,5 @@ npx vercel --prod --yes
 2. 确保 `.claude/evolution/releases.json` 已更新本次发布记录
 3. 确保 git tag 已创建（可运行 `git tag -l` 验证）
 4. 部署成功则更新 `status` 为 `REPORT`
+4. 部署成功后执行 `git push --tags` 推送 tag
 5. 部署失败则更新 `status` 为 `AUTO_FIX`，记录失败原因

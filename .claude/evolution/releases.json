@@ -2,6 +2,76 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.4.0",
+      "tag": "v0.4.0",
+      "commit": "a7752a4",
+      "date": "2026-05-09T03:09:40Z",
+      "iterationId": "iter-004",
+      "title": "数据导入导出",
+      "features": [
+        "ExportData 类型",
+        "exportAllData/importAllData",
+        "DataManager 组件",
+        "App.tsx 导航"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.5.0",
+      "tag": "v0.5.0",
+      "commit": "2fcd486",
+      "date": "2026-05-09T03:52:54Z",
+      "iterationId": "iter-005",
+      "title": "智能复习队列",
+      "features": [
+        "间隔重复算法",
+        "SmartReview 组件",
+        "自动调度复习"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.5.1",
+      "tag": "v0.5.1",
+      "commit": "a5f5af8",
+      "date": "2026-05-09T04:32:47Z",
+      "iterationId": "bugfix-001",
+      "title": "紧急体验 Bug 修复",
+      "features": [
+        "修复随机排序不变化",
+        "添加 Enter/Space 键盘快捷键",
+        "修复题目 ID 泄露答案"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.6.0",
+      "tag": "v0.6.0",
+      "commit": "7bb3bc0",
+      "date": "2026-05-09T07:28:15Z",
+      "iterationId": "epic-002-iter-001",
+      "title": "纯听写模式",
+      "features": [
+        "PracticeMode 类型",
+        "PracticeCard dictation UI",
+        "App 模式切换"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.7.0",
+      "tag": "v0.7.0",
+      "commit": "1fa9860",
+      "date": "2026-05-09T07:35:02Z",
+      "iterationId": "epic-002-iter-002",
+      "title": "音频播放速度控制",
+      "features": [
+        "0.5x~1.5x 速度调节",
+        "音频播放组件升级"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.3.0",
       "tag": "v0.3.0",
       "commit": "355d91a",

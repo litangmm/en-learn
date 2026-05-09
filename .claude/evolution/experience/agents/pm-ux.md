@@ -7,6 +7,14 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
+- **结果**: epic-002 iter-003「选择题模式（四选一快速练习）」完成
+- **完成内容**: PracticeMode 类型扩展为 `'fill-in-blanks' | 'dictation' | 'multiple-choice'`；usePractice hook 新增 selectedChoiceId 状态、options 生成（当前句 + 3 个随机干扰项，共 4 选项）、selectChoice 回调、checkAnswer 支持传入选项 ID 判定正误（答对得 10 分，无尝试惩罚）；PracticeCard 新增选择题 UI：中文翻译 + 音频按钮 + 4 个选项卡片（蓝/绿/红高亮）、提交按钮（选中前禁用）、showResult 后无重试仅下一题；App.tsx ToggleGroup 扩展为三模式切换，auto-play 延迟 500ms
+- **新增测试**: usePractice.choice.test.ts (6 个) + PracticeCard.choice.test.tsx (10 个) + App.choice.test.tsx (5 个)，全量 240/240 通过
+- **当前状态**: 连续未被选中计数保持清零
+- **观察**: iter-003 的选择题模式是 PM-UX「快速反馈循环」理念的直接体现——四选一、即时正误判断、无尝试惩罚、适合碎片时间快速刷题。三种练习模式（填空/听写/选择）覆盖了从深度练习到快速刷题的完整场景光谱。但用户反馈纯听写模式体验差（完全隐藏句子，用户不知所云），需在后续迭代中重新设计
+
 ### 2026-05-09 (cycle-2026-05-09-8)
 - **相关 Epic**: epic-002「沉浸式多模态练习模式」—— 作为提议者
 - **结果**: epic-002 iter-002「音频播放速度控制」完成

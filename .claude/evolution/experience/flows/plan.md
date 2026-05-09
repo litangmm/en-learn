@@ -8,6 +8,23 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **完整执行**
+- **计划步骤**: 6 步全部完成，涵盖类型定义、hook 扩展、组件扩展、App 集成、单元测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/hooks/usePractice.ts, src/components/PracticeCard.tsx, src/App.tsx
+  - 创建: src/hooks/__tests__/usePractice.choice.test.ts, src/components/__tests__/PracticeCard.choice.test.tsx, src/components/__tests__/App.choice.test.tsx
+- **观察**: 计划清晰可执行，选择题模式的「4 选项生成 + 选中状态 + 提交判定」逻辑在 usePractice hook 中自然扩展，未破坏现有填空/听写模式。可选 props 设计保持了 PracticeCard 的向后兼容。
+- **战略指令影响**: dir-urgent-002 要求插入两个紧急迭代，将在下次 PLAN 阶段重新规划
+
+### 2026-05-09 (cycle-2026-05-09-8)
+- **迭代**: epic-002 iter-002「音频播放速度控制」—— **完整执行**
+- **计划步骤**: 5 步全部完成，涵盖 hook 扩展、组件扩展、App 集成、单元测试、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/hooks/useSpeech.ts, src/components/PracticeCard.tsx, src/App.tsx
+  - 创建: src/hooks/__tests__/useSpeech.rate.test.ts, src/components/__tests__/PracticeCard.speed.test.tsx, src/components/__tests__/App.speed.test.tsx
+- **观察**: 计划清晰，五档离散速度的选择比连续滑条更易实现和测试
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **迭代**: epic-002 iter-001「纯听写模式」
 - **计划步骤**: 5 步全部完成，涵盖类型定义、组件扩展、App 集成、单元测试、全量验证

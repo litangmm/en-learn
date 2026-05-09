@@ -8,6 +8,27 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **完整实现**
+- **实现质量**: 高 — 状态机扩展自然，UI 条件渲染清晰
+- **关键决策**:
+  - usePractice hook 中 options 使用 useMemo 从完整词典（非仅 shuffled 的 10 条）排除当前句后随机取 3 个干扰项，确保选项多样性
+  - checkAnswer 在选择题模式下传入 selectedOptionId，答对得 10 分（无尝试惩罚），答错记录到 pendingMistakes
+  - PracticeCard 通过可选 props（options/selectedChoiceId/onSelectChoice）实现向后兼容，填空/听写模式零变更
+  - 选择题模式下提交按钮在选中前禁用，showResult 后无重试仅下一题（一击即走模式）
+  - App.tsx ToggleGroup 扩展为三模式，auto-play 延迟 500ms（介于填空 800ms 和听写 300ms 之间）
+- **观察**: 三种模式共享同一套 usePractice 状态机，状态切换通过 mode 条件分支处理。当前 3 种模式仍可通过 if/else 管理，但 4+ 模式时强烈建议重构为配置驱动的渲染策略。
+
+### 2026-05-09 (cycle-2026-05-09-8)
+- **迭代**: epic-002 iter-002「音频播放速度控制」—— **完整实现**
+- **实现质量**: 高 — API 设计简洁，向后兼容
+- **关键决策**:
+  - useSpeech hook 保留 `speak(text, rate?)` 的 rate 覆盖参数，确保向后兼容
+  - SPEEDS 常量 [0.5, 0.75, 1.0, 1.25, 1.5] 定义为离散选择，降低实现复杂度
+  - PracticeCard Header 中速度选择器始终可见（包括 showResult 时），不干扰结果查看
+  - App.tsx 移除所有硬编码速率，统一使用用户选择的 playbackRate
+- **观察**: 零新增依赖，零构建体积增长
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **迭代**: epic-002 iter-001「纯听写模式」—— **完整实现**
 - **实现质量**: 高 — 类型设计清晰，UI 条件渲染逻辑简洁

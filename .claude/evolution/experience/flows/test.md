@@ -8,6 +8,26 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **全部测试通过**
+- **测试覆盖**: 240/240 单元测试通过（23 个测试文件，新增 21 个测试）
+  - usePractice.choice.test.ts: 6 个测试（options 生成、selectChoice 状态更新、checkAnswer 正确/错误、nextSentence/reset 重置）
+  - PracticeCard.choice.test.tsx: 10 个测试（4 选项渲染、点击回调、提交禁用逻辑、正确/错误/未选中高亮样式、错误后无重试）
+  - App.choice.test.tsx: 5 个测试（三模式 ToggleGroup、选择题 DOM、initializeInputs 触发、props 传递、500ms auto-play）
+  - 全量回归: 之前 219 个测试全部通过
+- **E2E**: skipped（4 pending iterations remaining，含 2 个新增紧急迭代）
+- **观察**: 选择题测试覆盖了「选项生成 → 选中 → 提交 → 结果显示 → 下一题」的完整流程。干扰项生成的随机性通过 mock Math.random 确保可预测。三种模式的回归测试无交叉污染。
+
+### 2026-05-09 (cycle-2026-05-09-8)
+- **迭代**: epic-002 iter-002「音频播放速度控制」—— **全部测试通过**
+- **测试覆盖**: 219/219 单元测试通过（20 个测试文件，新增 14 个测试）
+  - useSpeech.rate.test.ts: 5 个测试（默认 playbackRate、setPlaybackRate 状态更新、speak 未传 rate 使用 playbackRate、speak 传 rate 覆盖 playbackRate）
+  - PracticeCard.speed.test.tsx: 6 个测试（五档渲染、条件渲染、当前速度高亮、回调参数正确、dictation 模式可见、showResult 时可见）
+  - App.speed.test.tsx: 3 个测试（默认 1.0x 选中、setPlaybackRate 调用、auto-play 使用 playbackRate）
+  - 全量回归: 之前 205 个测试全部通过
+- **E2E**: skipped（3 pending iterations remaining）
+- **观察**: useSpeech 默认速率从 0.9 调整为 1.0 的变更已同步更新现有测试，无回归
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **迭代**: epic-002 iter-001「纯听写模式」—— **全部测试通过**
 - **测试覆盖**: 205/205 单元测试通过（17 个测试文件，新增 16 个测试）

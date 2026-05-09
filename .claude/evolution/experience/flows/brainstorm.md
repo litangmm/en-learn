@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **状态**: 本次未进行 brainstorm（epic-002 仍有 pending iterations）
+- **原因**: epic-002 仍有 pending iterations（iter-004, iter-005），直接继续执行。但收到两条高优先级战略指令（dir-urgent-002），要求在 iter-003 后、iter-004 前插入两个紧急迭代
+- **战略指令执行**: dir-urgent-002 已接收，将在下次 PLAN 阶段插入两个紧急迭代：
+  - 紧急迭代 A：响应式 UI 适配（移动端 + 桌面端）
+  - 紧急迭代 B：纯听写模式重新设计
+- **观察**: 战略指令反映了用户的实际体验反馈（纯听写模式无法使用）和架构判断（响应式基础不做，后续全部返工）。这是进化流程首次在 Epic 执行中插入紧急迭代，验证了 bidirectional communication protocol 的有效性。插入后 epic-002 的迭代顺序变为：iter-001(完成) → iter-002(完成) → iter-003(完成) → iter-003a(响应式UI) → iter-003b(听写重设计) → iter-004(专注模式) → iter-005(连词成句)
+
+### 2026-05-09 (cycle-2026-05-09-8)
+- **状态**: 本次未进行 brainstorm（epic-002 仍有 pending iterations）
+- **原因**: epic-002 仍有 pending iteration（iter-003），直接继续执行
+- **观察**: epic-002 的 iter-002 完成，iter-003 正在执行。多个 Agent 连续未被选中（最长 7 次），但 epic-002 尚未完成，暂不触发 brainstorm
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **状态**: 全新 brainstorm（epic-001 全部完成后首次）
 - **参与 Agent**: 9 个（PM-Lean, PM-UX, PM-Mon, PM-Growth, PM-Eco, ARCH, UX, QA, EXP）

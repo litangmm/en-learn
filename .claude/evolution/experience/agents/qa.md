@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试、构建体积监控
+- **本次验证**: epic-002 iter-003「选择题模式（四选一快速练习）」质量门禁验证
+  - usePractice choice 测试：options 生成（4 选项含正确答案）、selectChoice 状态更新、checkAnswer 正确 ID（10 分）、checkAnswer 错误 ID（记录错题）、nextSentence/reset 重置 selectedChoiceId
+  - PracticeCard choice 测试：4 选项渲染、选项点击回调、提交按钮禁用逻辑（选中前禁用，选中后启用）、showResult 正确选项绿色高亮、错误选中项红色高亮、未选中默认样式、错误后无重试仅下一题
+  - App choice 测试：三模式 ToggleGroup、选择题模式 DOM、initializeInputs 模式切换触发、options props 传递、500ms auto-play 延迟
+  - 全量回归：240/240 单元测试通过，lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 选择题模式的干扰项生成使用 Math.random，测试中通过 mock 确保可预测。三种模式的回归测试全部通过，无交叉污染。但 QA 注意到当前 UI 无移动端适配，后续需增加响应式测试覆盖
+
 ### 2026-05-09 (cycle-2026-05-09-8)
 - **相关质量门禁**: 语音 API 兼容性、localStorage 数据完整性、跨浏览器测试、边界情况自动化测试、构建体积监控
 - **本次验证**: epic-002 iter-002「音频播放速度控制」质量门禁验证

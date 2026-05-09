@@ -2,6 +2,20 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.8.0",
+      "tag": "v0.8.0",
+      "commit": "77307e9",
+      "date": "2026-05-09T08:29:50.241Z",
+      "iterationId": "iter-003",
+      "title": "选择题模式（四选一快速练习）",
+      "features": [
+        "Add git push --tags step to deploy prompt",
+        "Update commit prompt status transition to DEPLOY",
+        "Record releases v0.4.0 through v0.7.0 in releases.json"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.4.0",
       "tag": "v0.4.0",
       "commit": "a7752a4",

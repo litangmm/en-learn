@@ -8,6 +8,27 @@
 
 ## 历史数据
 
+### 2026-05-09 (cycle-2026-05-09-9)
+- **迭代**: epic-002 iter-003「选择题模式（四选一快速练习）」—— **技术审查通过**
+- **技术决策**:
+  - PracticeMode 联合类型从 2 个值扩展为 3 个值（'fill-in-blanks' | 'dictation' | 'multiple-choice'），类型系统自然容纳新模式
+  - usePractice hook 中 options 的 useMemo 依赖 dictionarySentences（完整词典），确保每次当前句变化时重新生成干扰项
+  - checkAnswer 的 selectedOptionId 参数为可选，填空/听写模式不传入时保持原有行为，实现向后兼容
+  - PracticeCard 新增的可选 props（options/selectedChoiceId/onSelectChoice）不会破坏现有填空/听写模式的渲染
+  - 选择题模式下 nextSentence 后自动播放（500ms 延迟）与填空/听写模式各自独立
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 240/240 unit tests passed
+- **观察**: App.tsx 的练习模式切换已扩展至 3 种，加上 5 个功能视图，条件渲染复杂度持续累积。ARCH 此前多次提出的导航抽象建议在 iter-004（专注模式）前应作为技术债务处理。当前 UI 无移动端适配，这是比导航抽象更紧迫的基础债务。
+
+### 2026-05-09 (cycle-2026-05-09-8)
+- **迭代**: epic-002 iter-002「音频播放速度控制」—— **技术审查通过**
+- **技术决策**:
+  - useSpeech hook 的 playbackRate 状态与 speak 的 rate 覆盖参数共存，API 设计简洁且向后兼容
+  - SPEEDS 常量为静态数组，无运行时计算开销
+  - 速度选择器在 PracticeCard Header 中始终渲染，不受 showResult 影响
+  - App.tsx 移除所有硬编码速率，消除了 magic number
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 219/219 unit tests passed
+- **观察**: 零新增依赖，零构建体积增长
+
 ### 2026-05-09 (cycle-2026-05-09-7)
 - **迭代**: epic-002 iter-001「纯听写模式」—— **技术审查通过**
 - **技术决策**:

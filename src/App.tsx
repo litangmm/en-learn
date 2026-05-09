@@ -13,6 +13,8 @@ import { MistakeBook } from '@/components/MistakeBook';
 import { HistoryView } from '@/components/HistoryView';
 import { DataManager } from '@/components/DataManager';
 import { SmartReview } from '@/components/SmartReview';
+import { MobileNav } from '@/components/MobileNav';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -32,6 +34,7 @@ import './App.css';
 type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review';
 
 function App() {
+  const isMobile = useIsMobile();
   const [dictionaryId, setDictionaryId] = useState('cet4');
   const [pendingDictionaryId, setPendingDictionaryId] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -248,6 +251,30 @@ function App() {
     setReviewDueCount(storage.getReviewQueueCount());
   };
 
+  const handleNavigate = (newView: View) => {
+    switch (newView) {
+      case 'practice':
+        setView('practice');
+        break;
+      case 'mistake-book':
+        setMistakeCount(storage.getMistakeCount());
+        setView('mistake-book');
+        break;
+      case 'history':
+        setHistoryCount(storage.getHistoryCount());
+        setView('history');
+        break;
+      case 'data':
+        setView('data');
+        break;
+      case 'review':
+        setReviewDueCount(storage.getReviewQueueCount());
+        setIsReviewMode(false);
+        setView('review');
+        break;
+    }
+  };
+
   const currentDict = getDictionaryById(dictionaryId);
 
   // Loading state
@@ -301,82 +328,84 @@ function App() {
                 <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
               </div>
             )}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOpenMistakeBook}
-              className="relative text-slate-500 gap-2"
-            >
-              <BookOpen className="w-4 h-4" />
-              错题本
-              {mistakeCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                >
-                  {mistakeCount}
-                </Badge>
+            <div className="hidden md:flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenMistakeBook}
+                className="relative text-slate-500 gap-2"
+              >
+                <BookOpen className="w-4 h-4" />
+                错题本
+                {mistakeCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                  >
+                    {mistakeCount}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenHistory}
+                className="relative text-slate-500 gap-2"
+              >
+                <History className="w-4 h-4" />
+                学习记录
+                {historyCount > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                  >
+                    {historyCount}
+                  </Badge>
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenDataManager}
+                className="text-slate-500 gap-2"
+              >
+                <Database className="w-4 h-4" />
+                数据管理
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleOpenSmartReview}
+                className="relative text-slate-500 gap-2"
+              >
+                {isReviewMode ? (
+                  <RefreshCw className="w-4 h-4" />
+                ) : (
+                  <Brain className="w-4 h-4" />
+                )}
+                智能复习
+                {reviewDueCount > 0 && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
+                  >
+                    {reviewDueCount}
+                  </Badge>
+                )}
+              </Button>
+              {view === 'practice' && (
+                <>
+                  <DictionarySelector
+                    value={dictionaryId}
+                    onChange={handleDictionaryChange}
+                    disabled={state.isComplete}
+                  />
+                  <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
+                    重置
+                  </Button>
+                </>
               )}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOpenHistory}
-              className="relative text-slate-500 gap-2"
-            >
-              <History className="w-4 h-4" />
-              学习记录
-              {historyCount > 0 && (
-                <Badge
-                  variant="secondary"
-                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                >
-                  {historyCount}
-                </Badge>
-              )}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOpenDataManager}
-              className="text-slate-500 gap-2"
-            >
-              <Database className="w-4 h-4" />
-              数据管理
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOpenSmartReview}
-              className="relative text-slate-500 gap-2"
-            >
-              {isReviewMode ? (
-                <RefreshCw className="w-4 h-4" />
-              ) : (
-                <Brain className="w-4 h-4" />
-              )}
-              智能复习
-              {reviewDueCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                >
-                  {reviewDueCount}
-                </Badge>
-              )}
-            </Button>
-            {view === 'practice' && (
-              <>
-                <DictionarySelector
-                  value={dictionaryId}
-                  onChange={handleDictionaryChange}
-                  disabled={state.isComplete}
-                />
-                <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
-                  重置
-                </Button>
-              </>
-            )}
+            </div>
           </div>
         </div>
       </header>
@@ -433,9 +462,21 @@ function App() {
           onBack={handleBackFromSmartReview}
         />
       ) : (
-        <main className="max-w-4xl mx-auto px-4 py-8">
+        <main className="max-w-4xl mx-auto px-4 py-4 md:py-8 pb-20 md:pb-0">
           {!state.isComplete ? (
             <>
+              {isMobile && view === 'practice' && (
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <DictionarySelector
+                    value={dictionaryId}
+                    onChange={handleDictionaryChange}
+                    disabled={state.isComplete}
+                  />
+                  <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
+                    重置
+                  </Button>
+                </div>
+              )}
               <div className="flex justify-center mb-6">
                 <ToggleGroup
                   type="single"
@@ -502,6 +543,16 @@ function App() {
             </AnimatePresence>
           )}
         </main>
+      )}
+
+      {isMobile && (
+        <MobileNav
+          currentView={view}
+          onNavigate={handleNavigate}
+          mistakeCount={mistakeCount}
+          historyCount={historyCount}
+          reviewDueCount={reviewDueCount}
+        />
       )}
     </div>
   );

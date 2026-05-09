@@ -109,7 +109,7 @@ export function MistakeBook({ onPracticeMistakes, onBack }: MistakeBookProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -188,7 +188,7 @@ export function MistakeBook({ onPracticeMistakes, onBack }: MistakeBookProps) {
                         transition={{ delay: idx * 0.05 }}
                         className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
                       >
-                        <div className="p-4">
+                        <div className="p-3 md:p-4">
                           {/* Sentence */}
                           {sentence && (
                             <div className="mb-3">
@@ -200,7 +200,7 @@ export function MistakeBook({ onPracticeMistakes, onBack }: MistakeBookProps) {
                           )}
 
                           {/* Answers */}
-                          <div className="flex flex-wrap gap-4 mb-3">
+                          <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-3">
                             <div>
                               <p className="text-xs text-slate-400 mb-1">你的答案</p>
                               <div className="flex gap-1">

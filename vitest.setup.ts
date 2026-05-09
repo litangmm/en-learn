@@ -51,3 +51,17 @@ Object.defineProperty(globalThis, 'SpeechSynthesisUtterance', {
     };
   },
 });
+
+// Mock window.matchMedia for responsive testing
+Object.defineProperty(globalThis, 'matchMedia', {
+  writable: true,
+  configurable: true,
+  value: vi.fn((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});

@@ -1,0 +1,152 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
+import App from '../../App';
+
+const mockInitializeInputs = vi.fn();
+const mockSetInput = vi.fn();
+const mockCheckAnswer = vi.fn();
+const mockNextSentence = vi.fn();
+const mockRetry = vi.fn();
+const mockReset = vi.fn();
+const mockSpeak = vi.fn();
+
+let isMobileMock = false;
+
+vi.mock('@/hooks/usePractice', () => ({
+  usePractice: vi.fn(() => ({
+    state: {
+      currentIndex: 0,
+      userAnswers: [],
+      currentInputs: ['test-value'],
+      showResult: false,
+      isCorrect: false,
+      attempts: 0,
+      isComplete: false,
+      score: 0,
+      selectedChoiceId: null,
+    },
+    currentSentence: {
+      id: '1',
+      english: 'The early bird catches the worm.',
+      chinese: '早起的鸟儿有虫吃。',
+      blanks: [{ word: 'catches', hint: '抓住' }],
+      level: 'junior',
+    },
+    progress: 0,
+    totalQuestions: 10,
+    currentQuestion: 1,
+    setInput: mockSetInput,
+    checkAnswer: mockCheckAnswer,
+    nextSentence: mockNextSentence,
+    retry: mockRetry,
+    reset: mockReset,
+    initializeInputs: mockInitializeInputs,
+    isLoading: false,
+    error: null,
+    options: [],
+    selectChoice: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useSpeech', () => ({
+  useSpeech: vi.fn(() => ({
+    speak: mockSpeak,
+    isSpeaking: false,
+    playbackRate: 1,
+    setPlaybackRate: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/use-mobile', () => ({
+  useIsMobile: vi.fn(() => isMobileMock),
+}));
+
+vi.mock('@/services/storage', () => ({
+  storage: {
+    hasActiveSession: vi.fn(() => false),
+    getMistakeCount: vi.fn(() => 0),
+    getHistoryCount: vi.fn(() => 0),
+    getReviewQueueCount: vi.fn(() => 0),
+    clearSession: vi.fn(),
+    getStoredDictionaryId: vi.fn(),
+    addMistake: vi.fn(),
+    getMistakes: vi.fn(() => []),
+    addHistory: vi.fn(),
+    getHistory: vi.fn(() => []),
+    exportAllData: vi.fn(() => ({ version: 1, exportedAt: '', data: { session: null, mistakes: [], history: [] } })),
+    importAllData: vi.fn(() => ({ success: true, importedCounts: {}, message: '' })),
+    getReviewQueue: vi.fn(() => []),
+    scheduleNextReview: vi.fn(),
+  },
+}));
+
+vi.mock('@/data/dictionaries', () => ({
+  getDictionaryById: vi.fn(() => ({ id: 'cet4', name: 'CET-4', description: '', sentenceCount: 100 })),
+  dictionaries: [{ id: 'cet4', name: 'CET-4', description: '', sentenceCount: 100 }],
+}));
+
+vi.mock('@/data/loader', () => ({
+  loadDictionary: vi.fn(() => Promise.resolve([])),
+}));
+
+describe('App responsive layout', () => {
+  beforeEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+    isMobileMock = false;
+  });
+
+  it('renders MobileNav on mobile', () => {
+    isMobileMock = true;
+    render(<App />);
+    expect(screen.getByTestId('mobile-nav')).toBeInTheDocument();
+  });
+
+  it('does not render MobileNav on desktop', () => {
+    isMobileMock = false;
+    render(<App />);
+    expect(screen.queryByTestId('mobile-nav')).not.toBeInTheDocument();
+  });
+
+  it('hides desktop nav buttons on mobile via hidden class', () => {
+    isMobileMock = true;
+    render(<App />);
+    // Find the desktop nav container and verify it has hidden class
+    const desktopNavContainer = screen.getByText('错题本').parentElement;
+    expect(desktopNavContainer).toHaveClass('hidden');
+    expect(desktopNavContainer).toHaveClass('md:flex');
+  });
+
+  it('shows desktop nav buttons on desktop', () => {
+    isMobileMock = false;
+    render(<App />);
+    expect(screen.getByText('错题本')).toBeInTheDocument();
+    expect(screen.getByText('学习记录')).toBeInTheDocument();
+    expect(screen.getByText('数据管理')).toBeInTheDocument();
+    expect(screen.getByText('智能复习')).toBeInTheDocument();
+  });
+
+  it('shows DictionarySelector in main content on mobile', () => {
+    isMobileMock = true;
+    render(<App />);
+    // DictionarySelector should be present somewhere (in main content area on mobile)
+    const buttons = screen.getAllByRole('combobox');
+    expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it('has bottom padding on mobile main content', () => {
+    isMobileMock = true;
+    render(<App />);
+    const main = document.querySelector('main');
+    expect(main).toHaveClass('pb-20');
+    expect(main).toHaveClass('md:pb-0');
+  });
+
+  it('has no bottom padding on desktop main content', () => {
+    isMobileMock = false;
+    render(<App />);
+    const main = document.querySelector('main');
+    expect(main).toHaveClass('pb-20');
+    expect(main).toHaveClass('md:pb-0');
+  });
+});

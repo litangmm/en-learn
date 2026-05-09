@@ -28,11 +28,11 @@ export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: R
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="w-full max-w-2xl mx-auto"
+      className="w-full max-w-2xl mx-auto px-4"
     >
       <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className={`${grade.bg} px-8 py-8 text-center`}>
+        <div className={`${grade.bg} px-6 py-6 md:px-8 md:py-8 text-center`}>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -47,8 +47,8 @@ export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: R
         </div>
 
         {/* Stats */}
-        <div className="p-8">
-          <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="p-4 md:p-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

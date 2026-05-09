@@ -21,9 +21,21 @@ input[type="text"] {
   50% { transform: scaleY(1.5); }
 }
 
+/* Mobile nav safe area support */
+.mobile-nav {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* Smooth page transitions */
 main {
   min-height: calc(100vh - 64px);
+}
+
+/* Mobile: account for bottom nav height (~56px) + safe area */
+@media (max-width: 767px) {
+  main {
+    min-height: calc(100vh - 64px - 56px);
+  }
 }
 
 /* Custom scrollbar */

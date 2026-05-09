@@ -135,7 +135,8 @@ export function PracticeCard({
             disabled={showResult && isCorrect}
             placeholder={`${idx + 1}`}
             className={`
-              inline-block w-32 text-center font-medium
+              inline-block w-28 md:w-32 text-center font-medium
+              h-11 md:h-10
               transition-all duration-300 border-2
               ${hasSuccess
                 ? 'border-green-500 bg-green-50 text-green-700'
@@ -192,10 +193,11 @@ export function PracticeCard({
                     disabled={showResult && isCorrect}
                     placeholder={`${idx + 1}`}
                     className={`
-                      inline-block w-32 text-center font-medium
+                      inline-block w-28 md:w-32 text-center font-medium
+                      h-11 md:h-10
                       transition-all duration-300 border-2
-                      ${hasSuccess 
-                        ? 'border-green-500 bg-green-50 text-green-700' 
+                      ${hasSuccess
+                        ? 'border-green-500 bg-green-50 text-green-700'
                         : hasError
                           ? 'border-red-400 bg-red-50 text-red-700'
                           : 'border-slate-300 focus:border-blue-500 hover:border-slate-400'
@@ -238,7 +240,7 @@ export function PracticeCard({
       {/* Card */}
       <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-slate-50 px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="bg-slate-50 px-4 py-3 md:px-6 md:py-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Badge variant="secondary" className="text-xs font-medium">
               {currentQuestion !== undefined && totalQuestions !== undefined
@@ -261,14 +263,14 @@ export function PracticeCard({
                 }}
                 variant="outline"
                 spacing={0}
-                className="h-8"
+                className="h-9 md:h-8"
               >
                 {SPEEDS.map((speed) => (
                   <ToggleGroupItem
                     key={speed}
                     value={String(speed)}
                     aria-label={`${speed}x`}
-                    className="text-xs px-2 h-7"
+                    className="text-xs px-2 h-8 md:h-7"
                   >
                     {speed}x
                   </ToggleGroupItem>
@@ -289,11 +291,11 @@ export function PracticeCard({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 md:p-6 space-y-6">
           {/* Chinese Translation */}
           {(!isDictation || showResult) && (
             <div className="text-center">
-              <p className="text-lg text-slate-600 font-medium leading-relaxed">
+              <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed">
                 {sentence.chinese}
               </p>
             </div>
@@ -323,7 +325,7 @@ export function PracticeCard({
           )}
 
           {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options */}
-          <div className={`${isMultipleChoice ? '' : `text-center text-xl leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
+          <div className={`${isMultipleChoice ? '' : `text-center text-lg md:text-xl leading-relaxed md:leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
             {isMultipleChoice
               ? renderChoiceOptions()
               : isDictation && !showResult
@@ -385,7 +387,7 @@ export function PracticeCard({
         </div>
 
         {/* Footer / Actions */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+        <div className="px-4 py-3 md:px-6 md:py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           {!showResult ? (
             <Button
               onClick={() => isMultipleChoice ? onCheck(selectedChoiceId || undefined) : onCheck()}

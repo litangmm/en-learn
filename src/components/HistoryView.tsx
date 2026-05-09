@@ -94,7 +94,7 @@ export function HistoryView({ onBack }: HistoryViewProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ export function HistoryView({ onBack }: HistoryViewProps) {
                       </div>
                     </div>
 
-                    <div className="mt-3 flex items-center gap-6 text-xs text-slate-500">
+                    <div className="mt-3 flex flex-wrap gap-3 md:gap-6 text-xs text-slate-500">
                       <span className="flex items-center gap-1">
                         <Target className="w-3.5 h-3.5 text-slate-400" />
                         正确率 {entry.accuracy}%

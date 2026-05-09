@@ -7,6 +7,15 @@
 
 ## 历史提案
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **相关质量门禁**: 单元测试回归、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-003 iter-005「学习排行榜（本地）」质量门禁验证
+  - useLeaderboard 测试：getLeaderboardEntries 空历史回退、score/accuracy/speed 三分类计算、today 时间筛选、week 时间筛选、all 时间筛选、排名排序、同分并列处理
+  - Leaderboard 测试：分类 Tab 渲染、时间筛选 pills、top-3 奖牌样式（amber/slate/orange）、空状态提示、条目列表渲染
+  - App.leaderboard 测试：导航入口渲染、视图切换、Leaderboard 组件存在性、返回导航
+  - 全量回归：**429/429 单元测试通过**（45 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 25 个专用测试。11 个现有 App 测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护策略，零行为回归验证了向后兼容设计的正确性。429 测试是项目历史新高位，从 iter-001 的 72 测试增长到 429，累计增长 495%。E2E: 1 passed, 1 flaky（pre-existing）
+
 ### 2026-05-10 (cycle-2026-05-10-20)
 - **相关质量门禁**: 单元测试回归、边界情况自动化测试、构建稳定性
 - **本次验证**: epic-003 iter-004「成就徽章系统」质量门禁验证

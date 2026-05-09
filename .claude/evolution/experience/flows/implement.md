@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整实现**
+- **实现质量**: 高 — 数据模型简洁（纯派生），算法边界清晰，集成无冲突
+- **关键决策**:
+  - LeaderboardEntry 接口包含 rank/player/score/detail/metric，足够表达完整排名信息，无需额外冗余字段
+  - getLeaderboardEntries 纯函数从历史记录 SessionHistory 派生，零新增存储，零数据持久化风险
+  - 三分类计算逻辑分离：score 按 totalScore 排序、accuracy 按正确率排序、speed 按 pointsPerMinute 排序，每类独立计算避免交叉污染
+  - 时间筛选通过日期比较实现：today 比较日期字符串、week 比较时间戳差值 ≤7 天、all 不做筛选，逻辑简洁可解释
+  - 同分并列处理通过排序后遍历分配排名，相同分数共享同一排名，符合常规排行榜语义
+  - Leaderboard 组件 category tabs 使用 framer-motion layoutId 实现流畅切换指示器动画，复用已有依赖
+  - App.tsx 集成中，leaderboard 视图与现有 8 个视图并列，通过条件渲染自然切换
+- **观察**: 零新增依赖，零构建体积增长。排行榜作为纯派生功能，与现有 session/mistakes/history/xpProfile/dailyChallenges/badgeProgress 完全解耦，无数据冲突风险。11 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护成本
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **迭代**: epic-003 iter-003「每日挑战任务面板」—— **完整实现**
 - **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突

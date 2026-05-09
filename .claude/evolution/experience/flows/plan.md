@@ -8,6 +8,15 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整执行**
+- **计划步骤**: 8 步全部完成，涵盖类型定义（LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry）、useLeaderboard Hook（纯函数派生排名/三分类计算/三时间筛选/同分并列）、Leaderboard 组件（分类 Tabs/时间 pills/Top-3 奖牌/空状态/列表）、App.tsx 集成（leaderboard 视图/三处导航入口）、Hook 测试、组件测试、App 集成测试、现有 mock 更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/App.tsx, src/components/MobileNav.tsx
+  - 创建: src/hooks/useLeaderboard.ts, src/components/Leaderboard.tsx, src/hooks/__tests__/useLeaderboard.test.ts, src/components/__tests__/Leaderboard.test.tsx, src/components/__tests__/App.leaderboard.test.tsx
+  - 更新测试 mock: 11 个现有 App 测试文件
+- **观察**: 计划清晰可执行。排行榜作为「纯派生数据」功能，完全不引入新的数据存储，实现成本极低。LeaderboardCategory 三分类（score/accuracy/speed）覆盖用户最关心的三个维度。时间筛选（today/week/all）满足了不同比较范围的需求。App.tsx 集成涉及 11 个现有测试文件的 mock 更新，但零行为回归
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **迭代**: epic-003 iter-003「每日挑战任务面板」—— **完整执行**
 - **计划步骤**: 10 步全部完成，涵盖类型定义（ChallengeType/DailyChallenge/DailyChallengeState）、存储服务扩展（DAILY_CHALLENGES_KEY/validators/CRUD/generateDailyChallenges 确定性种子洗牌/export-import）、useDailyChallenges Hook（懒加载/日期滚动/trackActivity/claimReward/未领取计数）、DailyChallengePanel 组件（Trophy 标题/进度条/领取按钮/状态徽章/空状态）、App.tsx 集成（challenges 视图/trackActivity 正误调用/Trophy 导航/徽章）、Hook 测试、组件测试、App 集成测试、现有 mock 更新、全量验证

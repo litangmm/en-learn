@@ -99,6 +99,12 @@
 - **反对/担忧**: iOS PWA 支持有限；service worker 缓存策略维护成本
 - **备注**: 依赖 epic-001 的数据持久化能力，作为中长期技术方向储备
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **提案 Epic**: epic-006「前端架构债务清理与性能基线」
+- **结果**: 未被选中（epic-003 iter-005 完成，**epic-003 全部 5 个迭代收官**）
+- **当前状态**: **连续 17 个 cycle 未被选中**（cycle-20 时 16 次 + 本次 1 次）
+- **观察**: epic-003 全部 5 个迭代已完成。iter-005 在现有架构内自然扩展（新增 useLeaderboard hook + Leaderboard 组件），未引入架构变更。但 App.tsx 的复杂度已达灾难级临界点——现在管理 9 个视图（practice/mistake-book/history/data/review/challenges/badges/leaderboard + focus mode overlay）+ 4 种练习模式 × 专注模式 × 响应式断点 + XP 系统 + 连击动画 + 每日挑战 + 徽章追踪 + 排行榜。条件渲染代码已接近 300 行。ARCH 强烈建议：下次 brainstorm 必须将 epic-006「前端架构债务清理」优先级从 medium 提升为 critical，首个迭代必须实施「App.tsx 导航配置提取」和「视图级路由抽象」。epic-003 完成后，如不立即处理导航重构，后续 epic-004（体验优化）的任何新功能都将在不可维护的代码基础上叠加复杂度
+
 ## 成功模式
 （由进化引擎自动总结）
 

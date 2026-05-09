@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **技术审查通过**
+- **技术决策**:
+  - LeaderboardCategory 联合类型设计为 `'score' | 'accuracy' | 'speed'`，覆盖用户最关心的三个排名维度
+  - LeaderboardTimeFilter 联合类型设计为 `'today' | 'week' | 'all'`，满足不同时效范围的比较需求
+  - getLeaderboardEntries 纯函数从历史记录派生，零副作用，零数据持久化风险，便于测试和复用
+  - 时间筛选算法简洁：today 比较 YYYY-MM-DD 日期字符串、week 比较时间戳差值 ≤7 天、all 返回全部，无复杂时区处理
+  - 同分并列处理通过排序后遍历分配排名，相同分数共享排名，后续分数跳过中间排名，符合常规排行榜语义
+  - Leaderboard 组件 category tabs 使用 framer-motion layoutId 动画指示器，复用已有依赖，无新增运行时开销
+  - 排行榜数据完全从历史记录派生，不引入新的 localStorage key，避免数据迁移和存储扩容问题
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 429/429 unit tests passed
+- **观察**: App.tsx 的复杂度已达灾难级临界点——现在管理 9 个视图（practice/mistake-book/history/data/review/challenges/badges/leaderboard + focus mode overlay）+ 4 种练习模式 × 专注模式 × 响应式断点 + XP 系统 + 连击动画 + 每日挑战 + 徽章追踪 + 排行榜。条件渲染代码已接近 300 行。ARCH 此前多次提出的「导航配置提取」警告已持续 17 个 cycle 未被响应，技术债务呈灾难级累积。下次 brainstorm 必须将 epic-006「前端架构债务清理」优先级提升为 critical
+
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **迭代**: epic-003 iter-003「每日挑战任务面板」—— **技术审查通过**
 - **技术决策**:

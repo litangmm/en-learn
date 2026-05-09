@@ -107,6 +107,13 @@
 - **反对/担忧**: PM-Mon 担心动画和图标增加构建体积；需避免过度游戏化分散注意力
 - **备注**: 明确依赖 epic-001 数据系统，在数据基础完成后是自然的下一步
 
+### 2026-05-10 (cycle-2026-05-10-21)
+- **相关 Epic**: epic-003「游戏化学习动力系统」—— 作为提议者
+- **结果**: epic-003 iter-005「学习排行榜（本地）」完成，429/429 测试通过（45 测试文件），lint 0 errors，build 成功，v0.17.0
+- **完成内容**: LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry 类型定义；useLeaderboard hook（getLeaderboardEntries 纯函数从历史记录派生排名，支持 score/accuracy/speed 三种排序和 today/week/all 时间过滤）；Leaderboard 组件（分类 Tab + 时间筛选 Pill + Top-3 奖牌样式 + 空状态 + 返回导航）；App.tsx 集成（leaderboard 视图、header/desktop/mobile 三入口）；25 个新增测试 + 11 个 mock 更新
+- **当前状态**: **连续未被选中计数清零**（epic-003 全部 5 个迭代已完成，史诗收官）
+- **观察**: epic-003 历时 5 个迭代全部完成，是项目第二个完整收官的 Epic。游戏化动力系统五维度全部落地：XP（长期积累）+ 连击（即时反馈）+ 每日挑战（中期目标）+ 徽章（长期成就）+ 排行榜（社会比较）。排行榜的「本地-only」设计体现了 MVP 思维——不引入后端或云端，纯本地历史记录派生即可验证用户价值。UX 作为 epic-003 的提议者，连续 5 个迭代全程主导，游戏化理念全部落地
+
 ## 成功模式
 （由进化引擎自动总结）
 

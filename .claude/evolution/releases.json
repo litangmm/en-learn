@@ -2,6 +2,19 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.17.0",
+      "tag": "v0.17.0",
+      "commit": "6298e3d",
+      "date": "2026-05-09T22:29:47.720Z",
+      "iterationId": "iter-005",
+      "title": "学习排行榜（本地）",
+      "features": [
+        "Transition from IMPLEMENT to DEPLOY stage",
+        "429/429 tests passing, build verified"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.16.0",
       "tag": "v0.16.0",
       "commit": "a276d69",

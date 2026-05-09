@@ -19,6 +19,7 @@ interface PracticeCardProps {
   currentQuestion?: number;
   totalQuestions?: number;
   mode?: PracticeMode;
+  isFocusMode?: boolean;
   playbackRate?: number;
   onSpeedChange?: (rate: number) => void;
   options?: Sentence[];
@@ -41,6 +42,7 @@ export function PracticeCard({
   currentQuestion,
   totalQuestions,
   mode = 'fill-in-blanks',
+  isFocusMode = false,
   playbackRate = 1.0,
   onSpeedChange,
   options = [],
@@ -243,21 +245,23 @@ export function PracticeCard({
       className="w-full max-w-3xl mx-auto"
     >
       {/* Card */}
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+      <div className={`bg-white rounded-2xl overflow-hidden ${isFocusMode ? 'shadow-xl border border-slate-100' : 'shadow-lg border border-slate-200'}`}>
         {/* Header */}
-        <div className="bg-slate-50 px-4 py-3 md:px-6 md:py-4 border-b border-slate-100 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="text-xs font-medium">
-              {currentQuestion !== undefined && totalQuestions !== undefined
-                ? `第 ${currentQuestion}/${totalQuestions} 题`
-                : `第 ${sentence.id} 题`}
-            </Badge>
-            {attempts > 0 && (
-              <Badge variant="outline" className="text-xs">
-                尝试 {attempts} 次
+        <div className={`${isFocusMode ? '' : 'bg-slate-50'} px-4 py-3 md:px-6 md:py-4 border-b border-slate-100 flex items-center ${isFocusMode ? 'justify-end' : 'justify-between'}`}>
+          {!isFocusMode && (
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="text-xs font-medium">
+                {currentQuestion !== undefined && totalQuestions !== undefined
+                  ? `第 ${currentQuestion}/${totalQuestions} 题`
+                  : `第 ${sentence.id} 题`}
               </Badge>
-            )}
-          </div>
+              {attempts > 0 && (
+                <Badge variant="outline" className="text-xs">
+                  尝试 {attempts} 次
+                </Badge>
+              )}
+            </div>
+          )}
           <div className="flex items-center gap-2">
             {onSpeedChange && (
               <ToggleGroup
@@ -296,10 +300,10 @@ export function PracticeCard({
         </div>
 
         {/* Content */}
-        <div className="p-4 md:p-6 space-y-6">
+        <div className={`${isFocusMode ? 'p-6 md:p-10 space-y-8' : 'p-4 md:p-6 space-y-6'}`}>
           {/* Chinese Translation */}
           <div className="text-center">
-            <p className="text-base md:text-lg text-slate-600 font-medium leading-relaxed">
+            <p className={`text-slate-600 font-medium leading-relaxed ${isFocusMode ? 'text-lg md:text-xl' : 'text-base md:text-lg'}`}>
               {sentence.chinese}
             </p>
           </div>
@@ -328,7 +332,7 @@ export function PracticeCard({
           )}
 
           {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options */}
-          <div className={`${isMultipleChoice ? '' : `text-center text-lg md:text-xl leading-relaxed md:leading-loose ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
+          <div className={`${isMultipleChoice ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
             {isMultipleChoice
               ? renderChoiceOptions()
               : isDictation && !showResult

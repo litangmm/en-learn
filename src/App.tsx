@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database, Brain, RefreshCw } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { PracticeCard } from '@/components/PracticeCard';
@@ -46,6 +46,9 @@ function App() {
   const [reviewDueCount, setReviewDueCount] = useState(storage.getReviewQueueCount());
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
+  const [isFocusMode, setIsFocusMode] = useState(false);
+
+  const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
   const {
     state,
@@ -90,14 +93,22 @@ function App() {
   const viewRef = useRef(view);
   const dialogRef = useRef({ showConfirmDialog, showRecoveryDialog });
   const nextSentenceRef = useRef(nextSentence);
+  const isFocusModeRef = useRef(isFocusMode);
 
   useEffect(() => { stateRef.current = state; }, [state]);
+  useEffect(() => { isFocusModeRef.current = isFocusMode; }, [isFocusMode]);
   useEffect(() => { viewRef.current = view; }, [view]);
   useEffect(() => { dialogRef.current = { showConfirmDialog, showRecoveryDialog }; }, [showConfirmDialog, showRecoveryDialog]);
   useEffect(() => { nextSentenceRef.current = nextSentence; }, [nextSentence]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // ESC to exit focus mode
+      if (e.key === 'Escape' && isFocusModeRef.current) {
+        setIsFocusMode(false);
+        return;
+      }
+
       if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Space') return;
 
       // Don't handle when typing in an input
@@ -310,7 +321,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Header */}
+      {/* Header - hidden in focus mode */}
+      {!(isFocusMode && view === 'practice' && !state.isComplete) && (
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -409,6 +421,32 @@ function App() {
           </div>
         </div>
       </header>
+      )}
+
+      {/* Focus Mode Floating Bar */}
+      {isFocusMode && view === 'practice' && !state.isComplete && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+          <div className="max-w-4xl mx-auto px-4 h-12 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-slate-700">
+                第 {currentQuestion}/{totalQuestions} 题
+              </span>
+              <span className="text-sm text-slate-500">
+                得分: {state.score}
+              </span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsFocusMode(false)}
+              className="text-slate-500 gap-1"
+            >
+              <X className="w-4 h-4" />
+              退出专注
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Confirm Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
@@ -462,7 +500,7 @@ function App() {
           onBack={handleBackFromSmartReview}
         />
       ) : (
-        <main className="max-w-4xl mx-auto px-4 py-4 md:py-8 pb-20 md:pb-0">
+        <main className={`max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {!state.isComplete ? (
             <>
               {isMobile && view === 'practice' && (
@@ -477,27 +515,38 @@ function App() {
                   </Button>
                 </div>
               )}
-              <div className="flex justify-center mb-6">
-                <ToggleGroup
-                  type="single"
-                  value={practiceMode}
-                  onValueChange={(value) => {
-                    if (value) handleModeChange(value as PracticeMode);
-                  }}
-                  variant="outline"
-                  spacing={0}
-                >
-                  <ToggleGroupItem value="fill-in-blanks" aria-label="填空模式">
-                    填空模式
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="dictation" aria-label="听写模式">
-                    听写模式
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
-                    选择题模式
-                  </ToggleGroupItem>
-                </ToggleGroup>
-              </div>
+              {!isFocusMode && (
+                <div className="flex justify-center items-center gap-3 mb-6">
+                  <ToggleGroup
+                    type="single"
+                    value={practiceMode}
+                    onValueChange={(value) => {
+                      if (value) handleModeChange(value as PracticeMode);
+                    }}
+                    variant="outline"
+                    spacing={0}
+                  >
+                    <ToggleGroupItem value="fill-in-blanks" aria-label="填空模式">
+                      填空模式
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="dictation" aria-label="听写模式">
+                      听写模式
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="multiple-choice" aria-label="选择题模式">
+                      选择题模式
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleFocusMode}
+                    className="gap-2 text-slate-600"
+                  >
+                    <Eye className="w-4 h-4" />
+                    专注模式
+                  </Button>
+                </div>
+              )}
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
               <AnimatePresence mode="wait">
                 {currentSentence && (
@@ -512,6 +561,7 @@ function App() {
                     currentQuestion={currentQuestion}
                     totalQuestions={totalQuestions}
                     mode={practiceMode}
+                    isFocusMode={isFocusMode}
                     playbackRate={playbackRate}
                     onSpeedChange={setPlaybackRate}
                     options={options}
@@ -526,11 +576,13 @@ function App() {
                 )}
               </AnimatePresence>
 
-              <div className="mt-8 text-center">
-                <p className="text-sm text-slate-400">
-                  听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
-                </p>
-              </div>
+              {!isFocusMode && (
+                <div className="mt-8 text-center">
+                  <p className="text-sm text-slate-400">
+                    听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             <AnimatePresence>
@@ -545,7 +597,7 @@ function App() {
         </main>
       )}
 
-      {isMobile && (
+      {isMobile && !isFocusMode && (
         <MobileNav
           currentView={view}
           onNavigate={handleNavigate}

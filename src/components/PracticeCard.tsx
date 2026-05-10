@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { Sentence, PracticeMode, SentenceToken } from '@/data/types';
+import type { Sentence, PracticeMode, SentenceToken, ChoiceOption } from '@/data/types';
 
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
@@ -22,7 +22,7 @@ interface PracticeCardProps {
   isFocusMode?: boolean;
   playbackRate?: number;
   onSpeedChange?: (rate: number) => void;
-  options?: Sentence[];
+  options?: ChoiceOption[];
   selectedChoiceId?: string | null;
   onSelectChoice?: (choiceId: string) => void;
   sentenceTokens?: SentenceToken[];
@@ -102,7 +102,7 @@ export function PracticeCard({
     let userAnswerText = '';
     if (isMultipleChoice) {
       const selectedOption = options.find((o) => o.id === selectedChoiceId);
-      userAnswerText = selectedOption?.english ?? '(未选择)';
+      userAnswerText = selectedOption?.text ?? '(未选择)';
     } else if (isSentenceReorder) {
       const selectedTokens = orderedTokenIds
         .map((id) => sentenceTokens.find((t) => t.id === id))
@@ -191,7 +191,7 @@ export function PracticeCard({
                   <Circle className="w-5 h-5 text-slate-300" />
                 )}
               </span>
-              <p className="text-base font-medium pr-8">{option.english}</p>
+              <p className="text-base font-medium pr-8">{option.text}</p>
             </button>
           );
         })}

@@ -162,3 +162,9 @@ export interface LeaderboardEntry {
   speed: number; // points per minute, rounded to 1 decimal
   timestamp: number;
 }
+
+// Multiple-choice option type for practice mode
+export interface ChoiceOption {
+  id: string;
+  text: string;
+}

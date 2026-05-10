@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Sentence } from '@/data/types';
+import type { Sentence, ChoiceOption } from '@/data/types';
+import { isDefinitionSentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
@@ -183,13 +184,20 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 
   // Generate 4 multiple-choice options (correct + 3 distractors)
-  const options = useMemo(() => {
+  const options = useMemo<ChoiceOption[]>(() => {
     if (!currentSentence || sentences.length < 4) return [];
     const distractors = sentences
       .filter((s) => s.id !== currentSentence.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
-    return [currentSentence, ...distractors].sort(() => Math.random() - 0.5);
+    return [currentSentence, ...distractors]
+      .sort(() => Math.random() - 0.5)
+      .map((s) => ({
+        id: s.id,
+        // For definition sentences, use Chinese translation as option text (more readable)
+        // For normal sentences, use full English sentence
+        text: isDefinitionSentence(s) ? s.chinese : s.english,
+      }));
   }, [currentSentence, sentences]);
 
   // Generate tokens from current sentence for sentence-reorder mode

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import App from '../../App';
+import type { ChoiceOption } from '@/data/types';
 
 const mockInitializeInputs = vi.fn();
 const mockSetInput = vi.fn();
@@ -11,35 +12,11 @@ const mockReset = vi.fn();
 const mockSpeak = vi.fn();
 const mockSelectChoice = vi.fn();
 
-const mockOptions = [
-  {
-    id: '1',
-    english: 'The early bird catches the worm.',
-    chinese: '早起的鸟儿有虫吃。',
-    blanks: [{ word: 'catches', hint: '抓住' }],
-    level: 'junior',
-  },
-  {
-    id: '2',
-    english: 'Actions speak louder than words.',
-    chinese: '行动胜于言辞。',
-    blanks: [{ word: 'Actions', hint: '行动' }],
-    level: 'junior',
-  },
-  {
-    id: '3',
-    english: 'Practice makes perfect.',
-    chinese: '熟能生巧。',
-    blanks: [{ word: 'perfect', hint: '完美的' }],
-    level: 'junior',
-  },
-  {
-    id: '4',
-    english: 'Better late than never.',
-    chinese: '迟做总比不做好。',
-    blanks: [{ word: 'never', hint: '从不' }],
-    level: 'junior',
-  },
+const mockOptions: ChoiceOption[] = [
+  { id: '1', text: 'The early bird catches the worm.' },
+  { id: '2', text: 'Actions speak louder than words.' },
+  { id: '3', text: 'Practice makes perfect.' },
+  { id: '4', text: 'Better late than never.' },
 ];
 
 vi.mock('@/hooks/usePractice', () => ({

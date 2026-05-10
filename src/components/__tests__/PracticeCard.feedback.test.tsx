@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { PracticeCard } from '../PracticeCard';
-import type { Sentence, SentenceToken } from '@/data/types';
+import type { Sentence, SentenceToken, ChoiceOption } from '@/data/types';
 
 const mockSentence: Sentence = {
   id: '1',
@@ -11,29 +11,11 @@ const mockSentence: Sentence = {
   level: 'junior',
 };
 
-const mockOptions: Sentence[] = [
-  mockSentence,
-  {
-    id: '2',
-    english: 'Actions speak louder than words.',
-    chinese: '行动胜于言辞。',
-    blanks: [{ word: 'Actions', hint: '行动' }],
-    level: 'junior',
-  },
-  {
-    id: '3',
-    english: 'Practice makes perfect.',
-    chinese: '熟能生巧。',
-    blanks: [{ word: 'perfect', hint: '完美的' }],
-    level: 'junior',
-  },
-  {
-    id: '4',
-    english: 'Better late than never.',
-    chinese: '迟做总比不做好。',
-    blanks: [{ word: 'never', hint: '从不' }],
-    level: 'junior',
-  },
+const mockOptions: ChoiceOption[] = [
+  { id: '1', text: 'The early bird catches the worm.' },
+  { id: '2', text: 'Actions speak louder than words.' },
+  { id: '3', text: 'Practice makes perfect.' },
+  { id: '4', text: 'Better late than never.' },
 ];
 
 const mockTokens: SentenceToken[] = [

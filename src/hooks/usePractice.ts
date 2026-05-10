@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Sentence, ChoiceOption } from '@/data/types';
+import type { Sentence, ChoiceOption, PracticeMode } from '@/data/types';
 import { isDefinitionSentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -34,7 +34,7 @@ export interface PracticeState {
   orderedTokenIds: string[];
 }
 
-export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
+export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?: PracticeMode) {
   // Adaptive practice hook for smart distractor selection
   const { getSmartDistractors } = useAdaptivePractice();
 
@@ -189,10 +189,11 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
 
   // Generate 4 multiple-choice options (correct + 3 distractors)
   // Uses adaptive strategy to prioritize distractors the user has previously confused with
+  // Only applies when mode is 'multiple-choice', otherwise returns empty array
   const adaptiveDistractors = useMemo<ChoiceOption[]>(() => {
-    if (!currentSentence || sentences.length < 4) return [];
-    return getSmartDistractors(currentSentence.id, sentences);
-  }, [currentSentence, sentences, getSmartDistractors]);
+    if (!currentSentence || sentences.length < 4 || mode !== 'multiple-choice') return [];
+    return getSmartDistractors(currentSentence.id, currentSentence.id, sentences);
+  }, [currentSentence, sentences, mode, getSmartDistractors]);
 
   // Fallback to random if getSmartDistractors returns less than 4 options
   const options = useMemo<ChoiceOption[]>(() => {

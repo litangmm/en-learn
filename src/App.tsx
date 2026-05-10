@@ -132,7 +132,7 @@ function App() {
     selectToken,
     deselectToken,
     resetTokens,
-  } = usePractice(dictionaryId, practiceSentenceIds);
+  } = usePractice(dictionaryId, practiceSentenceIds, practiceMode);
 
   const { speak, isSpeaking, playbackRate, setPlaybackRate } = useSpeech();
   const { profile, addXP, streak, recordCorrectAnswer, recordWrongAnswer, resetStreak } = useXP();

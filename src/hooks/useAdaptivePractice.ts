@@ -12,11 +12,13 @@ export function useAdaptivePractice() {
   /**
    * Get smart distractors based on the adaptive config strategy.
    *
+   * @param sentenceId - The ID of the current sentence (to look up mistake history)
    * @param correctAnswerId - The ID of the correct answer
    * @param allSentences - All available sentences to choose from
    * @returns Array of 4 ChoiceOptions (1 correct + 3 distractors)
    */
   function getSmartDistractors(
+    sentenceId: string,
     correctAnswerId: string,
     allSentences: Sentence[]
   ): ChoiceOption[] {
@@ -37,7 +39,7 @@ export function useAdaptivePractice() {
 
     // Strategy: history-based or mixed
     if (strategy === 'history-based' || strategy === 'mixed') {
-      return getHistoryBasedDistractors(correctAnswerId, allSentences, mistakes);
+      return getHistoryBasedDistractors(sentenceId, correctAnswerId, allSentences, mistakes);
     }
 
     // Fallback: random
@@ -80,6 +82,7 @@ function getRandomDistractors(correctAnswerId: string, allSentences: Sentence[])
  * 5. Fill remaining with random from allSentences
  */
 function getHistoryBasedDistractors(
+  sentenceId: string,
   correctAnswerId: string,
   allSentences: Sentence[],
   mistakes: ReturnType<typeof storage.getMistakes>
@@ -87,7 +90,7 @@ function getHistoryBasedDistractors(
   // Find mistakes where this sentence was the correct answer
   // and user selected wrong answers
   const relevantMistakes = mistakes.filter(
-    (m) => m.sentenceId === correctAnswerId && m.wrongAnswers.length > 0
+    (m) => m.sentenceId === sentenceId && m.wrongAnswers.length > 0
   );
 
   // Count frequency of each wrong answer being selected

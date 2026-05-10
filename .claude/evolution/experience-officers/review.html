@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>En-Learn 体验官报告审批</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .header h1 { font-size: 24px; margin-bottom: 16px; }
+    .stats { display: flex; gap: 16px; flex-wrap: wrap; }
+    .stat { background: #f0f0f0; padding: 12px 20px; border-radius: 8px; text-align: center; }
+    .stat-value { font-size: 24px; font-weight: bold; }
+    .stat-label { font-size: 12px; color: #666; }
+    .stat.p0 .stat-value { color: #dc2626; }
+    .stat.p1 .stat-value { color: #f59e0b; }
+    .stat.p2 .stat-value { color: #22c55e; }
+    .section { background: white; padding: 24px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .section-title { font-size: 18px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+    .issue-card { border: 1px solid #eee; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .issue-id { font-weight: bold; color: #666; font-size: 14px; }
+    .issue-severity { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    .severity-p0 { background: #fef2f2; color: #dc2626; }
+    .severity-p1 { background: #fffbeb; color: #f59e0b; }
+    .severity-p2 { background: #f0fdf4; color: #22c55e; }
+    .issue-desc { margin-bottom: 12px; }
+    .issue-repro { background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 12px; font-size: 14px; }
+    .issue-repro strong { color: #666; }
+    .issue-suggestion { color: #666; font-size: 14px; margin-bottom: 12px; }
+    .issue-meta { font-size: 12px; color: #999; margin-bottom: 12px; }
+    .issue-actions { display: flex; gap: 12px; margin-top: 12px; }
+    .btn { padding: 8px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+    .btn-approve { background: #22c55e; color: white; }
+    .btn-approve:hover { background: #16a34a; }
+    .btn-approve.active { background: #16a34a; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3); }
+    .btn-reject { background: #ef4444; color: white; }
+    .btn-reject:hover { background: #dc2626; }
+    .btn-reject.active { background: #dc2626; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3); }
+    .submit-section { text-align: center; padding: 20px; }
+    .btn-submit { background: #3b82f6; color: white; padding: 12px 40px; font-size: 16px; border-radius: 8px; }
+    .btn-submit:hover { background: #2563eb; }
+    .submitted { text-align: center; padding: 40px; }
+    .submitted h2 { color: #22c55e; margin-bottom: 16px; }
+    .submitted p { color: #666; margin-bottom: 8px; }
+    .note-input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; margin-top: 8px; }
+    .btn-copy { background: #6b7280; color: white; margin-left: 12px; }
+    .btn-copy:hover { background: #4b5563; }
+    textarea { width: 100%; height: 150px; margin: 16px 0; font-family: monospace; font-size: 12px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎮 En-Learn 体验官报告审批</h1>
+      <div class="stats">
+        <div class="stat p0"><div class="stat-value">1</div><div class="stat-label">🔴 P0 严重</div></div>
+        <div class="stat p1"><div class="stat-value">1</div><div class="stat-label">🟡 P1 一般</div></div>
+        <div class="stat p2"><div class="stat-value">2</div><div class="stat-label">🟢 P2 轻微</div></div>
+        <div class="stat"><div class="stat-value">4</div><div class="stat-label">📋 总计</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <h2 class="section-title">问题清单</h2>
+      <div id="issues-list">
+    <div class="issue-card" data-id="Q1">
+      <div class="issue-header">
+        <span class="issue-id">Q1</span>
+        <span class="issue-severity severity-p1">P1</span>
+      </div>
+      <div class="issue-desc">移动端输入框太小，点击困难</div>
+      <div class="issue-repro">
+        <strong>复现步骤：</strong><br>1. 使用手机浏览器打开<br>2. 切换到填空模式<br>3. 点击输入框
+      </div>
+      <div class="issue-suggestion"><strong>建议：</strong>增加输入框高度，最小 44px</div>
+      <div class="issue-meta">发现次数：2/5 个体验官</div>
+      <div class="issue-actions">
+        <button class="btn btn-approve" onclick="setDecision('Q1', 'approve')">✅ 批准</button>
+        <button class="btn btn-reject" onclick="setDecision('Q1', 'reject')">❌ 拒绝</button>
+      </div>
+      <input type="text" class="note-input" id="note-Q1" placeholder="审批备注（可选）">
+    </div>
+  
+    <div class="issue-card" data-id="Q2">
+      <div class="issue-header">
+        <span class="issue-id">Q2</span>
+        <span class="issue-severity severity-p2">P2</span>
+      </div>
+      <div class="issue-desc">桌面端导航栏图标缺少文字提示</div>
+      <div class="issue-repro">
+        <strong>复现步骤：</strong><br>1. 使用桌面浏览器打开<br>2. 悬停在导航按钮上
+      </div>
+      <div class="issue-suggestion"><strong>建议：</strong>添加 tooltip</div>
+      <div class="issue-meta">发现次数：1/5 个体验官</div>
+      <div class="issue-actions">
+        <button class="btn btn-approve" onclick="setDecision('Q2', 'approve')">✅ 批准</button>
+        <button class="btn btn-reject" onclick="setDecision('Q2', 'reject')">❌ 拒绝</button>
+      </div>
+      <input type="text" class="note-input" id="note-Q2" placeholder="审批备注（可选）">
+    </div>
+  
+    <div class="issue-card" data-id="Q3">
+      <div class="issue-header">
+        <span class="issue-id">Q3</span>
+        <span class="issue-severity severity-p0">P0</span>
+      </div>
+      <div class="issue-desc">切换词典后练习记录未清除</div>
+      <div class="issue-repro">
+        <strong>复现步骤：</strong><br>1. 完成几道题<br>2. 切换词典<br>3. 发现进度还在
+      </div>
+      <div class="issue-suggestion"><strong>建议：</strong>切换词典时清空进度</div>
+      <div class="issue-meta">发现次数：1/5 个体验官</div>
+      <div class="issue-actions">
+        <button class="btn btn-approve" onclick="setDecision('Q3', 'approve')">✅ 批准</button>
+        <button class="btn btn-reject" onclick="setDecision('Q3', 'reject')">❌ 拒绝</button>
+      </div>
+      <input type="text" class="note-input" id="note-Q3" placeholder="审批备注（可选）">
+    </div>
+  
+    <div class="issue-card" data-id="Q5">
+      <div class="issue-header">
+        <span class="issue-id">Q5</span>
+        <span class="issue-severity severity-p2">P2</span>
+      </div>
+      <div class="issue-desc">排行榜加载较慢</div>
+      <div class="issue-repro">
+        <strong>复现步骤：</strong><br>1. 点击排行榜<br>2. 等待数秒
+      </div>
+      <div class="issue-suggestion"><strong>建议：</strong>考虑添加 loading 状态</div>
+      <div class="issue-meta">发现次数：1/5 个体验官</div>
+      <div class="issue-actions">
+        <button class="btn btn-approve" onclick="setDecision('Q5', 'approve')">✅ 批准</button>
+        <button class="btn btn-reject" onclick="setDecision('Q5', 'reject')">❌ 拒绝</button>
+      </div>
+      <input type="text" class="note-input" id="note-Q5" placeholder="审批备注（可选）">
+    </div>
+  </div>
+    </div>
+    <div class="section submit-section">
+      <button class="btn btn-submit" onclick="submitReview()">提交审批</button>
+    </div>
+    <div class="section submitted" id="submitted-section" style="display: none;">
+      <h2>✅ 审批已提交</h2>
+      <p>审批结果 JSON（请复制并替换 pending-reviews.json）</p>
+      <textarea id="review-json" readonly></textarea>
+      <button class="btn btn-copy" onclick="copyJson()">📋 复制 JSON</button>
+    </div>
+  </div>
+  <script>
+    let reviewData = {"version":"1.0","generatedAt":"2026-05-10T04:57:39.962Z","issues":[{"id":"Q1","description":"移动端输入框太小，点击困难","severity":"P1","reproSteps":"1. 使用手机浏览器打开\n2. 切换到填空模式\n3. 点击输入框","suggestion":"增加输入框高度，最小 44px","foundCount":2,"source":"report-EO-001.md, report-EO-002.md"},{"id":"Q2","description":"桌面端导航栏图标缺少文字提示","severity":"P2","reproSteps":"1. 使用桌面浏览器打开\n2. 悬停在导航按钮上","suggestion":"添加 tooltip","foundCount":1,"source":"report-EO-001.md"},{"id":"Q3","description":"切换词典后练习记录未清除","severity":"P0","reproSteps":"1. 完成几道题\n2. 切换词典\n3. 发现进度还在","suggestion":"切换词典时清空进度","foundCount":1,"source":"report-EO-002.md"},{"id":"Q5","description":"排行榜加载较慢","severity":"P2","reproSteps":"1. 点击排行榜\n2. 等待数秒","suggestion":"考虑添加 loading 状态","foundCount":1,"source":"report-EO-002.md"}],"reviewed":[]};
+    function setDecision(id, decision) {
+      const card = document.querySelector(`[data-id="${id}"]`);
+      card.querySelector('.btn-approve').classList.toggle('active', decision === 'approve');
+      card.querySelector('.btn-reject').classList.toggle('active', decision === 'reject');
+      const existing = reviewData.reviewed.find(r => r.id === id);
+      if (existing) existing.decision = decision;
+      else reviewData.reviewed.push({ id, decision, note: '' });
+    }
+    function submitReview() {
+      reviewData.reviewed.forEach(r => {
+        const noteInput = document.getElementById(`note-${r.id}`);
+        if (noteInput) r.note = noteInput.value;
+      });
+      document.getElementById('review-json').value = JSON.stringify(reviewData, null, 2);
+      document.querySelector('.submit-section').style.display = 'none';
+      document.getElementById('submitted-section').style.display = 'block';
+    }
+    function copyJson() {
+      navigator.clipboard.writeText(document.getElementById('review-json').value)
+        .then(() => alert('✅ JSON 已复制！请替换 pending-reviews.json'))
+        .catch(() => { document.getElementById('review-json').select(); document.execCommand('copy'); alert('✅ JSON 已复制！请替换 pending-reviews.json'); });
+    }
+  </script>
+</body>
+</html>

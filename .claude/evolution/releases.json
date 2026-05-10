@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.30.0",
+      "tag": "v0.30.0",
+      "commit": "63383e2",
+      "date": "2026-05-10T18:16:03.222Z",
+      "iterationId": "iter-004",
+      "title": "分享效果数据追踪",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-qd3ojoiq7-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.29.0",
       "tag": "v0.29.0",
       "commit": "388840a",

@@ -69,7 +69,7 @@ describe('usePersonalWords', () => {
 
       const { result } = renderHook(() => usePersonalWords());
 
-      let isMarked: boolean;
+      let isMarked: boolean = false;
       act(() => {
         isMarked = result.current.isMarked('apple');
       });
@@ -173,7 +173,7 @@ describe('usePersonalWords', () => {
 
       const { result } = renderHook(() => usePersonalWords());
 
-      let isMarked: boolean;
+      let isMarked: boolean = false;
       act(() => {
         isMarked = result.current.isMarked('apple');
       });
@@ -192,7 +192,7 @@ describe('usePersonalWords', () => {
 
       const { result } = renderHook(() => usePersonalWords());
 
-      let isMarked: boolean;
+      let isMarked: boolean = false;
       act(() => {
         isMarked = result.current.isMarked('orange');
       });
@@ -203,7 +203,7 @@ describe('usePersonalWords', () => {
     it('returns false for non-existent words', () => {
       const { result } = renderHook(() => usePersonalWords());
 
-      let isMarked: boolean;
+      let isMarked: boolean = false;
       act(() => {
         isMarked = result.current.isMarked('nonexistent');
       });
@@ -217,7 +217,7 @@ describe('usePersonalWords', () => {
       const { result } = renderHook(() => usePersonalWords());
 
       // First verify it's marked
-      let isMarked: boolean;
+      let isMarked: boolean = false;
       act(() => {
         isMarked = result.current.isMarked('apple');
       });
@@ -297,7 +297,7 @@ describe('usePersonalWords', () => {
     it('returns empty array initially', () => {
       const { result } = renderHook(() => usePersonalWords());
 
-      let words: PersonalWord[];
+      let words: PersonalWord[] = [];
       act(() => {
         words = result.current.getWords();
       });
@@ -329,7 +329,7 @@ describe('usePersonalWords', () => {
 
       const { result } = renderHook(() => usePersonalWords());
 
-      let words: PersonalWord[];
+      let words: PersonalWord[] = [];
       act(() => {
         words = result.current.getWords();
       });

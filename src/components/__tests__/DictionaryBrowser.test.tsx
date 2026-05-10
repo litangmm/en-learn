@@ -38,7 +38,7 @@ const mockDictionaryJuniors: Sentence[] = [
 ];
 
 // Mock loadDictionary to return different data based on dictionaryId
-const loadDictionaryMock = vi.fn((dictionaryId: string) => {
+const loadDictionaryMock = vi.fn((dictionaryId: string): Promise<Sentence[]> => {
   if (dictionaryId === 'junior') {
     return Promise.resolve(mockDictionaryJuniors);
   }
@@ -49,7 +49,7 @@ const loadDictionaryMock = vi.fn((dictionaryId: string) => {
 });
 
 vi.mock('@/data/loader', () => ({
-  loadDictionary: (...args: unknown[]) => loadDictionaryMock(...args),
+  loadDictionary: (dictionaryId: string): Promise<Sentence[]> => loadDictionaryMock(dictionaryId),
 }));
 
 vi.mock('@/services/storage', () => ({

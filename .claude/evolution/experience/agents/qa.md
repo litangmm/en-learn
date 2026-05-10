@@ -150,7 +150,13 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
-### 2026-05-11 (cycle-2026-05-11-59)
+### 2026-05-11 (cycle-2026-05-11-64)
+- **相关质量门禁**: 单元测试回归、PersonalWord 类型测试、DictionaryBrowser 组件测试、构建稳定性
+- **本次验证**: epic-009 iter-001「词典浏览器（只读）」质量门禁验证
+  - usePersonalWords test（新建 11 个）：懒加载初始化、addWord/removeWord/isMarked/getCount CRUD 操作、PERSONAL_WORDS_KEY 持久化校验、isValidPersonalWord 验证
+  - DictionaryBrowser test（新建 17 个）：搜索输入框、按词典 Select 筛选、词条卡片列表展示、空状态、响应式布局
+  - 全量回归：**708/708 单元测试通过**（历史新高位），lint 4 warnings（pre-existing），build 成功
+- **备注**: iter-001 新增 28 个专用测试（usePersonalWords 11 + DictionaryBrowser 17）。708 测试是项目历史新高位。**epic-009 剩余 iter-002（搜索筛选）、iter-003（生词标记），QA 需关注搜索逻辑和生词持久化的测试覆盖**
 - **相关质量门禁**: 单元测试回归、分享触发逻辑测试、频次控制测试、构建稳定性
 - **本次验证**: epic-005 iter-003「分享触发点与频次控制」质量门禁验证
   - useXP test 更新：覆盖 leveledUp 检测逻辑（oldLevel vs newLevel 比较）

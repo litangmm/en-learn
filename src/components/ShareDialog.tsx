@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useShareCardData, type SessionResult } from '@/hooks/useShareCardData';
 import { useShareExport } from '@/hooks/useShareExport';
+import { useShareMetrics } from '@/hooks/useShareMetrics';
 import { ShareCard } from './ShareCard';
 
 /**
@@ -23,6 +24,8 @@ export interface ShareDialogProps {
   onOpenChange: (open: boolean) => void;
   /** Optional session result data to display */
   sessionResult?: SessionResult;
+  /** Trigger type for share tracking */
+  triggerType?: string;
 }
 
 /**
@@ -33,6 +36,7 @@ export function ShareDialog({
   open,
   onOpenChange,
   sessionResult,
+  triggerType = 'result-modal',
 }: ShareDialogProps) {
   // Aggregate data from various hooks for the share card
   const shareCardData = useShareCardData(sessionResult);
@@ -40,25 +44,38 @@ export function ShareDialog({
   // Hook for share export functionality
   const { setCardRef, downloadImage, copyText } = useShareExport();
 
+  // Hook for share metrics tracking
+  const { trackShare, getMetrics } = useShareMetrics();
+
+  // Get current metrics for display
+  const metrics = getMetrics();
+
   // Handler for generating and downloading share image
   const handleGenerateImage = useCallback(async () => {
     const success = await downloadImage(shareCardData);
     if (success) {
       toast.success('图片已保存');
+      trackShare('image', triggerType);
     } else {
       toast.error('保存失败，请重试');
     }
-  }, [downloadImage, shareCardData]);
+  }, [downloadImage, shareCardData, trackShare, triggerType]);
 
   // Handler for copying share text to clipboard
   const handleCopyText = useCallback(async () => {
     const success = await copyText(shareCardData);
     if (success) {
       toast.success('文本已复制到剪贴板');
+      trackShare('text', triggerType);
     } else {
       toast.error('复制失败，请重试');
     }
-  }, [copyText, shareCardData]);
+  }, [copyText, shareCardData, trackShare, triggerType]);
+
+  // Format metrics for display
+  const shareCountText = metrics.totalShareCount > 0
+    ? `已分享 ${metrics.totalShareCount} 次`
+    : null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -91,6 +108,13 @@ export function ShareDialog({
             生成分享图片
           </Button>
         </DialogFooter>
+
+        {/* Share metrics summary */}
+        {shareCountText && (
+          <div className="text-center text-sm text-muted-foreground pt-2">
+            {shareCountText}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

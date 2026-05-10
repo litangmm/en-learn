@@ -172,6 +172,28 @@ export interface ChoiceOption {
 }
 
 /**
+ * Share format types for tracking share operations.
+ */
+export type ShareFormat = 'text' | 'image';
+
+/**
+ * Share metrics for tracking share effect data.
+ * Used to analyze which share formats and triggers are most effective.
+ */
+export interface ShareMetrics {
+  /** Total number of successful shares */
+  totalShareCount: number;
+  /** Share counts grouped by format type */
+  formatCounts: Record<ShareFormat, number>;
+  /** Share counts grouped by trigger type */
+  typeCounts: Record<string, number>;
+  /** Timestamp of the most recent share */
+  lastShareAt: number | null;
+  /** Timestamp of the first share ever */
+  firstShareAt: number | null;
+}
+
+/**
  * Data model for the share card UI.
  * Aggregates data from XP system, session results, badges, and leaderboard.
  */

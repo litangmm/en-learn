@@ -106,6 +106,7 @@ export function SharePromptToast({ prompt, onDismiss }: SharePromptToastProps) {
         open={showDialog}
         onOpenChange={setShowDialog}
         sessionResult={getEmptySessionResult()}
+        triggerType={prompt.type === 'levelup' ? 'levelup-toast' : 'badge-toast'}
       />
     </>
   );

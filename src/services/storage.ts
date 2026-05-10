@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics } from '@/data/types';
 import { REVIEW_INTERVALS } from '@/data/types';
 
 export interface StorageSchemaV1 {
@@ -26,6 +26,7 @@ const XP_PROFILE_KEY = 'en-learn-xp-profile';
 const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
 const BADGES_KEY = 'en-learn-badges';
 const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
+const SHARE_METRICS_KEY = 'en-learn-share-metrics';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 
@@ -913,6 +914,75 @@ export const StorageService = {
     } catch (error) {
       console.warn('[StorageService] Failed to save badges:', error);
     }
+  },
+
+  // Share Metrics CRUD
+  getShareMetrics(): ShareMetrics {
+    const raw = localStorage.getItem(SHARE_METRICS_KEY);
+    if (raw === null) {
+      return {
+        totalShareCount: 0,
+        formatCounts: { text: 0, image: 0 },
+        typeCounts: {},
+        lastShareAt: null,
+        firstShareAt: null,
+      };
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.warn('[StorageService] Corrupted share metrics data, resetting');
+      localStorage.removeItem(SHARE_METRICS_KEY);
+      return {
+        totalShareCount: 0,
+        formatCounts: { text: 0, image: 0 },
+        typeCounts: {},
+        lastShareAt: null,
+        firstShareAt: null,
+      };
+    }
+
+    if (typeof parsed === 'object' && parsed !== null && 'totalShareCount' in parsed) {
+      return parsed as ShareMetrics;
+    }
+
+    console.warn('[StorageService] Invalid share metrics schema, resetting');
+    localStorage.removeItem(SHARE_METRICS_KEY);
+    return {
+      totalShareCount: 0,
+      formatCounts: { text: 0, image: 0 },
+      typeCounts: {},
+      lastShareAt: null,
+      firstShareAt: null,
+    };
+  },
+
+  initShareMetrics(): void {
+    // Initialize with empty metrics if not exists
+    if (localStorage.getItem(SHARE_METRICS_KEY) === null) {
+      const emptyMetrics: ShareMetrics = {
+        totalShareCount: 0,
+        formatCounts: { text: 0, image: 0 },
+        typeCounts: {},
+        lastShareAt: null,
+        firstShareAt: null,
+      };
+      localStorage.setItem(SHARE_METRICS_KEY, JSON.stringify(emptyMetrics));
+    }
+  },
+
+  updateShareMetrics(updater: (prev: ShareMetrics) => Partial<ShareMetrics>): ShareMetrics {
+    const current = this.getShareMetrics();
+    const updates = updater(current);
+    const updated: ShareMetrics = { ...current, ...updates };
+    try {
+      localStorage.setItem(SHARE_METRICS_KEY, JSON.stringify(updated));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save share metrics:', error);
+    }
+    return updated;
   },
 
   exportAllData(): ExportData {

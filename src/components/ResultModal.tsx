@@ -168,6 +168,7 @@ export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: R
           open={showShareDialog}
           onOpenChange={setShowShareDialog}
           sessionResult={sessionResult}
+          triggerType="result-modal"
         />
       </div>
     </motion.div>

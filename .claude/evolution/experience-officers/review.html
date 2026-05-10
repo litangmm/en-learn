@@ -163,14 +163,26 @@
         const noteInput = document.getElementById(`note-${r.id}`);
         if (noteInput) r.note = noteInput.value;
       });
-      document.getElementById('review-json').value = JSON.stringify(reviewData, null, 2);
-      document.querySelector('.submit-section').style.display = 'none';
-      document.getElementById('submitted-section').style.display = 'block';
-    }
-    function copyJson() {
-      navigator.clipboard.writeText(document.getElementById('review-json').value)
-        .then(() => alert('✅ JSON 已复制！请替换 pending-reviews.json'))
-        .catch(() => { document.getElementById('review-json').select(); document.execCommand('copy'); alert('✅ JSON 已复制！请替换 pending-reviews.json'); });
+
+      // POST 到服务器
+      fetch('/api/review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reviewData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.querySelector('.submit-section').style.display = 'none';
+          document.getElementById('submitted-section').style.display = 'block';
+          document.querySelector('#submitted-section p').textContent = '✅ ' + data.message;
+        } else {
+          alert('保存失败: ' + data.error);
+        }
+      })
+      .catch(err => {
+        alert('保存失败: ' + err);
+      });
     }
   </script>
 </body>

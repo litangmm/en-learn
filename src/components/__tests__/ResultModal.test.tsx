@@ -120,8 +120,8 @@ describe('ResultModal', () => {
     expect(screen.getByText('答题回顾')).toBeInTheDocument();
     expect(screen.getByText('第 1 题')).toBeInTheDocument();
     expect(screen.getByText('第 2 题')).toBeInTheDocument();
-    expect(screen.getByText('你的答案: catches · 尝试 1 次')).toBeInTheDocument();
-    expect(screen.getByText('你的答案: wrong · 尝试 2 次')).toBeInTheDocument();
+    expect(screen.getByText('答案: catches · 1 次')).toBeInTheDocument();
+    expect(screen.getByText('答案: wrong · 2 次')).toBeInTheDocument();
   });
 
   it('calls onRestart when button is clicked', () => {

@@ -97,7 +97,7 @@ export function Leaderboard({
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-2">
           <button
             onClick={onBack}
             className="flex items-center gap-1 text-slate-600 hover:text-slate-800 transition-colors"
@@ -112,6 +112,26 @@ export function Leaderboard({
               学习排行榜
             </h1>
           </div>
+        </div>
+
+        {/* Data Scope Indicator */}
+        <div className="mb-4 ml-8">
+          <p className="text-xs text-slate-400">
+            数据范围：
+            <span className={timeFilter === 'today' ? 'text-blue-600 font-medium' : ''}>
+              今日
+            </span>
+            {' · '}
+            <span className={timeFilter === 'week' ? 'text-blue-600 font-medium' : ''}>
+              本周
+            </span>
+            {' · '}
+            <span className={timeFilter === 'all' ? 'text-blue-600 font-medium' : ''}>
+              全部
+            </span>
+            <span className="ml-2 text-slate-300">|</span>
+            <span className="ml-2 text-slate-400">本地练习记录</span>
+          </p>
         </div>
 
         {/* Category Tabs */}

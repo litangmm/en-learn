@@ -19,6 +19,8 @@ export function DictationMode({
   isCorrect,
   isFocusMode = false,
   showHints = true,
+  hintLevel,
+  shouldShowHint,
   onInputChange,
   onCheck,
 }: DictationModeProps) {
@@ -26,6 +28,9 @@ export function DictationMode({
 
   // Check if current sentence is a definition sentence
   const isDefinition = isDefinitionSentence(sentence);
+
+  // Determine whether to show hints based on hint level and probability
+  const displayHints = showHints && !showResult && (hintLevel === 'high' || (shouldShowHint && shouldShowHint()));
 
   // Auto-focus first empty input on mount
   useEffect(() => {
@@ -74,7 +79,7 @@ export function DictationMode({
               }
             `}
           />
-          {showHints && !showResult && (
+          {displayHints && (
             <span className="block text-xs text-slate-400 font-medium mt-1">
               {blank.word.charAt(0)}...
             </span>
@@ -97,7 +102,7 @@ export function DictationMode({
       {!showResult && (
         <div className="text-center">
           <p className="text-sm text-slate-400">
-            请听音频，根据中文提示和首字母提示填写单词
+            请听音频，根据中文提示{hintLevel === 'none' ? '（无首字母提示）' : hintLevel === 'high' ? '和首字母提示' : '填写单词'}
           </p>
         </div>
       )}

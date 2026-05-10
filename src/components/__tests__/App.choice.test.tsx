@@ -64,6 +64,18 @@ vi.mock('@/hooks/useSpeech', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useHintLevel', () => ({
+  useHintLevel: vi.fn(() => ({
+    hintLevel: 'medium',
+    config: { level: 'medium', consecutiveCorrect: 0, consecutiveWrong: 0 },
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    setHintLevel: vi.fn(),
+    shouldShowHint: vi.fn(() => true),
+    reset: vi.fn(),
+  })),
+}));
+
 vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },

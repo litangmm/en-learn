@@ -328,6 +328,7 @@ describe('PracticeCard', () => {
         onNext={mockOnNext}
         onRetry={mockOnRetry}
         onSpeak={mockOnSpeak}
+        hintLevel="high"
       />,
     );
 

@@ -19,6 +19,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useHintLevel } from '@/hooks/useHintLevel';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { Button } from '@/components/ui/button';
@@ -139,6 +140,7 @@ function App() {
   const { state: challengeState, unclaimedCount, trackActivity, claimReward } = useDailyChallenges();
   const { unlockedIds, unlockedCount, trackProgress, checkBadges, getBadgeProgressPercent } = useBadges();
   const { getLeaderboardEntries } = useLeaderboard();
+  const { hintLevel, shouldShowHint } = useHintLevel();
 
   // Initialize inputs when sentence changes
   useEffect(() => {
@@ -909,6 +911,8 @@ function App() {
                     onNext={nextSentence}
                     onRetry={retry}
                     onSpeak={handleSpeak}
+                    hintLevel={hintLevel}
+                    shouldShowHint={shouldShowHint}
                   />
                 )}
               </AnimatePresence>

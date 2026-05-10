@@ -3,7 +3,7 @@ import { Volume2, CheckCircle2, ArrowRight, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { Sentence, PracticeMode, SentenceToken, ChoiceOption } from '@/data/types';
+import type { Sentence, PracticeMode, SentenceToken, ChoiceOption, HintLevel } from '@/data/types';
 import { FillInBlanksMode } from '@/components/practice/modes/FillInBlanksMode';
 import { DictationMode } from '@/components/practice/modes/DictationMode';
 import { MultipleChoiceMode } from '@/components/practice/modes/MultipleChoiceMode';
@@ -36,6 +36,8 @@ interface PracticeCardProps {
   onNext: () => void;
   onRetry: () => void;
   onSpeak: () => void;
+  hintLevel?: HintLevel;
+  shouldShowHint?: () => boolean;
 }
 
 export function PracticeCard({
@@ -63,6 +65,8 @@ export function PracticeCard({
   onNext,
   onRetry,
   onSpeak,
+  hintLevel,
+  shouldShowHint,
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
   const isMultipleChoice = mode === 'multiple-choice';
@@ -144,6 +148,8 @@ export function PracticeCard({
       onNext,
       onRetry,
       onSpeak,
+      hintLevel,
+      shouldShowHint,
     };
 
     switch (mode) {

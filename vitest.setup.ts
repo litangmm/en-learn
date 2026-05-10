@@ -81,3 +81,59 @@ Object.defineProperty(Element.prototype, 'scrollIntoView', {
   configurable: true,
   value: vi.fn(),
 });
+
+// Mock localStorage for testing
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => {
+      // Support throwing for specific test keys (for quota exceeded testing)
+      if (key === 'throw-error') {
+        throw new Error('QuotaExceededError');
+      }
+      store[key] = value;
+    }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { store = {}; }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((i: number) => Object.keys(store)[i] || null),
+  };
+})();
+
+// Track when setItem should throw (for quota exceeded tests)
+let setItemShouldThrow = false;
+let throwOnNextSetItem = false;
+
+const localStorageForStorage = {
+  getItem: vi.fn((key: string) => localStorageMock.getItem(key)),
+  setItem: vi.fn((key: string, value: string) => {
+    if (setItemShouldThrow || throwOnNextSetItem) {
+      throwOnNextSetItem = false;
+      throw new Error('QuotaExceededError');
+    }
+    localStorageMock.setItem(key, value);
+  }),
+  removeItem: vi.fn((key: string) => localStorageMock.removeItem(key)),
+  clear: vi.fn(() => localStorageMock.clear()),
+  get length() { return Object.keys({}).length; },
+  key: vi.fn(() => null),
+};
+
+// Export for tests to control behavior
+export const __mockLocalStorage__ = {
+  get mock() { return localStorageMock; },
+  get storage() { return localStorageForStorage; },
+  setThrowOnNextSetItem(value: boolean) { throwOnNextSetItem = value; },
+  setShouldThrow(value: boolean) { setItemShouldThrow = value; },
+  reset() {
+    setItemShouldThrow = false;
+    throwOnNextSetItem = false;
+  }
+};
+
+Object.defineProperty(globalThis, 'localStorage', {
+  writable: true,
+  configurable: true,
+  value: localStorageForStorage,
+});

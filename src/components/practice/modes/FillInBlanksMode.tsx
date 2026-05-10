@@ -20,6 +20,8 @@ export function FillInBlanksMode({
   showResult,
   isCorrect,
   isFocusMode = false,
+  hintLevel,
+  shouldShowHint,
   onInputChange,
   onCheck,
 }: FillInBlanksModeProps) {
@@ -30,6 +32,9 @@ export function FillInBlanksMode({
 
   // Determine display text for the sentence
   const displayText = isDefinition ? sentence.chinese : sentence.english;
+
+  // Determine whether to show hints based on hint level and probability
+  const displayHints = !showResult && (hintLevel === 'high' || (shouldShowHint && shouldShowHint()));
 
   // Auto-focus first empty input on mount
   useEffect(() => {
@@ -144,8 +149,8 @@ export function FillInBlanksMode({
         {renderSentenceWithBlanks()}
       </div>
 
-      {/* Hints */}
-      {!showResult && (
+      {/* Hints - controlled by hint level */}
+      {!showResult && displayHints && (
         <div className="flex flex-wrap gap-2 justify-center">
           {sentence.blanks.map((blank, idx) => (
             blank.hint && (

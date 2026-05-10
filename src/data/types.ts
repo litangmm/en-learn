@@ -257,3 +257,53 @@ export interface AdaptiveConfig {
   /** Weight for history-based selection (0-1), used in 'mixed' mode */
   historyWeight: number;
 }
+
+/**
+ * Hint level for controlling how often hints are shown to the user.
+ * - 'none': Never show hints (except manual trigger)
+ * - 'low': Show hints with 20% probability
+ * - 'medium': Show hints with 50% probability (default)
+ * - 'high': Always show hints
+ */
+export type HintLevel = 'none' | 'low' | 'medium' | 'high';
+
+/**
+ * Configuration for hint level behavior.
+ */
+export interface HintConfig {
+  /** Current hint level */
+  level: HintLevel;
+  /** Number of consecutive correct answers (triggers level increase) */
+  consecutiveCorrect: number;
+  /** Number of consecutive wrong answers (triggers level decrease) */
+  consecutiveWrong: number;
+}
+
+/**
+ * Default hint config values.
+ */
+export const DEFAULT_HINT_CONFIG: HintConfig = {
+  level: 'medium',
+  consecutiveCorrect: 0,
+  consecutiveWrong: 0,
+};
+
+/**
+ * Thresholds for automatic hint level adjustment.
+ */
+export const HINT_ADJUSTMENT_THRESHOLDS = {
+  /** Number of consecutive correct answers to increase to 'high' */
+  correctToHigh: 5,
+  /** Number of consecutive wrong answers to decrease to 'none' */
+  wrongToNone: 3,
+} as const;
+
+/**
+ * Probabilities for showing hints at each level.
+ */
+export const HINT_PROBABILITIES: Record<HintLevel, number> = {
+  none: 0,
+  low: 0.2,
+  medium: 0.5,
+  high: 1,
+} as const;

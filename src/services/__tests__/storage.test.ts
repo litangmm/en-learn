@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { StorageService, storage, type StorageSchemaV1, type StorageSchemaV2 } from '../storage';
 import type { PracticeState } from '@/hooks/usePractice';
+// Import the mock control from vitest.setup.ts
+import { __mockLocalStorage__ } from '../../../vitest.setup';
 
 const STORAGE_KEY = 'en-learn-session';
 
@@ -53,11 +55,10 @@ describe('StorageService', () => {
 
     it('handles quota exceeded gracefully', () => {
       const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      const setItemSpy = vi
-        .spyOn(Storage.prototype, 'setItem')
-        .mockImplementation(() => {
-          throw new Error('QuotaExceededError');
-        });
+      // Enable the mock's throw behavior
+      __mockLocalStorage__.storage.setItem.mockImplementation(() => {
+        throw new Error('QuotaExceededError');
+      });
 
       const session = createMockPracticeState();
       StorageService.saveSession('dict-1', session);
@@ -68,7 +69,10 @@ describe('StorageService', () => {
       );
 
       consoleWarnSpy.mockRestore();
-      setItemSpy.mockRestore();
+      // Restore the mock to its original implementation
+      __mockLocalStorage__.storage.setItem.mockImplementation((key: string, value: string) => {
+        __mockLocalStorage__.mock.setItem(key, value);
+      });
     });
   });
 

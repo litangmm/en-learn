@@ -6,7 +6,7 @@
  */
 
 import type { ReactNode, KeyboardEvent, RefCallback } from 'react';
-import type { Sentence, SentenceToken, ChoiceOption } from '@/data/types';
+import type { Sentence, SentenceToken, ChoiceOption, HintLevel } from '@/data/types';
 
 // ============================================================================
 // Base Strategy Interface
@@ -49,6 +49,10 @@ export interface PracticeCardBaseProps {
   onRetry: () => void;
   /** Callback to play audio */
   onSpeak: () => void;
+  /** Current hint level for controlling hint display */
+  hintLevel?: HintLevel;
+  /** Function to check if hint should be shown (based on probability) */
+  shouldShowHint?: () => boolean;
 }
 
 /**

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { StorageService } from '../storage';
+import { __mockLocalStorage__ } from '../../../vitest.setup';
 
 const XP_PROFILE_KEY = 'en-learn-xp-profile';
 
@@ -79,7 +80,8 @@ describe('StorageService XP', () => {
 
     it('handles localStorage write errors gracefully', () => {
       const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      // Enable the mock's throw behavior
+      __mockLocalStorage__.storage.setItem.mockImplementation(() => {
         throw new Error('Quota exceeded');
       });
 
@@ -89,6 +91,10 @@ describe('StorageService XP', () => {
         expect.any(Error)
       );
       consoleWarnSpy.mockRestore();
+      // Restore the mock to its original implementation
+      __mockLocalStorage__.storage.setItem.mockImplementation((key: string, value: string) => {
+        __mockLocalStorage__.mock.setItem(key, value);
+      });
     });
   });
 

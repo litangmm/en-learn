@@ -1,6 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig } from '@/data/types';
-import { REVIEW_INTERVALS } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig } from '@/data/types';
+import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -29,6 +29,7 @@ const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
 const SHARE_METRICS_KEY = 'en-learn-share-metrics';
 const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
 const ADAPTIVE_CONFIG_KEY = 'adaptive_config';
+const HINT_CONFIG_KEY = 'hint_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 
@@ -596,6 +597,43 @@ function saveAdaptiveConfig(config: AdaptiveConfig): void {
   }
 }
 
+function loadHintConfig(): HintConfig | null {
+  const raw = localStorage.getItem(HINT_CONFIG_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted hint config data, clearing');
+    localStorage.removeItem(HINT_CONFIG_KEY);
+    return null;
+  }
+
+  if (typeof parsed === 'object' && parsed !== null && 'level' in parsed && 'consecutiveCorrect' in parsed && 'consecutiveWrong' in parsed) {
+    const obj = parsed as Record<string, unknown>;
+    const validLevels = ['none', 'low', 'medium', 'high'];
+    if (typeof obj.level === 'string' && validLevels.includes(obj.level) &&
+        typeof obj.consecutiveCorrect === 'number' && typeof obj.consecutiveWrong === 'number') {
+      return parsed as HintConfig;
+    }
+  }
+
+  console.warn('[StorageService] Invalid hint config schema, clearing');
+  localStorage.removeItem(HINT_CONFIG_KEY);
+  return null;
+}
+
+function saveHintConfig(config: HintConfig): void {
+  try {
+    localStorage.setItem(HINT_CONFIG_KEY, JSON.stringify(config));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save hint config:', error);
+  }
+}
+
 function loadDailyChallenges(): DailyChallengeState | null {
   const raw = localStorage.getItem(DAILY_CHALLENGES_KEY);
   if (raw === null) {
@@ -1132,6 +1170,15 @@ export const StorageService = {
 
   setAdaptiveConfig(config: AdaptiveConfig): void {
     saveAdaptiveConfig(config);
+  },
+
+  getHintConfig(): HintConfig {
+    const config = loadHintConfig();
+    return config ?? { ...DEFAULT_HINT_CONFIG };
+  },
+
+  setHintConfig(config: HintConfig): void {
+    saveHintConfig(config);
   },
 
   exportAllData(): ExportData {

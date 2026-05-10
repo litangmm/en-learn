@@ -5,6 +5,8 @@ import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import { useAdaptivePractice } from '@/hooks/useAdaptivePractice';
+import { useHintLevel } from '@/hooks/useHintLevel';
+import { useQuestionWeighting } from '@/hooks/useQuestionWeighting';
 
 export interface UserAnswer {
   sentenceId: string;
@@ -37,6 +39,10 @@ export interface PracticeState {
 export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?: PracticeMode) {
   // Adaptive practice hook for smart distractor selection
   const { getSmartDistractors } = useAdaptivePractice();
+  // Hint level hook for dynamic hint adjustment
+  const { recordCorrectAnswer, recordWrongAnswer, shouldShowHint } = useHintLevel();
+  // Question weighting hook for adaptive sentence selection
+  const { getWeightedSentenceIds } = useQuestionWeighting();
 
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,13 +115,43 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
   const shuffledSentences = useMemo(() => {
     if (sentences.length === 0) return [];
+
+    // Start with sentences filtered by sentenceIds if provided
+    let targetSentences = sentences;
     if (sentenceIds && sentenceIds.length > 0) {
       const idSet = new Set(sentenceIds);
       const filtered = sentences.filter((s) => idSet.has(s.id));
-      return filtered.length > 0 ? filtered : sentences.slice(0, 10);
+      // Only use filtered if we have matches, otherwise use all sentences
+      if (filtered.length > 0) {
+        targetSentences = filtered;
+      }
     }
-    const shuffled = [...sentences].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 10);
+
+    // Get all mistakes from storage for weighting
+    const allMistakes = storage.getMistakes();
+    const hasMistakes = allMistakes.length > 0;
+
+    // Get all sentence IDs from target sentences
+    const allSentenceIds = targetSentences.map((s) => s.id);
+
+    // Use weighted shuffle if mistakes exist, otherwise simple shuffle
+    let selectedIds: string[];
+    if (hasMistakes) {
+      // Use weighted selection to prioritize problematic sentences
+      selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10);
+    } else {
+      // Fallback to simple shuffle when no mistakes exist
+      const shuffled = [...allSentenceIds].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, 10);
+    }
+
+    // Map IDs back to Sentence objects, maintaining the selected order
+    const idToSentence = new Map(targetSentences.map((s) => [s.id, s]));
+    const result = selectedIds
+      .map((id) => idToSentence.get(id))
+      .filter((s): s is Sentence => s !== undefined);
+
+    return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentences, sentenceIds, shuffleSeed]);
 
@@ -348,6 +384,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
             },
           ],
         }));
+
+        // Record for hint level adjustment
+        recordCorrectAnswer();
       } else {
         setState((prev) => ({
           ...prev,
@@ -367,6 +406,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
             dictionaryId,
           },
         }));
+
+        // Record for hint level adjustment
+        recordWrongAnswer();
       }
       return;
     }
@@ -409,6 +451,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
           },
         };
       });
+
+      // Record for hint level adjustment
+      recordCorrectAnswer();
     } else {
       setState((prev) => ({
         ...prev,
@@ -428,8 +473,11 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
           dictionaryId,
         },
       }));
+
+      // Record for hint level adjustment
+      recordWrongAnswer();
     }
-  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens]);
+  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens, recordCorrectAnswer, recordWrongAnswer]);
 
   const nextSentence = useCallback(() => {
     setState((prev) => {
@@ -512,5 +560,6 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
     selectToken,
     deselectToken,
     resetTokens,
+    shouldShowHint,
   };
 }

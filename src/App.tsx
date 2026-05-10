@@ -10,10 +10,6 @@ import { ResultModal } from '@/components/ResultModal';
 import { DictionarySelector } from '@/components/DictionarySelector';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
-import { MistakeBook } from '@/components/MistakeBook';
-import { HistoryView } from '@/components/HistoryView';
-import { DataManager } from '@/components/DataManager';
-import { SmartReview } from '@/components/SmartReview';
 import { MobileNav } from '@/components/MobileNav';
 import { XPBar } from '@/components/XPBar';
 import { StreakFeedback } from '@/components/StreakFeedback';
@@ -22,14 +18,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
-import { DailyChallengePanel } from '@/components/DailyChallengePanel';
-import { BadgePanel } from '@/components/BadgePanel';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
-import { Leaderboard } from '@/components/Leaderboard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
+import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
 
 function getModeHint(mode: PracticeMode): string {
   switch (mode) {
@@ -69,8 +63,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import './App.css';
-
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges' | 'leaderboard';
 
 function App() {
   const isMobile = useIsMobile();
@@ -848,42 +840,28 @@ function App() {
       </Dialog>
 
       {/* Main Content */}
-      {view === 'mistake-book' ? (
-        <MistakeBook
+      <NavigationProvider view={view} onNavigate={handleNavigate}>
+        <ViewRouter
+          view={view}
           onPracticeMistakes={handlePracticeMistakes}
-          onBack={handleBackFromMistakeBook}
-        />
-      ) : view === 'history' ? (
-        <HistoryView onBack={handleBackFromHistory} />
-      ) : view === 'data' ? (
-        <DataManager onBack={handleBackFromDataManager} />
-      ) : view === 'review' ? (
-        <SmartReview
+          onBackFromMistakeBook={handleBackFromMistakeBook}
+          onBackFromHistory={handleBackFromHistory}
+          onBackFromDataManager={handleBackFromDataManager}
           onPracticeReview={handlePracticeReview}
-          onBack={handleBackFromSmartReview}
-        />
-      ) : view === 'challenges' ? (
-        <DailyChallengePanel
+          onBackFromSmartReview={handleBackFromSmartReview}
           challenges={challengeState.challenges}
-          onClaim={claimReward}
-          onBack={handleBackFromChallenges}
+          onClaimReward={claimReward}
+          onBackFromChallenges={handleBackFromChallenges}
+          unlockedBadgeIds={unlockedIds}
+          getBadgeProgress={getBadgeProgressPercent}
+          onBackFromBadges={handleBackFromBadges}
+          leaderboardEntries={getLeaderboardEntries(leaderboardCategory, leaderboardTimeFilter)}
+          leaderboardCategory={leaderboardCategory}
+          leaderboardTimeFilter={leaderboardTimeFilter}
+          onLeaderboardCategoryChange={setLeaderboardCategory}
+          onLeaderboardTimeFilterChange={setLeaderboardTimeFilter}
+          onBackFromLeaderboard={handleBackFromLeaderboard}
         />
-      ) : view === 'badges' ? (
-        <BadgePanel
-          unlockedIds={unlockedIds}
-          getProgress={getBadgeProgressPercent}
-          onBack={handleBackFromBadges}
-        />
-      ) : view === 'leaderboard' ? (
-        <Leaderboard
-          entries={getLeaderboardEntries(leaderboardCategory, leaderboardTimeFilter)}
-          category={leaderboardCategory}
-          timeFilter={leaderboardTimeFilter}
-          onCategoryChange={setLeaderboardCategory}
-          onTimeFilterChange={setLeaderboardTimeFilter}
-          onBack={handleBackFromLeaderboard}
-        />
-      ) : (
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {!state.isComplete ? (
             <>
@@ -997,7 +975,7 @@ function App() {
             </AnimatePresence>
           )}
         </main>
-      )}
+      </NavigationProvider>
 
       {isMobile && !isFocusMode && (
         <MobileNav

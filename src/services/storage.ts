@@ -1,5 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
 import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge } from '@/data/types';
+import { REVIEW_INTERVALS } from '@/data/types';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -803,7 +804,6 @@ export const StorageService = {
     if (index < 0) return;
 
     const mistake = mistakes[index];
-    const intervals = [1, 3, 7, 14]; // days
     const now = Date.now();
     const oneDayMs = 24 * 60 * 60 * 1000;
 
@@ -812,10 +812,10 @@ export const StorageService = {
 
     if (isCorrect) {
       reviewedCount = reviewedCount + 1;
-      daysInterval = intervals[Math.min(reviewedCount - 1, intervals.length - 1)];
+      daysInterval = REVIEW_INTERVALS[Math.min(reviewedCount - 1, REVIEW_INTERVALS.length - 1)];
     } else {
       // Wrong answer: reset interval to 1 day, keep reviewedCount
-      daysInterval = intervals[0];
+      daysInterval = REVIEW_INTERVALS[0];
     }
 
     mistakes[index] = {

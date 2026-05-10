@@ -7,6 +7,7 @@ import {
   CalendarClock,
   RotateCcw,
   CheckCircle2,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +36,28 @@ function formatNextReview(nextReviewAt: number | undefined): string {
   }
   const days = Math.floor(hours / 24);
   return `${days}天后`;
+}
+
+interface PriorityLabel {
+  text: string;
+  variant: 'destructive' | 'secondary' | 'default';
+}
+
+function getPriorityLabel(mistake: Mistake): PriorityLabel | null {
+  // (a) reviewedCount >= 3 → 已掌握
+  if (mistake.reviewedCount >= 3) {
+    return { text: '已掌握', variant: 'default' };
+  }
+  // (b) nextReviewAt <= Date.now() → 今日到期
+  if (mistake.nextReviewAt !== undefined && mistake.nextReviewAt <= Date.now()) {
+    return { text: '今日到期', variant: 'secondary' };
+  }
+  // (c) attempts >= 2 && reviewedCount === 0 → 高优先级
+  if (mistake.attempts >= 2 && mistake.reviewedCount === 0) {
+    return { text: '高优先级', variant: 'destructive' };
+  }
+  // (d) default → null
+  return null;
 }
 
 export function SmartReview({ onPracticeReview, onBack }: SmartReviewProps) {
@@ -121,6 +144,14 @@ export function SmartReview({ onPracticeReview, onBack }: SmartReviewProps) {
         )}
       </div>
 
+      {/* Rule Explanation Banner */}
+      {totalDue > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700 flex items-center gap-2 mb-6">
+          <Info className="w-4 h-4 shrink-0" />
+          <span>复习间隔基于遗忘曲线：第1次错误后1天 → 3天 → 7天 → 14天。到期题目按最近错误时间排序。</span>
+        </div>
+      )}
+
       {/* Empty State */}
       {totalDue === 0 && (
         <motion.div
@@ -194,6 +225,14 @@ export function SmartReview({ onPracticeReview, onBack }: SmartReviewProps) {
                             <CalendarClock className="w-3 h-3" />
                             <span>{formatNextReview(mistake.nextReviewAt)}</span>
                           </div>
+                          {(() => {
+                            const priority = getPriorityLabel(mistake);
+                            return priority ? (
+                              <Badge variant={priority.variant} className="text-xs">
+                                {priority.text}
+                              </Badge>
+                            ) : null;
+                          })()}
                           {mistake.reviewedCount > 0 && (
                             <Badge variant="secondary" className="text-xs">
                               已复习 {mistake.reviewedCount} 次

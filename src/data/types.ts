@@ -61,6 +61,8 @@ export interface Mistake {
   lastReviewedAt?: number;
 }
 
+export const REVIEW_INTERVALS = [1, 3, 7, 14] as const;
+
 export interface SentenceToken {
   id: string;
   text: string;

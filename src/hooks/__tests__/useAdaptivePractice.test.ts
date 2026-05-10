@@ -175,7 +175,7 @@ describe('useAdaptivePractice', () => {
         expect(distractors.map((c) => c.id)).not.toContain('2');
       });
 
-      it('should return different random selections on repeated calls', () => {
+      it('should produce deterministic results with fixed random values', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           distractorCount: 3,
@@ -183,25 +183,56 @@ describe('useAdaptivePractice', () => {
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
-        // Mock different random values for different calls
-        let callCount = 0;
-        const randomSequence = [0.1, 0.9, 0.3, 0.7, 0.5, 0.2];
-        vi.spyOn(Math, 'random').mockImplementation(() => randomSequence[callCount++] ?? 0.5);
+        const { result } = renderHook(() => useAdaptivePractice());
+
+        // First call with fixed random values - should produce deterministic output
+        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
+        const choices1 = result.current.getSmartDistractors('1', '1', mockSentences);
+        const ids1 = choices1.map((c) => c.id);
+
+        // Second call with SAME random values - should produce SAME output
+        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
+        const choices2 = result.current.getSmartDistractors('1', '1', mockSentences);
+        const ids2 = choices2.map((c) => c.id);
+
+        // Same random inputs should produce same output
+        expect(ids1).toEqual(ids2);
+
+        // Verify core invariants
+        expect(choices1).toHaveLength(4);
+        expect(new Set(ids1).size).toBe(4); // no duplicates
+        expect(ids1).toContain('1'); // correct answer included
+      });
+
+      it('should produce different results with different random values', () => {
+        vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
+          strategy: 'random',
+          distractorCount: 3,
+          enabled: true,
+        });
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
         const { result } = renderHook(() => useAdaptivePractice());
 
+        // First call with one random sequence
+        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
         const choices1 = result.current.getSmartDistractors('1', '1', mockSentences);
-        callCount = 0; // Reset for second call
-        const choices2 = result.current.getSmartDistractors('1', '1', mockSentences);
-
-        // Results should be shuffled differently due to random
         const ids1 = choices1.map((c) => c.id);
+
+        // Second call with different random sequence
+        vi.spyOn(Math, 'random').mockReturnValueOnce(0.9).mockReturnValueOnce(0.1).mockReturnValueOnce(0.5);
+        const choices2 = result.current.getSmartDistractors('1', '1', mockSentences);
         const ids2 = choices2.map((c) => c.id);
 
-        // At least the order should be different (since we're using sort with random)
-        // This verifies the random strategy is actually working
-        expect(Array.isArray(ids1)).toBe(true);
-        expect(Array.isArray(ids2)).toBe(true);
+        // Different random inputs should produce different output
+        // (not guaranteed, but highly likely given different sort orders)
+        expect(ids1).not.toEqual(ids2);
+
+        // Verify both maintain core invariants
+        expect(choices1).toHaveLength(4);
+        expect(choices2).toHaveLength(4);
+        expect(ids1).toContain('1');
+        expect(ids2).toContain('1');
       });
     });
 

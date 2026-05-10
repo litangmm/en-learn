@@ -80,7 +80,15 @@ describe('useXP leveledUp detection', () => {
   it('addXP return value includes all expected properties', () => {
     const { result } = renderHook(() => useXP());
 
-    let addXPResult: ReturnType<typeof result.current.addXP>;
+    let addXPResult: ReturnType<typeof result.current.addXP> = {
+      profile: result.current.profile,
+      finalXP: 0,
+      multiplier: 1,
+      streak: 0,
+      oldLevel: 1,
+      newLevel: 1,
+      leveledUp: false
+    };
 
     act(() => {
       addXPResult = result.current.addXP(10);

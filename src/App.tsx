@@ -20,6 +20,7 @@ import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
+import { SharePromptToast } from '@/components/SharePromptToast';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -107,7 +108,7 @@ function App() {
   const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
   const [leaderboardTimeFilter, setLeaderboardTimeFilter] = useState<LeaderboardTimeFilter>('today');
   const [selectedOnboardingDictionary, setSelectedOnboardingDictionary] = useState('cet4');
-  const [, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
+  const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -277,6 +278,16 @@ function App() {
       badgesRef.current.checkBadges(profile.currentLevel);
     }
   }, [state.isComplete, totalQuestions, state.score, profile.currentLevel]);
+
+  // Auto-clear share prompt after 2 seconds
+  useEffect(() => {
+    if (sharePrompt) {
+      const timer = setTimeout(() => {
+        setSharePrompt(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [sharePrompt]);
 
   useEffect(() => {
     if (!isReviewMode) {
@@ -937,7 +948,16 @@ function App() {
         />
       )}
 
-      <BadgeUnlockToast badge={badgeUnlockTrigger?.badge ?? null} onDismiss={() => setBadgeUnlockTrigger(null)} />
+      <BadgeUnlockToast
+        badge={badgeUnlockTrigger?.badge ?? null}
+        onDismiss={() => setBadgeUnlockTrigger(null)}
+        onShare={() => {
+          if (badgeUnlockTrigger?.badge) {
+            setSharePrompt({ type: 'badge', badge: badgeUnlockTrigger.badge });
+          }
+        }}
+      />
+      <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
     </div>
   );
 }

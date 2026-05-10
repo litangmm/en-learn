@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import { SharePromptToast } from '../SharePromptToast';
 import type { SharePrompt } from '@/App';
 
@@ -26,7 +26,6 @@ vi.mock('@/components/ShareDialog', () => ({
 }));
 
 // Import type for SharePrompt from App
-import type { SharePromptType } from '@/App';
 
 describe('SharePromptToast', () => {
   const mockOnDismiss = vi.fn();

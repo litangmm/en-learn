@@ -30,12 +30,6 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
 
   const { isMarked } = usePersonalWords();
 
-  // Memoize the data loading function
-  const loadDictionaryData = useCallback(async (dictionaryId: string) => {
-    const data = await loadDictionary(dictionaryId);
-    return data;
-  }, []);
-
   // Handle dictionary change
   const handleDictionaryChange = useCallback((value: string) => {
     setSelectedDictionaryId(value);
@@ -51,7 +45,7 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
       setError(null);
     });
 
-    loadDictionaryData(selectedDictionaryId)
+    loadDictionary(selectedDictionaryId)
       .then(data => {
         if (!cancelled) {
           startTransition(() => {
@@ -63,7 +57,7 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
       .catch(() => {
         if (!cancelled) {
           startTransition(() => {
-            setError('Failed to load dictionary');
+            setError('加载词典失败');
             setSentences([]);
             setLoading(false);
           });
@@ -73,7 +67,7 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
     return () => {
       cancelled = true;
     };
-  }, [selectedDictionaryId, loadDictionaryData]);
+  }, [selectedDictionaryId]);
 
   // Filter sentences based on search query (case-insensitive)
   const filteredSentences = useMemo(() => {

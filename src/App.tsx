@@ -479,6 +479,9 @@ function App() {
       case 'leaderboard':
         setView('leaderboard');
         break;
+      case 'dictionary-browser':
+        setView('dictionary-browser');
+        break;
     }
   };
 
@@ -808,6 +811,7 @@ function App() {
           onBackFromMistakeBook={handleBackFromMistakeBook}
           onBackFromHistory={handleBackFromHistory}
           onBackFromDataManager={handleBackFromDataManager}
+          onNavigateDataManager={handleNavigate}
           onPracticeReview={handlePracticeReview}
           onBackFromSmartReview={handleBackFromSmartReview}
           challenges={challengeState.challenges}

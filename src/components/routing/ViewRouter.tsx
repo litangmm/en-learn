@@ -6,6 +6,7 @@ import { SmartReview } from '@/components/SmartReview';
 import { DailyChallengePanel } from '@/components/DailyChallengePanel';
 import { BadgePanel } from '@/components/BadgePanel';
 import { Leaderboard } from '@/components/Leaderboard';
+import { DictionaryBrowser } from '@/components/DictionaryBrowser';
 
 export type View =
   | 'practice'
@@ -15,7 +16,8 @@ export type View =
   | 'review'
   | 'challenges'
   | 'badges'
-  | 'leaderboard';
+  | 'leaderboard'
+  | 'dictionary-browser';
 
 export interface ViewRouterProps {
   view: View;
@@ -26,6 +28,7 @@ export interface ViewRouterProps {
   onBackFromHistory: () => void;
   // DataManager
   onBackFromDataManager: () => void;
+  onNavigateDataManager: (view: View) => void;
   // SmartReview
   onPracticeReview: (sentenceIds: string[], dictionaryId: string) => void;
   onBackFromSmartReview: () => void;
@@ -53,6 +56,7 @@ export function ViewRouter(props: ViewRouterProps) {
     onBackFromMistakeBook,
     onBackFromHistory,
     onBackFromDataManager,
+    onNavigateDataManager,
     onPracticeReview,
     onBackFromSmartReview,
     challenges,
@@ -82,7 +86,7 @@ export function ViewRouter(props: ViewRouterProps) {
       return <HistoryView onBack={onBackFromHistory} />;
 
     case 'data':
-      return <DataManager onBack={onBackFromDataManager} />;
+      return <DataManager onBack={onBackFromDataManager} onNavigate={onNavigateDataManager} />;
 
     case 'review':
       return (
@@ -121,6 +125,9 @@ export function ViewRouter(props: ViewRouterProps) {
           onBack={onBackFromLeaderboard}
         />
       );
+
+    case 'dictionary-browser':
+      return <DictionaryBrowser onBack={onBackFromDataManager} />;
 
     case 'practice':
     default:

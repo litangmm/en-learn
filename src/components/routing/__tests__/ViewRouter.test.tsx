@@ -85,6 +85,7 @@ function createDefaultProps() {
     onBackFromMistakeBook: vi.fn(),
     onBackFromHistory: vi.fn(),
     onBackFromDataManager: vi.fn(),
+    onNavigateDataManager: vi.fn(),
     onPracticeReview: vi.fn(),
     onBackFromSmartReview: vi.fn(),
     challenges: createMockChallenges(),

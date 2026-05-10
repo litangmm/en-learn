@@ -1,6 +1,6 @@
 import { Headphones, BookOpen, History, Database, Brain, Award, TrendingUp } from 'lucide-react';
 
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges' | 'leaderboard';
+type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review' | 'challenges' | 'badges' | 'leaderboard' | 'dictionary-browser';
 
 interface MobileNavProps {
   currentView: View;

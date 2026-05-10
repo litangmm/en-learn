@@ -4,6 +4,7 @@ import { isDefinitionSentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
+import { useAdaptivePractice } from '@/hooks/useAdaptivePractice';
 
 export interface UserAnswer {
   sentenceId: string;
@@ -34,6 +35,9 @@ export interface PracticeState {
 }
 
 export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
+  // Adaptive practice hook for smart distractor selection
+  const { getSmartDistractors } = useAdaptivePractice();
+
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -184,12 +188,23 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 
   // Generate 4 multiple-choice options (correct + 3 distractors)
-  const options = useMemo<ChoiceOption[]>(() => {
+  // Uses adaptive strategy to prioritize distractors the user has previously confused with
+  const adaptiveDistractors = useMemo<ChoiceOption[]>(() => {
     if (!currentSentence || sentences.length < 4) return [];
+    return getSmartDistractors(currentSentence.id, sentences);
+  }, [currentSentence, sentences, getSmartDistractors]);
+
+  // Fallback to random if getSmartDistractors returns less than 4 options
+  const options = useMemo<ChoiceOption[]>(() => {
+    if (adaptiveDistractors.length >= 4) {
+      return adaptiveDistractors;
+    }
+    // Fallback to random distractors
     const distractors = sentences
-      .filter((s) => s.id !== currentSentence.id)
+      .filter((s) => s.id !== currentSentence?.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
+    if (!currentSentence || distractors.length < 3) return [];
     return [currentSentence, ...distractors]
       .sort(() => Math.random() - 0.5)
       .map((s) => ({
@@ -198,7 +213,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
         // For normal sentences, use full English sentence
         text: isDefinitionSentence(s) ? s.chinese : s.english,
       }));
-  }, [currentSentence, sentences]);
+  }, [currentSentence, sentences, adaptiveDistractors]);
 
   // Generate tokens from current sentence for sentence-reorder mode
   const sentenceTokens = useMemo(() => {

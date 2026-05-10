@@ -1060,8 +1060,18 @@ export const StorageService = {
   // Personal Words CRUD
   addPersonalWord(word: PersonalWord): void {
     const words = loadPersonalWords();
-    words.push(word);
+    const existingIndex = words.findIndex((w) => w.word === word.word);
+    if (existingIndex >= 0) {
+      // Update existing word
+      words[existingIndex] = word;
+    } else {
+      words.push(word);
+    }
     savePersonalWords(words);
+  },
+
+  getPersonalWords(): PersonalWord[] {
+    return loadPersonalWords();
   },
 
   removePersonalWord(word: string): void {

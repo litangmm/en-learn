@@ -207,7 +207,9 @@ describe('PracticeCard multiple-choice', () => {
       />,
     );
 
-    const wrongOption = screen.getByText('Actions speak louder than words.').closest('button');
+    const wrongOptions = screen.getAllByText('Actions speak louder than words.');
+    // First occurrence is in the options list, which has the styling
+    const wrongOption = wrongOptions[0].closest('button');
     expect(wrongOption).toHaveClass('border-red-500');
     expect(wrongOption).toHaveClass('bg-red-50');
   });
@@ -322,5 +324,65 @@ describe('PracticeCard multiple-choice', () => {
     expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
     // Should not show choice options
     expect(screen.queryByText('Actions speak louder than words.')).not.toBeInTheDocument();
+  });
+
+  it('shows CheckCircle2 icon on selected option', () => {
+    render(
+      <PracticeCard
+        sentence={mockSentence}
+        inputs={['']}
+        showResult={false}
+        isCorrect={false}
+        attempts={0}
+        isSpeaking={false}
+        currentQuestion={1}
+        totalQuestions={4}
+        mode="multiple-choice"
+        options={mockOptions}
+        selectedChoiceId="2"
+        onSelectChoice={mockOnSelectChoice}
+        onInputChange={vi.fn()}
+        onCheck={mockOnCheck}
+        onNext={mockOnNext}
+        onRetry={vi.fn()}
+        onSpeak={mockOnSpeak}
+      />,
+    );
+
+    const buttons = screen.getAllByRole('button');
+    const selectedButton = buttons.find((b) =>
+      b.textContent?.includes('Actions speak louder than words.'),
+    );
+    expect(selectedButton).toHaveClass('bg-blue-100');
+  });
+
+  it('shows Circle icon placeholder on unselected options', () => {
+    render(
+      <PracticeCard
+        sentence={mockSentence}
+        inputs={['']}
+        showResult={false}
+        isCorrect={false}
+        attempts={0}
+        isSpeaking={false}
+        currentQuestion={1}
+        totalQuestions={4}
+        mode="multiple-choice"
+        options={mockOptions}
+        selectedChoiceId="2"
+        onSelectChoice={mockOnSelectChoice}
+        onInputChange={vi.fn()}
+        onCheck={mockOnCheck}
+        onNext={mockOnNext}
+        onRetry={vi.fn()}
+        onSpeak={mockOnSpeak}
+      />,
+    );
+
+    const unselectedButton = screen
+      .getByText('The early bird catches the worm.')
+      .closest('button');
+    expect(unselectedButton).toHaveClass('bg-white');
+    expect(unselectedButton).toHaveClass('border-slate-200');
   });
 });

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, CheckCircle2, XCircle, Lightbulb, ArrowRight, RotateCcw } from 'lucide-react';
+import { Volume2, CheckCircle2, Circle, Lightbulb, ArrowRight, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -96,6 +96,66 @@ export function PracticeCard({
     }
   }, [showResult, isCorrect, isMultipleChoice, isSentenceReorder, selectedChoiceId, orderedTokenIds, sentenceTokens, onCheck, onNext, onRetry]);
 
+  // Render wrong answer feedback (3-section card)
+  const renderWrongAnswerFeedback = () => {
+    // Determine user's answer based on mode
+    let userAnswerText = '';
+    if (isMultipleChoice) {
+      const selectedOption = options.find((o) => o.id === selectedChoiceId);
+      userAnswerText = selectedOption?.english ?? '(未选择)';
+    } else if (isSentenceReorder) {
+      const selectedTokens = orderedTokenIds
+        .map((id) => sentenceTokens.find((t) => t.id === id))
+        .filter(Boolean) as SentenceToken[];
+      userAnswerText = selectedTokens.map((t) => t.text).join(' ') || '(未排列)';
+    } else {
+      // fill-in-blanks or dictation
+      userAnswerText = inputs.filter(Boolean).join(' / ') || '(未填写)';
+    }
+
+    // Determine correct answer text
+    const correctAnswerText = isMultipleChoice || isSentenceReorder
+      ? sentence.english
+      : sentence.blanks.map((b) => b.word).join(' / ');
+
+    return (
+      <div className="space-y-3">
+        {/* User's answer */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0 }}
+          className="p-4 bg-red-50 rounded-xl border border-red-200"
+        >
+          <p className="text-sm text-red-700 font-medium mb-1">你的答案</p>
+          <p className="text-base text-red-800">{userAnswerText}</p>
+        </motion.div>
+
+        {/* Correct answer */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="p-4 bg-green-50 rounded-xl border border-green-200"
+        >
+          <p className="text-sm text-green-700 font-medium mb-1">正确答案</p>
+          <p className="text-base text-green-800">{correctAnswerText}</p>
+        </motion.div>
+
+        {/* Explanation */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="p-4 bg-blue-50 rounded-xl border border-blue-200"
+        >
+          <p className="text-sm text-blue-700 font-medium mb-1">解析</p>
+          <p className="text-base text-blue-800">{sentence.chinese}</p>
+        </motion.div>
+      </div>
+    );
+  };
+
   // Render multiple-choice options
   const renderChoiceOptions = () => {
     return (
@@ -111,19 +171,27 @@ export function PracticeCard({
               onClick={() => !showResult && onSelectChoice?.(option.id)}
               disabled={showResult}
               className={`
-                w-full p-4 rounded-xl border-2 text-left transition-all duration-200
+                relative w-full p-4 rounded-xl border-2 text-left transition-all duration-200
                 ${isCorrectOption
                   ? 'border-green-500 bg-green-50 text-green-800'
                   : isWrongSelected
                     ? 'border-red-500 bg-red-50 text-red-800'
                     : isSelected
-                      ? 'border-blue-500 bg-blue-50 text-blue-800'
+                      ? 'border-blue-500 bg-blue-100 text-blue-800'
                       : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-slate-50'
                 }
                 ${showResult ? 'cursor-default' : 'cursor-pointer'}
               `}
             >
-              <p className="text-base font-medium">{option.english}</p>
+              {/* Selection icon in top-right corner */}
+              <span className="absolute top-3 right-3">
+                {isSelected ? (
+                  <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                ) : (
+                  <Circle className="w-5 h-5 text-slate-300" />
+                )}
+              </span>
+              <p className="text-base font-medium pr-8">{option.english}</p>
             </button>
           );
         })}
@@ -169,6 +237,13 @@ export function PracticeCard({
             )}
           </div>
         </div>
+
+        {/* Progress text */}
+        {!showResult && sentenceTokens.length > 0 && (
+          <p className="text-sm text-slate-500 text-center">
+            已选 {orderedTokenIds.length}/{sentenceTokens.length} 个单词
+          </p>
+        )}
 
         {/* Word pool */}
         {!showResult && remainingTokens.length > 0 && (
@@ -233,15 +308,6 @@ export function PracticeCard({
               {blank.word.charAt(0)}...
             </span>
           )}
-          {showResult && !isCorrect && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="block text-xs text-green-600 font-medium mt-1"
-            >
-              {blank.word}
-            </motion.span>
-          )}
         </span>
       );
     });
@@ -291,15 +357,6 @@ export function PracticeCard({
                       }
                     `}
                   />
-                  {showResult && !isCorrect && (
-                    <motion.span
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="block text-xs text-green-600 font-medium mt-1"
-                    >
-                      {blank.word}
-                    </motion.span>
-                  )}
                 </span>
               );
             }
@@ -460,15 +517,7 @@ export function PracticeCard({
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
-                    <XCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium text-red-800">答案不正确</p>
-                      <p className="text-sm text-red-600">
-                        请检查你的拼写，或查看上方显示的正确答案。
-                      </p>
-                    </div>
-                  </div>
+                  renderWrongAnswerFeedback()
                 )}
               </motion.div>
             )}
@@ -478,25 +527,32 @@ export function PracticeCard({
         {/* Footer / Actions */}
         <div className="px-4 py-3 md:px-6 md:py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           {!showResult ? (
-            <Button
-              onClick={() => {
-                if (isMultipleChoice) {
-                  onCheck(selectedChoiceId || undefined);
-                } else if (isSentenceReorder) {
-                  onCheck(orderedTokenIds);
-                } else {
-                  onCheck();
+            <div className="w-full space-y-2">
+              {isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length && (
+                <p className="text-xs text-slate-400 text-center">
+                  请先点击下方单词组成完整句子
+                </p>
+              )}
+              <Button
+                onClick={() => {
+                  if (isMultipleChoice) {
+                    onCheck(selectedChoiceId || undefined);
+                  } else if (isSentenceReorder) {
+                    onCheck(orderedTokenIds);
+                  } else {
+                    onCheck();
+                  }
+                }}
+                disabled={
+                  (isMultipleChoice && !selectedChoiceId) ||
+                  (isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length)
                 }
-              }}
-              disabled={
-                (isMultipleChoice && !selectedChoiceId) ||
-                (isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length)
-              }
-              className="w-full gap-2"
-              size="lg"
-            >
-              提交答案
-            </Button>
+                className="w-full gap-2"
+                size="lg"
+              >
+                提交答案
+              </Button>
+            </div>
           ) : isCorrect ? (
             <Button
               onClick={onNext}

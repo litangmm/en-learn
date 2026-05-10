@@ -8,6 +8,13 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-26)
+- **迭代**: epic-004 iter-001「移动端响应式适配（P0）」—— **完整执行**
+- **计划步骤**: 8 步全部完成，涵盖 Header flex-wrap 防挤压、Trophy/Award 图标-only 响应式显示、标题 text-base md:text-lg 缩小、ToggleGroup overflow-x-auto 容器防溢出、PracticeCard 句子区域 overflow-x-auto、输入框 min-w/max-w 弹性宽度、音频按钮 size=sm + h-8 md:h-10 缩小、App.responsive 测试补充 4 个移动端布局断言
+- **实际修改文件**: 与计划一致
+  - 修改: src/App.tsx, src/components/PracticeCard.tsx, src/components/__tests__/App.responsive.test.tsx
+- **观察**: 计划清晰可执行，8 步完全对应 P0 优先级的 8 个移动端布局问题，每步聚焦一个具体断点适配点。纯 CSS/Tailwind 工具类调整，零逻辑变更，零类型变更，风险极低。与 epic-002 iter-003a 建立的响应式基础（MobileNav、断点体系）自然融合，无冲突
+
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整执行**
 - **计划步骤**: 8 步全部完成，涵盖类型定义（LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry）、useLeaderboard Hook（纯函数派生排名/三分类计算/三时间筛选/同分并列）、Leaderboard 组件（分类 Tabs/时间 pills/Top-3 奖牌/空状态/列表）、App.tsx 集成（leaderboard 视图/三处导航入口）、Hook 测试、组件测试、App 集成测试、现有 mock 更新、全量验证

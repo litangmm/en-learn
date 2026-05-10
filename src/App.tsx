@@ -30,6 +30,21 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
+
+function getModeHint(mode: PracticeMode): string {
+  switch (mode) {
+    case 'fill-in-blanks':
+      return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
+    case 'dictation':
+      return '听音频后，根据中文提示和首字母提示填写单词';
+    case 'multiple-choice':
+      return '选择最合适的答案后，点击提交答案按钮';
+    case 'sentence-reorder':
+      return '点击单词组成正确句子，再次点击已选单词可撤回';
+    default:
+      return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
+  }
+}
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -821,7 +836,7 @@ function App() {
               {!isFocusMode && (
                 <div className="mt-8 text-center">
                   <p className="text-sm text-slate-400">
-                    听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交
+                    {getModeHint(practiceMode)}
                   </p>
                 </div>
               )}

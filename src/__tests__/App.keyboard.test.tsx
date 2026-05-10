@@ -124,11 +124,14 @@ describe("App keyboard shortcuts", () => {
     fireEvent.click(screen.getByText("提交答案"));
 
     await waitFor(() => {
-      expect(screen.getByText("答案不正确")).toBeInTheDocument();
+      expect(screen.getByText("你的答案")).toBeInTheDocument();
+      expect(screen.getByText("正确答案")).toBeInTheDocument();
+      expect(screen.getByText("解析")).toBeInTheDocument();
     });
 
     fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
 
-    expect(screen.getByText("早起的鸟儿有虫吃。")).toBeInTheDocument();
+    // Chinese appears twice after wrong answer: main content + analysis section
+    expect(screen.getAllByText("早起的鸟儿有虫吃。").length).toBe(2);
   });
 });

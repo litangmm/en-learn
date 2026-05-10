@@ -142,6 +142,13 @@
 - **结果**: QA 的稳定性保障被判定为跨 Epic 质量门禁，不单独列为 Epic
 - **备注**: 提出的 localStorage 数据完整性保护已在 iter-001 中实现（损坏恢复、版本迁移、quota exceeded 处理）
 
+### 2026-05-10 (cycle-2026-05-10-26)
+- **相关质量门禁**: 响应式测试覆盖、移动端布局断言、构建稳定性
+- **本次验证**: epic-004 iter-001「移动端响应式适配（P0）」质量门禁验证
+  - App.responsive 测试：新增 4 个移动端布局断言（Header flex-wrap 类名存在、标题响应式 text-base/md:text-lg 类名、ToggleGroup overflow-x-auto 容器、输入框 min-w/max-w 类名、音频按钮 h-8/md:h-10 类名）
+  - 全量回归：**434/434 单元测试通过**（45 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 4 个专用响应式测试，覆盖 375px~390px 窄屏下的关键布局断言。纯 CSS 类名调整零行为回归，434 测试是项目历史新高位。E2E: skipped（4 pending iterations remaining）
+
 ## 成功模式
 （由进化引擎自动总结）
 

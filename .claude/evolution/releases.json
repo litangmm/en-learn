@@ -2,6 +2,21 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.18.0",
+      "tag": "v0.18.0",
+      "commit": "8d06041",
+      "date": "2026-05-10T00:02:01.775Z",
+      "iterationId": "iter-001",
+      "title": "移动端响应式适配（P0）",
+      "features": [
+        "epic-004 iter-001 移动端响应式适配经验档案更新",
+        "9 个 Agent 经验档案更新",
+        "5 个流程经验档案更新",
+        "发布记录和 history 归档"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.17.0",
       "tag": "v0.17.0",
       "commit": "6298e3d",

@@ -3,23 +3,9 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-66",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选完成并部署。716 测试全部通过。LevelFilter 组件（8 难度级别）、双重过滤逻辑、词典切换重置过滤器。文档和备份已提交。"
-    },
-    {
-      "id": "2026-05-11-65",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选提交完成。f7c1ef5/5e0fc67 两个提交，Agent 经验档案和历史文档更新。716 测试全部通过。"
-    },
-    {
       "id": "2026-05-11-64",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "COMMIT",
       "status": "completed",
       "summary": "epic-009 iter-001 词典浏览器（只读）完整实现并测试通过。708 测试全部通过。文档和备份已提交。"
     },
@@ -31,17 +17,17 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
     }
   ],
-  "status": "IDLE",
-  "selectedEpic": null,
-  "lastRun": "2026-05-11T03:53:00.000Z",
-  "cycleCount": 66,
+  "status": "REPORT",
+  "selectedEpic": "epic-009",
+  "lastRun": "2026-05-10T19:17:26.491Z",
+  "cycleCount": 64,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-11-66",
+    "id": "2026-05-11-63",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "BRAINSTORM"
   },
   "currentEpic": {
     "id": "epic-009",
@@ -54,15 +40,13 @@
         "title": "词典浏览器（只读）",
         "scope": "frontend-only",
         "status": "completed",
-        "completedAt": "2026-05-10T19:42:00.000Z",
         "description": "在 DataManager 中新增「我的词库」入口，浏览当前词典所有词条（词/释义/例句），支持按词搜索和按词典筛选。完全只读，不修改任何数据。"
       },
       {
         "id": "iter-002",
         "title": "词条搜索与筛选",
         "scope": "frontend-only",
-        "status": "completed",
-        "completedAt": "2026-05-11T03:41:00.000Z",
+        "status": "pending",
         "description": "在词典浏览器中添加搜索（按词匹配）和筛选（按难度等级）功能，提供即时搜索体验。"
       },
       {
@@ -77,25 +61,36 @@
     "priority": "high"
   },
   "currentPlan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "个人生词标记",
+    "iterationId": "iter-001",
+    "iterationTitle": "词典浏览器（只读）",
     "scope": "frontend-only",
-    "steps": [],
-    "filesToModify": [],
-    "filesToCreate": [],
+    "steps": [
+      "Step 1: 在 src/data/types.ts 添加 PersonalWord 的类型定义（word、translation、exampleSentence、exampleSentenceCn、marked、markedAt）",
+      "Step 2: 在 src/services/storage.ts 添加 PERSONAL_WORDS_KEY、loadPersonalWords()、savePersonalWords()、CRUD 方法（addPersonalWord、removePersonalWord、getPersonalWordCount）",
+      "Step 3: 在 src/services/storage.ts 添加 PERSONAL_WORDS_KEY 的校验和 isValidPersonaWord 验证函数",
+      "Step 4: 创建 src/hooks/usePersonalWords.ts hook，提供懒加载、addWord、removeWord、isMarked、getCount 等接口",
+      "Step 5: 创建 src/components/DictionaryBrowser.tsx，只读展示词库，支持搜索输入框、按词典 Select 筛选、词条卡片列表展示",
+      "Step 6: 在 DataManager.tsx 中添加「我的词库」按钮，点击导航到 DictionaryBrowser",
+      "Step 7: 创建 src/hooks/__tests__/usePersonalWords.test.ts 单元测试覆盖 hook",
+      "Step 8: 创建 src/components/__tests__/DictionaryBrowser.test.tsx 组件测试覆盖 UI",
+      "Step 9: 运行全量测试验证零回归"
+    ],
+    "filesToModify": [
+      "src/data/types.ts",
+      "src/services/storage.ts",
+      "src/components/DataManager.tsx",
+      "src/App.tsx (添加 dictionary-browser 视图路由)"
+    ],
+    "filesToCreate": [
+      "src/hooks/usePersonalWords.ts",
+      "src/hooks/__tests__/usePersonalWords.test.ts",
+      "src/components/DictionaryBrowser.tsx",
+      "src/components/__tests__/DictionaryBrowser.test.tsx"
+    ],
     "dependencies": [],
-    "testStrategy": "TBD - pending PLAN stage"
+    "testStrategy": "hook 单元测试覆盖 CRUD/搜索过滤逻辑；组件测试覆盖搜索交互、词典切换、空状态显示；需更新现有 DataManager 测试"
   },
   "epicHistory": [
-    {
-      "id": "epic-009",
-      "title": "个人词典管理与数据主权",
-      "status": "in_progress",
-      "iterationsCount": 3,
-      "completedIterations": 2,
-      "versionRange": "v0.31.0-v0.32.0",
-      "completedAt": null
-    },
     {
       "id": "epic-005",
       "title": "学习成果社交裂变与分享卡片 MVP",
@@ -260,31 +255,31 @@
   ],
   "discussionSummary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（4 支持），数据导入导出能力已完全就绪，支持用户数据主权深化。epic-010「轻量级自适应学习 MVP」次高优先级（3 支持），纯前端可实现智能干扰项和动态提示级别。epic-011/012/013 列为 background task。",
   "testResults": {
-    "total": 716,
-    "passed": 716,
+    "total": 708,
+    "passed": 708,
     "failed": 0,
     "lintWarnings": 4,
     "lintErrors": 0,
     "buildSuccess": true
   },
   "iterationStatus": "completed",
-  "implementationStatus": "epic-009 iter-002 词条搜索与筛选已完成：LevelFilter Select 组件（8 个难度选项）、level 状态管理、filteredSentences 双重过滤逻辑、切换词典时重置过滤器。716 测试全部通过。提交: cea641a/5e0fc67/f7c1ef5/25e180f。iter-003 个人生词标记待开始。",
+    "implementationStatus": "epic-009 iter-001 词典浏览器（只读）完整实现并部署 v0.31.0。PersonalWord类型定义、storage CRUD、usePersonalWords hook、DictionaryBrowser组件、DataManager集成、单元测试和组件测试。全量708测试通过，零回归。已部署至 Vercel。",
+  "pendingQuestions": [],
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
     "version": "1.0",
-    "pending": [],
-    "history": [
+    "pending": [
       {
         "id": "dir-1778414197688",
         "type": "custom",
         "target": "epic-004",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
-        "reason": "用户真实完整评测第二轮反馈",
-        "createdAt": "2026-05-10T17:18:00.000Z",
-        "executedAt": "2026-05-10T19:42:00.000Z",
-        "executionNote": "已在 epic-004 iter-006 中执行：MoreMenu桌面导航折叠、移动端弹窗自适应、成就toast短暂化(1.5s)、排行榜Tab标注、听写模式独立体验确认"
-      },
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤。",
+        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
+        "createdAt": "2026-05-10T17:18:00.000Z"
+      }
+    ],
+    "history": [
       {
         "id": "dir-1778391382486-2",
         "type": "experience-officer",
@@ -360,9 +355,9 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.32.0",
-    "url": "https://en-learn-kbecjtitu-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T19:49:27.000Z",
-    "pendingDeployment": false
+    "url": "https://en-learn-uy3p3aput-litangmms-projects.vercel.app",
+    "version": "v0.31.0",
+    "deployedAt": "2026-05-10T19:23:05.000Z",
+    "commit": "c336aba"
   }
 }

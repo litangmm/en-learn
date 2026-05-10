@@ -3,13 +3,6 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-66",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选完成并部署。716 测试全部通过。LevelFilter 组件（8 难度级别）、双重过滤逻辑、词典切换重置过滤器。文档和备份已提交。"
-    },
-    {
       "id": "2026-05-11-65",
       "mode": "vision",
       "stage": "COMMIT",
@@ -31,17 +24,17 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
     }
   ],
-  "status": "IDLE",
-  "selectedEpic": null,
-  "lastRun": "2026-05-11T03:53:00.000Z",
-  "cycleCount": 66,
+  "status": "REPORT",
+  "selectedEpic": "epic-009",
+  "lastRun": "2026-05-11T03:50:00.000Z",
+  "cycleCount": 68,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-11-66",
+    "id": "2026-05-11-65",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "COMMIT"
   },
   "currentEpic": {
     "id": "epic-009",
@@ -54,7 +47,6 @@
         "title": "词典浏览器（只读）",
         "scope": "frontend-only",
         "status": "completed",
-        "completedAt": "2026-05-10T19:42:00.000Z",
         "description": "在 DataManager 中新增「我的词库」入口，浏览当前词典所有词条（词/释义/例句），支持按词搜索和按词典筛选。完全只读，不修改任何数据。"
       },
       {
@@ -84,7 +76,7 @@
     "filesToModify": [],
     "filesToCreate": [],
     "dependencies": [],
-    "testStrategy": "TBD - pending PLAN stage"
+    "testStrategy": "TBD - pending BRAINSTORM stage planning"
   },
   "epicHistory": [
     {
@@ -268,7 +260,7 @@
     "buildSuccess": true
   },
   "iterationStatus": "completed",
-  "implementationStatus": "epic-009 iter-002 词条搜索与筛选已完成：LevelFilter Select 组件（8 个难度选项）、level 状态管理、filteredSentences 双重过滤逻辑、切换词典时重置过滤器。716 测试全部通过。提交: cea641a/5e0fc67/f7c1ef5/25e180f。iter-003 个人生词标记待开始。",
+  "implementationStatus": "epic-009 iter-002 词条搜索与筛选已完成：LevelFilter Select 组件（8 个难度选项）、level 状态管理、filteredSentences 双重过滤逻辑、切换词典时重置过滤器。716 测试全部通过。提交: f7c1ef5/5e0fc67。准备进入 DEPLOY 阶段部署 v0.32.0。",
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {

@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.32.0",
+      "tag": "v0.32.0",
+      "commit": "cea641a",
+      "date": "2026-05-10T19:49:27.473Z",
+      "iterationId": "iter-002",
+      "title": "词条搜索与筛选",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-kbecjtitu-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.31.0",
+      "tag": "v0.31.0",
+      "commit": "c336aba",
+      "date": "2026-05-10T19:23:05.931Z",
+      "iterationId": "iter-001",
+      "title": "词典浏览器（只读）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-uy3p3aput-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.30.0",
       "tag": "v0.30.0",
       "commit": "63383e2",

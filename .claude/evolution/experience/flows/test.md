@@ -8,6 +8,15 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-38)
+- **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **全部测试通过**
+- **测试覆盖**: 501/501 单元测试通过（51 个测试文件，新增 17 个测试）
+  - ViewRouter.test.tsx: 16 个测试（8 个视图映射 + props 传递）
+  - App.leaderboard.test.tsx: 修复 LeaderboardEntry 类型问题
+  - 全量回归: 之前 484 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining: iter-002, iter-003）
+- **观察**: 501 测试是项目历史最新高水位，51 个测试文件。ViewRouter 的 16 个测试覆盖了全部视图映射，确保了重构安全性。重构期间修复了 LeaderboardEntry 类型问题，零行为回归。E2E 因 epic-006 还有 2 个 pending iterations 而继续跳过。
+
 ### 2026-05-10 (cycle-2026-05-10-28)
 - **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **全部测试通过**
 - **测试覆盖**: 459/459 单元测试通过（47 个测试文件，新增 8 个测试）

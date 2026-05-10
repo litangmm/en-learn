@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-10 (cycle-2026-05-10-38)
+- **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **完整实现**
+- **实现质量**: 高 — 架构设计清晰，解耦效果显著
+- **关键决策**:
+  - ViewRouter.tsx 使用 `view → component` 映射表设计，视图与组件完全解耦，新增视图只需在映射表中添加条目
+  - NavigationContext.tsx 提供 `view`/`setView`/`isFocusMode`/`toggleFocusMode` 状态，通过 Provider 模式共享
+  - App.tsx 重构移除 ~135 行嵌套三元运算符，使用 `<ViewRouter>` 和 `<NavigationProvider>` 包装，代码行数减少约 40%
+  - routing/index.ts 提供 barrel exports，便于后续扩展和维护
+  - P0（切换词典清除进度）和 P1（输入框高度）问题已在重构期间验证并修复
+- **观察**: 零新增依赖，零构建体积增长。ViewRouter 的映射表设计为后续 iter-002（PracticeCard 策略模式）和新功能接入提供了清晰的结构。16 个 ViewRouter 测试确保了重构安全性，501/501 测试全部通过。
+
 ### 2026-05-10 (cycle-2026-05-10-28)
 - **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **完整实现**
 - **实现质量**: 高 — 数据识别逻辑清晰，UI 差异化处理得当

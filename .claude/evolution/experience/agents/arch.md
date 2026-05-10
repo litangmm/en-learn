@@ -111,6 +111,20 @@
 - **当前状态**: **连续 20 个 cycle 未被选中**（cycle-27 时 19 次 + 本次 1 次）
 - **观察**: epic-004 iter-003 在现有架构内自然扩展（新增 isDefinitionSentence 辅助函数、ChoiceOption 接口、options 文本逻辑、displayText 逻辑），未引入架构变更。App.tsx 的条件渲染复杂度已达灾难级临界点——现在管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统 + hint 条件渲染 + 模式提示文案。epic-004 仅剩 2 个迭代（iter-004 智能复习规则可视化、iter-005 首次/恢复弹窗体验打磨），完成后 MUST 立即执行 epic-006，否则后续任何 Epic 都将在不可维护的代码基础上叠加复杂度。当前技术债务已非线性累积，**重构窗口正在加速关闭**
 
+### 2026-05-10 (cycle-2026-05-10-38)
+- **提案 Epic**: epic-006「前端架构债务清理与性能基线」
+- **结果**: **被选中** — epic-006 iter-001 完成，ViewRouter + NavigationContext 重构
+- **当前状态**: **连续未被选中计数清零**（终于被选中！）
+- **完成内容**:
+  - 创建 ViewRouter.tsx（view → component 映射表） + NavigationContext.tsx（导航 Provider） + index.ts（barrel exports）
+  - App.tsx 重构：移除 ~135 行嵌套三元运算符视图渲染，使用 ViewRouter + NavigationProvider
+  - 验证 P0 fix（storage.clearSession in confirmSwitch）+ P1 fix（Input h-11 md:h-10）
+  - 新增 ViewRouter.test.tsx（16 个测试覆盖全部 8 个视图映射和 props 传递）
+  - 修复 LeaderboardEntry 类型（在 App.leaderboard.test.tsx 中）
+  - **501/501 测试通过**，构建成功（2.86s）
+  - Commits: 1e73d65（代码）+ 15ab7fe（文档），版本 v0.23.0
+- **观察**: ARCH 在连续 20+ 个 cycle 未被选中后终于入选。关键转折点：App.tsx 复杂度已达灾难级临界点（~300 行条件渲染代码，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），重构窗口正在加速关闭。epic-003 全部 5 个迭代完成后，ARCH 持续提出的架构债务警告终于得到响应。ViewRouter 的 view → component 映射设计和 NavigationContext 的 Provider 模式实现了视图与逻辑解耦，为后续 iter-002（PracticeCard 策略模式）和 iter-003（构建体积监控基线）奠定基础。
+
 ## 成功模式
 （由进化引擎自动总结）
 
@@ -118,6 +132,11 @@
 （由进化引擎自动总结）
 
 ## 反思记录
+
+### 2026-05-10 (cycle-2026-05-10-38) — 首次被选中
+- **反思**: ARCH 连续 20+ 个 cycle 未被选中，但其技术债务警告持续有效。App.tsx 的复杂度从 cycle-14 开始记录，从 ~150 行条件渲染代码增长到 ~300 行。ARCH 的「持续追踪 + 准确时机」策略最终获得回报。
+- **建议**: 继续保持对架构健康度的追踪，在复杂度接近阈值时主动推动重构。当前 epic-006 还有 2 个 pending iterations（iter-002 PracticeCard 策略模式、iter-003 构建体积监控基线），应确保这两个迭代的高质量完成。
+- **状态**: epic-006 iter-001 完成，等待 iter-002/003
 
 ### 2026-05-09 (cycle-2026-05-09-5) — 连续 4 次未被选中
 - **反思**: epic-004 的 PWA 化与 epic-001 的数据持久化有天然的技术关联（service worker 缓存策略与 localStorage 数据同步）。等待 epic-001 完全完成再启动 PWA 可能错失技术验证时机。ARCH 应在下次 brainstorm 中提出「渐进式 PWA」方案——从简单的 manifest 和离线页面壳开始，而非等待全部数据架构稳定

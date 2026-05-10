@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig } from '@/data/types';
 import { REVIEW_INTERVALS } from '@/data/types';
 
 export interface StorageSchemaV1 {
@@ -28,6 +28,7 @@ const BADGES_KEY = 'en-learn-badges';
 const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
 const SHARE_METRICS_KEY = 'en-learn-share-metrics';
 const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
+const ADAPTIVE_CONFIG_KEY = 'en-learn-adaptive-config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 
@@ -382,6 +383,11 @@ export const DEFAULT_BADGE_PROGRESS: BadgeProgress = {
   totalChallengesCompleted: 0,
 };
 
+export const DEFAULT_ADAPTIVE_CONFIG: AdaptiveConfig = {
+  strategy: 'random',
+  historyWeight: 0.5,
+};
+
 export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   { id: 'first-steps', title: '初次尝试', description: '完成第一道题', category: 'answer', icon: 'Footprints', conditionType: 'total_answered', conditionValue: 1 },
   { id: 'correct-10', title: '答对 10 题', description: '累计答对 10 道题', category: 'answer', icon: 'CheckCircle2', conditionType: 'total_correct', conditionValue: 10 },
@@ -551,6 +557,42 @@ function savePersonalWords(words: PersonalWord[]): void {
     localStorage.setItem(PERSONAL_WORDS_KEY, JSON.stringify(words));
   } catch (error) {
     console.warn('[StorageService] Failed to save personal words:', error);
+  }
+}
+
+function loadAdaptiveConfig(): AdaptiveConfig | null {
+  const raw = localStorage.getItem(ADAPTIVE_CONFIG_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted adaptive config data, clearing');
+    localStorage.removeItem(ADAPTIVE_CONFIG_KEY);
+    return null;
+  }
+
+  if (typeof parsed === 'object' && parsed !== null && 'strategy' in parsed && 'historyWeight' in parsed) {
+    const obj = parsed as Record<string, unknown>;
+    const validStrategies = ['random', 'history-based', 'mixed'];
+    if (typeof obj.strategy === 'string' && validStrategies.includes(obj.strategy) && typeof obj.historyWeight === 'number') {
+      return parsed as AdaptiveConfig;
+    }
+  }
+
+  console.warn('[StorageService] Invalid adaptive config schema, clearing');
+  localStorage.removeItem(ADAPTIVE_CONFIG_KEY);
+  return null;
+}
+
+function saveAdaptiveConfig(config: AdaptiveConfig): void {
+  try {
+    localStorage.setItem(ADAPTIVE_CONFIG_KEY, JSON.stringify(config));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save adaptive config:', error);
   }
 }
 
@@ -1081,6 +1123,15 @@ export const StorageService = {
 
   getPersonalWordCount(): number {
     return loadPersonalWords().length;
+  },
+
+  getAdaptiveConfig(): AdaptiveConfig {
+    const config = loadAdaptiveConfig();
+    return config ?? { ...DEFAULT_ADAPTIVE_CONFIG };
+  },
+
+  setAdaptiveConfig(config: AdaptiveConfig): void {
+    saveAdaptiveConfig(config);
   },
 
   exportAllData(): ExportData {

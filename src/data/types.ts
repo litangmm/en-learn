@@ -239,3 +239,21 @@ export interface PersonalWord {
   /** Timestamp when marked */
   markedAt: number;
 }
+
+/**
+ * Strategy for choosing wrong answer distractors in multiple-choice practice.
+ * - 'random': Choose distractors randomly
+ * - 'history-based': Choose distractors based on user's mistake history
+ * - 'mixed': Blend random and history-based selection
+ */
+export type AdaptiveDistractorStrategy = 'random' | 'history-based' | 'mixed';
+
+/**
+ * Configuration for adaptive distractor selection.
+ */
+export interface AdaptiveConfig {
+  /** Strategy for choosing wrong answer options */
+  strategy: AdaptiveDistractorStrategy;
+  /** Weight for history-based selection (0-1), used in 'mixed' mode */
+  historyWeight: number;
+}

@@ -8,16 +8,14 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-27)
-- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **全部测试通过**
-- **测试覆盖**: 451/451 单元测试通过（47 个测试文件，新增 12 个测试）
-  - App.hints.test.tsx: 5 个测试（4 种模式提示文案渲染、专注模式隐藏）
-  - PracticeCard.feedback.test.tsx: 7 个测试（fill-in-blanks/dictation/multiple-choice/sentence-reorder 三区块反馈、空答案占位符）
-  - PracticeCard.choice.test.tsx: 扩展 CheckCircle2/Circle 图标断言（已选选项存在 CheckCircle2、未选选项存在 Circle、已选背景 bg-blue-100）
-  - PracticeCard.reorder.test.tsx: 扩展进度/提示文字断言（「已选 X/Y 个单词」、「请先点击下方单词」）
-  - 全量回归: 之前 434 个测试全部通过
-- **E2E**: skipped（3 pending iterations remaining）
-- **观察**: 451 测试是项目历史最新高水位，47 个测试文件。结构化错误反馈测试覆盖了 4 种模式的完整场景，PracticeCard.choice 和 PracticeCard.reorder 的测试扩展展示了增量测试策略。零行为回归验证了辅助函数重构的安全性。E2E 因 epic-004 剩余 3 个迭代仍 pending 而继续跳过
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **全部测试通过**
+- **测试覆盖**: 459/459 单元测试通过（47 个测试文件，新增 8 个测试）
+  - usePractice.choice.test.ts: 更新 ChoiceOption 格式（id/text），添加释义句 options 生成测试（中文文本）
+  - PracticeCard.choice.test.tsx: 更新 ChoiceOption 格式，添加释义句 displayText 测试（中文显示）、normal 句（英文显示）、连词成句释义句警告
+  - 全量回归: 之前 451 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining）
+- **观察**: 459 测试是项目历史最新高水位，47 个测试文件。isDefinitionSentence 的「引号检测」边界清晰（引号包裹 vs 引号内文本），测试覆盖无遗漏。ChoiceOption 格式规范化消除了类型混用风险。零行为回归验证了辅助函数重构的安全性。E2E 因 epic-004 剩余 2 个迭代仍 pending 而继续跳过
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **全部测试通过**

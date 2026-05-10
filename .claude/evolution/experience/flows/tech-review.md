@@ -8,17 +8,15 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-27)
-- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **技术审查通过**
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **技术审查通过**
 - **技术决策**:
-  - `getModeHint(practiceMode)` 辅助函数使用 switch 返回模式对应文案，代码清晰可扩展，新增模式仅需添加 case
-  - `renderWrongAnswerFeedback()` 辅助函数返回 JSX fragment，组织三区块反馈，无需新组件，避免过度设计
-  - 三区块反馈使用一致的 card 结构（背景色区分：红色 bg-red-50 / 绿色 bg-green-50 / 蓝色 bg-blue-50），语义清晰
-  - CheckCircle2/Circle 图标使用 lucide-react 现有图标，零新增依赖
-  - 移除内联正确答案是减少代码重复而非引入新逻辑，向后兼容无风险
-  - 连词成句进度文字使用条件渲染（`orderedTokenIds.length !== sentenceTokens.length`），零运行时开销
-- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 451/451 unit tests passed
-- **观察**: App.tsx 复杂度继续增加——新增 getModeHint 辅助函数和 hint 条件渲染。PracticeCard 新增 renderWrongAnswerFeedback 辅助函数，PracticeCard 的条件渲染逻辑（4 种练习模式 × showResult × 正误判断 × 反馈类型）已接近 200 行。App.tsx 的条件渲染复杂度已达不可维护临界点，epic-004 完成后 MUST 立即执行 epic-006「前端架构债务清理」
+  - `isDefinitionSentence(sentence)` 使用正则 `/^"(.*)"$/` 检测 blanks[0].word 是否被引号包裹，引号内文本作为释义内容，边界清晰
+  - `ChoiceOption` 接口 `{ id, text }` 规范化了选项类型，useMemo 中 options 生成使用 sentence 作为选项文本（或 chinese for 释义句）
+  - displayText 逻辑在 PracticeCard 中统一处理，释义题显示 sentence.chinese，normal 题显示 sentence.english，零额外状态
+  - sentence-reorder 模式检测到释义句时显示警告而非错误，提供安全的边界处理，无需额外数据转换
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 459/459 unit tests passed
+- **观察**: App.tsx 复杂度继续增加——新增 isDefinitionSentence 辅助函数调用（用于 options 生成）和 displayText 逻辑。PracticeCard 的条件渲染逻辑（4 种练习模式 × showResult × 正误判断 × 反馈类型 × 释义句检测）持续累积。epic-004 仅剩 2 个迭代，完成后 MUST 立即执行 epic-006「前端架构债务清理」
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **技术审查通过**

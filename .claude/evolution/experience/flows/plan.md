@@ -8,13 +8,13 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-27)
-- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **完整执行**
-- **计划步骤**: 11 步全部完成，涵盖 App.tsx getModeHint 辅助函数、PracticeCard Circle import、renderWrongAnswerFeedback 三区块反馈、去除内联正确答案、选择题 CheckCircle2/Circle 图标增强、连词成句进度文字、App.hints 测试、PracticeCard.feedback 测试、PracticeCard.choice 测试扩展、PracticeCard.reorder 测试扩展、全量验证
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **完整执行**
+- **计划步骤**: 8 步全部完成，涵盖数据文件检查、isDefinitionSentence 辅助函数、ChoiceOption 接口、options 中文文本扩展、displayText 逻辑、sentence-reorder 释义句警告、测试用例更新、全量验证
 - **实际修改文件**: 与计划高度一致
-  - 修改: src/App.tsx, src/components/PracticeCard.tsx, src/components/__tests__/PracticeCard.choice.test.tsx, src/components/__tests__/PracticeCard.reorder.test.tsx
-  - 创建: src/components/__tests__/App.hints.test.tsx, src/components/__tests__/PracticeCard.feedback.test.tsx
-- **观察**: 计划清晰可执行，11 步覆盖了从 App.tsx hint 辅助函数 → PracticeCard 反馈重构 → UI 增强 → 测试覆盖 → 全量验证的完整链路。与 iter-001 的纯 CSS 调整不同，iter-002 涉及辅助函数重构和 UI 增强，但计划执行无偏差
+  - 修改: src/data/types.ts, src/hooks/usePractice.ts, src/components/PracticeCard.tsx
+  - 更新测试: src/hooks/__tests__/usePractice.choice.test.ts, src/components/__tests__/PracticeCard.choice.test.tsx
+- **观察**: 计划清晰可执行，8 步覆盖了从辅助函数添加 → options 生成扩展 → displayText 逻辑 → 边界处理 → 测试覆盖 → 全量验证的完整链路。isDefinitionSentence 的「引号检测」边界清晰，ChoiceOption 接口规范化了选项类型。全量 459 测试零回归
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整执行**

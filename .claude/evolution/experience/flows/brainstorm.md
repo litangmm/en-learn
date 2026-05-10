@@ -15,11 +15,10 @@
 - **选中 Epic**: epic-004「体验优化与响应式适配」（PM-UX 提出，PM-Lean/UX/QA/PM-Growth 支持）
 - **观察**: 核心分歧在于「用户可见的体验修复（epic-004）」vs「技术债务清偿（epic-006）」的优先级权衡。epic-004 以压倒性支持胜出，原因有三：（1）用户指令 dir-user-review-001 明确指定 epic-004 在 epic-003 完成后执行；（2）用户反馈指出移动端基础可用性是「从 demo 升级为日常学习工具的最大瓶颈」；（3）epic-004 的 5 个迭代均为小工作量、独立可测、高用户价值。ARCH 的 epic-006 获 PM-Mon/QA 支持，被评定为次高优先级——共识是 epic-004 完成后必须立即执行 epic-006，否则后续任何 Epic 都将在不可维护的代码基础上叠加复杂度（App.tsx 已接近 300 行条件渲染）。PM-Growth 的 epic-005「社交裂变」因游戏化数据全量就绪而保持 medium。PM-Eco 成功将 epic-007「个人词典管理」从 low 提升为 medium。epic-008 和 epic-010 维持 low。ARCH/PM-Mon/PM-Eco 连续 17 次未被选中的 streak 在本次 brainstorm 中得到关注——epic-006 和 epic-007 的优先级提升是对这些 Agent 长期未选中状态的回应。
 
-### 2026-05-10 (cycle-2026-05-10-27)
+### 2026-05-10 (cycle-2026-05-10-28)
 - **状态**: 本次未进行 brainstorm（epic-004 仍有 pending iterations）
-- **原因**: epic-004 仍有 pending iterations（iter-003~005），直接继续执行
-- **观察**: epic-004 iter-002 完成，游戏化动力系统（epic-003）完成。epic-004 仍有 3 个 pending iterations，epic-006 架构债务清理的 critical 优先级持续累积。ARCH/PM-Mon/PM-Eco 连续 19 个 cycle 未被选中，反思记录已更新。epic-004 完成后，epic-006 的紧迫性将进一步提升
-- **观察**: epic-003 iter-005 学习排行榜已完成，**epic-003 全部 5 个迭代收官**。游戏化学习动力系统五维度全部落地（XP 等级/连击倍率/每日挑战/成就徽章/学习排行榜）。多个 Agent 连续未被选中（ARCH/PM-Mon/PM-Eco 连续 17 次），下次 brainstorm 时需重点关注这些 Agent 的策略调整和优先级重新评估。ARCH 强烈建议将 epic-006「前端架构债务清理」优先级提升为 critical。PM-Growth 应推动 epic-005「学习社交裂变」作为高优先级候选。PM-Eco 建议将 epic-007「个人词典管理」优先级从 low 提升为 medium
+- **原因**: epic-004 仍有 pending iterations（iter-004 智能复习规则可视化、iter-005 首次/恢复弹窗体验打磨），直接继续执行
+- **观察**: epic-004 iter-003「模式语义与题目数据统一（P2）」已完成，3/5 迭代完成。epic-006 架构债务清理的 critical 优先级持续累积——ARCH/PM-Mon/PM-Eco 已连续 20 个 cycle 未被选中，技术债务呈非线性累积，重构窗口正在加速关闭。epic-004 完成后，必须立即启动 epic-006
 
 ### 2026-05-09 (cycle-2026-05-09-19)
 - **状态**: 本次未进行 brainstorm（epic-003 仍有 pending iterations）

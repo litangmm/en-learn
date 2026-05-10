@@ -142,15 +142,13 @@
 - **结果**: QA 的稳定性保障被判定为跨 Epic 质量门禁，不单独列为 Epic
 - **备注**: 提出的 localStorage 数据完整性保护已在 iter-001 中实现（损坏恢复、版本迁移、quota exceeded 处理）
 
-### 2026-05-10 (cycle-2026-05-10-27)
-- **相关质量门禁**: 结构化反馈测试、UI 增强测试、边界情况自动化测试、构建稳定性
-- **本次验证**: epic-004 iter-002「答题反馈与提示文案重构（P1）」质量门禁验证
-  - App.hints 测试：4 种模式（填空/听写/选择/连词成句）提示文案渲染，专注模式隐藏
-  - PracticeCard.feedback 测试：三区块错误反馈（你的答案/正确答案/解析）在 fill-in-blanks/dictation/multiple-choice/sentence-reorder 四种模式下的渲染，空答案占位符
-  - PracticeCard.choice 测试：CheckCircle2 图标存在于已选选项，Circle 图标存在于未选选项，已选背景 bg-blue-100
-  - PracticeCard.reorder 测试：「已选 X/Y 个单词」进度文字渲染，「请先点击下方单词」禁用提交提示
-  - 全量回归：**451/451 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
-- **备注**: 本次迭代新增 12 个专用测试（App.hints 5 个 + PracticeCard.feedback 7 个），覆盖了结构化错误反馈的四种模式场景。PracticeCard.choice 和 PracticeCard.reorder 的现有测试扩展了图标和进度文字断言。451 测试是项目历史新高位。E2E: skipped（3 pending iterations remaining）
+### 2026-05-10 (cycle-2026-05-10-28)
+- **相关质量门禁**: 数据识别边界测试、UI 增强测试、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-004 iter-003「模式语义与题目数据统一（P2）」质量门禁验证
+  - usePractice choice 测试：ChoiceOption 格式规范（id/text）、options 生成中文释义 for 释义句、正常句 options 使用 english
+  - PracticeCard choice 测试：释义句模式 displayText（中文显示）、normal 句 displayText（英文显示）、连词成句释义句警告
+  - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
 ## 成功模式
 （由进化引擎自动总结）

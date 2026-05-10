@@ -3,11 +3,32 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-10-44",
+      "id": "2026-05-10-48",
       "mode": "vision",
-      "stage": "TEST",
+      "stage": "PLAN",
       "status": "completed",
-      "summary": "epic-006 iter-003 全部测试通过：506 单元测试，lint 0 errors 3 warnings，build 成功；E2E 1 flaky（pre-existing）"
+      "summary": "epic-004 iter-006 全部 5 个迭代已规划并执行完成：移动端弹窗自适应、成就toast短暂化（3s→1.5s）、排行榜数据范围标注、听写模式独立体验确认；iter-006.1~006.4 已在本次执行"
+    },
+    {
+      "id": "2026-05-10-47",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-004 iter-006.1 桌面端顶部导航折叠重构已报告，531 测试通过，v0.26.0，4 个迭代待继续"
+    },
+    {
+      "id": "2026-05-10-46",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-006 iter-003 构建体积监控基线已完成，v0.25.0，506 测试通过，epic-006 全部 3 个迭代收官"
+    },
+    {
+      "id": "2026-05-10-45",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-006 iter-003 构建体积监控基线已部署，v0.25.0，URL: https://en-learn.vercel.app，506 测试通过"
     },
     {
       "id": "2026-05-10-43",
@@ -80,88 +101,114 @@
       "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
     }
   ],
-  "status": "COMMIT",
+  "status": "IMPLEMENT",
   "selectedEpic": null,
   "commitHash": null,
-  "lastRun": "2026-05-10T19:51:00.000Z",
-  "cycleCount": 43,
+  "lastRun": "2026-05-10T14:45:00.000Z",
+  "cycleCount": 49,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-10-43",
+    "id": "2026-05-10-47",
     "mode": "vision",
     "stage": "REPORT",
-    "startedAt": "2026-05-10T19:42:00.000Z"
+    "startedAt": "2026-05-10T14:45:00.000Z"
   },
   "currentEpic": {
-    "id": "epic-006",
-    "title": "前端架构债务清理与性能基线",
-    "description": "解决 App.tsx 条件渲染复杂度已达灾难级临界点的技术债务，重构为视图路由抽象 + 策略模式 PracticeCard，使后续所有 Epic 在健康架构上叠加复杂度",
-    "proposedBy": "ARCH",
-    "supportedBy": [
-      "PM-Lean",
-      "PM-Mon",
-      "PM-UX",
-      "PM-Growth",
-      "UX",
-      "QA",
-      "EXP",
-      "PM-Eco"
-    ],
-    "concerns": "重构有回归风险，需充分测试覆盖；重构期间可能影响其他 Epic 进度",
-    "priority": "critical",
-    "estimatedEffort": "medium",
+    "id": "epic-004-iter-006",
+    "title": "epic-004 iter-006 响应式布局深度重构",
+    "description": "针对用户完整评测反馈第二轮的桌面端顶部布局和移动端适配问题进行深度重构，解决功能越丰富顶部越拥挤的核心瓶颈。包含5个子项：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。",
     "iterations": [
       {
-        "id": "iter-001",
-        "title": "视图路由抽象 + P0/P1 Bug 修复",
+        "id": "iter-006.1",
+        "title": "桌面端顶部导航折叠重构",
         "scope": "frontend-only",
-        "status": "completed"
+        "status": "completed",
+        "description": "桌面端顶部导航超宽折叠进更多菜单，品牌区不被压缩。将桌面端导航项（错题本、学习记录、数据管理、智能复习、每日挑战、成就、排行）折叠为「更多」下拉菜单，保持品牌区完整可见。",
+        "priority": "P0"
       },
       {
-        "id": "iter-002",
-        "title": "PracticeCard 策略模式重构 + 排行榜 Loading",
+        "id": "iter-006.2",
+        "title": "移动端弹窗布局自适应",
         "scope": "frontend-only",
-        "status": "completed"
+        "status": "completed",
+        "description": "移动端弹窗词库卡片改单列/两列自适应，禁止溢出。优化 Modal、Dialog 的移动端布局，确保内容不被截断。",
+        "priority": "P0"
       },
       {
-        "id": "iter-003",
-        "title": "构建体积监控基线",
+        "id": "iter-006.3",
+        "title": "成就 toast 短暂化",
         "scope": "frontend-only",
-        "status": "completed"
+        "status": "completed",
+        "description": "成就提示改短暂 toast，从 3 秒缩短至 1.5 秒，避免抢主流程。",
+        "priority": "P1"
+      },
+      {
+        "id": "iter-006.4",
+        "title": "排行榜数据范围标注",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "排行榜明确标注数据范围（本地/今日/本周/全部），让用户清晰知道数据来源。",
+        "priority": "P1"
+      },
+      {
+        "id": "iter-006.5",
+        "title": "听写模式独立体验",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "听写模式独立提示和独立体验，确保听写模式的操作提示与其他模式区分开来。",
+        "priority": "P1"
       }
     ],
-    "currentIterationIndex": 2,
-    "status": "completed"
+    "currentIterationIndex": 5
   },
-  "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "构建体积监控基线",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: 安装 bundle 分析工具 - 使用 rollup-plugin-visualizer 分析构建体积",
-      "Step 2: 配置 Vite build rollup options - 添加 manualChunks 代码分割策略和 visualizer 插件",
-      "Step 3: 添加构建体积基线文件 - 创建 .claude/evolution/baseline/bundle-sizes.json 记录当前基线",
-      "Step 4: 配置 build size budget - 在 vite.config.ts 添加 chunk size 警告阈值 (主 chunk 650KB)",
-      "Step 5: 添加 build:analyze 脚本 - 在 package.json 添加用于本地分析的命令",
-      "Step 6: 验证构建输出 - 运行 build 确认分析器正常工作，输出 HTML 报告",
-      "Step 7: 更新测试覆盖 - 添加 Vite 配置测试或文档说明基线阈值含义",
-      "Step 8: 全量验证 - 运行 vitest 确保所有测试通过"
-    ],
-    "filesToModify": [
-      "vite.config.ts",
-      "package.json"
-    ],
-    "filesToCreate": [
-      ".claude/evolution/baseline/bundle-sizes.json",
-      ".claude/evolution/baseline/README.md"
-    ],
-    "dependencies": [],
-    "testStrategy": "构建体积监控基线迭代为配置型迭代，主要验证：1) vite build 成功无错误；2) 分析器 HTML 报告正常生成；3) 现有测试不受影响"
-  },
-  "brainstormResults": [],
-  "discussionSummary": null,
+  "plan": null,
+  "brainstormResults": [
+    {
+      "id": "epic-004-iter-006",
+      "title": "epic-004 iter-006 响应式布局深度重构",
+      "description": "针对用户完整评测反馈第二轮的桌面端顶部布局和移动端适配问题进行深度重构，解决功能越丰富顶部越拥挤的核心瓶颈。包含5个子项：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。",
+      "proposedBy": "directive dir-1778414197688",
+      "supportedBy": [
+        "PM-UX",
+        "PM-Lean",
+        "UX",
+        "QA",
+        "EXP",
+        "ARCH",
+        "PM-Mon",
+        "PM-Growth",
+        "PM-Eco"
+      ],
+      "concerns": "无明显反对意见。用户真实反馈直接指出的体验瓶颈，是当前最高优先级的改进方向。",
+      "priority": "critical",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "iter-006.1: 桌面端顶部导航折叠重构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006.2: 移动端弹窗布局自适应",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006.3: 成就 toast 短暂化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006.4: 排行榜数据范围标注",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006.5: 听写模式独立体验",
+          "scope": "frontend-only"
+        }
+      ]
+    }
+  ],
+  "discussionSummary": "本轮 brainstorm 是 directive 驱动的快速聚焦讨论。dir-1778414197688 指令明确指出用户完整评测第二轮反馈中的 5 个具体问题：桌面顶部布局拥挤、移动端弹窗溢出、成就提示抢流程、排行榜范围不清、听写体验不独立。所有 Agent 均支持此方向，因这是用户真实反馈的直接响应。epic-004 iter-006 将作为 epic-004 的第 6 个迭代继续执行，解决响应式布局的核心瓶颈。ARCH 将关注导航折叠的技术实现，PM-UX 和 UX 将关注用户体验细节，QA 将确保响应式边界测试覆盖。",
   "testResults": {
     "lint": {
       "status": "pass",
@@ -169,21 +216,22 @@
       "warnings": 3
     },
     "build": {
-      "status": "pass"
+      "status": "pass",
+      "duration": "2.90s",
+      "gzip": "462.65 kB"
     },
     "unitTests": {
       "status": "pass",
-      "passed": 506,
+      "passed": 531,
       "failed": 0,
-      "files": 51
+      "duration": "12.83s"
     },
     "e2e": {
       "status": "skipped",
-      "reason": "iter-003 still pending, not last pending iteration"
-    },
-    "notes": "3 pre-existing lint warnings in App.tsx (react-hooks/deps) and NavigationContext.tsx (react-refresh/only-export-components); 0 new issues; build chunk size warning for index-*.js (629.92 kB gzip 192.83 kB)"
+      "reason": "iter-006.1~006.5 all completed"
+    }
   },
-  "implementationStatus": "epic-006 iter-003 完成：1) 安装 rollup-plugin-visualizer；2) 配置 Vite build manualChunks (vendor-recharts/radix/framer/router/misc) 和 chunkSizeWarningLimit (650KB)；3) 添加 build:analyze 脚本；4) 创建 baseline/bundle-sizes.json 和 README.md；5) 验证 build 成功 + stats.html 生成 + 506 测试通过",
+  "implementationStatus": "epic-004 iter-006 全部 5 个迭代已完成：iter-006.1 桌面端顶部导航折叠（MoreMenu），iter-006.2 移动端弹窗布局自适应（DialogContent/ResultModal），iter-006.3 成就 toast 短暂化（3s→1.5s），iter-006.4 排行榜数据范围标注，iter-006.5 听写模式独立体验已存在；531 测试全部通过，build 成功（2.90s，462.65 kB gzip）",
   "pendingQuestions": [],
   "awaitingInputSince": null,
   "resumedStatus": null,
@@ -191,6 +239,16 @@
     "version": "1.0",
     "pending": [],
     "history": [
+      {
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "epic-004",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；移动端弹窗词库卡片改单列/两列自适应禁止溢出；成就提示改短暂 toast；排行榜明确标注数据范围；听写模式独立提示和独立体验。",
+        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈",
+        "createdAt": "2026-05-10T17:18:00.000Z",
+        "executedAt": "2026-05-10T12:22:19.704Z",
+        "executionNote": "已纳入 epic-004 iter-006 响应式布局深度重构提案，5 个子项：桌面顶部折叠重构、移动端弹窗自适应、成就toast短暂化、排行榜范围标注、听写模式独立体验。全部 Agent 支持，优先级 critical。"
+      },
       {
         "id": "eo-1778391382486-2",
         "type": "experience-officer",
@@ -267,7 +325,7 @@
     "deployed": true,
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
-    "deployedAt": "2026-05-10T19:39:00.000Z",
-    "version": "v0.24.0"
+    "deployedAt": "2026-05-10T14:40:00.000Z",
+    "version": "v0.26.0"
   }
 }

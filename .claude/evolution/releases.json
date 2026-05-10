@@ -2,6 +2,20 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.26.0",
+      "tag": "v0.26.0",
+      "commit": "f82bc38",
+      "date": "2026-05-10T14:39:54.721Z",
+      "iterationId": "iter-006.1",
+      "title": "桌面端顶部导航折叠重构",
+      "features": [
+        "Update arch.md/exp.md/qa.md with latest iteration learnings",
+        "Archive cycle 2026-05-10-46 report",
+        "Update releases.json with v0.25.0"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.25.0",
       "tag": "v0.25.0",
       "commit": "7bde648",

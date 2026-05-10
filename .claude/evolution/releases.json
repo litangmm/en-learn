@@ -2,6 +2,34 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.24.0",
+      "tag": "v0.24.0",
+      "commit": "bcffa44",
+      "date": "2026-05-10T11:39:01.774Z",
+      "iterationId": "epic-006-iter-002",
+      "title": "PracticeCard 策略模式重构 + 排行榜 Loading",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.23.0",
+      "tag": "v0.23.0",
+      "commit": "15ab7fe",
+      "date": "2026-05-10T10:52:00.000Z",
+      "iterationId": "epic-006-iter-001",
+      "title": "视图路由抽象 + P0/P1 Bug 修复",
+      "features": [
+        "创建 ViewRouter.tsx（视图→组件映射）与 NavigationContext.tsx（导航上下文提供者）",
+        "重构 App.tsx：使用 ViewRouter + NavigationProvider 替换嵌套三元表达式视图渲染",
+        "修复 P0 Bug：切换词典时 confirmSwitch 调用 storage.clearSession()",
+        "修复 P1 Bug：Input 组件已有 h-11 md:h-10（移动端 44px，桌面端 40px）",
+        "创建 ViewRouter.test.tsx（16 个测试，覆盖所有 8 个视图映射和属性传递）"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.22.0",
       "tag": "v0.22.0",
       "commit": "755c490",

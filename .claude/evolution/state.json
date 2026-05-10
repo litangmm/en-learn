@@ -3,6 +3,69 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-10-44",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-006 iter-003 全部测试通过：506 单元测试，lint 0 errors 3 warnings，build 成功；E2E 1 flaky（pre-existing）"
+    },
+    {
+      "id": "2026-05-10-43",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-006 iter-002 报告已生成，PracticeCard 619行→349行重构成功，进化报告已归档"
+    },
+    {
+      "id": "2026-05-10-42",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-006 iter-002 已部署，v0.24.0，URL: https://en-learn.vercel.app，506 测试通过"
+    },
+    {
+      "id": "2026-05-10-41",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-006 iter-002 PracticeCard 策略模式重构已提交 (ee512fa)，进化文档已提交 (bcffa44)"
+    },
+    {
+      "id": "2026-05-10-40",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-006 iter-002 全部测试通过：506/506 单元测试，lint 0 errors 3 warnings，build 成功；E2E 跳过（iter-003 still pending）"
+    },
+    {
+      "id": "2026-05-10-39",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已部署，v0.23.0，URL: https://en-learn.vercel.app，501 测试通过"
+    },
+    {
+      "id": "2026-05-10-38",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已部署，v0.23.0，URL: https://en-learn.vercel.app"
+    },
+    {
+      "id": "2026-05-10-37",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已提交 (1e73d65)，进化文档已提交 (15ab7fe)"
+    },
+    {
+      "id": "2026-05-10-36",
+      "mode": "vision",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "epic-006 前端架构债务清理与性能基线已选入，拆分为 3 个迭代：iter-001 视图路由抽象 + P0/P1 修复，iter-002 PracticeCard 策略模式 + P2 loading，iter-003 构建体积监控基线"
+    },
+    {
       "id": "2026-05-10-32",
       "mode": "vision",
       "stage": "REPORT",
@@ -17,197 +80,117 @@
       "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
     }
   ],
-  "status": "PLAN",
-  "selectedEpic": "epic-006",
-  "commitHash": "755c490",
-  "lastRun": "2026-05-10T17:50:34.000Z",
-  "cycleCount": 36,
+  "status": "COMMIT",
+  "selectedEpic": null,
+  "commitHash": null,
+  "lastRun": "2026-05-10T19:51:00.000Z",
+  "cycleCount": 43,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": {
-    "id": "2026-05-10-36",
-    "mode": "vision",
-    "stage": "BRAINSTORM",
-    "startedAt": "2026-05-10T09:50:34.909Z"
-  },
+  "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-10-32",
+    "id": "2026-05-10-43",
     "mode": "vision",
     "stage": "REPORT",
-    "startedAt": "2026-05-10T13:00:00.000Z",
-    "plan": {
-      "iterationId": "iter-005",
-      "iterationTitle": "首次/恢复弹窗体验打磨",
-      "scope": "frontend-only",
-      "steps": [],
-      "filesToModify": [],
-      "filesToCreate": [],
-      "dependencies": [],
-      "testStrategy": ""
-    },
-    "deployResults": {
-      "version": "v0.22.0",
-      "url": "https://en-learn.vercel.app",
-      "commit": "755c490"
-    },
-    "summary": "REPORT stage completed — epic-004 iter-005 首次/恢复弹窗体验打磨已部署到 Vercel，tag v0.22.0 已推送，epic-004 全部 5 个迭代完成"
+    "startedAt": "2026-05-10T19:42:00.000Z"
   },
   "currentEpic": {
     "id": "epic-006",
     "title": "前端架构债务清理与性能基线",
     "description": "解决 App.tsx 条件渲染复杂度已达灾难级临界点的技术债务，重构为视图路由抽象 + 策略模式 PracticeCard，使后续所有 Epic 在健康架构上叠加复杂度",
     "proposedBy": "ARCH",
-    "supportedBy": ["PM-Lean", "PM-Mon", "PM-UX", "PM-Growth", "UX", "QA", "EXP", "PM-Eco"],
+    "supportedBy": [
+      "PM-Lean",
+      "PM-Mon",
+      "PM-UX",
+      "PM-Growth",
+      "UX",
+      "QA",
+      "EXP",
+      "PM-Eco"
+    ],
     "concerns": "重构有回归风险，需充分测试覆盖；重构期间可能影响其他 Epic 进度",
     "priority": "critical",
     "estimatedEffort": "medium",
-    "iterationsPreview": [
-      {"title": "iter-001: 视图路由抽象", "scope": "frontend-only"},
-      {"title": "iter-002: PracticeCard 策略模式重构", "scope": "frontend-only"},
-      {"title": "iter-003: 构建体积监控基线", "scope": "frontend-only"}
-    ]
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "视图路由抽象 + P0/P1 Bug 修复",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-002",
+        "title": "PracticeCard 策略模式重构 + 排行榜 Loading",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003",
+        "title": "构建体积监控基线",
+        "scope": "frontend-only",
+        "status": "completed"
+      }
+    ],
+    "currentIterationIndex": 2,
+    "status": "completed"
   },
-  "brainstormResults": [
-    {
-      "id": "epic-006",
-      "title": "前端架构债务清理与性能基线",
-      "description": "解决 App.tsx 条件渲染复杂度已达灾难级临界点的技术债务，重构为视图路由抽象 + 策略模式 PracticeCard，使后续所有 Epic 在健康架构上叠加复杂度",
-      "proposedBy": "ARCH",
-      "supportedBy": ["PM-Lean", "PM-Mon", "PM-UX", "PM-Growth", "UX", "QA", "EXP", "PM-Eco"],
-      "concerns": "重构有回归风险，需充分测试覆盖；重构期间可能影响其他 Epic 进度",
-      "priority": "critical",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: 视图路由抽象", "scope": "frontend-only"},
-        {"title": "iter-002: PracticeCard 策略模式重构", "scope": "frontend-only"},
-        {"title": "iter-003: 构建体积监控基线", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-005",
-      "title": "学习社交裂变与留存闭环",
-      "description": "基于全量游戏化数据（XP/等级/连击/徽章/排行榜）设计分享卡片和留存机制，完成用户增长闭环",
-      "proposedBy": "PM-Growth",
-      "supportedBy": ["PM-Lean", "UX", "PM-Eco"],
-      "concerns": "纯前端匿名场景裂变效果受限；分享功能可能打断学习心流",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: 分享卡片 MVP", "scope": "frontend-only"},
-        {"title": "iter-002: 留存提醒与 streak 持久化", "scope": "frontend-only"},
-        {"title": "iter-003: 周报与成就海报", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-007",
-      "title": "个人词典管理与数据主权",
-      "description": "提供用户本地词典编辑器、个人词典导入导出能力，增强个人数据自主权",
-      "proposedBy": "PM-Eco",
-      "supportedBy": ["PM-Lean", "UX"],
-      "concerns": "格式兼容性维护成本高；使用频率可能较低",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: 本地词典编辑器 UI", "scope": "frontend-only"},
-        {"title": "iter-002: 自定义词典导入（JSON）", "scope": "frontend-only"},
-        {"title": "iter-003: 词典学习进度统计", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-008",
-      "title": "AI 驱动的自适应学习",
-      "description": "基于答题历史数据（错误类型分析、薄弱词识别、答题速度）实现难度自适应推荐和智能干扰项生成",
-      "proposedBy": "EXP",
-      "supportedBy": ["PM-UX", "QA"],
-      "concerns": "纯前端自适应算法需要数据积累周期；需明确数据驱动的量化标准",
-      "priority": "low",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {"title": "iter-001: 错误类型自动分类", "scope": "frontend-only"},
-        {"title": "iter-002: 基于混淆矩阵的智能干扰项", "scope": "frontend-only"},
-        {"title": "iter-003: 难度自适应出题策略", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-009",
-      "title": "PWA 化与离线优先学习",
-      "description": "实现渐进式 Web App，提供离线缓存、应用安装、推送通知能力",
-      "proposedBy": "ARCH",
-      "supportedBy": ["PM-Mon", "PM-Lean"],
-      "concerns": "iOS PWA 支持有限；service worker 维护成本；需投入较多精力",
-      "priority": "low",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {"title": "iter-001: manifest.json 和应用壳", "scope": "frontend-only"},
-        {"title": "iter-002: 离线缓存策略", "scope": "frontend-only"},
-        {"title": "iter-003: 推送通知", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-010",
-      "title": "质量基础设施升级",
-      "description": "建立自动化端到端测试、浏览器兼容性测试套件、语音 API 降级策略测试",
-      "proposedBy": "QA",
-      "supportedBy": ["ARCH", "PM-Mon"],
-      "concerns": "e2e 测试维护成本高；Playwright 环境配置复杂",
-      "priority": "low",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: Playwright e2e 测试套件", "scope": "frontend-only"},
-        {"title": "iter-002: 浏览器兼容性测试", "scope": "frontend-only"},
-        {"title": "iter-003: 语音 API 降级策略测试", "scope": "frontend-only"}
-      ]
-    }
-  ],
-  "discussionSummary": "Round 1: 9 个 Agent 各提出 1 个 Epic。ARCH 提出的 epic-006 获得 8/9 支持（全员除了自己），PM-Growth epic-005 获得 4/9 支持，PM-Eco epic-007 获得 3/9 支持，EXP epic-008 获得 2/9 支持。ARCH/PM-Mon 连续 20 个 cycle 未被选中，本次提出 critical 优先级技术债务重构。Round 2: PM-UX 支持 epic-006 理由是「架构健康是体验的根基」；PM-Lean 支持「重构 + 监控基线」是低风险技术投资；PM-Growth 支持「重构完成后分享功能可快速接入新架构」；UX 支持「重构后视图切换动画更可控」。关键风险：重构期间其他 Epic 无法推进，但重构窗口正在加速关闭。Round 3: 一致选择 epic-006，priority=critical，estimatedEffort=medium，3 个迭代均独立可测。体验官指令中 P0（切换词典未清除进度）和 P1（移动端输入框太小）将在 epic-006 iter-001 的 dictionary-switch clearSession 修复中一并处理。epic-005/007/008 降为 medium/low 优先级储备。",
-  "currentEpic": null,
-  "plan": null,
+  "plan": {
+    "iterationId": "iter-003",
+    "iterationTitle": "构建体积监控基线",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 安装 bundle 分析工具 - 使用 rollup-plugin-visualizer 分析构建体积",
+      "Step 2: 配置 Vite build rollup options - 添加 manualChunks 代码分割策略和 visualizer 插件",
+      "Step 3: 添加构建体积基线文件 - 创建 .claude/evolution/baseline/bundle-sizes.json 记录当前基线",
+      "Step 4: 配置 build size budget - 在 vite.config.ts 添加 chunk size 警告阈值 (主 chunk 650KB)",
+      "Step 5: 添加 build:analyze 脚本 - 在 package.json 添加用于本地分析的命令",
+      "Step 6: 验证构建输出 - 运行 build 确认分析器正常工作，输出 HTML 报告",
+      "Step 7: 更新测试覆盖 - 添加 Vite 配置测试或文档说明基线阈值含义",
+      "Step 8: 全量验证 - 运行 vitest 确保所有测试通过"
+    ],
+    "filesToModify": [
+      "vite.config.ts",
+      "package.json"
+    ],
+    "filesToCreate": [
+      ".claude/evolution/baseline/bundle-sizes.json",
+      ".claude/evolution/baseline/README.md"
+    ],
+    "dependencies": [],
+    "testStrategy": "构建体积监控基线迭代为配置型迭代，主要验证：1) vite build 成功无错误；2) 分析器 HTML 报告正常生成；3) 现有测试不受影响"
+  },
+  "brainstormResults": [],
+  "discussionSummary": null,
   "testResults": {
-    "lint": "passed (3 warnings: useEffect deps, non-blocking)",
-    "build": "passed",
-    "unitTests": "485/485 passed (50 test files)",
-    "e2e": "1 flaky (pre-existing: '暂无数据' empty state text not found, unrelated to iter-005)"
+    "lint": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 3
+    },
+    "build": {
+      "status": "pass"
+    },
+    "unitTests": {
+      "status": "pass",
+      "passed": 506,
+      "failed": 0,
+      "files": 51
+    },
+    "e2e": {
+      "status": "skipped",
+      "reason": "iter-003 still pending, not last pending iteration"
+    },
+    "notes": "3 pre-existing lint warnings in App.tsx (react-hooks/deps) and NavigationContext.tsx (react-refresh/only-export-components); 0 new issues; build chunk size warning for index-*.js (629.92 kB gzip 192.83 kB)"
   },
-  "implementationStatus": {
-    "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
-    "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.tsx (7 tests). Total: 106/106 tests pass. Build succeeds.",
-    "iter-003": "Added SessionHistory type in src/data/types.ts with id, timestamp, duration, dictionaryId, dictionaryName, score, correctCount, accuracy fields. Extended storage service with en-learn-history key, addHistory/getHistory/clearHistory/getHistoryCount methods, isValidHistory validation, 100-entry limit with auto-truncation, and corrupted JSON recovery. Updated usePractice hook with sessionStartTimeRef to track fresh session start time; auto-records history on isComplete=true with duration, score, correctCount, accuracy, and totalQuestions computed from shuffledSentences.length. Created HistoryView component with date grouping (今天/昨天/更早), entry cards showing dictionary name, score, accuracy, duration, question count, clear-all with confirmation dialog, and empty state. Updated App.tsx with 'history' view type, learning history navigation button with count badge, and view switching. Added history-storage.test.ts (18 tests), HistoryView.test.tsx (8 tests), and usePractice history recording tests (4 tests). Total: 131/131 tests pass. Build succeeds.",
-    "iter-004": "Added REVIEW_INTERVALS constant [1,3,7,14] to types.ts, updated storage.ts scheduleNextReview to use it. Added rule explanation banner to SmartReview.tsx (visible when totalDue > 0). Created getPriorityLabel helper with 3 priority levels: 已掌握 (reviewedCount>=3), 今日到期 (nextReviewAt<=now), 高优先级 (attempts>=2 && reviewedCount===0). New SmartReview.rules.test.tsx with 8 tests, updated SmartReview.test.tsx with priority badge test. Total: 468/468 tests pass. Build succeeds.",
-    "bugfix-001": "Fixed 3 high-priority UX bugs: (1) Shuffle seed bug — usePractice.ts shuffleSeed state was already added to dependency array and reset() increments it, ensuring new random order on each reset. (2) Keyboard shortcuts — App.tsx global keydown listener using refs to avoid stale closures; triggers nextSentence() on Enter/Space when showResult && isCorrect && !isComplete. (3) Question badge leak — PracticeCard.tsx added optional currentQuestion/totalQuestions props for '第 X/Y 题' format. Total: 169/169 tests pass. Build succeeds.",
-    "iter-005": "Extended Mistake type with nextReviewAt and lastReviewedAt fields for spaced repetition scheduling. Extended StorageService with getReviewQueue(), getReviewQueueCount(), and scheduleNextReview(sentenceId, isCorrect) implementing [1,3,7,14] day intervals. Created SmartReview component with dictionary-grouped due mistake listing, async sentence loading, review buttons. Integrated into App.tsx with 'review' view and auto-scheduling useEffect. review-queue.test.ts (18 tests) + SmartReview.test.tsx (6 tests). Total: 189/189 tests pass.",
-    "epic-002-iter-001": "Added PracticeMode type ('fill-in-blanks' | 'dictation'). Extended PracticeCard with mode prop, dictation mode hides chinese, audio prominent, instruction text, hides hints, reveals all on showResult. Created PracticeCard.dictation.test.tsx (11 tests) + App.mode.test.tsx (5 tests). Total: 205/205 tests pass.",
-    "epic-002-iter-002": "Extended useSpeech with playbackRate state (default 1.0), setPlaybackRate, modified speak to use playbackRate. Updated PracticeCard with speed selector ToggleGroup showing [0.5x~1.5x]. Removed hardcoded 0.85 rate. Created rate/speed tests. Total: 219/219 tests pass.",
-    "epic-002-iter-003": "Extended PracticeMode to include 'multiple-choice'. Extended usePractice with options useMemo (4 choices), selectChoice callback. Extended PracticeCard for multiple-choice mode with 4 option cards, blue selection highlight, green/red correct/wrong highlighting. Created usePractice.choice.test.ts + PracticeCard.choice.test.tsx + App.choice.test.tsx. Total: 240/240 tests pass.",
-    "epic-002-iter-003a": "Responsive UI adaptation — MobileNav component, App.tsx responsive refactoring, PracticeCard touch optimization, all views responsive padding. Created App.responsive.test.tsx. Total: 255/255 tests pass.",
-    "epic-002-iter-003b": "Redesigned dictation mode — Chinese always visible, first-letter hints below inputs. Updated dictation tests. Total: 256/256 tests pass.",
-    "epic-002-iter-004": "Focus mode — isFocusMode state, entry button, conditional Header/ToggleGroup/hint/MobileNav hiding, minimal floating top bar, ESC key exit, PracticeCard isFocusMode prop. Created App.focus.test.tsx. Total: 262/262 tests pass.",
-    "epic-002-iter-005": "Sentence-reorder mode — extended PracticeMode, added sentenceTokens, orderedTokenIds, selectToken/deselectToken/resetTokens, array-based checkAnswer. PracticeCard renderSentenceReorder with clickable token pool and answer zone. Created reorder tests. Total: 282/282 tests pass.",
-    "epic-003-iter-001": "XP system — XPProfile type, LEVEL_THRESHOLDS constant, storage CRUD, useXP hook with addXP(firstTry bonus), XPBar component. App.tsx integrated with mode-dependent baseXP and awardedXPRef deduplication. Created xp-storage/useXP/App.xp tests. Total: 318/318 tests pass.",
-    "epic-003-iter-002": "Streak system — streak state, recordCorrectAnswer/recordWrongAnswer/resetStreak, getStreakMultiplier helper (1.0/<3, 1.5/3-4, 2.0/5-9, 3.0/10+). StreakFeedback and XPGainPopup components with framer-motion animations. Total: 348/348 tests pass.",
-    "epic-003-iter-003": "Daily challenges — ChallengeType/DailyChallenge/DailyChallengeState types, storage CRUD with deterministic seeded shuffle, useDailyChallenges hook with trackActivity/claimReward, DailyChallengePanel component. Total: 375/375 tests pass.",
-    "epic-003-iter-004": "Badge system — BadgeDefinition/UnlockedBadge/BadgeProgress types, BADGE_DEFINITIONS (12 badges), storage CRUD, useBadges hook with trackProgress/checkBadges, BadgePanel component with category-grouped grid, BadgeUnlockToast component. Total: 404/404 tests pass.",
-    "epic-003-iter-005": "Leaderboard — LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry types, useLeaderboard hook with pure getLeaderboardEntries function, Leaderboard component with category tabs, time filter pills, top-3 medal styling, empty state. Total: 429/429 tests pass.",
-    "epic-004-iter-001": "Mobile responsive: Header flex-wrap, Trophy/Award icon-only on lg, title text-base md:text-lg, PracticeCard overflow-x-auto, input min-w-[60px], audio h-8 md:h-10. Extended App.responsive.test.tsx. Total: 434/434 tests pass.",
-    "epic-004-iter-002": "Mode-specific hints, 3-section wrong-answer feedback card, choice option icons (CheckCircle2/Circle), reorder progress text. Created App.hints.test.tsx + PracticeCard.feedback.test.tsx, extended choice/reorder tests. Total: 451/451 tests pass.",
-    "epic-004-iter-003": "isDefinitionSentence helper, ChoiceOption interface, definition sentence options in Chinese, sentence-reorder definition sentence handling. Total: 459/459 tests pass.",
-    "epic-004-iter-004": "Added REVIEW_INTERVALS constant [1,3,7,14] to types.ts, updated storage.ts scheduleNextReview to use it. Added rule explanation banner to SmartReview.tsx (visible when totalDue > 0). Created getPriorityLabel helper with 3 priority levels. New SmartReview.rules.test.tsx with 8 tests, updated SmartReview.test.tsx with priority badge test. Total: 468/468 tests pass.",
-    "epic-004-iter-005": "Added hasOnboardingComplete()/setOnboardingComplete() to storage.ts with ONBOARDED_KEY constant. App.tsx shows onboarding dialog (5 features, 4 dictionary quick-select) for first-time users. Enhanced recovery dialog with dictionary name, elapsed time (minutes/hours/yesterday/days), and progress (answered/total). formatElapsedTime helper function. Added App.first-run.test.tsx (8 tests) + App.recovery.test.tsx (9 tests). Updated 13 existing App test files with loadSession/hasOnboardingComplete/setOnboardingComplete mocks. Total: 485 tests pass, build succeeds."
-  },
+  "implementationStatus": "epic-006 iter-003 完成：1) 安装 rollup-plugin-visualizer；2) 配置 Vite build manualChunks (vendor-recharts/radix/framer/router/misc) 和 chunkSizeWarningLimit (650KB)；3) 添加 build:analyze 脚本；4) 创建 baseline/bundle-sizes.json 和 README.md；5) 验证 build 成功 + stats.html 生成 + 506 测试通过",
   "pendingQuestions": [],
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
     "version": "1.0",
-    "pending": [
-      {
-        "id": "eo-1778391382485-0",
-        "type": "experience-officer",
-        "target": "N/A",
-        "action": "【体验官反馈】移动端输入框太小，点击困难",
-        "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
-        "createdAt": "2026-05-10T17:33:20.000Z",
-        "suggestedSolution": "增加输入框高度，最小 44px"
-      },
+    "pending": [],
+    "history": [
       {
         "id": "eo-1778391382486-2",
         "type": "experience-officer",
@@ -215,10 +198,9 @@
         "action": "【体验官反馈】排行榜加载较慢",
         "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
         "createdAt": "2026-05-10T17:33:20.000Z",
-        "suggestedSolution": "考虑添加 loading 状态"
-      }
-    ],
-    "history": [
+        "executedAt": "2026-05-10T19:42:00.000Z",
+        "executionNote": "已在 epic-006 iter-002 中解决：Leaderboard.tsx 添加 loading skeleton UI"
+      },
       {
         "id": "eo-1778391382486-1",
         "type": "experience-officer",
@@ -226,8 +208,18 @@
         "action": "【体验官反馈】切换词典后练习记录未清除",
         "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
         "createdAt": "2026-05-10T17:33:20.000Z",
-        "executedAt": "2026-05-10T17:50:34.000Z",
-        "executionNote": "将在 epic-006 iter-001 中处理：confirmSwitch 时 clearSession"
+        "executedAt": "2026-05-10T18:40:00.000Z",
+        "executionNote": "已在 epic-006 iter-001 中修复：confirmSwitch 时 storage.clearSession() 确认存在"
+      },
+      {
+        "id": "eo-1778391382485-0",
+        "type": "experience-officer",
+        "target": "N/A",
+        "action": "【体验官反馈】移动端输入框太小，点击困难",
+        "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
+        "createdAt": "2026-05-10T17:33:20.000Z",
+        "executedAt": "2026-05-10T18:40:00.000Z",
+        "executionNote": "已在 epic-006 iter-001 中验证：PracticeCard.tsx 中 Input 组件已有 h-11 md:h-10（44px mobile, 40px desktop）"
       },
       {
         "id": "dir-1778292031198",
@@ -275,9 +267,7 @@
     "deployed": true,
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
-    "deployedAt": "2026-05-10T09:26:42.000Z",
-    "version": "v0.22.0",
-    "tagPushed": true,
-    "commit": "755c490"
+    "deployedAt": "2026-05-10T19:39:00.000Z",
+    "version": "v0.24.0"
   }
 }

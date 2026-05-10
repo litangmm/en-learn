@@ -150,6 +150,16 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-10 (cycle-2026-05-10-46)
+- **相关质量门禁**: 构建稳定性、配置验证、测试回归
+- **本次验证**: epic-006 iter-003「构建体积监控基线」质量门禁验证
+  - vite build 成功（2.77s）
+  - rollup-plugin-visualizer 正常生成 stats.html
+  - manualChunks 代码分割生效（vendor-recharts/radix/framer/router/misc）
+  - chunkSizeWarningLimit (650KB) 配置生效：index-DRf36Qah.js 629.92 kB 接近但未超限
+  - 全量回归：**506/506 单元测试通过**（51 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings）
+- **备注**: iter-003 是配置型迭代，验证策略聚焦于「构建成功 + 配置生效 + 无回归」。506 测试是项目历史新高位。配置型迭代同样需要完整测试覆盖，确保配置变更不影响现有功能。**下一 Epic epic-004 响应式重构需增加 viewport 边界测试覆盖**
+
 ## 成功模式
 （由进化引擎自动总结）
 

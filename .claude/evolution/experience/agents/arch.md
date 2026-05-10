@@ -125,6 +125,18 @@
   - Commits: 1e73d65（代码）+ 15ab7fe（文档），版本 v0.23.0
 - **观察**: ARCH 在连续 20+ 个 cycle 未被选中后终于入选。关键转折点：App.tsx 复杂度已达灾难级临界点（~300 行条件渲染代码，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），重构窗口正在加速关闭。epic-003 全部 5 个迭代完成后，ARCH 持续提出的架构债务警告终于得到响应。ViewRouter 的 view → component 映射设计和 NavigationContext 的 Provider 模式实现了视图与逻辑解耦，为后续 iter-002（PracticeCard 策略模式）和 iter-003（构建体积监控基线）奠定基础。
 
+### 2026-05-10 (cycle-2026-05-10-46)
+- **提案 Epic**: epic-006「前端架构债务清理与性能基线」
+- **结果**: **全部完成** — epic-006 iter-003 构建体积监控基线完成
+- **当前状态**: **连续未被选中计数清零**（epic-006 全部 3 个 iterations 完成）
+- **完成内容**:
+  - iter-003 安装 rollup-plugin-visualizer，配置 manualChunks（vendor-recharts/radix/framer/router/misc）和 chunkSizeWarningLimit (650KB)
+  - 创建 baseline/bundle-sizes.json 和 baseline/README.md
+  - 添加 build:analyze 脚本
+  - 验证 build 成功（2.77s），stats.html 生成，506/506 测试通过
+  - 版本 v0.25.0，commit 7bde648
+- **观察**: epic-006 全部 3 个迭代已完成。ViewRouter + NavigationContext 抽象了视图路由，PracticeCard 策略模式解耦了模式渲染，构建体积监控提供了性能基线。App.tsx 从 ~300 行条件渲染简化到清晰的 ViewRouter 配置。ARCH 连续 20+ 个 cycle 的坚持最终完成了历史使命。**epic-004「体验优化与响应式适配」的响应式布局问题（dir-1778414197688 指令：桌面顶部+移动端弹窗+成就toast+排行榜标注+听写独立体验）应成为下一 Epic 优先候选**
+
 ## 成功模式
 （由进化引擎自动总结）
 

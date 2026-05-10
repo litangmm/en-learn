@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.25.0",
+      "tag": "v0.25.0",
+      "commit": "7bde648",
+      "date": "2026-05-10T11:59:49.910Z",
+      "iterationId": "iter-003",
+      "title": "构建体积监控基线",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.24.0",
       "tag": "v0.24.0",
       "commit": "bcffa44",

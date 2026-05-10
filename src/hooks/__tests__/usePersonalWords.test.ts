@@ -340,6 +340,107 @@ describe('usePersonalWords', () => {
     });
   });
 
+  describe('toggleMark', () => {
+    it('marks an unmarked word', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.toggleMark('apple', 'An apple a day.');
+      });
+
+      expect(result.current.isMarked('apple')).toBe(true);
+    });
+
+    it('unmarks a marked word', () => {
+      storage.addPersonalWord(mockWord);
+
+      const { result } = renderHook(() => usePersonalWords());
+
+      // Verify it's marked
+      act(() => {
+        result.current.getWords();
+      });
+      expect(result.current.isMarked('apple')).toBe(true);
+
+      // Toggle to unmark
+      act(() => {
+        result.current.toggleMark('apple');
+      });
+
+      expect(result.current.isMarked('apple')).toBe(false);
+    });
+
+    it('toggleMark twice returns word to original state', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      // Initially not marked
+      expect(result.current.isMarked('apple')).toBe(false);
+
+      // Mark it
+      act(() => {
+        result.current.toggleMark('apple', 'Example sentence.');
+      });
+      expect(result.current.isMarked('apple')).toBe(true);
+
+      // Unmark it
+      act(() => {
+        result.current.toggleMark('apple');
+      });
+      expect(result.current.isMarked('apple')).toBe(false);
+    });
+
+    it('toggleMark calls addWord with correct data for new word', () => {
+      const addWordSpy = vi.spyOn(storage, 'addPersonalWord');
+
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.toggleMark('newWord', 'Example sentence.');
+      });
+
+      expect(addWordSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          word: 'newWord',
+          marked: true,
+        })
+      );
+    });
+
+    it('toggleMark calls removeWord for already marked word', () => {
+      storage.addPersonalWord(mockWord);
+      const removeWordSpy = vi.spyOn(storage, 'removePersonalWord');
+
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.getWords();
+      });
+
+      act(() => {
+        result.current.toggleMark('apple');
+      });
+
+      expect(removeWordSpy).toHaveBeenCalledWith('apple');
+    });
+
+    it('toggleMark without sentence parameter works correctly', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.toggleMark('apple');
+      });
+
+      expect(result.current.isMarked('apple')).toBe(true);
+
+      // Toggle again
+      act(() => {
+        result.current.toggleMark('apple');
+      });
+
+      expect(result.current.isMarked('apple')).toBe(false);
+    });
+  });
+
   describe('duplicate handling', () => {
     it('adding same word twice does not create duplicates', () => {
       const { result } = renderHook(() => usePersonalWords());

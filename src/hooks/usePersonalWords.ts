@@ -65,11 +65,32 @@ export function usePersonalWords() {
     return words;
   }, [words]);
 
+  /**
+   * Toggle the marked state of a word.
+   * If the word is marked, removes it.
+   * If not marked, creates a new PersonalWord entry with marked=true.
+   */
+  const toggleMark = useCallback((word: string, sentence?: string) => {
+    if (isMarked(word)) {
+      removeWord(word);
+    } else {
+      addWord({
+        word,
+        translation: '',
+        exampleSentence: sentence ?? '',
+        exampleSentenceCn: '',
+        marked: true,
+        markedAt: Date.now(),
+      });
+    }
+  }, [isMarked, removeWord, addWord]);
+
   return {
     addWord,
     removeWord,
     isMarked,
     getCount,
     getWords,
+    toggleMark,
   };
 }

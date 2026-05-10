@@ -69,6 +69,8 @@ vi.mock('@/data/loader', () => ({
 vi.mock('@/services/storage', () => ({
   storage: {
     getPersonalWords: vi.fn().mockReturnValue([]),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
   },
 }));
 
@@ -441,6 +443,250 @@ describe('DictionaryBrowser', () => {
 
       // Verify loadDictionary was called with 'cet4'
       expect(loadDictionaryMock).toHaveBeenCalledWith('cet4');
+    });
+  });
+
+  describe('Mark button and toggle', () => {
+    it('shows star button on word cards', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Find star buttons (should be one per card)
+      const starButtons = screen.getAllByTitle(/标记为生词|取消标记/);
+      expect(starButtons.length).toBeGreaterThan(0);
+    });
+
+    it('toggles mark state when clicking star button', async () => {
+      const { storage } = await import('@/services/storage');
+      // Spy on addPersonalWord to verify it's called
+      const addWordSpy = vi.spyOn(storage, 'addPersonalWord');
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Find star buttons (unmarked words show "标记为生词")
+      const starButtons = screen.getAllByTitle('标记为生词');
+      expect(starButtons.length).toBeGreaterThan(0);
+
+      // Click first star button
+      fireEvent.click(starButtons[0]);
+
+      // Verify addPersonalWord was called (toggleMark calls addWord for unmarked word)
+      expect(addWordSpy).toHaveBeenCalled();
+    });
+
+    it('unmarks word when clicking filled star', async () => {
+      const { storage } = await import('@/services/storage');
+      // Spy on removePersonalWord to verify it's called
+      const removeWordSpy = vi.spyOn(storage, 'removePersonalWord');
+
+      // Mock getPersonalWords to return a word that appears marked
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('新词')).toBeInTheDocument();
+      });
+
+      // Find filled star button (取消标记)
+      const filledStar = screen.getByTitle('取消标记');
+      fireEvent.click(filledStar);
+
+      // Verify removePersonalWord was called (toggleMark calls removeWord for marked word)
+      expect(removeWordSpy).toHaveBeenCalledWith('catches');
+    });
+  });
+
+  describe('只看生词 filter', () => {
+    it('renders "只看生词" toggle switch', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('只看生词')).toBeInTheDocument();
+      });
+    });
+
+    it('shows all words when toggle is off', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+        expect(screen.getByText('tide')).toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/共 5 个单词/)).toBeInTheDocument();
+    });
+
+    it('shows only marked words when toggle is on', async () => {
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('只看生词')).toBeInTheDocument();
+      });
+
+      // Find and click the switch
+      const switchElement = screen.getByRole('switch');
+      fireEvent.click(switchElement);
+
+      await waitFor(() => {
+        // Should show only the marked word
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+        expect(screen.queryByText('tide')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('combines marked filter with search', async () => {
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+        {
+          word: 'Actions',
+          translation: '行动',
+          exampleSentence: 'Actions speak louder than words.',
+          exampleSentenceCn: '行动胜于言辞。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Enable marked filter
+      fireEvent.click(screen.getByRole('switch'));
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+      });
+
+      // Apply search filter
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'catches' } });
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Personal word count badge', () => {
+    it('shows count badge when words are marked', async () => {
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+        {
+          word: 'Actions',
+          translation: '行动',
+          exampleSentence: 'Actions speak louder than words.',
+          exampleSentenceCn: '行动胜于言辞。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Should show count badge with 2
+        expect(screen.getByText('2')).toBeInTheDocument();
+      });
+    });
+
+    it('does not show count badge when no words are marked', async () => {
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Count badge should not appear (only shows when > 0)
+      // No standalone number badges in header when count is 0
+    });
+  });
+
+  describe('SessionStorage flag for 生词本', () => {
+    it('initializes with marked filter when sessionStorage flag is set', async () => {
+      // Set the sessionStorage flag
+      sessionStorage.setItem('dict-browser-marked-only', 'true');
+
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Filter should be enabled (switch should be checked)
+        expect(screen.getByRole('switch')).toBeChecked();
+        // Only marked word should be visible
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Flag should be cleared after initialization
+      expect(sessionStorage.getItem('dict-browser-marked-only')).toBeNull();
     });
   });
 

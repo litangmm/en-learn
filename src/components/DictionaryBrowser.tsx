@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
@@ -30,18 +31,33 @@ const LEVEL_OPTIONS = [
 
 interface DictionaryBrowserProps {
   onBack: () => void;
+  /** If true, the "只看生词" filter will be enabled by default */
+  showMarkedOnly?: boolean;
 }
 
-export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
+export function DictionaryBrowser(props: DictionaryBrowserProps) {
+  const { onBack } = props;
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string>('cet4');
   const [searchQuery, setSearchQuery] = useState('');
   const [levelFilter, setLevelFilter] = useState<string>('all');
+  const [showMarkedOnly, setShowMarkedOnly] = useState(
+    // Initialize from sessionStorage flag or prop
+    () => sessionStorage.getItem('dict-browser-marked-only') === 'true' ||
+          props.showMarkedOnly === true
+  );
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  const { isMarked } = usePersonalWords();
+  const { isMarked, toggleMark, getCount } = usePersonalWords();
+
+  // Clear sessionStorage flag on mount if present
+  useEffect(() => {
+    if (sessionStorage.getItem('dict-browser-marked-only') === 'true') {
+      sessionStorage.removeItem('dict-browser-marked-only');
+    }
+  }, []);
 
   // Handle dictionary change
   const handleDictionaryChange = useCallback((value: string) => {
@@ -88,7 +104,7 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
     };
   }, [selectedDictionaryId]);
 
-  // Filter sentences based on search query and level filter (case-insensitive)
+  // Filter sentences based on search query, level filter, and marked status (case-insensitive)
   const filteredSentences = useMemo(() => {
     let result = sentences;
 
@@ -108,8 +124,16 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
       });
     }
 
+    // Apply marked filter
+    if (showMarkedOnly) {
+      result = result.filter(sentence => {
+        const word = sentence.blanks[0]?.word || '';
+        return isMarked(word);
+      });
+    }
+
     return result;
-  }, [sentences, searchQuery, levelFilter]);
+  }, [sentences, searchQuery, levelFilter, showMarkedOnly, isMarked]);
 
   return (
     <div className="flex flex-col h-full">
@@ -120,6 +144,11 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
         </Button>
         <BookOpen className="h-5 w-5 text-primary" />
         <h2 className="text-lg font-semibold">我的词库</h2>
+        {getCount() > 0 && (
+          <Badge variant="outline" className="ml-1">
+            {getCount()}
+          </Badge>
+        )}
       </div>
 
       {/* Controls: Search, Level Filter and Dictionary Selector */}
@@ -133,6 +162,18 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
             onChange={e => setSearchQuery(e.target.value)}
             className="pl-9"
           />
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <Switch
+              id="show-marked-only"
+              checked={showMarkedOnly}
+              onCheckedChange={setShowMarkedOnly}
+            />
+            <label htmlFor="show-marked-only" className="text-sm cursor-pointer">
+              只看生词
+            </label>
+          </div>
         </div>
         <div className="flex gap-2">
           <Select value={levelFilter} onValueChange={handleLevelFilterChange}>
@@ -194,12 +235,22 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
 
               return (
                 <Card key={sentence.id} className="relative">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-3 right-3 h-8 w-8"
+                    onClick={() => toggleMark(word)}
+                    title={marked ? '取消标记' : '标记为生词'}
+                  >
+                    <Star
+                      className={`h-4 w-4 ${marked ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
+                    />
+                  </Button>
                   {marked && (
                     <Badge
                       variant="secondary"
-                      className="absolute top-3 right-3"
+                      className="absolute top-3 right-12"
                     >
-                      <Star className="h-3 w-3 fill-current mr-1" />
                       新词
                     </Badge>
                   )}

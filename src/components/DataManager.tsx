@@ -241,12 +241,30 @@ export function DataManager({ onBack, onNavigate }: DataManagerProps) {
             </Button>
             {onNavigate && (
               <Button
-                onClick={() => onNavigate('dictionary-browser')}
+                onClick={() => {
+                  // Clear any existing flag so it opens in normal mode
+                  sessionStorage.removeItem('dict-browser-marked-only');
+                  onNavigate('dictionary-browser');
+                }}
                 className="w-full gap-2"
                 variant="outline"
               >
                 <BookMarked className="w-4 h-4" />
                 我的词库
+              </Button>
+            )}
+            {onNavigate && (
+              <Button
+                onClick={() => {
+                  // Set flag so DictionaryBrowser opens with "只看生词" enabled
+                  sessionStorage.setItem('dict-browser-marked-only', 'true');
+                  onNavigate('dictionary-browser');
+                }}
+                className="w-full gap-2"
+                variant="outline"
+              >
+                <BookMarked className="w-4 h-4" />
+                生词本
               </Button>
             )}
             <input

@@ -2,6 +2,34 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.21.0",
+      "tag": "v0.21.0",
+      "commit": "5925e8b",
+      "date": "2026-05-10T04:53:50.312Z",
+      "iterationId": "iter-004",
+      "title": "智能复习规则可视化（P3）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.20.0",
+      "tag": "v0.20.0",
+      "commit": "09cd7cc",
+      "date": "2026-05-10T04:16:01.502Z",
+      "iterationId": "iter-003",
+      "title": "模式语义与题目数据统一（P2）",
+      "features": [
+        "Add isDefinitionSentence() helper to detect quoted definition sentences",
+        "Update multiple-choice options to show Chinese for definition sentences",
+        "Add displaySentence logic for definition sentences in PracticeCard",
+        "Add warning for definition sentences in sentence-reorder mode",
+        "Update PracticeCard.choice.test.tsx with definition sentence tests"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.19.0",
       "tag": "v0.19.0",
       "commit": "d8baeb3",

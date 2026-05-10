@@ -1,6 +1,40 @@
 {
   "version": "1.0",
-  "pending": [],
+  "pending": [
+    {
+      "id": "eo-1778391382485-0",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】移动端输入框太小，点击困难\n\n复现步骤：\n1. 使用手机浏览器打开\n2. 切换到填空模式\n3. 点击输入框\n\n建议：增加输入框高度，最小 44px\n\n发现次数：2",
+      "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
+      "createdAt": "2026-05-10T05:36:22.485Z",
+      "executedAt": null,
+      "executionNote": null,
+      "reviewedNote": ""
+    },
+    {
+      "id": "eo-1778391382486-1",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】切换词典后练习记录未清除\n\n复现步骤：\n1. 完成几道题\n2. 切换词典\n3. 发现进度还在\n\n建议：切换词典时清空进度\n\n发现次数：1",
+      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
+      "createdAt": "2026-05-10T05:36:22.486Z",
+      "executedAt": null,
+      "executionNote": null,
+      "reviewedNote": ""
+    },
+    {
+      "id": "eo-1778391382486-2",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】排行榜加载较慢\n\n复现步骤：\n1. 点击排行榜\n2. 等待数秒\n\n建议：考虑添加 loading 状态\n\n发现次数：1",
+      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
+      "createdAt": "2026-05-10T05:36:22.486Z",
+      "executedAt": null,
+      "executionNote": null,
+      "reviewedNote": ""
+    }
+  ],
   "history": [
     {
       "id": "dir-user-review-001",

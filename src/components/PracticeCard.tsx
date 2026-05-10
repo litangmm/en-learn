@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { Sentence, PracticeMode, SentenceToken, ChoiceOption } from '@/data/types';
+import { isDefinitionSentence } from '@/data/types';
 
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
@@ -66,6 +67,14 @@ export function PracticeCard({
   const isMultipleChoice = mode === 'multiple-choice';
   const isSentenceReorder = mode === 'sentence-reorder';
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Determine display text for the sentence
+  // For definition sentences, show Chinese translation as primary display
+  // For normal sentences, show English
+  const displayText = isDefinitionSentence(sentence) ? sentence.chinese : sentence.english;
+
+  // Check if current sentence is a definition sentence
+  const isDefinition = isDefinitionSentence(sentence);
 
   // Auto-focus first empty input on mount
   useEffect(() => {
@@ -201,6 +210,17 @@ export function PracticeCard({
 
   // Render sentence-reorder mode
   const renderSentenceReorder = () => {
+    // Check if this is a definition sentence - if so, show warning
+    if (isDefinition) {
+      return (
+        <div className="p-6 bg-amber-50 rounded-xl border border-amber-200 text-center">
+          <p className="text-amber-700 font-medium text-base">
+            此题目为释义型句子，不适合连词成句练习
+          </p>
+        </div>
+      );
+    }
+
     const selectedTokens = orderedTokenIds
       .map((id) => sentenceTokens.find((t) => t.id === id))
       .filter(Boolean) as SentenceToken[];
@@ -315,6 +335,15 @@ export function PracticeCard({
 
   // Parse English sentence and replace blanks with inputs
   const renderSentenceWithBlanks = () => {
+    // For definition sentences, show Chinese translation as primary display
+    if (isDefinition) {
+      return (
+        <p className={`text-slate-700 font-medium leading-relaxed ${isFocusMode ? 'text-lg md:text-xl' : 'text-base md:text-lg'}`}>
+          {displayText}
+        </p>
+      );
+    }
+
     let parts: (string | React.ReactNode)[] = [sentence.english];
     
     sentence.blanks.forEach((blank, idx) => {
@@ -453,7 +482,7 @@ export function PracticeCard({
               </div>
               <div className="relative flex justify-center">
                 <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-wider">
-                  英文句子
+                  {isDefinition ? '中文释义' : '英文句子'}
                 </span>
               </div>
             </div>

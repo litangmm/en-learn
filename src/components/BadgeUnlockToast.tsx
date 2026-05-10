@@ -10,6 +10,7 @@ import {
   Star,
   RefreshCw,
   Target,
+  Share2,
   type LucideIcon,
 } from 'lucide-react';
 import type { BadgeDefinition } from '@/data/types';
@@ -28,6 +29,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 interface BadgeUnlockToastProps {
   badge: BadgeDefinition | null;
   onDismiss: () => void;
+  onShare?: () => void; // Optional share callback
 }
 
 function BadgeIcon({ name, className }: { name: string; className?: string }) {
@@ -35,7 +37,7 @@ function BadgeIcon({ name, className }: { name: string; className?: string }) {
   return <Icon className={className} size={32} />;
 }
 
-export function BadgeUnlockToast({ badge, onDismiss }: BadgeUnlockToastProps) {
+export function BadgeUnlockToast({ badge, onDismiss, onShare }: BadgeUnlockToastProps) {
   useEffect(() => {
     if (!badge) return;
 
@@ -47,6 +49,12 @@ export function BadgeUnlockToast({ badge, onDismiss }: BadgeUnlockToastProps) {
   }, [badge, onDismiss]);
 
   if (!badge) return null;
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onShare?.();
+    onDismiss();
+  };
 
   return (
     <AnimatePresence>
@@ -85,6 +93,17 @@ export function BadgeUnlockToast({ badge, onDismiss }: BadgeUnlockToastProps) {
                   </div>
                 </div>
               </div>
+              {onShare && (
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="flex-shrink-0 p-2 min-h-11 min-w-11 flex items-center justify-center rounded-lg text-slate-400 hover:text-amber-500 hover:bg-amber-50 transition-colors active:bg-amber-100 touch-manipulation"
+                  aria-label="分享成就"
+                  data-testid="badge-share-button"
+                >
+                  <Share2 size={20} />
+                </button>
+              )}
             </div>
           </div>
         </motion.div>

@@ -28,7 +28,7 @@ const BADGES_KEY = 'en-learn-badges';
 const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
 const SHARE_METRICS_KEY = 'en-learn-share-metrics';
 const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
-const ADAPTIVE_CONFIG_KEY = 'en-learn-adaptive-config';
+const ADAPTIVE_CONFIG_KEY = 'adaptive_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 

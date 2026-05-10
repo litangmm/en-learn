@@ -150,6 +150,15 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-11 (cycle-2026-05-11-59)
+- **相关质量门禁**: 单元测试回归、分享触发逻辑测试、频次控制测试、构建稳定性
+- **本次验证**: epic-005 iter-003「分享触发点与频次控制」质量门禁验证
+  - useXP test 更新：覆盖 leveledUp 检测逻辑（oldLevel vs newLevel 比较）
+  - SharePromptToast.test.tsx（新建）：覆盖渲染条件（leveledUp/hasShareCallback）、自动消失（1.5s）、分享按钮点击回调
+  - App.share.test.tsx（新建）：覆盖等级提升触发 SharePromptToast、频次控制（5 分钟去重）、ResultModal 当天首次自动弹窗
+  - 全量回归：**649/649 单元测试通过**（历史新高位），lint 0 errors（4 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 26 个测试。SharePromptToast 非阻塞式设计（1.5s 自动消失）测试覆盖了定时器触发的自动清除逻辑。频次控制测试覆盖了 5 分钟去重的边界情况。**epic-005 仅剩 iter-004，QA 需关注 iter-004 的数据追踪测试覆盖**
+
 ### 2026-05-10 (cycle-2026-05-10-49)
 - **相关质量门禁**: 响应式边界测试、导航折叠测试、回归测试、移动端弹窗测试、toast 测试、排行榜标注测试
 - **本次验证**: epic-004 iter-006 全部 5 个迭代质量门禁验证

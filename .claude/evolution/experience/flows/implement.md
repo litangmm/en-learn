@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **完整实现**
+- **实现质量**: 高 — 零 bug，零 lint 错误，649 测试全通过
+- **关键决策**:
+  - useXP.addXP 返回 `{ profile, oldLevel, newLevel, leveledUp }` 用于等级变化检测，通过返回对象扩展而非新方法保持向后兼容
+  - SharePromptToast 非阻塞式设计（1.5s setTimeout 自动消失）确保不打断学习心流，使用 triggerKey 强制 re-mount 实现动画重播
+  - 频次控制 isRecentShareTrigger(type, id) 使用 useRef<string[]> recentShareTriggers 记录最近触发，5 分钟内同类型不重复弹窗
+  - BadgeUnlockToast 添加 onShare prop，用户可从徽章解锁 Toast 直接触发分享
+  - ResultModal 当天首次自动弹窗 ShareDialog，非首次则仅显示分享按钮
+- **观察**: 零新增依赖，零架构变更。SharePromptToast 的非阻塞式设计验证了 PM-UX 的心流保护建议。iter-004 数据追踪不涉及 UI 变更，可快速推进。epic-005 即将收官（仅剩 iter-004）
+
 ### 2026-05-11 (cycle-2026-05-11-56)
 - **迭代**: epic-005 iter-002「多格式导出（图片/文本）」—— **完整实现**
 - **实现质量**: 高 — 零 bug，零 lint 错误，623 测试全通过

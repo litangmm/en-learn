@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **技术审查通过**
+- **技术决策**:
+  - useXP.addXP 返回对象扩展 `{ profile, oldLevel, newLevel, leveledUp }`，通过返回新字段而非新方法保持向后兼容，现有调用零变更
+  - SharePromptToast 使用 triggerKey 强制 re-mount 实现动画重播，避免 AnimatePresence 的 exit-before-enter 延迟
+  - 频次控制使用 useRef 存储最近触发记录（type+id + timestamp），避免 useState 频繁更新导致的渲染开销
+  - SharePromptToast 的 1.5s setTimeout 在组件卸载时通过 cleanup 函数清除，避免内存泄漏
+- **质量门禁通过**: lint 0 errors (4 pre-existing warnings), build passed, 649/649 unit tests passed
+- **观察**: epic-005 iter-003 是纯 UI 体验优化迭代，零架构变更、零新增依赖。SharePromptToast 非阻塞式设计验证了 PM-UX 的心流保护建议。epic-005 即将收官（仅剩 iter-004）
+
 ### 2026-05-10 (cycle-2026-05-10-28)
 - **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **技术审查通过**
 - **技术决策**:

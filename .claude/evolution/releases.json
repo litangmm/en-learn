@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.29.0",
+      "tag": "v0.29.0",
+      "commit": "388840a",
+      "date": "2026-05-10T17:43:19.224Z",
+      "iterationId": "iter-003",
+      "title": "分享触发点与频次控制",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-1rwg8tl4a-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.28.0",
       "tag": "v0.28.0",
       "commit": "e8bcc49",

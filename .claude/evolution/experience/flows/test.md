@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **全部测试通过**
+- **测试覆盖**: 649/649 单元测试通过（历史新高位，新增 26 个测试）
+  - useXP.test.ts 更新：覆盖 leveledUp 检测逻辑（oldLevel vs newLevel 比较）
+  - SharePromptToast.test.tsx（新建）：覆盖渲染条件、自动消失（1.5s）、分享按钮点击回调
+  - App.share.test.tsx（新建）：覆盖等级提升触发、频次控制（5 分钟去重）、ResultModal 自动弹窗
+  - 全量回归：之前 623 个测试全部通过
+- **E2E**: skipped（1 pending iteration remaining：iter-004）
+- **观察**: 649 测试是项目历史最新高水位。SharePromptToast 非阻塞式设计（1.5s 自动消失）测试覆盖了定时器触发逻辑。频次控制测试覆盖了 isRecentShareTrigger 的 5 分钟去重边界。E2E 因 epic-005 仅剩 1 个 pending iteration 而继续跳过
+
 ### 2026-05-10 (cycle-2026-05-10-38)
 - **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **全部测试通过**
 - **测试覆盖**: 501/501 单元测试通过（51 个测试文件，新增 17 个测试）

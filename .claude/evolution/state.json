@@ -1,16 +1,52 @@
 {
   "version": "1.0",
-  "status": "TEST",
+  "status": "COMMIT",
   "selectedEpic": {
     "id": "epic-004",
     "title": "体验优化与响应式适配"
   },
   "commitHash": "8d06041",
-  "lastRun": "2026-05-10T23:45:00.000Z",
-  "cycleCount": 27,
+  "lastRun": "2026-05-11T03:53:00.000Z",
+  "cycleCount": 28,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-10-28",
+    "mode": "vision",
+    "stage": "TEST",
+    "startedAt": "2026-05-11T03:50:00.000Z",
+    "plan": {
+      "iterationId": "iter-003",
+      "iterationTitle": "模式语义与题目数据统一（P2）",
+      "scope": "frontend-only",
+      "steps": [
+        "Step 1: 检查数据文件中的释义型题目（CET4 等词库引号句子）",
+        "Step 2: 在 types.ts 中添加 isDefinitionSentence 辅助函数（引号检测）",
+        "Step 3: 扩展 usePractice.ts 的 options 生成逻辑（选项显示中文或 blanks[0].word 而非完整英文）",
+        "Step 4: 在 PracticeCard.tsx 中添加 displaySentence 逻辑（释义题显示中文翻译）",
+        "Step 5: 验证 sentence-reorder 模式处理释义句（跳过或显示警告）",
+        "Step 6: 更新 usePractice.choice.test.ts 测试用例",
+        "Step 7: 更新 PracticeCard.choice.test.tsx 测试用例",
+        "Step 8: 全量验证（lint + build + unit tests）"
+      ],
+      "filesToModify": [
+        "src/data/types.ts",
+        "src/hooks/usePractice.ts",
+        "src/components/PracticeCard.tsx",
+        "src/hooks/__tests__/usePractice.choice.test.ts",
+        "src/components/__tests__/PracticeCard.choice.test.tsx"
+      ],
+      "filesToCreate": [],
+      "dependencies": [],
+      "testStrategy": "选择题模式选项显示中文释义 / 释义句在连词成句模式跳过 / 各模式边界情况覆盖"
+    },
+    "testResults": {
+      "lint": "passed (0 errors, 3 pre-existing warnings)",
+      "build": "passed",
+      "unitTests": "459/459 passed (47 test files)",
+      "e2e": "skipped (2 pending iterations remaining)"
+    }
+  },
   "previousCycle": {
     "id": "2026-05-10-26",
     "mode": "vision",
@@ -176,7 +212,7 @@
         "id": "iter-003",
         "title": "模式语义与题目数据统一（P2）",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "completed"
       },
       {
         "id": "iter-004",
@@ -249,7 +285,8 @@
     "epic-003-iter-004": "Implemented 成就徽章系统. src/data/types.ts: Added BadgeCategory union ('answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special'), BadgeConditionType union, BadgeDefinition interface, UnlockedBadge interface, BadgeProgress interface, BadgeState interface. src/services/storage.ts: Extended with BADGES_KEY, BADGE_PROGRESS_KEY, DEFAULT_BADGE_PROGRESS, BADGE_DEFINITIONS (12 badges), isValidBadgeProgress/isValidUnlockedBadge/isValidBadgeState validators, getBadgeProgress/saveBadgeProgress/updateBadgeProgress, getBadges/saveBadges CRUD with corrupted JSON recovery. Updated exportAllData/importAllData/isValidExportData to include badgeProgress and badges. src/hooks/useBadges.ts: Lazy-init state from storage, trackProgress(type, value?) updates counters atomically via storage.updateBadgeProgress (correct→totalCorrect++/totalAnswered++, wrong→totalAnswered++, session_complete→totalSessions++, perfect_session→perfectSessions++, streak→maxStreakEver=max(current,value), review→totalReviews++, challenge→totalChallengesCompleted++), checkBadges(level?) iterates BADGE_DEFINITIONS checking conditions against progress and optional level, filters already-unlocked, persists new UnlockedBadge entries with unlockedAt timestamp, returns newly unlocked definitions, getBadgeProgressPercent computes current/threshold ratio capped at 1.0, resetBadges clears storage and state. src/components/BadgePanel.tsx: Award header with unlocked count badge, category-grouped grid layout (grid-cols-2 md:grid-cols-3 lg:grid-cols-4), unlocked cards with amber border/golden icon/unlocked date, locked cards with gray border/progress bar, back button with ChevronLeft. src/components/BadgeUnlockToast.tsx: Fixed bottom-center toast with AnimatePresence spring animation, amber gradient border, Sparkles icon, auto-dismiss 3000ms, click-to-dismiss. src/App.tsx: Integrated useBadges hook, added 'badges' View, badge tracking in correct-answer useEffect (trackProgress('correct') + trackProgress('streak', streak+1) + checkBadges), wrong-answer useEffect (trackProgress('wrong') + trackProgress('streak', 0) + checkBadges), session-completion useEffect (trackProgress('session_complete') + perfect_session when accuracy=100 + checkBadges), review-mode useEffect (trackProgress('review') + checkBadges), Award button in header score area and desktop nav with unlockedCount badge, handleOpenBadges/handleBackFromBadges, BadgeUnlockToast rendered in root. Tests: useBadges.test.ts (14 tests covering initial load, trackProgress correct/wrong/streak/session/perfect/review/challenge, checkBadges first-steps/correct-10/level-3, no re-unlock, getBadgeProgressPercent ratio, resetBadges), BadgePanel.test.tsx (7 tests covering header/count, 12 cards render, unlocked amber border+date, locked gray border+progress bar, progress width, back button, category sections), App.badges.test.tsx (7 tests covering award button render, unlocked count badge, view switch, BadgePanel presence, trackProgress on correct, checkBadges on correct, back navigation). Updated 10 existing App test files with useBadges mock. Total: 404/404 tests pass (42 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-003-iter-005": "Implemented 学习排行榜（本地）. src/data/types.ts: Added LeaderboardCategory union ('score' | 'accuracy' | 'speed'), LeaderboardTimeFilter union ('today' | 'week' | 'all'), LeaderboardEntry interface with rank/sessionId/dictionaryName/score/accuracy/speed/timestamp fields. src/hooks/useLeaderboard.ts: Created hook exporting getLeaderboardEntries(category, timeFilter) pure function and useLeaderboard() hook. Filters session history by today/week/all time windows, maps to LeaderboardEntry with computed accuracy and speed (points per minute), sorts by category descending with tie-break by timestamp descending, assigns 1-based ranks. Speed computed as Math.round((score / (duration / 60)) * 10) / 10 with zero-duration guard returning 0. src/components/Leaderboard.tsx: Presentational component with props entries/category/timeFilter/onCategoryChange/onTimeFilterChange/onBack. Header with back button, '学习排行榜' title, TrendingUp icon. Category tabs: 总分榜/准确率榜/速通榜 with framer-motion layoutId animated indicator. Time filter pills: 今日/本周/全部. Ranked list with top-3 medal styling (amber/slate/orange backgrounds, Medal icon), ranks 4+ standard white bg with number display. Empty state with TrendingUp icon and '暂无记录' message. Back navigation via ChevronLeft button. Responsive padding and max-w-4xl container. src/App.tsx: Extended View type with 'leaderboard'. Imported useLeaderboard and Leaderboard, TrendingUp icon. Added leaderboardCategory ('score') and leaderboardTimeFilter ('today') state. Added handleOpenLeaderboard/handleBackFromLeaderboard handlers. Added 'leaderboard' case in handleNavigate. Added header buttons: compact leaderboard-header-button in score area and desktop nav leaderboard-nav-button. Conditional rendering for view === 'leaderboard' passing all props to Leaderboard component. src/components/MobileNav.tsx: Extended View type with 'leaderboard'. Added TrendingUp import and NAV_ITEMS entry { id: 'leaderboard', label: '排行', icon: TrendingUp }. Tests: useLeaderboard.test.ts (11 tests covering score/accuracy/speed ranking, today/week/all time filtering, tie-breaking by timestamp, empty history, zero duration, speed rounding), Leaderboard.test.tsx (7 tests covering header/back button, category tab switching, time filter switching, top-3 medal rendering, entry list with names/scores, empty state, back navigation callback), App.leaderboard.test.tsx (7 tests covering nav button render, header button render, click header to switch view, click nav to switch view, Leaderboard correct props passed, back navigation returns to practice, mobile nav renders '排行'). Total: 429/429 tests pass (45 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
     "epic-004-iter-001": "Implemented 移动端响应式适配（P0）. src/App.tsx: (1) Header score area added flex-wrap to prevent XPBar/StreakFeedback/Trophy/Award/score from squeezing title on narrow screens. (2) Trophy/Award desktop nav buttons wrapped text in hidden lg:inline spans to show icons-only on md~lg tablet screens, reducing horizontal space. (3) Header title changed from text-lg to text-base md:text-lg to prevent vertical wrapping on mobile. (4) Practice mode ToggleGroup wrapped in overflow-x-auto container on mobile with flex-col md:flex-row parent layout, preventing 4-item overflow. src/components/PracticeCard.tsx: (5) Sentence+input area added overflow-x-auto for fill-in-blanks mode (dictation already had flex-wrap), preventing long sentence+input combinations from overflowing viewport. (6) Input width changed from w-28 to min-w-[60px] max-w-[120px] md:w-32 in both renderDictationInputs and renderSentenceWithBlanks, allowing elastic shrink on mobile. (7) Audio button changed to size=sm with h-8 md:h-10 className override, reducing mobile touch target while maintaining desktop size. src/components/__tests__/App.responsive.test.tsx: Added 4 new responsive layout tests — header flex-wrap presence, title responsive text classes, ToggleGroup overflow-x-auto wrapper, input width classes, audio button height classes. Total: 434/434 tests pass (45 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-004-iter-002": "Implemented 答题反馈与提示文案重构（P1）. src/App.tsx: Added getModeHint(practiceMode) helper function returning mode-specific hint text for fill-in-blanks/dictation/multiple-choice/sentence-reorder modes; hint text rendered conditionally in main content area (hidden in focus mode). src/components/PracticeCard.tsx: (1) Created renderWrongAnswerFeedback() helper returning 3-section card (red 你的答案 / green 正确答案 / blue 解析) on wrong answer, replacing simple feedback. (2) Removed inline correct-answer green text spans under inputs in renderSentenceWithBlanks and renderDictationInputs. (3) Enhanced renderChoiceOptions() with CheckCircle2 icon (blue, filled) on selected options and Circle icon (slate-300, empty) on unselected; selected background strengthened from bg-blue-50 to bg-blue-100. (4) In renderSentenceReorder, added progress text 已选 X/Y 个单词 and helper text 请先点击下方单词组成完整句子 near submit button. src/components/__tests__/App.hints.test.tsx: Created 5 tests covering mode-specific hint rendering for all 4 modes and hint hiding in focus mode. src/components/__tests__/PracticeCard.feedback.test.tsx: Created 7 tests covering 3-section wrong-answer feedback across fill-in-blanks/dictation/multiple-choice/sentence-reorder modes, including empty answer placeholders. src/components/__tests__/PracticeCard.choice.test.tsx: Added assertions for CheckCircle2 icon presence on selected options and Circle placeholder on unselected options. src/components/__tests__/PracticeCard.reorder.test.tsx: Added assertions for 已选 X/Y 个单词 progress text and disabled-submit helper text. Fixed duplicate element issues in existing tests by using getAllByText when elements appear multiple times. Total: 451/451 tests pass (47 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
+    "epic-004-iter-002": "Implemented 答题反馈与提示文案重构（P1）. src/App.tsx: Added getModeHint(practiceMode) helper function returning mode-specific hint text for fill-in-blanks/dictation/multiple-choice/sentence-reorder modes; hint text rendered conditionally in main content area (hidden in focus mode). src/components/PracticeCard.tsx: (1) Created renderWrongAnswerFeedback() helper returning 3-section card (red 你的答案 / green 正确答案 / blue 解析) on wrong answer, replacing simple feedback. (2) Removed inline correct-answer green text spans under inputs in renderSentenceWithBlanks and renderDictationInputs. (3) Enhanced renderChoiceOptions() with CheckCircle2 icon (blue, filled) on selected options and Circle icon (slate-300, empty) on unselected; selected background strengthened from bg-blue-50 to bg-blue-100. (4) In renderSentenceReorder, added progress text 已选 X/Y 个单词 and helper text 请先点击下方单词组成完整句子 near submit button. src/components/__tests__/App.hints.test.tsx: Created 5 tests covering mode-specific hint rendering for all 4 modes and hint hiding in focus mode. src/components/__tests__/PracticeCard.feedback.test.tsx: Created 7 tests covering 3-section wrong-answer feedback across fill-in-blanks/dictation/multiple-choice/sentence-reorder modes, including empty answer placeholders. src/components/__tests__/PracticeCard.choice.test.tsx: Added assertions for CheckCircle2 icon presence on selected options and Circle placeholder on unselected options. src/components/__tests__/PracticeCard.reorder.test.tsx: Added assertions for 已选 X/Y 个单词 progress text and disabled-submit helper text. Fixed duplicate element issues in existing tests by using getAllByText when elements appear multiple times. Total: 451/451 tests pass (47 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
+    "epic-004-iter-003": "Added isDefinitionSentence(sentence: Sentence): boolean in src/data/types.ts that detects definition sentences by checking if blanks[0].word is wrapped in quotes in the english text. Added ChoiceOption interface { id, text } for cleaner multiple-choice option typing. Extended usePractice.ts options useMemo to use sentence.chinese as option text for definition sentences and sentence.english for normal sentences. Updated PracticeCard.tsx with displayText logic (Chinese for definitions, English for normal), renderSentenceReorder warning for definition sentences. Updated PracticeCard.choice.test.tsx with ChoiceOption format and definition sentence tests. Total: 459/459 tests pass (47 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
   },
   "pendingQuestions": [],
   "awaitingInputSince": null,
@@ -301,16 +338,10 @@
     ]
   },
   "deployStatus": {
-    "deployed": true,
+    "deployed": false,
     "target": "vercel",
-    "url": "https://en-learn.vercel.app",
-    "productionUrl": "https://en-learn-9l3nqgvp6-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T00:02:01.000Z",
-    "version": "v0.18.0",
-    "iterationId": "iter-001",
-    "iterationTitle": "移动端响应式适配（P0）",
-    "gitTag": "v0.18.0",
-    "gitTagPushed": false,
-    "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
+    "pendingVersion": "v0.20.0",
+    "iterationId": "iter-003",
+    "iterationTitle": "模式语义与题目数据统一（P2）"
   }
 }

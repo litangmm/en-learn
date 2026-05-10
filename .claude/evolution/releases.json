@@ -2,6 +2,25 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.19.0",
+      "tag": "v0.19.0",
+      "commit": "d8baeb3",
+      "date": "2026-05-10T03:13:40.685Z",
+      "iterationId": "iter-002",
+      "title": "答题反馈与提示文案重构（P1）",
+      "features": [
+        "App.tsx: Added getModeHint(practiceMode) helper with mode-specific hint text (4 modes + focus hide)",
+        "PracticeCard.tsx: Created renderWrongAnswerFeedback() 3-section card (你的答案/正确答案/解析)",
+        "Removed inline correct-answer green spans from inputs",
+        "Enhanced renderChoiceOptions() with CheckCircle2/Circle icons, bg-blue-100 on selected",
+        "Added progress text and helper text in renderSentenceReorder",
+        "Created App.hints.test.tsx (5 tests) and PracticeCard.feedback.test.tsx (7 tests)",
+        "Updated PracticeCard.choice.test.tsx and PracticeCard.reorder.test.tsx with new assertions",
+        "Fixed duplicate element issues in existing tests"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.18.0",
       "tag": "v0.18.0",
       "commit": "8d06041",

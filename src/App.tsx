@@ -26,6 +26,14 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
 import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
 
+// Share prompt type for level-up and badge celebrations
+export type SharePromptType = 'levelup' | 'badge';
+export interface SharePrompt {
+  type: SharePromptType;
+  level?: number;
+  badge?: BadgeDefinition;
+}
+
 function getModeHint(mode: PracticeMode): string {
   switch (mode) {
     case 'fill-in-blanks':
@@ -85,6 +93,7 @@ function App() {
   const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
   const [leaderboardTimeFilter, setLeaderboardTimeFilter] = useState<LeaderboardTimeFilter>('today');
   const [selectedOnboardingDictionary, setSelectedOnboardingDictionary] = useState('cet4');
+  const [, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -199,10 +208,15 @@ function App() {
         recordCorrectAnswer();
         const baseXP = practiceMode === 'multiple-choice' ? 8 : practiceMode === 'sentence-reorder' ? 12 : 10;
         const firstTry = state.attempts === 1;
-        const { finalXP, multiplier } = addXP(baseXP, firstTry);
+        const { finalXP, multiplier, leveledUp, newLevel } = addXP(baseXP, firstTry);
         requestAnimationFrame(() => {
           setXpGainTrigger({ amount: finalXP, multiplier, key: Date.now() });
         });
+        if (leveledUp) {
+          requestAnimationFrame(() => {
+            setSharePrompt({ type: 'levelup', level: newLevel });
+          });
+        }
         trackActivity('answer');
         trackActivity('correct');
         trackActivity('streak', streak + 1);

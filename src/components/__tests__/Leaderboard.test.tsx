@@ -29,12 +29,14 @@ describe('Leaderboard', () => {
     entries?: LeaderboardEntry[];
     category?: 'score' | 'accuracy' | 'speed';
     timeFilter?: 'today' | 'week' | 'all';
+    loading?: boolean;
   }) {
     return render(
       <Leaderboard
         entries={props?.entries ?? []}
         category={props?.category ?? 'score'}
         timeFilter={props?.timeFilter ?? 'today'}
+        loading={props?.loading ?? false}
         onCategoryChange={mockOnCategoryChange}
         onTimeFilterChange={mockOnTimeFilterChange}
         onBack={mockOnBack}
@@ -131,5 +133,48 @@ describe('Leaderboard', () => {
 
     fireEvent.click(screen.getByTestId('back-button'));
     expect(mockOnBack).toHaveBeenCalledTimes(1);
+  });
+
+  describe('loading state', () => {
+    it('shows skeleton UI when loading prop is true', () => {
+      renderLeaderboard({ entries: [], loading: true });
+
+      // First skeleton row should be visible
+      expect(screen.getByTestId('leaderboard-skeleton-1')).toBeInTheDocument();
+    });
+
+    it('shows 5 skeleton placeholder rows', () => {
+      renderLeaderboard({ entries: [], loading: true });
+
+      // Verify all 5 skeleton rows exist
+      for (let i = 1; i <= 5; i++) {
+        expect(screen.getByTestId(`leaderboard-skeleton-${i}`)).toBeInTheDocument();
+      }
+    });
+
+    it('skeleton elements have data-testid attributes', () => {
+      renderLeaderboard({ entries: [], loading: true });
+
+      // Each skeleton row should have a data-testid
+      expect(screen.getByTestId('leaderboard-skeleton-1')).toHaveAttribute('data-testid', 'leaderboard-skeleton-1');
+      expect(screen.getByTestId('leaderboard-skeleton-3')).toHaveAttribute('data-testid', 'leaderboard-skeleton-3');
+      expect(screen.getByTestId('leaderboard-skeleton-5')).toHaveAttribute('data-testid', 'leaderboard-skeleton-5');
+    });
+
+    it('hides entries when loading is true', () => {
+      const entries = [
+        createMockEntry({ rank: 1, sessionId: 's1', dictionaryName: 'CET-4', score: 100 }),
+      ];
+
+      renderLeaderboard({ entries, loading: true });
+
+      expect(screen.queryByTestId('leaderboard-entry-1')).not.toBeInTheDocument();
+    });
+
+    it('hides empty state when loading is true', () => {
+      renderLeaderboard({ entries: [], loading: true });
+
+      expect(screen.queryByTestId('leaderboard-empty')).not.toBeInTheDocument();
+    });
   });
 });

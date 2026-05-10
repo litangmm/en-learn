@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ChevronLeft, TrendingUp, Medal } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import type {
   LeaderboardCategory,
   LeaderboardTimeFilter,
@@ -10,6 +11,7 @@ interface LeaderboardProps {
   entries: LeaderboardEntry[];
   category: LeaderboardCategory;
   timeFilter: LeaderboardTimeFilter;
+  loading?: boolean;
   onCategoryChange: (category: LeaderboardCategory) => void;
   onTimeFilterChange: (filter: LeaderboardTimeFilter) => void;
   onBack: () => void;
@@ -83,10 +85,14 @@ export function Leaderboard({
   entries,
   category,
   timeFilter,
+  loading = false,
   onCategoryChange,
   onTimeFilterChange,
   onBack,
 }: LeaderboardProps) {
+  // Skeleton rows matching the card styling
+  const skeletonRows = [1, 2, 3, 4, 5];
+
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto px-3 md:px-4 py-4 md:py-8">
@@ -152,8 +158,36 @@ export function Leaderboard({
           )}
         </div>
 
+        {/* Loading Skeleton */}
+        {loading && (
+          <div className="space-y-3">
+            {skeletonRows.map((idx) => (
+              <motion.div
+                key={`skeleton-${idx}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: idx * 0.05 }}
+                className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-4"
+                data-testid={`leaderboard-skeleton-${idx}`}
+              >
+                {/* Rank Circle Skeleton */}
+                <Skeleton className="w-10 h-10 rounded-full shrink-0" />
+
+                {/* Dictionary Name Skeleton */}
+                <div className="flex-1 min-w-0 space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+
+                {/* Score Value Skeleton */}
+                <Skeleton className="h-6 w-20 shrink-0" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+
         {/* Empty State */}
-        {entries.length === 0 && (
+        {!loading && entries.length === 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -169,7 +203,8 @@ export function Leaderboard({
         )}
 
         {/* Ranked List */}
-        <div className="space-y-3">
+        {!loading && (
+          <div className="space-y-3">
           {entries.map((entry, idx) => {
             const style = getRankStyle(entry.rank);
             const valueLabel = CATEGORY_CONFIG[category].label.replace('榜', '');
@@ -214,7 +249,8 @@ export function Leaderboard({
               </motion.div>
             );
           })}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

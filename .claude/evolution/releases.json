@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.22.0",
+      "tag": "v0.22.0",
+      "commit": "755c490",
+      "date": "2026-05-10T09:26:42.404Z",
+      "iterationId": "iter-005",
+      "title": "首次/恢复弹窗体验打磨",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.21.0",
       "tag": "v0.21.0",
       "commit": "5925e8b",

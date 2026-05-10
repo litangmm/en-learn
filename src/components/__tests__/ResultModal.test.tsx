@@ -2,6 +2,22 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ResultModal } from '../ResultModal';
 
+// Mock ShareDialog component
+vi.mock('../ShareDialog', () => ({
+  ShareDialog: vi.fn(({ open, onOpenChange, sessionResult }) => {
+    if (!open) return null;
+    return (
+      <div data-testid="share-dialog">
+        <span data-testid="session-score">{sessionResult?.score}</span>
+        <span data-testid="session-accuracy">{sessionResult?.accuracy}</span>
+        <button onClick={() => onOpenChange(false)} data-testid="close-dialog">
+          Close
+        </button>
+      </div>
+    );
+  }),
+}));
+
 describe('ResultModal', () => {
   const mockOnRestart = vi.fn();
 
@@ -157,5 +173,87 @@ describe('ResultModal', () => {
     expect(screen.getByText('0%')).toBeInTheDocument();
     expect(screen.getByText('0/10')).toBeInTheDocument();
     expect(screen.getByText('继续加油')).toBeInTheDocument();
+  });
+
+  it('renders "分享成绩" button', () => {
+    render(
+      <ResultModal
+        score={85}
+        totalQuestions={3}
+        userAnswers={[
+          { sentenceId: '1', answers: ['catches'], isCorrect: true, attempts: 1 },
+          { sentenceId: '2', answers: ['wrong'], isCorrect: false, attempts: 1 },
+        ]}
+        onRestart={mockOnRestart}
+      />,
+    );
+
+    expect(screen.getByText('分享成绩')).toBeInTheDocument();
+  });
+
+  it('opens ShareDialog when "分享成绩" button is clicked', () => {
+    render(
+      <ResultModal
+        score={85}
+        totalQuestions={3}
+        userAnswers={[
+          { sentenceId: '1', answers: ['catches'], isCorrect: true, attempts: 1 },
+          { sentenceId: '2', answers: ['wrong'], isCorrect: false, attempts: 1 },
+        ]}
+        onRestart={mockOnRestart}
+      />,
+    );
+
+    const shareButton = screen.getByText('分享成绩');
+    fireEvent.click(shareButton);
+
+    expect(screen.getByTestId('share-dialog')).toBeInTheDocument();
+  });
+
+  it('passes correct sessionResult to ShareDialog', () => {
+    render(
+      <ResultModal
+        score={85}
+        totalQuestions={3}
+        userAnswers={[
+          { sentenceId: '1', answers: ['catches'], isCorrect: true, attempts: 1 },
+          { sentenceId: '2', answers: ['Actions'], isCorrect: true, attempts: 1 },
+          { sentenceId: '3', answers: ['wrong'], isCorrect: false, attempts: 2 },
+        ]}
+        onRestart={mockOnRestart}
+      />,
+    );
+
+    const shareButton = screen.getByText('分享成绩');
+    fireEvent.click(shareButton);
+
+    // Check that score is passed correctly
+    expect(screen.getByTestId('session-score')).toHaveTextContent('85');
+    // Check that accuracy (67% for 2/3) is passed correctly
+    expect(screen.getByTestId('session-accuracy')).toHaveTextContent('67');
+  });
+
+  it('allows closing ShareDialog', () => {
+    render(
+      <ResultModal
+        score={85}
+        totalQuestions={3}
+        userAnswers={[
+          { sentenceId: '1', answers: ['catches'], isCorrect: true, attempts: 1 },
+          { sentenceId: '2', answers: ['wrong'], isCorrect: false, attempts: 1 },
+        ]}
+        onRestart={mockOnRestart}
+      />,
+    );
+
+    // Open the dialog
+    const shareButton = screen.getByText('分享成绩');
+    fireEvent.click(shareButton);
+    expect(screen.getByTestId('share-dialog')).toBeInTheDocument();
+
+    // Close the dialog
+    const closeButton = screen.getByTestId('close-dialog');
+    fireEvent.click(closeButton);
+    expect(screen.queryByTestId('share-dialog')).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Target, Zap, RotateCcw, Home } from 'lucide-react';
+import { Trophy, Target, Zap, RotateCcw, Home, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ShareDialog } from './ShareDialog';
+import type { SessionResult } from '@/hooks/useShareCardData';
 import type { UserAnswer } from '@/hooks/usePractice';
 
 interface ResultModalProps {
@@ -11,9 +14,18 @@ interface ResultModalProps {
 }
 
 export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: ResultModalProps) {
+  const [showShareDialog, setShowShareDialog] = useState(false);
+
   const correctCount = userAnswers.filter(a => a.isCorrect).length;
   const accuracy = Math.round((correctCount / totalQuestions) * 100);
-  
+
+  // Build session result for ShareDialog
+  const sessionResult: SessionResult = {
+    score,
+    accuracy: Math.round((correctCount / totalQuestions) * 100),
+    streak: 0,
+  };
+
   const getGrade = () => {
     if (accuracy >= 90) return { label: '优秀', color: 'text-green-600', bg: 'bg-green-50' };
     if (accuracy >= 70) return { label: '良好', color: 'text-blue-600', bg: 'bg-blue-50' };
@@ -117,16 +129,34 @@ export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: R
             ))}
           </div>
 
-          {/* Action */}
-          <Button 
-            onClick={onRestart}
-            className="w-full gap-2"
-            size="lg"
-          >
-            <RotateCcw className="w-4 h-4" />
-            再来一组
-          </Button>
+          {/* Action buttons */}
+          <div className="space-y-3">
+            <Button
+              onClick={onRestart}
+              className="w-full gap-2"
+              size="lg"
+            >
+              <RotateCcw className="w-4 h-4" />
+              再来一组
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowShareDialog(true)}
+              className="w-full gap-2"
+              size="lg"
+            >
+              <Share2 className="w-4 h-4" />
+              分享成绩
+            </Button>
+          </div>
         </div>
+
+        {/* Share Dialog */}
+        <ShareDialog
+          open={showShareDialog}
+          onOpenChange={setShowShareDialog}
+          sessionResult={sessionResult}
+        />
       </div>
     </motion.div>
   );

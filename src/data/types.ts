@@ -170,3 +170,31 @@ export interface ChoiceOption {
   id: string;
   text: string;
 }
+
+/**
+ * Data model for the share card UI.
+ * Aggregates data from XP system, session results, badges, and leaderboard.
+ */
+export interface ShareCardData {
+  /** XP profile data */
+  xp: {
+    totalXP: number;
+    currentLevel: number;
+    levelProgress: number;
+  };
+  /** Session result statistics */
+  session: {
+    score: number;
+    accuracy: number;
+    streak: number;
+  };
+  /** Top 3 unlocked badges with their icons (most recent first) */
+  badges: Array<{
+    id: string;
+    icon: string;
+  }>;
+  /** Leaderboard rank position */
+  rank: number;
+  /** App branding identifier */
+  appName: string;
+}

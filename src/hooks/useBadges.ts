@@ -183,6 +183,7 @@ export function useBadges() {
   return {
     unlockedIds,
     unlockedCount: badgeState.unlocked.length,
+    badgeState,
     badgeProgress,
     trackProgress,
     checkBadges,

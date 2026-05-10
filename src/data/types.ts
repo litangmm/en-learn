@@ -11,6 +11,37 @@ export interface Sentence {
   level: string;
 }
 
+/**
+ * Checks if a sentence is a definition sentence.
+ * Definition sentences are dictionary-style definitions where the target word
+ * appears wrapped in quotes (single or double) in the English text.
+ * Example: "a person who leads" or 'someone who is brave'
+ */
+export function isDefinitionSentence(sentence: Sentence): boolean {
+  // Definition sentences have exactly one blank
+  if (sentence.blanks.length !== 1) {
+    return false;
+  }
+
+  const targetWord = sentence.blanks[0].word.toLowerCase();
+  const englishText = sentence.english;
+
+  // Check if the english text contains any quoted text that includes the target word
+  // Match both single quotes 'word' and double quotes "word"
+  const quotedPattern = /['"][^'"]+['"]/g;
+  const matches = englishText.match(quotedPattern) || [];
+
+  for (const match of matches) {
+    // Remove quotes and convert to lowercase for comparison
+    const quotedWord = match.slice(1, -1).toLowerCase();
+    if (quotedWord === targetWord || quotedWord.includes(targetWord)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export interface Dictionary {
   id: string;
   name: string;

@@ -220,3 +220,22 @@ export interface ShareCardData {
   /** App branding identifier */
   appName: string;
 }
+
+/**
+ * Personal word stored by the user in their personal dictionary.
+ * Used for the dictionary browser feature and persists across sessions.
+ */
+export interface PersonalWord {
+  /** The English word */
+  word: string;
+  /** Chinese translation */
+  translation: string;
+  /** English example sentence */
+  exampleSentence: string;
+  /** Chinese translation of example */
+  exampleSentenceCn: string;
+  /** Whether user marked it as a new word */
+  marked: boolean;
+  /** Timestamp when marked */
+  markedAt: number;
+}

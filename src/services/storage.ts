@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord } from '@/data/types';
 import { REVIEW_INTERVALS } from '@/data/types';
 
 export interface StorageSchemaV1 {
@@ -27,6 +27,7 @@ const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
 const BADGES_KEY = 'en-learn-badges';
 const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
 const SHARE_METRICS_KEY = 'en-learn-share-metrics';
+const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 
@@ -337,6 +338,40 @@ function isValidBadgeState(data: unknown): data is BadgeState {
   return true;
 }
 
+function isValidPersonalWord(data: unknown): data is PersonalWord {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.word !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.translation !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.exampleSentence !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.exampleSentenceCn !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.marked !== 'boolean') {
+    return false;
+  }
+
+  if (typeof obj.markedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
 export const DEFAULT_BADGE_PROGRESS: BadgeProgress = {
   totalAnswered: 0,
   totalCorrect: 0,
@@ -479,6 +514,43 @@ function saveMistakes(mistakes: Mistake[]): void {
     localStorage.setItem(MISTAKES_KEY, JSON.stringify(mistakes));
   } catch (error) {
     console.warn('[StorageService] Failed to save mistakes:', error);
+  }
+}
+
+function loadPersonalWords(): PersonalWord[] {
+  const raw = localStorage.getItem(PERSONAL_WORDS_KEY);
+  if (raw === null) {
+    return [];
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted personal words data, clearing');
+    localStorage.removeItem(PERSONAL_WORDS_KEY);
+    return [];
+  }
+
+  if (!Array.isArray(parsed)) {
+    console.warn('[StorageService] Invalid personal words schema, clearing');
+    localStorage.removeItem(PERSONAL_WORDS_KEY);
+    return [];
+  }
+
+  const validWords = parsed.filter(isValidPersonalWord);
+  if (validWords.length !== parsed.length) {
+    console.warn('[StorageService] Some personal word entries were invalid and filtered out');
+  }
+
+  return validWords;
+}
+
+function savePersonalWords(words: PersonalWord[]): void {
+  try {
+    localStorage.setItem(PERSONAL_WORDS_KEY, JSON.stringify(words));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save personal words:', error);
   }
 }
 
@@ -985,6 +1057,22 @@ export const StorageService = {
     return updated;
   },
 
+  // Personal Words CRUD
+  addPersonalWord(word: PersonalWord): void {
+    const words = loadPersonalWords();
+    words.push(word);
+    savePersonalWords(words);
+  },
+
+  removePersonalWord(word: string): void {
+    const words = loadPersonalWords().filter((w) => w.word !== word);
+    savePersonalWords(words);
+  },
+
+  getPersonalWordCount(): number {
+    return loadPersonalWords().length;
+  },
+
   exportAllData(): ExportData {
     return {
       version: 1,
@@ -997,21 +1085,23 @@ export const StorageService = {
         dailyChallenges: loadDailyChallenges(),
         badgeProgress: this.getBadgeProgress(),
         badges: this.getBadges(),
+        personalWords: loadPersonalWords(),
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number; personalWords: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 },
       };
     }
 
-    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 };
+    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges, personalWords } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 };
+    const personalWordsToImport = personalWords ?? [];
 
     try {
       if (session !== null) {
@@ -1063,6 +1153,13 @@ export const StorageService = {
         localStorage.removeItem(BADGES_KEY);
       }
 
+      if (personalWordsToImport.length > 0) {
+        localStorage.setItem(PERSONAL_WORDS_KEY, JSON.stringify(personalWordsToImport));
+        importedCounts.personalWords = personalWordsToImport.length;
+      } else {
+        localStorage.removeItem(PERSONAL_WORDS_KEY);
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
@@ -1071,6 +1168,7 @@ export const StorageService = {
       if (importedCounts.dailyChallenges > 0) parts.push('1 个每日挑战');
       if (importedCounts.badgeProgress > 0) parts.push('1 个徽章进度');
       if (importedCounts.badges > 0) parts.push('1 个徽章状态');
+      if (importedCounts.personalWords > 0) parts.push(`${importedCounts.personalWords} 个生词`);
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -1081,7 +1179,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 },
       };
     }
   },
@@ -1098,6 +1196,7 @@ export interface ExportData {
     dailyChallenges?: DailyChallengeState | null;
     badgeProgress?: BadgeProgress;
     badges?: BadgeState;
+    personalWords?: PersonalWord[];
   };
 }
 
@@ -1161,6 +1260,17 @@ function isValidExportData(data: unknown): data is ExportData {
   // badges is optional; if present, must be valid
   if (dataObj.badges !== undefined && !isValidBadgeState(dataObj.badges)) {
     return false;
+  }
+
+  // personalWords is optional; if present, must be an array of valid PersonalWord
+  if (dataObj.personalWords !== undefined) {
+    if (!Array.isArray(dataObj.personalWords)) {
+      return false;
+    }
+    const personalWords = dataObj.personalWords as unknown[];
+    if (!personalWords.every(isValidPersonalWord)) {
+      return false;
+    }
   }
 
   return true;

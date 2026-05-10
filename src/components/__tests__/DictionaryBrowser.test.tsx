@@ -23,7 +23,21 @@ const mockSentences: Sentence[] = [
     english: 'Time and tide wait for no man.',
     chinese: '时不我待。',
     blanks: [{ word: 'tide', hint: '潮汐' }],
-    level: 'cet4',
+    level: 'cet6',
+  },
+  {
+    id: '4',
+    english: 'Practice makes perfect.',
+    chinese: '熟能生巧。',
+    blanks: [{ word: 'Practice', hint: '练习' }],
+    level: 'junior',
+  },
+  {
+    id: '5',
+    english: 'Knowledge is power.',
+    chinese: '知识就是力量。',
+    blanks: [{ word: 'Knowledge', hint: '知识' }],
+    level: 'senior',
   },
 ];
 
@@ -115,7 +129,7 @@ describe('DictionaryBrowser', () => {
       render(<DictionaryBrowser onBack={mockOnBack} />);
 
       await waitFor(() => {
-        expect(screen.getByText(/共 3 个单词/)).toBeInTheDocument();
+        expect(screen.getByText(/共 5 个单词/)).toBeInTheDocument();
       });
     });
   });
@@ -193,6 +207,213 @@ describe('DictionaryBrowser', () => {
         expect(screen.getByText('catches')).toBeInTheDocument();
         expect(screen.getByText('Actions')).toBeInTheDocument();
         expect(screen.getByText('tide')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Level filter', () => {
+    it('renders level filter with default "all" option', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('全部难度')).toBeInTheDocument();
+      });
+    });
+
+    it('shows all sentences when level filter is "all"', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Should show all 5 sentences
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+        expect(screen.getByText('tide')).toBeInTheDocument();
+        expect(screen.getByText('Practice')).toBeInTheDocument();
+        expect(screen.getByText('Knowledge')).toBeInTheDocument();
+      });
+
+      // Footer should show total count
+      expect(screen.getByText(/共 5 个单词/)).toBeInTheDocument();
+    });
+
+    it('filters by cet4 level', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Click the level filter trigger button to open dropdown
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'CET-4' })).toBeInTheDocument();
+      });
+
+      // Click CET-4 option
+      fireEvent.click(screen.getByRole('option', { name: 'CET-4' }));
+
+      await waitFor(() => {
+        // Should show only CET-4 words
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+        // Should not show other levels
+        expect(screen.queryByText('tide')).not.toBeInTheDocument();
+        expect(screen.queryByText('Practice')).not.toBeInTheDocument();
+        expect(screen.queryByText('Knowledge')).not.toBeInTheDocument();
+      });
+
+      // Footer should show filtered count
+      expect(screen.getByText(/共 2 个单词/)).toBeInTheDocument();
+    });
+
+    it('filters by cet6 level', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('tide')).toBeInTheDocument();
+      });
+
+      // Open level filter dropdown
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'CET-6' })).toBeInTheDocument();
+      });
+
+      // Click CET-6 option
+      fireEvent.click(screen.getByRole('option', { name: 'CET-6' }));
+
+      await waitFor(() => {
+        // Should show only CET-6 word (tide)
+        expect(screen.getByText('tide')).toBeInTheDocument();
+        expect(screen.queryByText('catches')).not.toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('filters by junior level', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Practice')).toBeInTheDocument();
+      });
+
+      // Open level filter dropdown
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: '初中' })).toBeInTheDocument();
+      });
+
+      // Click 初中 option
+      fireEvent.click(screen.getByRole('option', { name: '初中' }));
+
+      await waitFor(() => {
+        expect(screen.getByText('Practice')).toBeInTheDocument();
+        expect(screen.queryByText('catches')).not.toBeInTheDocument();
+        expect(screen.queryByText('tide')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('combines level filter with search', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // First apply CET-4 filter
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'CET-4' })).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole('option', { name: 'CET-4' }));
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+      });
+
+      // Then apply search
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'catches' } });
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('shows empty state when no words match level filter', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Apply GRE filter (no GRE words in mock data)
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'GRE' })).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole('option', { name: 'GRE' }));
+
+      await waitFor(() => {
+        expect(screen.getByText('该词典暂无单词')).toBeInTheDocument();
+        expect(screen.getByText(/共 0 个单词/)).toBeInTheDocument();
+      });
+    });
+
+    it('resets level filter when dictionary changes', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Apply CET-4 filter
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'CET-4' })).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole('option', { name: 'CET-4' }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/共 2 个单词/)).toBeInTheDocument();
+      });
+
+      // Change dictionary - find all comboboxes and click the second one (dictionary selector)
+      const allComboboxes = screen.getAllByRole('combobox');
+      fireEvent.click(allComboboxes[1]); // Second combobox is the dictionary selector
+
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: '初中词汇' })).toBeInTheDocument();
+      });
+
+      fireEvent.click(screen.getByRole('option', { name: '初中词汇' }));
+
+      await waitFor(() => {
+        // Level filter should be reset to "全部难度"
+        expect(screen.getByText('全部难度')).toBeInTheDocument();
       });
     });
   });

@@ -60,8 +60,24 @@ Object.defineProperty(globalThis, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+});
+
+// Mock scrollTo for Radix UI Select components
+Object.defineProperty(globalThis, 'scrollTo', {
+  writable: true,
+  configurable: true,
+  value: vi.fn(),
+});
+
+// Mock scrollIntoView for Radix UI Select components
+Object.defineProperty(Element.prototype, 'scrollIntoView', {
+  writable: true,
+  configurable: true,
+  value: vi.fn(),
 });

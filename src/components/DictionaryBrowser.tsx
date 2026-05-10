@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useTransition } from 'react';
-import { Search, BookOpen, Star, ArrowLeft } from 'lucide-react';
+import { Search, BookOpen, Star, ArrowLeft, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,18 @@ import { loadDictionary } from '@/data/loader';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import type { Sentence } from '@/data/types';
 
+/** Available difficulty levels for filtering */
+const LEVEL_OPTIONS = [
+  { value: 'all', label: '全部难度' },
+  { value: 'junior', label: '初中' },
+  { value: 'senior', label: '高中' },
+  { value: 'cet4', label: 'CET-4' },
+  { value: 'cet6', label: 'CET-6' },
+  { value: 'ielts', label: '雅思' },
+  { value: 'toefl', label: '托福' },
+  { value: 'gre', label: 'GRE' },
+];
+
 interface DictionaryBrowserProps {
   onBack: () => void;
 }
@@ -23,6 +35,7 @@ interface DictionaryBrowserProps {
 export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string>('cet4');
   const [searchQuery, setSearchQuery] = useState('');
+  const [levelFilter, setLevelFilter] = useState<string>('all');
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +47,12 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
   const handleDictionaryChange = useCallback((value: string) => {
     setSelectedDictionaryId(value);
     setSearchQuery(''); // Clear search when dictionary changes
+    setLevelFilter('all'); // Reset level filter when dictionary changes
+  }, []);
+
+  // Handle level filter change
+  const handleLevelFilterChange = useCallback((value: string) => {
+    setLevelFilter(value);
   }, []);
 
   // Initial load and reload when dictionary changes
@@ -69,19 +88,28 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
     };
   }, [selectedDictionaryId]);
 
-  // Filter sentences based on search query (case-insensitive)
+  // Filter sentences based on search query and level filter (case-insensitive)
   const filteredSentences = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return sentences;
+    let result = sentences;
+
+    // Apply level filter
+    if (levelFilter !== 'all') {
+      result = result.filter(sentence => sentence.level === levelFilter);
     }
-    const query = searchQuery.toLowerCase();
-    return sentences.filter(sentence => {
-      const word = sentence.blanks[0]?.word.toLowerCase() || '';
-      const english = sentence.english.toLowerCase();
-      const chinese = sentence.chinese.toLowerCase();
-      return word.includes(query) || english.includes(query) || chinese.includes(query);
-    });
-  }, [sentences, searchQuery]);
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(sentence => {
+        const word = sentence.blanks[0]?.word.toLowerCase() || '';
+        const english = sentence.english.toLowerCase();
+        const chinese = sentence.chinese.toLowerCase();
+        return word.includes(query) || english.includes(query) || chinese.includes(query);
+      });
+    }
+
+    return result;
+  }, [sentences, searchQuery, levelFilter]);
 
   return (
     <div className="flex flex-col h-full">
@@ -94,8 +122,8 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
         <h2 className="text-lg font-semibold">我的词库</h2>
       </div>
 
-      {/* Controls: Search and Dictionary Selector */}
-      <div className="flex gap-3 p-4 border-b">
+      {/* Controls: Search, Level Filter and Dictionary Selector */}
+      <div className="flex flex-col sm:flex-row gap-3 p-4 border-b">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
@@ -106,18 +134,33 @@ export function DictionaryBrowser({ onBack }: DictionaryBrowserProps) {
             className="pl-9"
           />
         </div>
-        <Select value={selectedDictionaryId} onValueChange={handleDictionaryChange}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="选择词典" />
-          </SelectTrigger>
-          <SelectContent>
-            {dictionaries.map(dict => (
-              <SelectItem key={dict.id} value={dict.id}>
-                {dict.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex gap-2">
+          <Select value={levelFilter} onValueChange={handleLevelFilterChange}>
+            <SelectTrigger className="w-[130px]" title="按难度筛选">
+              <Filter className="h-4 w-4 mr-1" />
+              <SelectValue placeholder="难度" />
+            </SelectTrigger>
+            <SelectContent>
+              {LEVEL_OPTIONS.map(option => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={selectedDictionaryId} onValueChange={handleDictionaryChange}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="选择词典" />
+            </SelectTrigger>
+            <SelectContent>
+              {dictionaries.map(dict => (
+                <SelectItem key={dict.id} value={dict.id}>
+                  {dict.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Content */}

@@ -59,8 +59,7 @@ describe('useAdaptivePractice', () => {
         // Set strategy to history-based
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         // Create mock mistakes: user confused sentence X with correct sentence Y multiple times
@@ -70,7 +69,11 @@ describe('useAdaptivePractice', () => {
           {
             sentenceId: '2', // correct answer was sentence 2
             wrongAnswers: ['3', '3'], // user picked sentence 3 twice
+            correctAnswers: ['2'],
+            attempts: 1,
             timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
           },
         ];
         vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
@@ -90,8 +93,7 @@ describe('useAdaptivePractice', () => {
       it('should sort distractors by confusion frequency (most confused first)', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         // User confused sentence 3 more times than sentence 4
@@ -99,7 +101,11 @@ describe('useAdaptivePractice', () => {
           {
             sentenceId: '2',
             wrongAnswers: ['3', '3', '3', '4'], // 3 appears 3 times, 4 appears 1 time
+            correctAnswers: ['2'],
+            attempts: 1,
             timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
           },
         ];
         vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
@@ -121,8 +127,7 @@ describe('useAdaptivePractice', () => {
       it('should fill remaining slots with random distractors when history is insufficient', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         // Only one mistake record
@@ -130,7 +135,11 @@ describe('useAdaptivePractice', () => {
           {
             sentenceId: '2',
             wrongAnswers: ['3'],
+            correctAnswers: ['2'],
+            attempts: 1,
             timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
           },
         ];
         vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
@@ -149,8 +158,7 @@ describe('useAdaptivePractice', () => {
       it('should ignore history and pick random distractors', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         // Even with mistake history that would normally influence selection
@@ -158,7 +166,11 @@ describe('useAdaptivePractice', () => {
           {
             sentenceId: '2',
             wrongAnswers: ['3', '3'],
+            correctAnswers: ['2'],
+            attempts: 1,
             timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
           },
         ];
         vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
@@ -178,8 +190,7 @@ describe('useAdaptivePractice', () => {
       it('should produce deterministic results with fixed random values', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -207,8 +218,7 @@ describe('useAdaptivePractice', () => {
       it('should produce different results with different random values', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -240,8 +250,7 @@ describe('useAdaptivePractice', () => {
       it('should fallback to random when no mistakes exist', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         // No mistake history
@@ -260,8 +269,7 @@ describe('useAdaptivePractice', () => {
         // Test with history-based strategy but no mistakes
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -278,8 +286,7 @@ describe('useAdaptivePractice', () => {
       it('should return empty array when less than 4 sentences available', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -296,8 +303,7 @@ describe('useAdaptivePractice', () => {
       it('should never return duplicate sentence IDs', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -317,8 +323,7 @@ describe('useAdaptivePractice', () => {
       it('should never include correct answer in distractors', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -343,8 +348,7 @@ describe('useAdaptivePractice', () => {
       it('should always return exactly 4 choices (1 correct + 3 distractors)', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -365,8 +369,7 @@ describe('useAdaptivePractice', () => {
       it('should expose config from storage', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -374,23 +377,25 @@ describe('useAdaptivePractice', () => {
 
         expect(result.current.config).toEqual({
           strategy: 'history-based',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
       });
 
       it('should handle mixed strategy', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'mixed',
-          distractorCount: 3,
-          enabled: true,
+          historyWeight: 0.5,
         });
 
         const mockMistakes = [
           {
             sentenceId: '2',
             wrongAnswers: ['3'],
+            correctAnswers: ['2'],
+            attempts: 1,
             timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
           },
         ];
         vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);

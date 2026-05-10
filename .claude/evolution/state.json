@@ -3,11 +3,32 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-66",
+      "id": "2026-05-11-72",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "epic-009 收官后首次全新 brainstorm。9 个 Agent 参与，产出 3 个 Epic 提案。epic-010「自适应学习 MVP」获最高优先级（4 支持），epic-011「周报」次之（3 支持），epic-013「性能优化」中优先（2 支持）。epic-012 推送通知暂不纳入。"
+    },
+    {
+      "id": "2026-05-11-68",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选完成并部署。716 测试全部通过。LevelFilter 组件（8 难度级别）、双重过滤逻辑、词典切换重置过滤器。文档和备份已提交。"
+      "summary": "epic-009 个人词典管理与数据主权全部 3 个迭代收官。v0.33.0 已部署，732 测试全部通过。下一个 Epic 需重新 brainstorm。"
+    },
+    {
+      "id": "2026-05-11-67",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-009 iter-003 个人生词标记部署完成。v0.33.0 已部署到 Vercel，git tag 已推送。"
+    },
+    {
+      "id": "2026-05-11-66",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-009 iter-003 个人生词标记提交完成。f0bbc76 代码提交，732 测试全部通过。准备进入 DEPLOY 阶段。"
     },
     {
       "id": "2026-05-11-65",
@@ -31,70 +52,34 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
     }
   ],
-  "status": "IDLE",
-  "selectedEpic": null,
-  "lastRun": "2026-05-11T03:53:00.000Z",
-  "cycleCount": 66,
+  "status": "PLAN",
+  "selectedEpic": "epic-010",
+  "lastRun": "2026-05-11T05:00:00.000Z",
+  "cycleCount": 72,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-11-72",
+    "mode": "vision",
+    "stage": "PLAN",
+    "startedAt": "2026-05-10T20:44:40.227Z"
+  },
   "previousCycle": {
-    "id": "2026-05-11-66",
+    "id": "2026-05-11-68",
     "mode": "vision",
     "stage": "REPORT"
   },
-  "currentEpic": {
-    "id": "epic-009",
-    "title": "个人词典管理与数据主权",
-    "description": "提供本地词典编辑器，支持用户查看和编辑自己的词库内容。数据导入导出能力已完全就绪，可基于此快速实施个人词典管理。",
-    "proposedBy": "PM-Eco",
-    "iterations": [
-      {
-        "id": "iter-001",
-        "title": "词典浏览器（只读）",
-        "scope": "frontend-only",
-        "status": "completed",
-        "completedAt": "2026-05-10T19:42:00.000Z",
-        "description": "在 DataManager 中新增「我的词库」入口，浏览当前词典所有词条（词/释义/例句），支持按词搜索和按词典筛选。完全只读，不修改任何数据。"
-      },
-      {
-        "id": "iter-002",
-        "title": "词条搜索与筛选",
-        "scope": "frontend-only",
-        "status": "completed",
-        "completedAt": "2026-05-11T03:41:00.000Z",
-        "description": "在词典浏览器中添加搜索（按词匹配）和筛选（按难度等级）功能，提供即时搜索体验。"
-      },
-      {
-        "id": "iter-003",
-        "title": "个人生词标记",
-        "scope": "frontend-only",
-        "status": "pending",
-        "description": "允许用户将词条标记为「生词」并持久化到 localStorage，提供生词本快速访问入口。"
-      }
-    ],
-    "status": "in_progress",
-    "priority": "high"
-  },
-  "currentPlan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "个人生词标记",
-    "scope": "frontend-only",
-    "steps": [],
-    "filesToModify": [],
-    "filesToCreate": [],
-    "dependencies": [],
-    "testStrategy": "TBD - pending PLAN stage"
-  },
+  "currentEpic": null,
+  "currentPlan": null,
   "epicHistory": [
     {
       "id": "epic-009",
       "title": "个人词典管理与数据主权",
-      "status": "in_progress",
+      "status": "completed",
       "iterationsCount": 3,
-      "completedIterations": 2,
-      "versionRange": "v0.31.0-v0.32.0",
-      "completedAt": null
+      "completedIterations": 3,
+      "versionRange": "v0.31.0-v0.33.0",
+      "completedAt": "2026-05-11T04:40:00.000Z"
     },
     {
       "id": "epic-005",
@@ -123,57 +108,34 @@
   ],
   "brainstormResults": [
     {
-      "id": "epic-009",
-      "title": "个人词典管理与数据主权",
-      "description": "提供本地词典编辑器，支持用户查看和编辑自己的词库内容。数据导入导出能力已完全就绪，可基于此快速实施个人词典管理。",
-      "proposedBy": "PM-Eco",
-      "supportedBy": [
-        "PM-Lean",
-        "PM-UX",
-        "UX"
-      ],
-      "concerns": "ARCH 担忧格式兼容性维护成本；PM-Growth 关注使用频率",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：词典查看器（只读）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：词条搜索与筛选",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：个人生词标记",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
       "id": "epic-010",
       "title": "轻量级自适应学习 MVP",
       "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。纯前端可实现智能干扰项和动态提示级别。",
       "proposedBy": "EXP",
       "supportedBy": [
-        "PM-Growth",
-        "UX"
+        "PM-Lean",
+        "PM-UX",
+        "UX",
+        "QA"
       ],
-      "concerns": "PM-Lean 担忧需要后端或外部 API；ARCH 指出需要大量数据积累",
-      "priority": "medium",
+      "concerns": "PM-Growth 担忧自适应算法效果难以量化；PM-Eco 关注词典数据安全",
+      "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
           "title": "迭代1：智能干扰项生成",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "基于用户错题历史，优先选取混淆过的词作为选择题干扰项"
         },
         {
           "title": "迭代2：动态提示级别",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "根据用户答题状态（连续对/连续错）动态调整首字母提示显示概率"
         },
         {
           "title": "迭代3：自适应出题权重",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "薄弱词优先出题，提高复习效率"
         }
       ]
     },
@@ -186,89 +148,69 @@
         "PM-UX",
         "UX"
       ],
-      "concerns": "PM-Lean 担忧周报内容深度不足；PM-Mon 关注构建体积",
+      "concerns": "PM-Lean 担忧周报内容深度不足；PM-Mon 关注构建体积增长",
       "priority": "medium",
       "estimatedEffort": "small",
       "iterationsPreview": [
         {
           "title": "迭代1：周报数据结构",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "定义周报数据结构，从现有 SessionHistory/Mistake 数据派生周统计"
         },
         {
           "title": "迭代2：周报展示组件",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "创建 WeeklyReportPanel 组件，展示本周学习数据"
         },
         {
           "title": "迭代3：成就卡片导出",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-012",
-      "title": "浏览器推送通知召回",
-      "description": "基于 Web Push API 实现到期复习提醒和 streak 维持通知。纯前端实现，无需后端。",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-Lean"
-      ],
-      "concerns": "PM-UX 担忧通知骚扰；PM-Mon 关注 API 兼容性；QA 关注浏览器支持差异",
-      "priority": "low",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：推送通知权限",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：复习提醒逻辑",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：通知频率控制",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "复用 epic-005 的 html2canvas 技术，生成周报图片并支持分享"
         }
       ]
     },
     {
       "id": "epic-013",
       "title": "极致性能与流量成本优化",
-      "description": "词典数据按需懒加载，构建体积持续监控，确保加载速度。epic-006 iter-003 已建立监控基线。",
+      "description": "词典数据按需懒加载，构建体积持续监控，确保加载速度。epic-006 iter-003 已建立 650KB 监控基线。",
       "proposedBy": "PM-Mon",
       "supportedBy": [
-        "ARCH",
-        "QA"
+        "ARCH"
       ],
       "concerns": "PM-Lean 担忧按需加载影响首次体验；PM-Growth 关注实施复杂度",
-      "priority": "low",
+      "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
           "title": "迭代1：词典懒加载架构",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "实现词典数据按需加载，首屏只加载当前选中词典"
         },
         {
           "title": "迭代2：初始加载优化",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "创建 loading skeleton UI，优化感知加载时间"
         },
         {
           "title": "迭代3：缓存策略",
-          "scope": "frontend-only"
+          "scope": "frontend-only",
+          "description": "实现已加载词典的内存缓存，避免重复解析"
         }
       ]
     }
   ],
-  "discussionSummary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（4 支持），数据导入导出能力已完全就绪，支持用户数据主权深化。epic-010「轻量级自适应学习 MVP」次高优先级（3 支持），纯前端可实现智能干扰项和动态提示级别。epic-011/012/013 列为 background task。",
+  "discussionSummary": "epic-009 完成全部 3 个迭代收官，732 测试通过，v0.33.0 已部署。9 个 Agent 参与本次 brainstorm，产出 3 个 Epic 提案。epic-010「轻量级自适应学习 MVP」获最高优先级（4 支持：EXP/PM-Lean/PM-UX/UX），epic-011「周报与成就回顾」次高优先级（3 支持），epic-013「极致性能优化」中优先级（2 支持）。epic-012（推送通知）因用户激活率低、浏览器兼容性担忧，暂不纳入本次迭代。",
   "testResults": {
-    "total": 716,
-    "passed": 716,
+    "total": 732,
+    "passed": 732,
     "failed": 0,
     "lintWarnings": 4,
     "lintErrors": 0,
-    "buildSuccess": true
+    "buildSuccess": true,
+    "e2eResult": "1 passed, 1 flaky (pre-existing, 与本次修改无关)"
   },
-  "iterationStatus": "completed",
-  "implementationStatus": "epic-009 iter-002 词条搜索与筛选已完成：LevelFilter Select 组件（8 个难度选项）、level 状态管理、filteredSentences 双重过滤逻辑、切换词典时重置过滤器。716 测试全部通过。提交: cea641a/5e0fc67/f7c1ef5/25e180f。iter-003 个人生词标记待开始。",
+  "iterationStatus": null,
+  "implementationStatus": null,
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
@@ -360,9 +302,11 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.32.0",
-    "url": "https://en-learn-kbecjtitu-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T19:49:27.000Z",
-    "pendingDeployment": false
+    "version": "v0.33.0",
+    "commit": "f0bbc76",
+    "url": "https://en-learn-jlk6q9xma-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-11T04:40:00.000Z",
+    "tagPushed": true,
+    "error": null
   }
 }

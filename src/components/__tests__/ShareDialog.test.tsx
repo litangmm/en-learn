@@ -1,10 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { ShareDialog } from '../ShareDialog';
+import type { ShareCardData } from '@/data/types';
 
-// Mock global alert
-const mockAlert = vi.fn();
-vi.stubGlobal('alert', mockAlert);
+// Use vi.hoisted to define mocks at the same hoisting level as vi.mock
+const { mockToastSuccess, mockToastError, mockDownloadImage, mockCopyText, mockSetCardRef } = vi.hoisted(() => ({
+  mockToastSuccess: vi.fn(),
+  mockToastError: vi.fn(),
+  mockDownloadImage: vi.fn(),
+  mockCopyText: vi.fn(),
+  mockSetCardRef: vi.fn(),
+}));
+
+// Mock sonner toast
+vi.mock('sonner', () => ({
+  toast: {
+    success: mockToastSuccess,
+    error: mockToastError,
+  },
+}));
+
+// Mock useShareExport hook
+vi.mock('@/hooks/useShareExport', () => ({
+  useShareExport: vi.fn(() => ({
+    setCardRef: mockSetCardRef,
+    downloadImage: mockDownloadImage,
+    copyText: mockCopyText,
+  })),
+}));
 
 // Mock shadcn UI Dialog components
 vi.mock('@/components/ui/dialog', () => ({
@@ -49,7 +72,7 @@ vi.mock('../ShareCard', () => ({
 }));
 
 // Mock useShareCardData hook
-const mockShareCardData = {
+const mockShareCardData: ShareCardData = {
   xp: {
     totalXP: 750,
     currentLevel: 5,
@@ -87,7 +110,11 @@ describe('ShareDialog', () => {
   beforeEach(() => {
     cleanup();
     vi.clearAllMocks();
-    mockAlert.mockClear();
+    mockToastSuccess.mockClear();
+    mockToastError.mockClear();
+    mockDownloadImage.mockClear();
+    mockCopyText.mockClear();
+    mockSetCardRef.mockClear();
   });
 
   afterEach(() => {
@@ -211,8 +238,24 @@ describe('ShareDialog', () => {
     });
   });
 
-  describe('Button click handlers', () => {
-    it('calls alert when "复制文本" button is clicked', () => {
+  describe('useShareExport hook', () => {
+    it('is called when component mounts', () => {
+      render(
+        <ShareDialog
+          open={true}
+          onOpenChange={mockOnOpenChange}
+        />
+      );
+
+      // The mock is called because the component uses it
+      expect(mockSetCardRef).toHaveBeenCalled();
+    });
+  });
+
+  describe('Button click handlers - copy text', () => {
+    it('calls copyText from useShareExport when "复制文本" button is clicked', async () => {
+      mockCopyText.mockResolvedValue(true);
+
       render(
         <ShareDialog
           open={true}
@@ -223,11 +266,53 @@ describe('ShareDialog', () => {
       const copyButton = screen.getByRole('button', { name: '复制文本' });
       fireEvent.click(copyButton);
 
-      expect(mockAlert).toHaveBeenCalledTimes(1);
-      expect(mockAlert).toHaveBeenCalledWith('文本复制功能将在 iter-002 中实现');
+      // Wait for async operation
+      await vi.waitFor(() => {
+        expect(mockCopyText).toHaveBeenCalledWith(mockShareCardData);
+      });
     });
 
-    it('calls alert when "生成分享图片" button is clicked', () => {
+    it('shows success toast when copyText succeeds', async () => {
+      mockCopyText.mockResolvedValue(true);
+
+      render(
+        <ShareDialog
+          open={true}
+          onOpenChange={mockOnOpenChange}
+        />
+      );
+
+      const copyButton = screen.getByRole('button', { name: '复制文本' });
+      fireEvent.click(copyButton);
+
+      await vi.waitFor(() => {
+        expect(mockToastSuccess).toHaveBeenCalledWith('文本已复制到剪贴板');
+      });
+    });
+
+    it('shows error toast when copyText fails', async () => {
+      mockCopyText.mockResolvedValue(false);
+
+      render(
+        <ShareDialog
+          open={true}
+          onOpenChange={mockOnOpenChange}
+        />
+      );
+
+      const copyButton = screen.getByRole('button', { name: '复制文本' });
+      fireEvent.click(copyButton);
+
+      await vi.waitFor(() => {
+        expect(mockToastError).toHaveBeenCalledWith('复制失败，请重试');
+      });
+    });
+  });
+
+  describe('Button click handlers - generate image', () => {
+    it('calls downloadImage from useShareExport when "生成分享图片" button is clicked', async () => {
+      mockDownloadImage.mockResolvedValue(true);
+
       render(
         <ShareDialog
           open={true}
@@ -238,11 +323,53 @@ describe('ShareDialog', () => {
       const imageButton = screen.getByRole('button', { name: '生成分享图片' });
       fireEvent.click(imageButton);
 
-      expect(mockAlert).toHaveBeenCalledTimes(1);
-      expect(mockAlert).toHaveBeenCalledWith('图片分享功能将在 iter-002 中实现');
+      await vi.waitFor(() => {
+        expect(mockDownloadImage).toHaveBeenCalledWith(mockShareCardData);
+      });
     });
 
-    it('does not call onOpenChange when share buttons are clicked', () => {
+    it('shows success toast when downloadImage succeeds', async () => {
+      mockDownloadImage.mockResolvedValue(true);
+
+      render(
+        <ShareDialog
+          open={true}
+          onOpenChange={mockOnOpenChange}
+        />
+      );
+
+      const imageButton = screen.getByRole('button', { name: '生成分享图片' });
+      fireEvent.click(imageButton);
+
+      await vi.waitFor(() => {
+        expect(mockToastSuccess).toHaveBeenCalledWith('图片已保存');
+      });
+    });
+
+    it('shows error toast when downloadImage fails', async () => {
+      mockDownloadImage.mockResolvedValue(false);
+
+      render(
+        <ShareDialog
+          open={true}
+          onOpenChange={mockOnOpenChange}
+        />
+      );
+
+      const imageButton = screen.getByRole('button', { name: '生成分享图片' });
+      fireEvent.click(imageButton);
+
+      await vi.waitFor(() => {
+        expect(mockToastError).toHaveBeenCalledWith('保存失败，请重试');
+      });
+    });
+  });
+
+  describe('Button click handlers - additional behavior', () => {
+    it('does not call onOpenChange when share buttons are clicked', async () => {
+      mockCopyText.mockResolvedValue(true);
+      mockDownloadImage.mockResolvedValue(true);
+
       render(
         <ShareDialog
           open={true}
@@ -256,7 +383,9 @@ describe('ShareDialog', () => {
       const imageButton = screen.getByRole('button', { name: '生成分享图片' });
       fireEvent.click(imageButton);
 
-      expect(mockOnOpenChange).not.toHaveBeenCalled();
+      await vi.waitFor(() => {
+        expect(mockOnOpenChange).not.toHaveBeenCalled();
+      });
     });
   });
 

@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useShareCardData, type SessionResult } from '@/hooks/useShareCardData';
+import { useShareExport } from '@/hooks/useShareExport';
 import { ShareCard } from './ShareCard';
 
 /**
@@ -35,17 +37,28 @@ export function ShareDialog({
   // Aggregate data from various hooks for the share card
   const shareCardData = useShareCardData(sessionResult);
 
-  // Placeholder handler for generating share image
-  // TODO (iter-002): Implement actual image export functionality
-  const handleGenerateImage = useCallback(() => {
-    alert('图片分享功能将在 iter-002 中实现');
-  }, []);
+  // Hook for share export functionality
+  const { setCardRef, downloadImage, copyText } = useShareExport();
 
-  // Placeholder handler for copying share text
-  // TODO (iter-002): Implement actual text copy functionality
-  const handleCopyText = useCallback(() => {
-    alert('文本复制功能将在 iter-002 中实现');
-  }, []);
+  // Handler for generating and downloading share image
+  const handleGenerateImage = useCallback(async () => {
+    const success = await downloadImage(shareCardData);
+    if (success) {
+      toast.success('图片已保存');
+    } else {
+      toast.error('保存失败，请重试');
+    }
+  }, [downloadImage, shareCardData]);
+
+  // Handler for copying share text to clipboard
+  const handleCopyText = useCallback(async () => {
+    const success = await copyText(shareCardData);
+    if (success) {
+      toast.success('文本已复制到剪贴板');
+    } else {
+      toast.error('复制失败，请重试');
+    }
+  }, [copyText, shareCardData]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -57,8 +70,8 @@ export function ShareDialog({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Share card display */}
-        <div className="py-4">
+        {/* Share card display with ref wrapper */}
+        <div className="py-4" ref={setCardRef}>
           <ShareCard data={shareCardData} />
         </div>
 

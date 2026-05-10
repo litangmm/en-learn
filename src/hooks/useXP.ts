@@ -34,10 +34,13 @@ export function useXP() {
     const multiplier = getStreakMultiplier(streak);
     const bonus = firstTry ? 5 : 0;
     const finalXP = Math.round(baseXP * multiplier) + bonus;
+    const oldLevel = profile.currentLevel;
     const updated = storage.addXP(finalXP);
+    const newLevel = updated.currentLevel;
+    const leveledUp = oldLevel !== newLevel;
     setProfile(updated);
-    return { profile: updated, finalXP, multiplier, streak };
-  }, [streak]);
+    return { profile: updated, finalXP, multiplier, streak, oldLevel, newLevel, leveledUp };
+  }, [streak, profile.currentLevel]);
 
   const resetXPProfile = useCallback(() => {
     const defaultProfile: XPProfile = {

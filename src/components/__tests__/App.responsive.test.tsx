@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../../App';
 
 const mockInitializeInputs = vi.fn();
@@ -164,15 +165,22 @@ describe('App responsive layout', () => {
   it('hides desktop nav buttons on mobile via hidden class', () => {
     isMobileMock = true;
     render(<App />);
-    // Find the desktop nav container and verify it has hidden class
-    const desktopNavContainer = screen.getByText('错题本').parentElement;
-    expect(desktopNavContainer).toHaveClass('hidden');
-    expect(desktopNavContainer).toHaveClass('md:flex');
+    // Find the MoreMenu button and verify its parent container has hidden class
+    const moreButton = screen.getByRole('button', { name: /更多/i });
+    // The MoreMenu is inside a div with class "hidden md:flex"
+    const container = moreButton.closest('.hidden');
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveClass('md:flex');
   });
 
-  it('shows desktop nav buttons on desktop', () => {
+  it('shows desktop nav buttons on desktop via MoreMenu dropdown', async () => {
     isMobileMock = false;
+    const user = userEvent.setup();
     render(<App />);
+    // Click the "更多" button to open the MoreMenu dropdown
+    const moreButton = screen.getByRole('button', { name: /更多/i });
+    await user.click(moreButton);
+    // Now verify the nav items are visible inside the dropdown
     expect(screen.getByText('错题本')).toBeInTheDocument();
     expect(screen.getByText('学习记录')).toBeInTheDocument();
     expect(screen.getByText('数据管理')).toBeInTheDocument();

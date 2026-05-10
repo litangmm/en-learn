@@ -1,0 +1,124 @@
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
+interface MoreMenuProps {
+  mistakeCount: number;
+  historyCount: number;
+  reviewDueCount: number;
+  unclaimedCount: number;
+  unlockedCount: number;
+  isReviewMode: boolean;
+  onOpenMistakeBook: () => void;
+  onOpenHistory: () => void;
+  onOpenDataManager: () => void;
+  onOpenSmartReview: () => void;
+  onOpenChallenges: () => void;
+  onOpenBadges: () => void;
+  onOpenLeaderboard: () => void;
+}
+
+export function MoreMenu({
+  mistakeCount,
+  historyCount,
+  reviewDueCount,
+  unclaimedCount,
+  unlockedCount,
+  isReviewMode,
+  onOpenMistakeBook,
+  onOpenHistory,
+  onOpenDataManager,
+  onOpenSmartReview,
+  onOpenChallenges,
+  onOpenBadges,
+  onOpenLeaderboard,
+}: MoreMenuProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="text-slate-500 gap-2">
+          <MoreHorizontal className="w-4 h-4" />
+          <span className="hidden lg:inline">更多</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-48">
+        {/* 错题本 */}
+        <DropdownMenuItem onClick={onOpenMistakeBook} className="cursor-pointer">
+          <BookOpen className="w-4 h-4 text-slate-500" />
+          <span className="flex-1">错题本</span>
+          {mistakeCount > 0 && (
+            <Badge variant="destructive" className="h-5 min-w-5 px-1.5 text-xs">
+              {mistakeCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 学习记录 */}
+        <DropdownMenuItem onClick={onOpenHistory} className="cursor-pointer">
+          <History className="w-4 h-4 text-slate-500" />
+          <span className="flex-1">学习记录</span>
+          {historyCount > 0 && (
+            <Badge variant="secondary" className="h-5 min-w-5 px-1.5 text-xs">
+              {historyCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 数据管理 */}
+        <DropdownMenuItem onClick={onOpenDataManager} className="cursor-pointer">
+          <Database className="w-4 h-4 text-slate-500" />
+          <span>数据管理</span>
+        </DropdownMenuItem>
+
+        {/* 智能复习 */}
+        <DropdownMenuItem onClick={onOpenSmartReview} className="cursor-pointer">
+          {isReviewMode ? (
+            <RefreshCw className="w-4 h-4 text-slate-500" />
+          ) : (
+            <Brain className="w-4 h-4 text-slate-500" />
+          )}
+          <span className="flex-1">智能复习</span>
+          {reviewDueCount > 0 && (
+            <Badge variant="destructive" className="h-5 min-w-5 px-1.5 text-xs">
+              {reviewDueCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 每日挑战 */}
+        <DropdownMenuItem onClick={onOpenChallenges} className="cursor-pointer">
+          <Trophy className="w-4 h-4 text-slate-500" />
+          <span className="flex-1">每日挑战</span>
+          {unclaimedCount > 0 && (
+            <Badge variant="destructive" className="h-5 min-w-5 px-1.5 text-xs">
+              {unclaimedCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 成就 */}
+        <DropdownMenuItem onClick={onOpenBadges} className="cursor-pointer">
+          <Award className="w-4 h-4 text-slate-500" />
+          <span className="flex-1">成就</span>
+          {unlockedCount > 0 && (
+            <Badge variant="secondary" className="h-5 min-w-5 px-1.5 text-xs">
+              {unlockedCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 排行 */}
+        <DropdownMenuItem onClick={onOpenLeaderboard} className="cursor-pointer">
+          <TrendingUp className="w-4 h-4 text-slate-500" />
+          <span>排行</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

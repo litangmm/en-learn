@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, BookOpen, History, Database, Brain, RefreshCw, Eye, X, Trophy, Award, TrendingUp } from 'lucide-react';
+import { Headphones, Eye, X, Trophy, Award, TrendingUp } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -11,6 +11,7 @@ import { DictionarySelector } from '@/components/DictionarySelector';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
 import { MobileNav } from '@/components/MobileNav';
+import { MoreMenu } from '@/components/MoreMenu';
 import { XPBar } from '@/components/XPBar';
 import { StreakFeedback } from '@/components/StreakFeedback';
 import { XPGainPopup } from '@/components/XPGainPopup';
@@ -471,19 +472,22 @@ function App() {
       {/* Header - hidden in focus mode */}
       {!(isFocusMode && view === 'practice' && !state.isComplete) && (
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          {/* Brand area - prevent compression with min-w-0 and flex-shrink-0 */}
+          <div className="flex items-center gap-3 min-w-0 flex-shrink-0">
             <div className="w-9 h-9 bg-blue-500 rounded-lg flex items-center justify-center">
               <Headphones className="w-5 h-5 text-white" />
             </div>
-            <div>
-              <h1 className="font-bold text-slate-800 text-base md:text-lg leading-tight">听力词汇练习</h1>
-              <p className="text-xs text-slate-500">听句子，填单词</p>
+            <div className="min-w-0">
+              <h1 className="font-bold text-slate-800 text-base md:text-lg leading-tight truncate">听力词汇练习</h1>
+              <p className="text-xs text-slate-500 hidden sm:block">听句子，填单词</p>
             </div>
           </div>
+
           <div className="flex items-center gap-3 flex-wrap">
+            {/* Practice controls - visible on desktop in practice view */}
             {!state.isComplete && view === 'practice' && (
-              <div className="flex items-center gap-3 mr-2 flex-wrap">
+              <div className="flex items-center gap-3 flex-shrink-0">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
                 <StreakFeedback streak={streak} />
                 <Button
@@ -534,115 +538,9 @@ function App() {
                 </div>
               </div>
             )}
-            <div className="hidden md:flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenMistakeBook}
-                className="relative text-slate-500 gap-2"
-              >
-                <BookOpen className="w-4 h-4" />
-                错题本
-                {mistakeCount > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                  >
-                    {mistakeCount}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenHistory}
-                className="relative text-slate-500 gap-2"
-              >
-                <History className="w-4 h-4" />
-                学习记录
-                {historyCount > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                  >
-                    {historyCount}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenDataManager}
-                className="text-slate-500 gap-2"
-              >
-                <Database className="w-4 h-4" />
-                数据管理
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenSmartReview}
-                className="relative text-slate-500 gap-2"
-              >
-                {isReviewMode ? (
-                  <RefreshCw className="w-4 h-4" />
-                ) : (
-                  <Brain className="w-4 h-4" />
-                )}
-                智能复习
-                {reviewDueCount > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                  >
-                    {reviewDueCount}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenChallenges}
-                className="relative text-slate-500 gap-2"
-              >
-                <Trophy className="w-4 h-4" />
-                <span className="hidden lg:inline">每日挑战</span>
-                {unclaimedCount > 0 && (
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                  >
-                    {unclaimedCount}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenBadges}
-                className="relative text-slate-500 gap-2"
-              >
-                <Award className="w-4 h-4" />
-                <span className="hidden lg:inline">成就</span>
-                {unlockedCount > 0 && (
-                  <Badge
-                    variant="secondary"
-                    className="absolute -top-1 -right-1 h-4 min-w-4 px-1 text-[10px] flex items-center justify-center"
-                  >
-                    {unlockedCount}
-                  </Badge>
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleOpenLeaderboard}
-                className="text-slate-500 gap-2"
-                data-testid="leaderboard-nav-button"
-              >
-                <TrendingUp className="w-4 h-4" />
-                排行
-              </Button>
+
+            {/* Desktop nav section - hidden on mobile */}
+            <div className="hidden md:flex items-center gap-2 flex-shrink-0">
               {view === 'practice' && (
                 <>
                   <DictionarySelector
@@ -655,6 +553,21 @@ function App() {
                   </Button>
                 </>
               )}
+              <MoreMenu
+                mistakeCount={mistakeCount}
+                historyCount={historyCount}
+                reviewDueCount={reviewDueCount}
+                unclaimedCount={unclaimedCount}
+                unlockedCount={unlockedCount}
+                isReviewMode={isReviewMode}
+                onOpenMistakeBook={handleOpenMistakeBook}
+                onOpenHistory={handleOpenHistory}
+                onOpenDataManager={handleOpenDataManager}
+                onOpenSmartReview={handleOpenSmartReview}
+                onOpenChallenges={handleOpenChallenges}
+                onOpenBadges={handleOpenBadges}
+                onOpenLeaderboard={handleOpenLeaderboard}
+              />
             </div>
           </div>
         </div>

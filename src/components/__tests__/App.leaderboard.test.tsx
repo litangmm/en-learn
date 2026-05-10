@@ -144,6 +144,26 @@ vi.mock('@/components/BadgePanel', () => ({
   )),
 }));
 
+vi.mock('@/components/MoreMenu', () => ({
+  MoreMenu: vi.fn(({
+    onOpenLeaderboard
+  }: {
+    onOpenLeaderboard?: () => void;
+  }) => (
+    <div data-testid="more-menu">
+      <button data-testid="more-button">更多</button>
+      <div data-testid="dropdown-content">
+        <div
+          data-testid="dropdown-item"
+          onClick={onOpenLeaderboard}
+        >
+          排行
+        </div>
+      </div>
+    </div>
+  )),
+}));
+
 vi.mock('@/components/BadgeUnlockToast', () => ({
   BadgeUnlockToast: vi.fn(() => <div data-testid="badge-unlock-toast" />),
 }));
@@ -219,10 +239,10 @@ describe('App leaderboard integration', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders leaderboard nav button in header', () => {
+  it('renders MoreMenu with dropdown trigger button', () => {
     render(<App />);
-    const navButton = screen.getByTestId('leaderboard-nav-button');
-    expect(navButton).toBeInTheDocument();
+    const moreButton = screen.getByTestId('more-button');
+    expect(moreButton).toBeInTheDocument();
   });
 
   it('renders leaderboard header button in score area', () => {
@@ -237,9 +257,14 @@ describe('App leaderboard integration', () => {
     expect(screen.getByTestId('leaderboard-panel')).toBeInTheDocument();
   });
 
-  it('clicking nav button switches to leaderboard view', () => {
+  it('clicking MoreMenu leaderboard item switches to leaderboard view', () => {
     render(<App />);
-    fireEvent.click(screen.getByTestId('leaderboard-nav-button'));
+    // Click "更多" button to open MoreMenu dropdown
+    const moreButton = screen.getByTestId('more-button');
+    fireEvent.click(moreButton);
+    // Get the leaderboard item from dropdown and click it
+    const leaderboardItem = screen.getByTestId('dropdown-item');
+    fireEvent.click(leaderboardItem);
     expect(screen.getByTestId('leaderboard-panel')).toBeInTheDocument();
   });
 

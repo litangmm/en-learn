@@ -8,16 +8,17 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-26)
-- **迭代**: epic-004 iter-001「移动端响应式适配（P0）」—— **技术审查通过**
+### 2026-05-10 (cycle-2026-05-10-27)
+- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **技术审查通过**
 - **技术决策**:
-  - 全部使用现有 Tailwind 标准断点（md: 768px, lg: 1024px），无自定义断点配置，维护成本为零
-  - `flex-wrap`、`overflow-x-auto`、`hidden lg:inline` 均为标准 CSS 工具类，零运行时计算开销，零 JS 逻辑增加
-  - 输入框 `min-w-[60px] max-w-[120px] md:w-32` 弹性宽度策略避免硬编码断点，在所有屏幕尺寸下自适应，无需 JS 检测视口宽度
-  - 音频按钮 `size="sm"` + `h-8 md:h-10` 类名组合，移动端保持可点击性（44px 触摸目标仍满足 WCAG 2.1 最小要求）的同时减少空间占用
-  - 零类型变更、零接口变更、零 hook API 变更，所有变更局限于 JSX 类名字符串，回滚成本极低
-- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 434/434 unit tests passed
-- **观察**: App.tsx 的复杂度维持在灾难级临界点（~300 行条件渲染，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），但本次迭代未增加新视图、新状态或新 hook，仅修改现有组件的类名字符串。epic-004 完成后 MUST 立即执行 epic-006「前端架构债务清理」，否则后续任何迭代都将在不可维护的代码基上叠加复杂度。当前技术债务已非线性累积，重构窗口正在关闭
+  - `getModeHint(practiceMode)` 辅助函数使用 switch 返回模式对应文案，代码清晰可扩展，新增模式仅需添加 case
+  - `renderWrongAnswerFeedback()` 辅助函数返回 JSX fragment，组织三区块反馈，无需新组件，避免过度设计
+  - 三区块反馈使用一致的 card 结构（背景色区分：红色 bg-red-50 / 绿色 bg-green-50 / 蓝色 bg-blue-50），语义清晰
+  - CheckCircle2/Circle 图标使用 lucide-react 现有图标，零新增依赖
+  - 移除内联正确答案是减少代码重复而非引入新逻辑，向后兼容无风险
+  - 连词成句进度文字使用条件渲染（`orderedTokenIds.length !== sentenceTokens.length`），零运行时开销
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 451/451 unit tests passed
+- **观察**: App.tsx 复杂度继续增加——新增 getModeHint 辅助函数和 hint 条件渲染。PracticeCard 新增 renderWrongAnswerFeedback 辅助函数，PracticeCard 的条件渲染逻辑（4 种练习模式 × showResult × 正误判断 × 反馈类型）已接近 200 行。App.tsx 的条件渲染复杂度已达不可维护临界点，epic-004 完成后 MUST 立即执行 epic-006「前端架构债务清理」
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **技术审查通过**

@@ -142,12 +142,15 @@
 - **结果**: QA 的稳定性保障被判定为跨 Epic 质量门禁，不单独列为 Epic
 - **备注**: 提出的 localStorage 数据完整性保护已在 iter-001 中实现（损坏恢复、版本迁移、quota exceeded 处理）
 
-### 2026-05-10 (cycle-2026-05-10-26)
-- **相关质量门禁**: 响应式测试覆盖、移动端布局断言、构建稳定性
-- **本次验证**: epic-004 iter-001「移动端响应式适配（P0）」质量门禁验证
-  - App.responsive 测试：新增 4 个移动端布局断言（Header flex-wrap 类名存在、标题响应式 text-base/md:text-lg 类名、ToggleGroup overflow-x-auto 容器、输入框 min-w/max-w 类名、音频按钮 h-8/md:h-10 类名）
-  - 全量回归：**434/434 单元测试通过**（45 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
-- **备注**: 本次迭代新增 4 个专用响应式测试，覆盖 375px~390px 窄屏下的关键布局断言。纯 CSS 类名调整零行为回归，434 测试是项目历史新高位。E2E: skipped（4 pending iterations remaining）
+### 2026-05-10 (cycle-2026-05-10-27)
+- **相关质量门禁**: 结构化反馈测试、UI 增强测试、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-004 iter-002「答题反馈与提示文案重构（P1）」质量门禁验证
+  - App.hints 测试：4 种模式（填空/听写/选择/连词成句）提示文案渲染，专注模式隐藏
+  - PracticeCard.feedback 测试：三区块错误反馈（你的答案/正确答案/解析）在 fill-in-blanks/dictation/multiple-choice/sentence-reorder 四种模式下的渲染，空答案占位符
+  - PracticeCard.choice 测试：CheckCircle2 图标存在于已选选项，Circle 图标存在于未选选项，已选背景 bg-blue-100
+  - PracticeCard.reorder 测试：「已选 X/Y 个单词」进度文字渲染，「请先点击下方单词」禁用提交提示
+  - 全量回归：**451/451 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
+- **备注**: 本次迭代新增 12 个专用测试（App.hints 5 个 + PracticeCard.feedback 7 个），覆盖了结构化错误反馈的四种模式场景。PracticeCard.choice 和 PracticeCard.reorder 的现有测试扩展了图标和进度文字断言。451 测试是项目历史新高位。E2E: skipped（3 pending iterations remaining）
 
 ## 成功模式
 （由进化引擎自动总结）

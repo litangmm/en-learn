@@ -8,12 +8,13 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-26)
-- **迭代**: epic-004 iter-001「移动端响应式适配（P0）」—— **完整执行**
-- **计划步骤**: 8 步全部完成，涵盖 Header flex-wrap 防挤压、Trophy/Award 图标-only 响应式显示、标题 text-base md:text-lg 缩小、ToggleGroup overflow-x-auto 容器防溢出、PracticeCard 句子区域 overflow-x-auto、输入框 min-w/max-w 弹性宽度、音频按钮 size=sm + h-8 md:h-10 缩小、App.responsive 测试补充 4 个移动端布局断言
-- **实际修改文件**: 与计划一致
-  - 修改: src/App.tsx, src/components/PracticeCard.tsx, src/components/__tests__/App.responsive.test.tsx
-- **观察**: 计划清晰可执行，8 步完全对应 P0 优先级的 8 个移动端布局问题，每步聚焦一个具体断点适配点。纯 CSS/Tailwind 工具类调整，零逻辑变更，零类型变更，风险极低。与 epic-002 iter-003a 建立的响应式基础（MobileNav、断点体系）自然融合，无冲突
+### 2026-05-10 (cycle-2026-05-10-27)
+- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **完整执行**
+- **计划步骤**: 11 步全部完成，涵盖 App.tsx getModeHint 辅助函数、PracticeCard Circle import、renderWrongAnswerFeedback 三区块反馈、去除内联正确答案、选择题 CheckCircle2/Circle 图标增强、连词成句进度文字、App.hints 测试、PracticeCard.feedback 测试、PracticeCard.choice 测试扩展、PracticeCard.reorder 测试扩展、全量验证
+- **实际修改文件**: 与计划高度一致
+  - 修改: src/App.tsx, src/components/PracticeCard.tsx, src/components/__tests__/PracticeCard.choice.test.tsx, src/components/__tests__/PracticeCard.reorder.test.tsx
+  - 创建: src/components/__tests__/App.hints.test.tsx, src/components/__tests__/PracticeCard.feedback.test.tsx
+- **观察**: 计划清晰可执行，11 步覆盖了从 App.tsx hint 辅助函数 → PracticeCard 反馈重构 → UI 增强 → 测试覆盖 → 全量验证的完整链路。与 iter-001 的纯 CSS 调整不同，iter-002 涉及辅助函数重构和 UI 增强，但计划执行无偏差
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整执行**

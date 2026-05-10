@@ -8,13 +8,16 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-26)
-- **迭代**: epic-004 iter-001「移动端响应式适配（P0）」—— **全部测试通过**
-- **测试覆盖**: 434/434 单元测试通过（45 个测试文件，新增 4 个测试）
-  - App.responsive.test.tsx: 新增 4 个测试（Header flex-wrap 类名存在、标题响应式 text-base/md:text-lg 类名、ToggleGroup overflow-x-auto 容器、输入框 min-w/max-w 类名、音频按钮 h-8/md:h-10 类名）
-  - 全量回归: 之前 429 个测试全部通过
-- **E2E**: skipped（4 pending iterations remaining）
-- **观察**: 434 测试是项目历史最新高水位。纯 CSS 类名调整零行为回归，新增 4 个响应式布局断言覆盖 375px~390px 窄屏下的关键布局点。E2E 因 epic-004 剩余 4 个迭代仍 pending 而继续跳过
+### 2026-05-10 (cycle-2026-05-10-27)
+- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **全部测试通过**
+- **测试覆盖**: 451/451 单元测试通过（47 个测试文件，新增 12 个测试）
+  - App.hints.test.tsx: 5 个测试（4 种模式提示文案渲染、专注模式隐藏）
+  - PracticeCard.feedback.test.tsx: 7 个测试（fill-in-blanks/dictation/multiple-choice/sentence-reorder 三区块反馈、空答案占位符）
+  - PracticeCard.choice.test.tsx: 扩展 CheckCircle2/Circle 图标断言（已选选项存在 CheckCircle2、未选选项存在 Circle、已选背景 bg-blue-100）
+  - PracticeCard.reorder.test.tsx: 扩展进度/提示文字断言（「已选 X/Y 个单词」、「请先点击下方单词」）
+  - 全量回归: 之前 434 个测试全部通过
+- **E2E**: skipped（3 pending iterations remaining）
+- **观察**: 451 测试是项目历史最新高水位，47 个测试文件。结构化错误反馈测试覆盖了 4 种模式的完整场景，PracticeCard.choice 和 PracticeCard.reorder 的测试扩展展示了增量测试策略。零行为回归验证了辅助函数重构的安全性。E2E 因 epic-004 剩余 3 个迭代仍 pending 而继续跳过
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **全部测试通过**

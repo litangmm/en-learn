@@ -8,18 +8,16 @@
 
 ## 历史数据
 
-### 2026-05-10 (cycle-2026-05-10-26)
-- **迭代**: epic-004 iter-001「移动端响应式适配（P0）」—— **完整实现**
-- **实现质量**: 高 — 纯 CSS 调整，零逻辑变更，零架构影响
+### 2026-05-10 (cycle-2026-05-10-27)
+- **迭代**: epic-004 iter-002「答题反馈与提示文案重构（P1）」—— **完整实现**
+- **实现质量**: 高 — 组件逻辑重构自然，UI 增强清晰
 - **关键决策**:
-  - Header score area 使用 `flex-wrap` 防止 XPBar/StreakFeedback/Trophy/Award/得分在窄屏下挤压标题，自然换行而非溢出
-  - Trophy/Award 桌面导航按钮使用 `hidden lg:inline` 包裹文字，在 md~lg 平板断点下仅显示图标，减少水平空间占用
-  - 标题从 `text-lg` 改为 `text-base md:text-lg`，移动端缩小字号防止竖排换行
-  - 练习模式 ToggleGroup 包裹在 `overflow-x-auto` 容器中，4 个模式项在移动端可水平滚动而非溢出视口
-  - PracticeCard 输入框宽度从 `w-28` 改为 `min-w-[60px] max-w-[120px] md:w-32`，允许弹性收缩适应窄屏
-  - 音频按钮使用 `size="sm"` 配合 `h-8 md:h-10` 类名，移动端缩小尺寸同时保持桌面端可点击性
-  - 句子+输入框区域添加 `overflow-x-auto`，防止长句子和多个输入框组合后总宽超出视口
-- **观察**: 零新增依赖，零新增组件，零构建体积增长。纯 Tailwind 工具类调整，与 epic-002 iter-003a 建立的响应式基础（MobileNav、断点体系）自然融合。本次迭代是在已有响应式骨架上的「精细化调优」，而非从零构建
+  - App.tsx `getModeHint(practiceMode)` 辅助函数集中配置 4 种模式提示文案，避免分散的条件渲染，DRY 原则
+  - PracticeCard `renderWrongAnswerFeedback()` 辅助函数重构错误答案反馈为三区块卡片（红色「你的答案」/ 绿色「正确答案」/ 蓝色「解析」），提供清晰的认知闭环
+  - 移除 `renderSentenceWithBlanks` 和 `renderDictationInputs` 中输入框下方的内联正确答案绿色文字，消除视觉混淆
+  - 选择题 CheckCircle2（已选）/ Circle（未选）图标增强视觉可辨性，选中背景从 `bg-blue-50` 增强为 `bg-blue-100`
+  - 连词成句模式添加「已选 X/Y 个单词」进度文字和禁用提交提示，降低认知负荷
+- **观察**: 零新增依赖，零新增组件，零构建体积增长。与 iter-001 的纯 CSS 调整不同，iter-002 涉及组件逻辑重构和 UI 增强，但辅助函数的引入改善了代码组织结构。`getModeHint` 的集中式配置模式为后续 iter-003~005 的文案调整提供了可扩展基础
 
 ### 2026-05-10 (cycle-2026-05-10-21)
 - **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整实现**

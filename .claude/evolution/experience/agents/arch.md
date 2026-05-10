@@ -105,11 +105,11 @@
 - **当前状态**: **连续 17 个 cycle 未被选中**（cycle-20 时 16 次 + 本次 1 次）
 - **观察**: epic-003 全部 5 个迭代已完成。iter-005 在现有架构内自然扩展（新增 useLeaderboard hook + Leaderboard 组件），未引入架构变更。但 App.tsx 的复杂度已达灾难级临界点——现在管理 9 个视图（practice/mistake-book/history/data/review/challenges/badges/leaderboard + focus mode overlay）+ 4 种练习模式 × 专注模式 × 响应式断点 + XP 系统 + 连击动画 + 每日挑战 + 徽章追踪 + 排行榜。条件渲染代码已接近 300 行。ARCH 强烈建议：下次 brainstorm 必须将 epic-006「前端架构债务清理」优先级从 medium 提升为 critical，首个迭代必须实施「App.tsx 导航配置提取」和「视图级路由抽象」。epic-003 完成后，如不立即处理导航重构，后续 epic-004（体验优化）的任何新功能都将在不可维护的代码基础上叠加复杂度
 
-### 2026-05-10 (cycle-2026-05-10-26)
+### 2026-05-10 (cycle-2026-05-10-27)
 - **提案 Epic**: epic-006「前端架构债务清理与性能基线」
-- **结果**: 未被选中（epic-004 iter-001 完成，epic-006 为次高优先级储备）
-- **当前状态**: **连续 18 个 cycle 未被选中**（cycle-21 时 17 次 + 本次 1 次）
-- **观察**: epic-004 iter-001 是纯粹的 CSS/Tailwind 微调型迭代，零架构变更、零类型变更、零 API 变更，未进一步增加 App.tsx 复杂度。但 App.tsx 的条件渲染复杂度仍维持在灾难级临界点（~300 行，9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统）。ARCH 强烈建议：epic-004 完成后 MUST 立即执行 epic-006，首个迭代必须实施「App.tsx 导航配置提取」和「视图级路由抽象」，否则后续任何 Epic 都将在不可维护的代码基础上叠加更多复杂度
+- **结果**: 未被选中（epic-004 iter-002 完成，epic-006 为 critical 优先级储备）
+- **当前状态**: **连续 19 个 cycle 未被选中**（cycle-26 时 18 次 + 本次 1 次）
+- **观察**: epic-004 iter-002 在 App.tsx 中新增 `getModeHint()` 辅助函数和 hint 条件渲染，PracticeCard 中新增 `renderWrongAnswerFeedback()` 三区块反馈辅助函数、CheckCircle2/Circle 图标增强、进度提示文字。App.tsx 的条件渲染复杂度继续增加——现在管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统 + hint 条件渲染 + 模式提示文案。epic-004 仅剩 3 个迭代，完成后 MUST 立即执行 epic-006，否则后续任何 Epic 都将在不可维护的代码基础上叠加复杂度。当前技术债务已非线性累积，重构窗口正在加速关闭
 
 ## 成功模式
 （由进化引擎自动总结）

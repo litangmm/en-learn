@@ -3,280 +3,129 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-56",
+      "id": "2026-05-11-65",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-009 iter-002 词条搜索与筛选提交完成。f7c1ef5/5e0fc67 两个提交，Agent 经验档案和历史文档更新。716 测试全部通过。"
+    },
+    {
+      "id": "2026-05-11-64",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已部署，v0.28.0，URL: https://en-learn-f07ynxvdb-litangmms-projects.vercel.app，623 测试通过，tag v0.28.0 已推送"
+      "summary": "epic-009 iter-001 词典浏览器（只读）完整实现并测试通过。708 测试全部通过。文档和备份已提交。"
     },
     {
-      "id": "2026-05-11-55",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已提交 (969e4b0)：html2canvas 安装、useShareExport hook、ShareDialog 集成实际功能、44 新增测试、623 测试全通过，进化文档已提交 (e8bcc49)"
-    },
-    {
-      "id": "2026-05-11-54",
-      "mode": "vision",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已实现：html2canvas 安装、useShareExport hook、ShareDialog 集成、44 新增测试，623 测试全通过"
-    },
-    {
-      "id": "2026-05-10-53",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-005 iter-001 分享卡片 UI 与数据聚合已部署，v0.27.0，URL: https://en-learn-l9tcm6go6-litangmms-projects.vercel.app，579 测试通过，tag v0.27.0 已推送"
-    },
-    {
-      "id": "2026-05-10-52",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-005 iter-001 分享卡片 UI 与数据聚合已提交 (c1581da)：ShareCardData 类型、useShareCardData hook、ShareCard/ShareDialog 组件、ResultModal 集成，579 测试通过"
-    },
-    {
-      "id": "2026-05-10-51",
+      "id": "2026-05-11-63",
       "mode": "vision",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "epic-004 全部 10 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 6 个 Epic 提案。最终 epic-005「学习成果社交裂变与分享卡片 MVP」获最高优先级（PM-Growth 提出，PM-UX/UX/QA/PM-Lean 支持）。epic-007「个人词典管理与数据主权」为次高优先级（PM-Eco/PM-Lean 提出）。epic-008 自适应学习降为 background task。"
-    },
-    {
-      "id": "2026-05-10-49",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-004 iter-006 全部 5 个迭代完成，epic-004 全部 10 个迭代收官：桌面端导航折叠、移动端弹窗自适应、成就toast短暂化（3s→1.5s）、排行榜范围标注、听写模式独立体验；531 测试通过，v0.26.0"
-    },
-    {
-      "id": "2026-05-10-48",
-      "mode": "vision",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-004 iter-006 全部 5 个迭代已规划并执行完成：移动端弹窗自适应、成就toast短暂化（3s→1.5s）、排行榜数据范围标注、听写模式独立体验确认；iter-006.1~006.4 已在本次执行"
-    },
-    {
-      "id": "2026-05-10-47",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-004 iter-006.1 桌面端顶部导航折叠重构已报告，531 测试通过，v0.26.0，4 个迭代待继续"
-    },
-    {
-      "id": "2026-05-10-46",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-006 iter-003 构建体积监控基线已完成，v0.25.0，506 测试通过，epic-006 全部 3 个迭代收官"
-    },
-    {
-      "id": "2026-05-10-45",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-006 iter-003 构建体积监控基线已部署，v0.25.0，URL: https://en-learn.vercel.app，506 测试通过"
-    },
-    {
-      "id": "2026-05-10-43",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-006 iter-002 报告已生成，PracticeCard 619行→349行重构成功，进化报告已归档"
-    },
-    {
-      "id": "2026-05-10-42",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-006 iter-002 已部署，v0.24.0，URL: https://en-learn.vercel.app，506 测试通过"
-    },
-    {
-      "id": "2026-05-10-41",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-006 iter-002 PracticeCard 策略模式重构已提交 (ee512fa)，进化文档已提交 (bcffa44)"
-    },
-    {
-      "id": "2026-05-10-40",
-      "mode": "vision",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-006 iter-002 全部测试通过：506/506 单元测试，lint 0 errors 3 warnings，build 成功；E2E 跳过（iter-003 still pending）"
-    },
-    {
-      "id": "2026-05-10-39",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已部署，v0.23.0，URL: https://en-learn.vercel.app，501 测试通过"
-    },
-    {
-      "id": "2026-05-10-38",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已部署，v0.23.0，URL: https://en-learn.vercel.app"
-    },
-    {
-      "id": "2026-05-10-37",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已提交 (1e73d65)，进化文档已提交 (15ab7fe)"
-    },
-    {
-      "id": "2026-05-10-36",
-      "mode": "vision",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-006 前端架构债务清理与性能基线已选入，拆分为 3 个迭代：iter-001 视图路由抽象 + P0/P1 修复，iter-002 PracticeCard 策略模式 + P2 loading，iter-003 构建体积监控基线"
-    },
-    {
-      "id": "2026-05-10-32",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-004 iter-005 首次/恢复弹窗体验打磨已部署，485 测试通过，v0.22.0"
-    },
-    {
-      "id": "2026-05-10-29",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
+      "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
     }
   ],
-  "status": "IMPLEMENT",
-  "selectedEpic": "epic-005",
-  "commitHash": "969e4b0",
-  "lastRun": "2026-05-11T08:51:00.000Z",
-  "cycleCount": 58,
+  "status": "DEPLOY",
+  "selectedEpic": "epic-009",
+  "lastRun": "2026-05-11T03:50:00.000Z",
+  "cycleCount": 68,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-11-56",
+    "id": "2026-05-11-65",
     "mode": "vision",
-    "stage": "REPORT",
-    "startedAt": "2026-05-10T16:50:00.000Z"
+    "stage": "COMMIT"
   },
   "currentEpic": {
-    "id": "epic-005",
-    "title": "学习成果社交裂变与分享卡片 MVP",
-    "description": "基于全量游戏化数据（XP/等级/连击/徽章/排行榜）生成学习成果分享卡片，驱动用户主动传播。移动端分享是社交裂变的主战场，epic-004 的响应式优化已为此奠定基础。",
+    "id": "epic-009",
+    "title": "个人词典管理与数据主权",
+    "description": "提供本地词典编辑器，支持用户查看和编辑自己的词库内容。数据导入导出能力已完全就绪，可基于此快速实施个人词典管理。",
+    "proposedBy": "PM-Eco",
     "iterations": [
       {
         "id": "iter-001",
-        "title": "分享卡片 UI 与数据聚合",
+        "title": "词典浏览器（只读）",
         "scope": "frontend-only",
         "status": "completed",
-        "description": "创建分享卡片组件，聚合 XP/等级/连击/徽章/排行榜数据，提供可分享的成果展示卡片",
-        "completedAt": "2026-05-11T08:00:00.000Z"
+        "description": "在 DataManager 中新增「我的词库」入口，浏览当前词典所有词条（词/释义/例句），支持按词搜索和按词典筛选。完全只读，不修改任何数据。"
       },
       {
         "id": "iter-002",
-        "title": "多格式导出（图片/文本）",
+        "title": "词条搜索与筛选",
         "scope": "frontend-only",
         "status": "completed",
-        "description": "支持将分享卡片导出为图片（PNG）和文本格式，适配不同社交平台",
-        "completedAt": "2026-05-11T08:30:00.000Z"
+        "completedAt": "2026-05-11T03:41:00.000Z",
+        "description": "在词典浏览器中添加搜索（按词匹配）和筛选（按难度等级）功能，提供即时搜索体验。"
       },
       {
         "id": "iter-003",
-        "title": "分享触发点与频次控制",
-        "scope": "frontend-only",
-        "status": "in_progress",
-        "description": "设计分享触发时机（练习完成/徽章解锁/等级提升），避免打断学习心流"
-      },
-      {
-        "id": "iter-004",
-        "title": "分享效果数据追踪",
+        "title": "个人生词标记",
         "scope": "frontend-only",
         "status": "pending",
-        "description": "追踪分享次数、分享后回访等数据，为后续优化提供依据"
+        "description": "允许用户将词条标记为「生词」并持久化到 localStorage，提供生词本快速访问入口。"
       }
     ],
-    "currentIterationIndex": 2
-  },
-  "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "分享触发点与频次控制",
-    "scope": "frontend-only",
     "status": "in_progress",
-    "startedAt": "2026-05-11T08:52:00.000Z",
-    "steps": [
-      "Step 1: 检查 useXP hook — 在 addXP 完成后比较 oldLevel vs newLevel，返回 { profile, leveledUp: boolean, oldLevel, newLevel }",
-      "Step 2: 在 App.tsx 练习完成结果处理区域（awardedXPRef 之后），当 leveledUp 为 true 时触发 level-up share prompt（setSharePrompt({ type: 'levelup', level: newLevel })）",
-      "Step 3: 修改 BadgeUnlockToast — 添加可选的 onShare prop，当用户点击分享按钮时触发 setSharePrompt({ type: 'badge', badge })；toast 保持短暂（1.5s），分享按钮作为小图标放在右侧",
-      "Step 4: 创建 SharePromptToast 组件 — 非阻塞式 toast，显示在屏幕底部中央，1.5s 后自动消失；内容：等级提升祝贺文字 + 小型分享按钮；移动端触摸友好（44px+ touch target）",
-      "Step 5: 在 App.tsx 添加 SharePromptToast 渲染，使用 useState<SharePrompt | null> 管理；share prompt 在显示 2s 后自动清除（setTimeout）",
-      "Step 6: 实现频次控制 — 在 App.tsx 添加 useRef<string[]> recentShareTriggers 记录最近分享的 type+id；同类型触发在 5 分钟内不重复弹窗（checkRecentShare(type, id) 函数）",
-      "Step 7: 更新 ResultModal — 当 session 完成时，先触发频次控制检查；如果是当天首次分享才自动弹出 ShareDialog；非首次则只在 ResultModal 内部显示分享按钮",
-      "Step 8: 全量测试 — 单元测试覆盖：useXP leveledUp 检测、频次控制 5 分钟去重、SharePromptToast 渲染条件；更新 ResultModal 相关测试",
-      "Step 9: 全量验证 — vitest unit tests + lint + build"
-    ],
-    "filesToModify": [
-      "src/hooks/useXP.ts",
-      "src/components/BadgeUnlockToast.tsx",
-      "src/components/SharePromptToast.tsx",
-      "src/components/ResultModal.tsx",
-      "src/App.tsx"
-    ],
-    "filesToCreate": [
-      "src/components/SharePromptToast.tsx",
-      "src/components/__tests__/SharePromptToast.test.tsx"
-    ],
-    "dependencies": [],
-    "testStrategy": "useXP leveledUp 逻辑测试（level 不变 vs 升级）；频次控制 5 分钟去重测试；SharePromptToast 渲染/消失测试；ResultModal 分享频次测试；现有 ShareCard/ShareDialog 测试回归"
+    "priority": "high"
   },
-  "brainstormResults": [
+  "currentPlan": {
+    "iterationId": "iter-003",
+    "iterationTitle": "个人生词标记",
+    "scope": "frontend-only",
+    "steps": [],
+    "filesToModify": [],
+    "filesToCreate": [],
+    "dependencies": [],
+    "testStrategy": "TBD - pending BRAINSTORM stage planning"
+  },
+  "epicHistory": [
+    {
+      "id": "epic-009",
+      "title": "个人词典管理与数据主权",
+      "status": "in_progress",
+      "iterationsCount": 3,
+      "completedIterations": 2,
+      "versionRange": "v0.31.0-v0.32.0",
+      "completedAt": null
+    },
     {
       "id": "epic-005",
       "title": "学习成果社交裂变与分享卡片 MVP",
-      "description": "基于全量游戏化数据（XP/等级/连击/徽章/排行榜）生成学习成果分享卡片，驱动用户主动传播。移动端分享是社交裂变的主战场，epic-004 的响应式优化已为此奠定基础。",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-UX",
-        "UX",
-        "QA",
-        "PM-Lean"
-      ],
-      "concerns": "PM-Eco 担忧分享可能打断学习心流；ARCH 提醒 PWA push 增加复杂度；PM-Mon 关注构建体积增量",
-      "priority": "high",
-      "estimatedEffort": "small",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：分享卡片 UI 与数据聚合",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：多格式导出（图片/文本）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：分享触发点与频次控制",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代4：分享效果数据追踪",
-          "scope": "frontend-only"
-        }
-      ]
+      "status": "completed",
+      "iterationsCount": 4,
+      "versionRange": "v0.27.0-v0.30.0",
+      "completedAt": "2026-05-11T02:15:00.000Z"
     },
     {
-      "id": "epic-007",
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "status": "completed",
+      "iterationsCount": 3,
+      "versionRange": "v0.23.0-v0.25.0",
+      "completedAt": "2026-05-10T19:42:00.000Z"
+    },
+    {
+      "id": "epic-004",
+      "title": "体验优化与响应式适配",
+      "status": "completed",
+      "iterationsCount": 10,
+      "versionRange": "v0.14.0-v0.26.0",
+      "completedAt": "2026-05-10T15:00:00.000Z"
+    }
+  ],
+  "brainstormResults": [
+    {
+      "id": "epic-009",
       "title": "个人词典管理与数据主权",
       "description": "提供本地词典编辑器，支持用户查看和编辑自己的词库内容。数据导入导出能力已完全就绪，可基于此快速实施个人词典管理。",
       "proposedBy": "PM-Eco",
       "supportedBy": [
-        "PM-Lean"
+        "PM-Lean",
+        "PM-UX",
+        "UX"
       ],
       "concerns": "ARCH 担忧格式兼容性维护成本；PM-Growth 关注使用频率",
-      "priority": "medium",
+      "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
@@ -294,16 +143,17 @@
       ]
     },
     {
-      "id": "epic-008",
-      "title": "AI 驱动的自适应学习",
-      "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。当前纯前端限制下可实现轻量级自适应（干扰项智能生成、动态提示级别）。",
+      "id": "epic-010",
+      "title": "轻量级自适应学习 MVP",
+      "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。纯前端可实现智能干扰项和动态提示级别。",
       "proposedBy": "EXP",
       "supportedBy": [
+        "PM-Growth",
         "UX"
       ],
       "concerns": "PM-Lean 担忧需要后端或外部 API；ARCH 指出需要大量数据积累",
-      "priority": "low",
-      "estimatedEffort": "large",
+      "priority": "medium",
+      "estimatedEffort": "medium",
       "iterationsPreview": [
         {
           "title": "迭代1：智能干扰项生成",
@@ -318,12 +168,99 @@
           "scope": "frontend-only"
         }
       ]
+    },
+    {
+      "id": "epic-011",
+      "title": "学习进度周报与成就回顾",
+      "description": "基于周报数据生成成就卡片，激励用户持续学习。复用已有分享卡片基础设施。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-UX",
+        "UX"
+      ],
+      "concerns": "PM-Lean 担忧周报内容深度不足；PM-Mon 关注构建体积",
+      "priority": "medium",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：周报数据结构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：周报展示组件",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：成就卡片导出",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-012",
+      "title": "浏览器推送通知召回",
+      "description": "基于 Web Push API 实现到期复习提醒和 streak 维持通知。纯前端实现，无需后端。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-Lean"
+      ],
+      "concerns": "PM-UX 担忧通知骚扰；PM-Mon 关注 API 兼容性；QA 关注浏览器支持差异",
+      "priority": "low",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：推送通知权限",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：复习提醒逻辑",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：通知频率控制",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-013",
+      "title": "极致性能与流量成本优化",
+      "description": "词典数据按需懒加载，构建体积持续监控，确保加载速度。epic-006 iter-003 已建立监控基线。",
+      "proposedBy": "PM-Mon",
+      "supportedBy": [
+        "ARCH",
+        "QA"
+      ],
+      "concerns": "PM-Lean 担忧按需加载影响首次体验；PM-Growth 关注实施复杂度",
+      "priority": "low",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：词典懒加载架构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：初始加载优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：缓存策略",
+          "scope": "frontend-only"
+        }
+      ]
     }
   ],
-  "discussionSummary": "本轮 brainstorm 是 epic-004 全部 10 个迭代收官后的首次全新提案，9 个 Agent 参与，产出 6 个 Epic。核心分歧：PM-Growth 主张立即启动分享裂变（epic-005），PM-Eco 主张继续数据主权深化（epic-007），EXP 主张自适应学习（epic-008）。epic-005 以 4:2 胜出，理由：游戏化五维度（XP/连击/每日挑战/徽章/排行榜）全部就绪，epic-004 响应式体验已改善，移动端分享展示基础完整。epic-007 维持 medium 作为次高优先级。epic-008 降为 background task，待更多用户数据积累后重新评估。争议点：分享是否打断学习心流（PM-Eco vs PM-UX/UX），最终共识是「完成后分享」而非「学习中弹窗」，最小化心流干扰。",
-  "testResults": null,
-  "implementationStatus": null,
-  "pendingQuestions": [],
+  "discussionSummary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（4 支持），数据导入导出能力已完全就绪，支持用户数据主权深化。epic-010「轻量级自适应学习 MVP」次高优先级（3 支持），纯前端可实现智能干扰项和动态提示级别。epic-011/012/013 列为 background task。",
+  "testResults": {
+    "total": 716,
+    "passed": 716,
+    "failed": 0,
+    "lintWarnings": 4,
+    "lintErrors": 0,
+    "buildSuccess": true
+  },
+  "iterationStatus": "completed",
+  "implementationStatus": "epic-009 iter-002 词条搜索与筛选已完成：LevelFilter Select 组件（8 个难度选项）、level 状态管理、filteredSentences 双重过滤逻辑、切换词典时重置过滤器。716 测试全部通过。提交: f7c1ef5/5e0fc67。准备进入 DEPLOY 阶段部署 v0.32.0。",
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
@@ -334,15 +271,14 @@
         "id": "dir-1778414197688",
         "type": "custom",
         "target": "epic-004",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；移动端弹窗词库卡片改单列/两列自适应禁止溢出；成就提示改短暂 toast；排行榜明确标注数据范围；听写模式独立提示和独立体验。",
-        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
+        "reason": "用户真实完整评测第二轮反馈",
         "createdAt": "2026-05-10T17:18:00.000Z",
-        "executedAt": "2026-05-10T12:22:19.704Z",
-        "executionNote": "已纳入 epic-004 iter-006 响应式布局深度重构提案，5 个子项全部完成：iter-006.1 桌面顶部折叠（MoreMenu），iter-006.2 移动端弹窗自适应，iter-006.3 成就toast短暂化（3s→1.5s），iter-006.4 排行榜范围标注，iter-006.5 听写独立体验。531 测试全通过，v0.26.0 部署完成。",
-        "completedAt": "2026-05-10T15:00:00.000Z"
+        "executedAt": "2026-05-10T19:42:00.000Z",
+        "executionNote": "已在 epic-004 iter-006 中执行：MoreMenu桌面导航折叠、移动端弹窗自适应、成就toast短暂化(1.5s)、排行榜Tab标注、听写模式独立体验确认"
       },
       {
-        "id": "eo-1778391382486-2",
+        "id": "dir-1778391382486-2",
         "type": "experience-officer",
         "target": "N/A",
         "action": "【体验官反馈】排行榜加载较慢",
@@ -352,7 +288,7 @@
         "executionNote": "已在 epic-006 iter-002 中解决：Leaderboard.tsx 添加 loading skeleton UI"
       },
       {
-        "id": "eo-1778391382486-1",
+        "id": "dir-1778391382486-1",
         "type": "experience-officer",
         "target": "N/A",
         "action": "【体验官反馈】切换词典后练习记录未清除",
@@ -362,7 +298,7 @@
         "executionNote": "已在 epic-006 iter-001 中修复：confirmSwitch 时 storage.clearSession() 确认存在"
       },
       {
-        "id": "eo-1778391382485-0",
+        "id": "dir-1778391382485-0",
         "type": "experience-officer",
         "target": "N/A",
         "action": "【体验官反馈】移动端输入框太小，点击困难",
@@ -414,10 +350,9 @@
     ]
   },
   "deployStatus": {
-    "deployed": true,
+    "deployed": false,
     "target": "vercel",
-    "url": "https://en-learn-f07ynxvdb-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T16:52:14.736Z",
-    "version": "v0.28.0"
+    "version": "v0.32.0",
+    "pendingDeployment": true
   }
 }

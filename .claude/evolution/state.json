@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-11-79",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "epic-010 收官后首次全新 brainstorm。9 个 Agent 参与，产出 3 个 Epic 提案。epic-011「学习进度周报与成就回顾」获最高优先级（6 支持），epic-013「极致性能」次之（3 支持），epic-014/015 低优先级储备。"
+    },
+    {
       "id": "2026-05-11-76",
       "mode": "vision",
       "stage": "COMMIT",
@@ -99,69 +106,54 @@
       "stage": "BRAINSTORM",
       "status": "completed",
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
+    },
+    {
+      "id": "2026-05-11-78",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-010 轻量级自适应学习 MVP 全部 3 个迭代收官。v0.34.0~v0.35.0 部署完成，804 测试历史最高水位。智能干扰项 + 动态提示级别 + 自适应出题权重三件套交付。"
     }
   ],
-  "status": "DEPLOY",
-  "selectedEpic": "epic-010",
-  "lastRun": "2026-05-11T06:19:00.000Z",
-  "cycleCount": 76,
+  "status": "PLAN",
+  "selectedEpic": "epic-011",
+  "lastRun": "2026-05-11T06:31:00.000Z",
+  "cycleCount": 79,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "currentEpic": {
-    "id": "epic-010",
-    "title": "轻量级自适应学习 MVP",
-    "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。纯前端可实现智能干扰项和动态提示级别。",
-    "iterations": [
-      {
-        "id": "iter-001",
-        "title": "智能干扰项生成",
-        "scope": "frontend-only",
-        "status": "completed"
-      },
-      {
-        "id": "iter-002",
-        "title": "动态提示级别",
-        "scope": "frontend-only",
-        "status": "completed"
-      },
-      {
-        "id": "iter-003",
-        "title": "自适应出题权重",
-        "scope": "frontend-only",
-        "status": "completed"
-      }
-    ],
-    "currentIterationIndex": 3
-  },
-  "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "自适应出题权重",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: Create src/hooks/useQuestionWeighting.ts with getWeakSentenceWeight() function that calculates weight based on mistake count (more mistakes = higher weight) and error rate (higher error rate = higher weight)",
-      "Step 2: Implement getWeightedSentenceIds() function that returns shuffled sentence IDs with weights applied - higher weight sentences appear more frequently in the first positions",
-      "Step 3: Create src/hooks/__tests__/useQuestionWeighting.test.ts unit tests for weight calculation (no mistakes=low weight, 3+ mistakes=high weight, new sentences=medium weight) and weighted shuffle algorithm",
-      "Step 4: Integrate useQuestionWeighting into usePractice.ts, replacing the simple shuffle with weighted shuffle that prioritizes weak sentences",
-      "Step 5: Ensure backward compatibility - if no mistakes exist, fall back to uniform random shuffle",
-      "Step 6: Run full test suite (vitest + playwright) to ensure zero regressions"
-    ],
-    "filesToModify": [
-      "src/hooks/usePractice.ts"
-    ],
-    "filesToCreate": [
-      "src/hooks/useQuestionWeighting.ts",
-      "src/hooks/__tests__/useQuestionWeighting.test.ts"
-    ],
-    "dependencies": [],
-    "testStrategy": "Unit tests verify weight calculation logic and weighted shuffle distribution. Integration tests verify usePractice with weighted sentences produces correct output."
-  },
-  "previousCycle": {
-    "id": "2026-05-11-68",
+  "currentCycle": {
+    "id": "2026-05-11-79",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "PLAN",
+    "startedAt": "2026-05-10T22:48:04.206Z"
   },
-  "currentPlan": null,
+  "currentEpic": {
+    "id": "epic-011",
+    "title": "学习进度周报与成就回顾",
+    "description": "基于周报数据生成成就卡片，激励用户持续学习。复用已有分享卡片基础设施。",
+    "proposedBy": "PM-Growth",
+    "supportedBy": ["PM-UX", "PM-Lean", "UX", "PM-Eco", "ARCH", "PM-Mon"],
+    "concerns": "PM-Mon 担忧周报内容深度不足；PM-Eco 关注与 epic-005 功能重叠风险",
+    "priority": "high",
+    "estimatedEffort": "small",
+    "iterationsPreview": [
+      {
+        "title": "迭代1：周报数据结构",
+        "scope": "frontend-only",
+        "description": "定义周报数据结构，从现有 SessionHistory/Mistake 数据派生周统计"
+      },
+      {
+        "title": "迭代2：周报展示组件",
+        "scope": "frontend-only",
+        "description": "创建 WeeklyReportPanel 组件，展示本周学习数据"
+      },
+      {
+        "title": "迭代3：成就卡片导出",
+        "scope": "frontend-only",
+        "description": "复用 epic-005 的 html2canvas 技术，生成周报图片并支持分享"
+      }
+    ]
+  },
   "epicHistory": [
     {
       "id": "epic-010",
@@ -170,7 +162,7 @@
       "iterationsCount": 3,
       "completedIterations": 3,
       "versionRange": "v0.34.0-v0.35.0",
-      "completedAt": "2026-05-11T06:19:00.000Z"
+      "completedAt": "2026-05-10T22:27:19.000Z"
     },
     {
       "id": "epic-009",
@@ -211,48 +203,20 @@
   ],
   "brainstormResults": [
     {
-      "id": "epic-010",
-      "title": "轻量级自适应学习 MVP",
-      "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。纯前端可实现智能干扰项和动态提示级别。",
-      "proposedBy": "EXP",
-      "supportedBy": [
-        "PM-Lean",
-        "PM-UX",
-        "UX",
-        "QA"
-      ],
-      "concerns": "PM-Growth 担忧自适应算法效果难以量化；PM-Eco 关注词典数据安全",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：智能干扰项生成",
-          "scope": "frontend-only",
-          "description": "基于用户错题历史，优先选取混淆过的词作为选择题干扰项"
-        },
-        {
-          "title": "迭代2：动态提示级别",
-          "scope": "frontend-only",
-          "description": "根据用户答题状态（连续对/连续错）动态调整首字母提示显示概率"
-        },
-        {
-          "title": "迭代3：自适应出题权重",
-          "scope": "frontend-only",
-          "description": "薄弱词优先出题，提高复习效率"
-        }
-      ]
-    },
-    {
       "id": "epic-011",
       "title": "学习进度周报与成就回顾",
       "description": "基于周报数据生成成就卡片，激励用户持续学习。复用已有分享卡片基础设施。",
       "proposedBy": "PM-Growth",
       "supportedBy": [
         "PM-UX",
-        "UX"
+        "PM-Lean",
+        "UX",
+        "PM-Eco",
+        "ARCH",
+        "PM-Mon"
       ],
-      "concerns": "PM-Lean 担忧周报内容深度不足；PM-Mon 关注构建体积增长",
-      "priority": "medium",
+      "concerns": "PM-Mon 担忧周报内容深度不足；PM-Eco 关注与 epic-005 功能重叠风险",
+      "priority": "high",
       "estimatedEffort": "small",
       "iterationsPreview": [
         {
@@ -278,9 +242,10 @@
       "description": "词典数据按需懒加载，构建体积持续监控，确保加载速度。epic-006 iter-003 已建立 650KB 监控基线。",
       "proposedBy": "PM-Mon",
       "supportedBy": [
-        "ARCH"
+        "ARCH",
+        "PM-Lean"
       ],
-      "concerns": "PM-Lean 担忧按需加载影响首次体验；PM-Growth 关注实施复杂度",
+      "concerns": "PM-Growth 担忧按需加载影响首次体验；PM-UX 关注 loading skeleton 样式一致性",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
@@ -302,7 +267,8 @@
       ]
     }
   ],
-  "discussionSummary": "epic-010 iter-001 完成，756 测试零回归通过。实现了智能干扰项生成功能：基于用户错题历史优先选择混淆项作为选择题干扰项。下一个迭代（iter-002 动态提示级别）已纳入计划。",
+  "discussionSummary": "epic-011 以 6:3 支持优势胜出，epic-013 作为 background task 储备。核心分歧在于用户可见价值（周报）与技术健康度（性能）的优先级权衡。PM-Growth/UX/PM-UX 强调周报是游戏化体系的收官体验，PM-Mon/ARCH 强调性能优化是技术债务清偿。结论：epic-011 优先推进，epic-013 维持 background task 定位。"
+}
   "testResults": {
     "total": 804,
     "passed": 804,
@@ -335,7 +301,7 @@
     },
     "iter-003": {
       "status": "completed",
-      "completedAt": "2026-05-11T06:19:00.000Z",
+      "completedAt": "2026-05-10T22:27:19.000Z",
       "testResults": {
         "total": 804,
         "passed": 804,
@@ -344,7 +310,7 @@
       "buildSuccess": true
     }
   },
-  "implementationStatus": "iter-003 completed: useQuestionWeighting hook (getSentenceWeight + getWeightedSentenceIds) + usePractice integration with weighted shuffle + backward compatibility (falls back to simple shuffle if no mistakes). 804 tests pass, zero regressions.",
+  "implementationStatus": "epic-010 completed: all 3 iterations (智能干扰项生成 v0.34.0, 动态提示级别 v0.34.1, 自适应出题权重 v0.35.0). 804 tests pass, zero regressions.",
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
@@ -436,10 +402,10 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.34.0",
-    "commit": "756876a",
-    "url": "https://en-learn-860kzaba1-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T21:26:18.000Z",
+    "version": "v0.35.0",
+    "commit": "cba1eed",
+    "url": "https://en-learn-32876bfxb-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-10T22:27:19.000Z",
     "tagPushed": true,
     "error": null
   }

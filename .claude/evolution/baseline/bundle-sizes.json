@@ -1,0 +1,55 @@
+{
+  "version": "v0.24.0",
+  "capturedAt": "2026-05-10T19:43:00.000Z",
+  "manualChunks": {
+    "vendor-recharts": {
+      "rawKB": 0,
+      "gzipKB": 0,
+      "note": "rollup-plugin-visualizer reports in bytes, converted to KB"
+    },
+    "vendor-radix": {
+      "rawKB": 0,
+      "gzipKB": 0
+    },
+    "vendor-framer": {
+      "rawKB": 0,
+      "gzipKB": 0
+    },
+    "vendor-router": {
+      "rawKB": 0,
+      "gzipKB": 0
+    },
+    "vendor-misc": {
+      "rawKB": 0,
+      "gzipKB": 0
+    }
+  },
+  "mainChunk": {
+    "file": "index-Dn13LBO7.js",
+    "rawKB": 629.92,
+    "gzipKB": 192.83,
+    "warning": "Main chunk exceeds 650KB limit (gzip ~193KB)"
+  },
+  "totalGzipKB": 558.71,
+  "totalRawKB": 1345.80,
+  "thresholds": {
+    "mainChunkRawKB": 650,
+    "mainChunkGzipKB": 200,
+    "totalGzipKB": 600
+  },
+  "chunks": [
+    { "file": "index-Dn13LBO7.js", "rawKB": 629.92, "gzipKB": 192.83 },
+    { "file": "vendor-misc-Div2fA4H.js", "rawKB": 360.80, "gzipKB": 117.79 },
+    { "file": "gre-DRHkjszj.js", "rawKB": 209.29, "gzipKB": 70.55 },
+    { "file": "ielts-_rNRtwce.js", "rawKB": 67.19, "gzipKB": 22.55 },
+    { "file": "toefl-DdOMBcVk.js", "rawKB": 69.51, "gzipKB": 23.24 },
+    { "file": "cet4-hNgvAWw7.js", "rawKB": 56.79, "gzipKB": 19.24 },
+    { "file": "cet6-CO5ZDgDi.js", "rawKB": 44.29, "gzipKB": 15.29 },
+    { "file": "vendor-radix-CmqIIbwl.js", "rawKB": 55.02, "gzipKB": 16.77 },
+    { "file": "vendor-router-DibMK9Ui.js", "rawKB": 34.07, "gzipKB": 12.34 },
+    { "file": "vendor-framer-fOmeRRXX.js", "rawKB": 32.18, "gzipKB": 11.12 },
+    { "file": "senior-Cs61TJ9Y.js", "rawKB": 29.57, "gzipKB": 10.22 },
+    { "file": "junior-Dla78RQd.js", "rawKB": 25.30, "gzipKB": 8.87 }
+  ],
+  "notes": "Main chunk (index-*.js) includes React, App, and core components. Dictionary chunks (gre/ielts/toefl/cet4/cet6/senior/junior) are code-split by dictionary. vendor-misc includes zod, react-hook-form, tailwind-merge, clsx, lucide-react, etc."
+}

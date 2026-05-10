@@ -3,27 +3,6 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-56",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已部署，v0.28.0，URL: https://en-learn-f07ynxvdb-litangmms-projects.vercel.app，623 测试通过，tag v0.28.0 已推送"
-    },
-    {
-      "id": "2026-05-11-55",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已提交 (969e4b0)：html2canvas 安装、useShareExport hook、ShareDialog 集成实际功能、44 新增测试、623 测试全通过，进化文档已提交 (e8bcc49)"
-    },
-    {
-      "id": "2026-05-11-54",
-      "mode": "vision",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-005 iter-002 多格式导出（图片/文本）已实现：html2canvas 安装、useShareExport hook、ShareDialog 集成、44 新增测试，623 测试全通过"
-    },
-    {
       "id": "2026-05-10-53",
       "mode": "vision",
       "stage": "DEPLOY",
@@ -150,19 +129,19 @@
       "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
     }
   ],
-  "status": "IMPLEMENT",
+  "status": "IDLE",
   "selectedEpic": "epic-005",
-  "commitHash": "969e4b0",
-  "lastRun": "2026-05-11T08:51:00.000Z",
-  "cycleCount": 58,
+  "commitHash": "aed1bff",
+  "lastRun": "2026-05-11T08:12:00.000Z",
+  "cycleCount": 55,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-11-56",
+    "id": "2026-05-10-52",
     "mode": "vision",
-    "stage": "REPORT",
-    "startedAt": "2026-05-10T16:50:00.000Z"
+    "stage": "COMMIT",
+    "startedAt": "2026-05-11T08:00:00.000Z"
   },
   "currentEpic": {
     "id": "epic-005",
@@ -181,15 +160,14 @@
         "id": "iter-002",
         "title": "多格式导出（图片/文本）",
         "scope": "frontend-only",
-        "status": "completed",
-        "description": "支持将分享卡片导出为图片（PNG）和文本格式，适配不同社交平台",
-        "completedAt": "2026-05-11T08:30:00.000Z"
+        "status": "pending",
+        "description": "支持将分享卡片导出为图片（PNG）和文本格式，适配不同社交平台"
       },
       {
         "id": "iter-003",
         "title": "分享触发点与频次控制",
         "scope": "frontend-only",
-        "status": "in_progress",
+        "status": "pending",
         "description": "设计分享触发时机（练习完成/徽章解锁/等级提升），避免打断学习心流"
       },
       {
@@ -200,38 +178,39 @@
         "description": "追踪分享次数、分享后回访等数据，为后续优化提供依据"
       }
     ],
-    "currentIterationIndex": 2
+    "currentIterationIndex": 1
   },
   "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "分享触发点与频次控制",
+    "iterationId": "iter-002",
+    "iterationTitle": "多格式导出（图片/文本）",
     "scope": "frontend-only",
-    "status": "in_progress",
-    "startedAt": "2026-05-11T08:52:00.000Z",
     "steps": [
-      "Step 1: 检查 useXP hook — 在 addXP 完成后比较 oldLevel vs newLevel，返回 { profile, leveledUp: boolean, oldLevel, newLevel }",
-      "Step 2: 在 App.tsx 练习完成结果处理区域（awardedXPRef 之后），当 leveledUp 为 true 时触发 level-up share prompt（setSharePrompt({ type: 'levelup', level: newLevel })）",
-      "Step 3: 修改 BadgeUnlockToast — 添加可选的 onShare prop，当用户点击分享按钮时触发 setSharePrompt({ type: 'badge', badge })；toast 保持短暂（1.5s），分享按钮作为小图标放在右侧",
-      "Step 4: 创建 SharePromptToast 组件 — 非阻塞式 toast，显示在屏幕底部中央，1.5s 后自动消失；内容：等级提升祝贺文字 + 小型分享按钮；移动端触摸友好（44px+ touch target）",
-      "Step 5: 在 App.tsx 添加 SharePromptToast 渲染，使用 useState<SharePrompt | null> 管理；share prompt 在显示 2s 后自动清除（setTimeout）",
-      "Step 6: 实现频次控制 — 在 App.tsx 添加 useRef<string[]> recentShareTriggers 记录最近分享的 type+id；同类型触发在 5 分钟内不重复弹窗（checkRecentShare(type, id) 函数）",
-      "Step 7: 更新 ResultModal — 当 session 完成时，先触发频次控制检查；如果是当天首次分享才自动弹出 ShareDialog；非首次则只在 ResultModal 内部显示分享按钮",
-      "Step 8: 全量测试 — 单元测试覆盖：useXP leveledUp 检测、频次控制 5 分钟去重、SharePromptToast 渲染条件；更新 ResultModal 相关测试",
-      "Step 9: 全量验证 — vitest unit tests + lint + build"
+      "Step 1: 定义分享卡片数据类型（ShareCardData 接口），包含 XP profile、session stats、badge icons、rank 等",
+      "Step 2: 创建 useShareCardData hook，从 useXP/useBadges/useLeaderboard 聚合数据，支持传入当前 session 结果",
+      "Step 3: 创建 ShareCard 组件（src/components/ShareCard.tsx），包含：品牌区、等级徽章、XP 进度条、连击数、正确率、徽章图标（最多3个）",
+      "Step 4: 创建 ShareDialog 弹窗组件（src/components/ShareDialog.tsx），整合 ShareCard + 分享按钮",
+      "Step 5: 在 ResultModal 中集成 ShareDialog（session 完成时显示分享选项）",
+      "Step 6: 创建 useShareCardData hook 测试（src/hooks/__tests__/useShareCardData.test.ts）",
+      "Step 7: 创建 ShareCard 组件测试（src/components/__tests__/ShareCard.test.tsx）",
+      "Step 8: 创建 ShareDialog 组件测试（src/components/__tests__/ShareDialog.test.tsx）",
+      "Step 9: 创建 ResultModal 分享集成测试（更新现有 src/components/__tests__/ResultModal.test.tsx）",
+      "Step 10: 全量验证：运行单元测试确保无回归"
     ],
     "filesToModify": [
-      "src/hooks/useXP.ts",
-      "src/components/BadgeUnlockToast.tsx",
-      "src/components/SharePromptToast.tsx",
+      "src/data/types.ts",
       "src/components/ResultModal.tsx",
-      "src/App.tsx"
+      "src/components/__tests__/ResultModal.test.tsx"
     ],
     "filesToCreate": [
-      "src/components/SharePromptToast.tsx",
-      "src/components/__tests__/SharePromptToast.test.tsx"
+      "src/hooks/useShareCardData.ts",
+      "src/components/ShareCard.tsx",
+      "src/components/ShareDialog.tsx",
+      "src/hooks/__tests__/useShareCardData.test.ts",
+      "src/components/__tests__/ShareCard.test.tsx",
+      "src/components/__tests__/ShareDialog.test.tsx"
     ],
     "dependencies": [],
-    "testStrategy": "useXP leveledUp 逻辑测试（level 不变 vs 升级）；频次控制 5 分钟去重测试；SharePromptToast 渲染/消失测试；ResultModal 分享频次测试；现有 ShareCard/ShareDialog 测试回归"
+    "testStrategy": "单元测试覆盖 useShareCardData 数据聚合逻辑、ShareCard 渲染逻辑、ShareDialog 弹窗逻辑；更新 ResultModal 测试覆盖分享入口"
   },
   "brainstormResults": [
     {
@@ -239,32 +218,15 @@
       "title": "学习成果社交裂变与分享卡片 MVP",
       "description": "基于全量游戏化数据（XP/等级/连击/徽章/排行榜）生成学习成果分享卡片，驱动用户主动传播。移动端分享是社交裂变的主战场，epic-004 的响应式优化已为此奠定基础。",
       "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-UX",
-        "UX",
-        "QA",
-        "PM-Lean"
-      ],
+      "supportedBy": ["PM-UX", "UX", "QA", "PM-Lean"],
       "concerns": "PM-Eco 担忧分享可能打断学习心流；ARCH 提醒 PWA push 增加复杂度；PM-Mon 关注构建体积增量",
       "priority": "high",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {
-          "title": "迭代1：分享卡片 UI 与数据聚合",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：多格式导出（图片/文本）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：分享触发点与频次控制",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代4：分享效果数据追踪",
-          "scope": "frontend-only"
-        }
+        {"title": "迭代1：分享卡片 UI 与数据聚合", "scope": "frontend-only"},
+        {"title": "迭代2：多格式导出（图片/文本）", "scope": "frontend-only"},
+        {"title": "迭代3：分享触发点与频次控制", "scope": "frontend-only"},
+        {"title": "迭代4：分享效果数据追踪", "scope": "frontend-only"}
       ]
     },
     {
@@ -272,25 +234,14 @@
       "title": "个人词典管理与数据主权",
       "description": "提供本地词典编辑器，支持用户查看和编辑自己的词库内容。数据导入导出能力已完全就绪，可基于此快速实施个人词典管理。",
       "proposedBy": "PM-Eco",
-      "supportedBy": [
-        "PM-Lean"
-      ],
+      "supportedBy": ["PM-Lean"],
       "concerns": "ARCH 担忧格式兼容性维护成本；PM-Growth 关注使用频率",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {
-          "title": "迭代1：词典查看器（只读）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：词条搜索与筛选",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：个人生词标记",
-          "scope": "frontend-only"
-        }
+        {"title": "迭代1：词典查看器（只读）", "scope": "frontend-only"},
+        {"title": "迭代2：词条搜索与筛选", "scope": "frontend-only"},
+        {"title": "迭代3：个人生词标记", "scope": "frontend-only"}
       ]
     },
     {
@@ -298,31 +249,41 @@
       "title": "AI 驱动的自适应学习",
       "description": "基于用户答题历史和错题分布，动态调整出题策略和干扰项生成。当前纯前端限制下可实现轻量级自适应（干扰项智能生成、动态提示级别）。",
       "proposedBy": "EXP",
-      "supportedBy": [
-        "UX"
-      ],
+      "supportedBy": ["UX"],
       "concerns": "PM-Lean 担忧需要后端或外部 API；ARCH 指出需要大量数据积累",
       "priority": "low",
       "estimatedEffort": "large",
       "iterationsPreview": [
-        {
-          "title": "迭代1：智能干扰项生成",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：动态提示级别",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：自适应出题权重",
-          "scope": "frontend-only"
-        }
+        {"title": "迭代1：智能干扰项生成", "scope": "frontend-only"},
+        {"title": "迭代2：动态提示级别", "scope": "frontend-only"},
+        {"title": "迭代3：自适应出题权重", "scope": "frontend-only"}
       ]
     }
   ],
   "discussionSummary": "本轮 brainstorm 是 epic-004 全部 10 个迭代收官后的首次全新提案，9 个 Agent 参与，产出 6 个 Epic。核心分歧：PM-Growth 主张立即启动分享裂变（epic-005），PM-Eco 主张继续数据主权深化（epic-007），EXP 主张自适应学习（epic-008）。epic-005 以 4:2 胜出，理由：游戏化五维度（XP/连击/每日挑战/徽章/排行榜）全部就绪，epic-004 响应式体验已改善，移动端分享展示基础完整。epic-007 维持 medium 作为次高优先级。epic-008 降为 background task，待更多用户数据积累后重新评估。争议点：分享是否打断学习心流（PM-Eco vs PM-UX/UX），最终共识是「完成后分享」而非「学习中弹窗」，最小化心流干扰。",
-  "testResults": null,
-  "implementationStatus": null,
+  "testResults": {
+    "lint": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 3
+    },
+    "build": {
+      "status": "pass",
+      "duration": "2.97s",
+      "gzip": "462.65 kB"
+    },
+    "unitTests": {
+      "status": "pass",
+      "passed": 579,
+      "failed": 0,
+      "duration": "12.15s"
+    },
+    "e2e": {
+      "status": "skipped",
+      "reason": "epic-005 has 3 pending iterations (iter-002, iter-003, iter-004)"
+    }
+  },
+  "implementationStatus": "epic-005 iter-001 分享卡片 UI 与数据聚合完成：ShareCardData 类型定义、useShareCardData 数据聚合 hook、ShareCard 展示卡片组件、ShareDialog 分享弹窗、ResultModal 集成、全部单元测试通过（579 测试）",
   "pendingQuestions": [],
   "awaitingInputSince": null,
   "resumedStatus": null,
@@ -416,8 +377,8 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-f07ynxvdb-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-10T16:52:14.736Z",
-    "version": "v0.28.0"
+    "url": "https://en-learn-l9tcm6go6-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-10T16:11:04.813Z",
+    "version": "v0.27.0"
   }
 }

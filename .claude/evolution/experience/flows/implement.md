@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-56)
+- **迭代**: epic-005 iter-002「多格式导出（图片/文本）」—— **完整实现**
+- **实现质量**: 高 — 零 bug，零 lint 错误，623 测试全通过
+- **关键决策**:
+  - html2canvas 包安装用于将 React 组件渲染为 canvas 并导出为 PNG
+  - useShareExport hook 提供 generateShareText/downloadImage/copyText 三个核心函数
+  - generateShareText 生成格式化的文本分享内容（包含等级/XP/连击/正确率/成就等）
+  - downloadImage 使用 html2canvas 将 ShareCard DOM 元素转为 canvas，然后导出为 PNG Blob
+  - copyText 使用 Clipboard API 复制到剪贴板，fallback 到 selectAll + execCommand
+  - ShareDialog 中 handleGenerateImage 和 handleCopyText 替换为实际实现，添加下载/复制成功反馈
+  - 修复 as any 类型转换位置 lint 错误
+- **观察**: 零新增架构，零构建体积问题。html2canvas 会增加约 50KB gzip 构建体积（PM-Mon 关注点），但仍在可接受范围。iter-003 需要设计分享触发时机，避免打断学习心流
+
 ### 2026-05-10 (cycle-2026-05-10-38)
 - **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **完整实现**
 - **实现质量**: 高 — 架构设计清晰，解耦效果显著

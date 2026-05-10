@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.28.0",
+      "tag": "v0.28.0",
+      "commit": "e8bcc49",
+      "date": "2026-05-10T16:52:14.736Z",
+      "iterationId": "iter-002",
+      "title": "多格式导出（图片/文本）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-f07ynxvdb-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.27.0",
+      "tag": "v0.27.0",
+      "commit": "aed1bff",
+      "date": "2026-05-10T16:11:04.813Z",
+      "iterationId": "iter-001",
+      "title": "分享卡片 UI 与数据聚合",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-l9tcm6go6-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.26.0",
       "tag": "v0.26.0",
       "commit": "f82bc38",

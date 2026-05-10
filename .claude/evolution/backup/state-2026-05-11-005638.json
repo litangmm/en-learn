@@ -5,7 +5,7 @@
     {
       "id": "2026-05-11-56",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "DEPLOY",
       "status": "completed",
       "summary": "epic-005 iter-002 多格式导出（图片/文本）已部署，v0.28.0，URL: https://en-learn-f07ynxvdb-litangmms-projects.vercel.app，623 测试通过，tag v0.28.0 已推送"
     },
@@ -150,18 +150,23 @@
       "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
     }
   ],
-  "status": "IMPLEMENT",
+  "status": "REPORT",
   "selectedEpic": "epic-005",
   "commitHash": "969e4b0",
-  "lastRun": "2026-05-11T08:51:00.000Z",
-  "cycleCount": 58,
+  "lastRun": "2026-05-11T08:50:00.000Z",
+  "cycleCount": 57,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": {
+  "currentCycle": {
     "id": "2026-05-11-56",
     "mode": "vision",
     "stage": "REPORT",
+    "startedAt": "2026-05-10T16:50:00.000Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-11-56",
+    "mode": "vision",
+    "stage": "DEPLOY",
     "startedAt": "2026-05-10T16:50:00.000Z"
   },
   "currentEpic": {
@@ -189,7 +194,7 @@
         "id": "iter-003",
         "title": "分享触发点与频次控制",
         "scope": "frontend-only",
-        "status": "in_progress",
+        "status": "pending",
         "description": "设计分享触发时机（练习完成/徽章解锁/等级提升），避免打断学习心流"
       },
       {
@@ -200,38 +205,35 @@
         "description": "追踪分享次数、分享后回访等数据，为后续优化提供依据"
       }
     ],
-    "currentIterationIndex": 2
+    "currentIterationIndex": 1
   },
   "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "分享触发点与频次控制",
+    "iterationId": "iter-002",
+    "iterationTitle": "多格式导出（图片/文本）",
     "scope": "frontend-only",
-    "status": "in_progress",
-    "startedAt": "2026-05-11T08:52:00.000Z",
     "steps": [
-      "Step 1: 检查 useXP hook — 在 addXP 完成后比较 oldLevel vs newLevel，返回 { profile, leveledUp: boolean, oldLevel, newLevel }",
-      "Step 2: 在 App.tsx 练习完成结果处理区域（awardedXPRef 之后），当 leveledUp 为 true 时触发 level-up share prompt（setSharePrompt({ type: 'levelup', level: newLevel })）",
-      "Step 3: 修改 BadgeUnlockToast — 添加可选的 onShare prop，当用户点击分享按钮时触发 setSharePrompt({ type: 'badge', badge })；toast 保持短暂（1.5s），分享按钮作为小图标放在右侧",
-      "Step 4: 创建 SharePromptToast 组件 — 非阻塞式 toast，显示在屏幕底部中央，1.5s 后自动消失；内容：等级提升祝贺文字 + 小型分享按钮；移动端触摸友好（44px+ touch target）",
-      "Step 5: 在 App.tsx 添加 SharePromptToast 渲染，使用 useState<SharePrompt | null> 管理；share prompt 在显示 2s 后自动清除（setTimeout）",
-      "Step 6: 实现频次控制 — 在 App.tsx 添加 useRef<string[]> recentShareTriggers 记录最近分享的 type+id；同类型触发在 5 分钟内不重复弹窗（checkRecentShare(type, id) 函数）",
-      "Step 7: 更新 ResultModal — 当 session 完成时，先触发频次控制检查；如果是当天首次分享才自动弹出 ShareDialog；非首次则只在 ResultModal 内部显示分享按钮",
-      "Step 8: 全量测试 — 单元测试覆盖：useXP leveledUp 检测、频次控制 5 分钟去重、SharePromptToast 渲染条件；更新 ResultModal 相关测试",
-      "Step 9: 全量验证 — vitest unit tests + lint + build"
+      "Step 1: 安装 html2canvas 包用于将 React 组件渲染为 canvas 并导出为 PNG",
+      "Step 2: 创建 src/hooks/useShareExport.ts hook，包含 generateShareImage 和 copyShareText 函数",
+      "Step 3: generateShareImage 函数接收 ShareCardData，使用 html2canvas 将 DOM 元素转为 canvas，然后导出为 PNG Blob",
+      "Step 4: copyShareText 函数生成格式化的文本分享内容（包含等级/XP/连击/正确率/成就等），使用 Clipboard API 复制到剪贴板",
+      "Step 5: 更新 src/components/ShareDialog.tsx，将 handleGenerateImage 和 handleCopyText 替换为实际实现，添加下载/复制成功反馈",
+      "Step 6: 创建 src/hooks/__tests__/useShareExport.test.ts 单元测试，测试图片生成和文本复制逻辑",
+      "Step 7: 更新 src/components/__tests__/ShareDialog.test.tsx 测试，覆盖图片下载和文本复制的交互",
+      "Step 8: 全量验证：运行单元测试确保无回归，构建成功"
     ],
     "filesToModify": [
-      "src/hooks/useXP.ts",
-      "src/components/BadgeUnlockToast.tsx",
-      "src/components/SharePromptToast.tsx",
-      "src/components/ResultModal.tsx",
-      "src/App.tsx"
+      "package.json",
+      "src/components/ShareDialog.tsx",
+      "src/components/__tests__/ShareDialog.test.tsx"
     ],
     "filesToCreate": [
-      "src/components/SharePromptToast.tsx",
-      "src/components/__tests__/SharePromptToast.test.tsx"
+      "src/hooks/useShareExport.ts",
+      "src/hooks/__tests__/useShareExport.test.ts"
     ],
-    "dependencies": [],
-    "testStrategy": "useXP leveledUp 逻辑测试（level 不变 vs 升级）；频次控制 5 分钟去重测试；SharePromptToast 渲染/消失测试；ResultModal 分享频次测试；现有 ShareCard/ShareDialog 测试回归"
+    "dependencies": [
+      "html2canvas"
+    ],
+    "testStrategy": "单元测试覆盖 useShareExport 的 generateShareImage 和 copyShareText 函数；ShareDialog 测试覆盖图片下载和文本复制的用户交互"
   },
   "brainstormResults": [
     {
@@ -321,8 +323,29 @@
     }
   ],
   "discussionSummary": "本轮 brainstorm 是 epic-004 全部 10 个迭代收官后的首次全新提案，9 个 Agent 参与，产出 6 个 Epic。核心分歧：PM-Growth 主张立即启动分享裂变（epic-005），PM-Eco 主张继续数据主权深化（epic-007），EXP 主张自适应学习（epic-008）。epic-005 以 4:2 胜出，理由：游戏化五维度（XP/连击/每日挑战/徽章/排行榜）全部就绪，epic-004 响应式体验已改善，移动端分享展示基础完整。epic-007 维持 medium 作为次高优先级。epic-008 降为 background task，待更多用户数据积累后重新评估。争议点：分享是否打断学习心流（PM-Eco vs PM-UX/UX），最终共识是「完成后分享」而非「学习中弹窗」，最小化心流干扰。",
-  "testResults": null,
-  "implementationStatus": null,
+  "testResults": {
+    "lint": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 3
+    },
+    "build": {
+      "status": "pass",
+      "duration": "3.13s",
+      "gzip": "300.00 kB"
+    },
+    "unitTests": {
+      "status": "pass",
+      "passed": 623,
+      "failed": 0,
+      "duration": "12.27s"
+    },
+    "e2e": {
+      "status": "skipped",
+      "reason": "epic-005 has 2 pending iterations (iter-003, iter-004)"
+    }
+  },
+  "implementationStatus": "epic-005 iter-002 多格式导出（图片/文本）完成：html2canvas 安装、useShareExport hook（generateShareText/downloadImage/copyText）、ShareDialog 集成实际功能、toast 反馈；修复 lint 错误（as any 类型转换位置调整），623 测试全通过",
   "pendingQuestions": [],
   "awaitingInputSince": null,
   "resumedStatus": null,

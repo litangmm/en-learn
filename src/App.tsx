@@ -73,6 +73,20 @@ import {
 } from '@/components/ui/dialog';
 import './App.css';
 
+// Share trigger frequency control - 5-minute deduplication
+export type ShareTrigger = { type: string; id: string; timestamp: number };
+
+export const isRecentShareTrigger = (
+  triggers: ShareTrigger[],
+  type: string,
+  id: string
+): boolean => {
+  const now = Date.now();
+  const fiveMinutesAgo = now - 5 * 60 * 1000;
+  const validTriggers = triggers.filter(t => t.timestamp > fiveMinutesAgo);
+  return validTriggers.some(t => t.type === type && t.id === id);
+};
+
 function App() {
   const isMobile = useIsMobile();
   const [dictionaryId, setDictionaryId] = useState('cet4');
@@ -198,6 +212,14 @@ function App() {
   // Auto-schedule next review in review mode
   const processedReviewRef = useRef<Set<string>>(new Set());
 
+  // Track recent share triggers for frequency control (5-min deduplication)
+  const recentShareTriggersRef = useRef<ShareTrigger[]>([]);
+
+  // Check if share trigger should be blocked (5-min deduplication)
+  const checkRecentShare = (type: string, id: string): boolean => {
+    return isRecentShareTrigger(recentShareTriggersRef.current, type, id);
+  };
+
   // Award XP on correct answer (deduplicated per question)
   const awardedXPRef = useRef<Set<string>>(new Set());
   useEffect(() => {
@@ -212,7 +234,8 @@ function App() {
         requestAnimationFrame(() => {
           setXpGainTrigger({ amount: finalXP, multiplier, key: Date.now() });
         });
-        if (leveledUp) {
+        if (leveledUp && !checkRecentShare('levelup', String(newLevel))) {
+          recentShareTriggersRef.current.push({ type: 'levelup', id: String(newLevel), timestamp: Date.now() });
           requestAnimationFrame(() => {
             setSharePrompt({ type: 'levelup', level: newLevel });
           });

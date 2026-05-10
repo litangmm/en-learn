@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Target, Zap, RotateCcw, Home, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,18 @@ interface ResultModalProps {
 
 export function ResultModal({ score, totalQuestions, userAnswers, onRestart }: ResultModalProps) {
   const [showShareDialog, setShowShareDialog] = useState(false);
+
+  // First-of-day auto-show: only auto-open ShareDialog if this is the first share today
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const lastShareDate = localStorage.getItem('en-learn:last-share-date');
+    if (lastShareDate !== today) {
+      // First share today - record the date and auto-show after delay
+      localStorage.setItem('en-learn:last-share-date', today);
+      const timer = setTimeout(() => setShowShareDialog(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const correctCount = userAnswers.filter(a => a.isCorrect).length;
   const accuracy = Math.round((correctCount / totalQuestions) * 100);

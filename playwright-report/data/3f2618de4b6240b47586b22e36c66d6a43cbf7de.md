@@ -109,12 +109,13 @@ Call log:
                   - text: 播放音频
             - generic:
               - generic:
-                - paragraph: "\"accept an argument\""
-              - generic:
                 - generic:
-                  - generic: 中文释义
-              - generic:
-                - paragraph: "\"accept an argument\""
+                  - paragraph: "\"much information is available through computers\""
+                - generic:
+                  - generic:
+                    - generic: 中文释义
+                - generic:
+                  - paragraph: "\"much information is available through computers\""
             - generic:
               - generic:
                 - button: 提交答案

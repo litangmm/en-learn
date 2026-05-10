@@ -1,0 +1,202 @@
+{
+  "version": "1.0",
+  "pending": [],
+  "history": [
+    {
+      "id": "2026-05-10-38",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已部署，v0.23.0，URL: https://en-learn.vercel.app"
+    },
+    {
+      "id": "2026-05-10-37",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-006 iter-001 ViewRouter + NavigationContext 重构已提交 (1e73d65)，进化文档已提交 (15ab7fe)"
+    },
+    {
+      "id": "2026-05-10-36",
+      "mode": "vision",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "epic-006 前端架构债务清理与性能基线已选入，拆分为 3 个迭代：iter-001 视图路由抽象 + P0/P1 修复，iter-002 PracticeCard 策略模式 + P2 loading，iter-003 构建体积监控基线"
+    },
+    {
+      "id": "2026-05-10-32",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-004 iter-005 首次/恢复弹窗体验打磨已部署，485 测试通过，v0.22.0"
+    },
+    {
+      "id": "2026-05-10-29",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-004 iter-004 智能复习规则可视化（P3）已部署，468 测试通过，v0.21.0"
+    }
+  ],
+  "status": "REPORT",
+  "selectedEpic": "epic-006",
+  "commitHash": "15ab7fe",
+  "lastRun": "2026-05-10T10:52:00.000Z",
+  "cycleCount": 38,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentCycle": {
+    "id": "2026-05-10-38",
+    "mode": "vision",
+    "stage": "COMMIT",
+    "startedAt": "2026-05-10T19:05:00.000Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-10-37",
+    "mode": "vision",
+    "stage": "TEST",
+    "startedAt": "2026-05-10T18:40:00.000Z",
+    "testResults": {
+      "lint": "passed (4 pre-existing warnings in App.tsx, PracticeCard.tsx, NavigationContext.tsx)",
+      "build": "passed (built in 2.86s)",
+      "unitTests": "501/501 passed (51 test files, including 16 ViewRouter tests with fixed LeaderboardEntry type)",
+      "e2e": "skipped (not last iteration - iter-002 and iter-003 pending)"
+    },
+    "summary": "TEST stage completed — 501/501 tests pass, build succeeds, epic-006 iter-001 ready for commit"
+  },
+  "currentEpic": {
+    "id": "epic-006",
+    "title": "前端架构债务清理与性能基线",
+    "description": "解决 App.tsx 条件渲染复杂度已达灾难级临界点的技术债务，重构为视图路由抽象 + 策略模式 PracticeCard，使后续所有 Epic 在健康架构上叠加复杂度",
+    "proposedBy": "ARCH",
+    "supportedBy": ["PM-Lean", "PM-Mon", "PM-UX", "PM-Growth", "UX", "QA", "EXP", "PM-Eco"],
+    "concerns": "重构有回归风险，需充分测试覆盖；重构期间可能影响其他 Epic 进度",
+    "priority": "critical",
+    "estimatedEffort": "medium",
+    "iterations": [
+      {"id": "iter-001", "title": "视图路由抽象 + P0/P1 Bug 修复", "scope": "frontend-only", "status": "completed"},
+      {"id": "iter-002", "title": "PracticeCard 策略模式重构 + 排行榜 Loading", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-003", "title": "构建体积监控基线", "scope": "frontend-only", "status": "pending"}
+    ],
+    "currentIterationIndex": 1
+  },
+  "selectedEpic": {
+    "id": "epic-006",
+    "title": "前端架构债务清理与性能基线"
+  },
+  "plan": null,
+  "brainstormResults": [
+    {
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "description": "解决 App.tsx 条件渲染复杂度已达灾难级临界点的技术债务，重构为视图路由抽象 + 策略模式 PracticeCard，使后续所有 Epic 在健康架构上叠加复杂度",
+      "proposedBy": "ARCH",
+      "supportedBy": ["PM-Lean", "PM-Mon", "PM-UX", "PM-Growth", "UX", "QA", "EXP", "PM-Eco"],
+      "concerns": "重构有回归风险，需充分测试覆盖；重构期间可能影响其他 Epic 进度",
+      "priority": "critical",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 视图路由抽象", "scope": "frontend-only"},
+        {"title": "iter-002: PracticeCard 策略模式重构", "scope": "frontend-only"},
+        {"title": "iter-003: 构建体积监控基线", "scope": "frontend-only"}
+      ]
+    }
+  ],
+  "discussionSummary": "Round 1: 9 个 Agent 各提出 1 个 Epic。ARCH 提出的 epic-006 获得 8/9 支持（全员除了自己），PM-Growth epic-005 获得 4/9 支持，PM-Eco epic-007 获得 3/9 支持，EXP epic-008 获得 2/9 支持。ARCH/PM-Mon 连续 20 个 cycle 未被选中，本次提出 critical 优先级技术债务重构。Round 2: PM-UX 支持 epic-006 理由是「架构健康是体验的根基」；PM-Lean 支持「重构 + 监控基线」是低风险技术投资；PM-Growth 支持「重构完成后分享功能可快速接入新架构」；UX 支持「重构后视图切换动画更可控」。关键风险：重构期间其他 Epic 无法推进，但重构窗口正在加速关闭。Round 3: 一致选择 epic-006，priority=critical，estimatedEffort=medium，3 个迭代均独立可测。体验官指令中 P0（切换词典未清除进度）和 P1（移动端输入框太小）将在 epic-006 iter-001 的 dictionary-switch clearSession 修复中一并处理。epic-005/007/008 降为 medium/low 优先级储备。",
+  "testResults": {
+    "lint": "passed",
+    "build": "passed",
+    "unitTests": "501/501 passed",
+    "e2e": "skipped"
+  },
+  "implementationStatus": {
+    "epic-006-iter-001": "Created src/components/routing/ViewRouter.tsx (view→component mapping) + NavigationContext.tsx (navigation provider) + routing/index.ts (barrel exports). Updated App.tsx to use ViewRouter and NavigationProvider, replacing nested ternary view rendering (lines 843-978). Removed local View type definition. Verified P0 fix (storage.clearSession in confirmSwitch) still working. Input height P1 already fixed (h-11 md:h-10 in PracticeCard.tsx lines 316, 379). Created ViewRouter.test.tsx with 16 tests covering all 8 view mappings and props passing. Total: 501 tests pass, build succeeds. Commits: 1e73d65 (code), 15ab7fe (docs)"
+  },
+  "pendingQuestions": [],
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "directives": {
+    "version": "1.0",
+    "pending": [
+      {
+        "id": "eo-1778391382486-2",
+        "type": "experience-officer",
+        "target": "N/A",
+        "action": "【体验官反馈】排行榜加载较慢",
+        "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
+        "createdAt": "2026-05-10T17:33:20.000Z",
+        "suggestedSolution": "考虑添加 loading 状态",
+        "deferredTo": "epic-006 iter-002"
+      }
+    ],
+    "history": [
+      {
+        "id": "eo-1778391382486-1",
+        "type": "experience-officer",
+        "target": "N/A",
+        "action": "【体验官反馈】切换词典后练习记录未清除",
+        "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
+        "createdAt": "2026-05-10T17:33:20.000Z",
+        "executedAt": "2026-05-10T18:40:00.000Z",
+        "executionNote": "已在 epic-006 iter-001 中修复：confirmSwitch 时 storage.clearSession() 确认存在"
+      },
+      {
+        "id": "eo-1778391382485-0",
+        "type": "experience-officer",
+        "target": "N/A",
+        "action": "【体验官反馈】移动端输入框太小，点击困难",
+        "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
+        "createdAt": "2026-05-10T17:33:20.000Z",
+        "executedAt": "2026-05-10T18:40:00.000Z",
+        "executionNote": "已在 epic-006 iter-001 中验证：PracticeCard.tsx 中 Input 组件已有 h-11 md:h-10（44px mobile, 40px desktop）"
+      },
+      {
+        "id": "dir-1778292031198",
+        "type": "insert_epic",
+        "target": null,
+        "action": "测试的时候电脑有声音，想办法不出声测试",
+        "reason": "",
+        "createdAt": "2026-05-09T02:00:31.198Z",
+        "executedAt": "2026-05-09T02:01:00.000Z",
+        "executionNote": "已纳入 iter-002 测试策略：mock Audio 确保测试静默运行"
+      },
+      {
+        "id": "dir-urgent-001",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【高优先级 Bug 修复】暂停当前迭代开发，优先修复以下 3 个用户体验 Bug",
+        "reason": "用户反馈的 3 个高优先级体验 Bug，必须立即修复",
+        "createdAt": "2026-05-09T12:30:00.000Z",
+        "executedAt": "2026-05-09T12:30:00.000Z",
+        "executionNote": "已插入 bugfix-001 '紧急体验 Bug 修复' 到当前 Epic"
+      },
+      {
+        "id": "dir-urgent-002",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【高优先级】插入两个紧急迭代到当前 epic-002",
+        "reason": "用户反馈纯听写模式无法使用 + UI 必须做响应式基础",
+        "createdAt": "2026-05-09T16:30:00.000Z",
+        "executedAt": "2026-05-09T16:35:00.000Z",
+        "executionNote": "已插入 iter-003a/iter-003b 到 epic-002"
+      },
+      {
+        "id": "dir-user-review-001",
+        "type": "custom",
+        "target": null,
+        "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」",
+        "reason": "用户以真实学习者身份完整体验评测反馈，是当前产品升级为日常学习工具的最大瓶颈",
+        "createdAt": "2026-05-09T19:40:00Z",
+        "executedAt": "2026-05-10T12:02:00Z",
+        "executionNote": "已创建 Epic 提案文档并拆分为 iter-001~iter-005"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "url": "https://en-learn.vercel.app",
+    "deployedAt": "2026-05-10T10:52:00.000Z",
+    "version": "v0.23.0"
+  }
+}

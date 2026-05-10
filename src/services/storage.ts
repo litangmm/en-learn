@@ -26,6 +26,7 @@ const XP_PROFILE_KEY = 'en-learn-xp-profile';
 const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
 const BADGES_KEY = 'en-learn-badges';
 const BADGE_PROGRESS_KEY = 'en-learn-badge-progress';
+const ONBOARDED_KEY = 'en-learn-onboarded';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -590,8 +591,22 @@ export const StorageService = {
     return null;
   },
 
+  /**
+   * Clears only the current session state. User progress data (XP profile, badges,
+   * badge progress, history, mistakes, and daily challenges) is stored in separate
+   * localStorage keys and is preserved. This allows users to restart practice
+   * while keeping their accumulated progress.
+   */
   clearSession(): void {
     localStorage.removeItem(SESSION_KEY);
+  },
+
+  hasOnboardingComplete(): boolean {
+    return localStorage.getItem(ONBOARDED_KEY) !== null;
+  },
+
+  setOnboardingComplete(): void {
+    localStorage.setItem(ONBOARDED_KEY, 'true');
   },
 
   hasActiveSession(): boolean {

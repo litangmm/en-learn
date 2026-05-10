@@ -133,6 +133,9 @@ vi.mock('@/components/BadgeUnlockToast', () => ({
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),
+    loadSession: vi.fn(() => null),
+    hasOnboardingComplete: vi.fn(() => true),
+    setOnboardingComplete: vi.fn(),
     getMistakeCount: vi.fn(() => 0),
     getHistoryCount: vi.fn(() => 0),
     getReviewQueueCount: vi.fn(() => 0),

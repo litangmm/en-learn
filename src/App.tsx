@@ -45,6 +45,19 @@ function getModeHint(mode: PracticeMode): string {
       return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
   }
 }
+
+function formatElapsedTime(timestamp: number): string {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  if (minutes < 60) return `${minutes}分钟前`;
+  if (hours < 24) return `${hours}小时前`;
+  if (days === 1) return '昨天';
+  return `${days}天前`;
+}
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -65,6 +78,7 @@ function App() {
   const [pendingDictionaryId, setPendingDictionaryId] = useState<string | null>(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showRecoveryDialog, setShowRecoveryDialog] = useState(false);
+  const [showOnboardingDialog, setShowOnboardingDialog] = useState(false);
   const [view, setView] = useState<View>('practice');
   const [practiceSentenceIds, setPracticeSentenceIds] = useState<string[] | undefined>();
   const [mistakeCount, setMistakeCount] = useState(storage.getMistakeCount());
@@ -77,6 +91,7 @@ function App() {
   const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
   const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
   const [leaderboardTimeFilter, setLeaderboardTimeFilter] = useState<LeaderboardTimeFilter>('today');
+  const [selectedOnboardingDictionary, setSelectedOnboardingDictionary] = useState('cet4');
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -140,6 +155,13 @@ function App() {
   useEffect(() => { badgesRef.current = { trackProgress, checkBadges }; }, [trackProgress, checkBadges]);
   useEffect(() => { dialogRef.current = { showConfirmDialog, showRecoveryDialog }; }, [showConfirmDialog, showRecoveryDialog]);
   useEffect(() => { nextSentenceRef.current = nextSentence; }, [nextSentence]);
+
+  // Detect first-time users and show onboarding dialog
+  useEffect(() => {
+    if (!storage.hasOnboardingComplete()) {
+      setTimeout(() => setShowOnboardingDialog(true), 0);
+    }
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -698,14 +720,129 @@ function App() {
           <DialogHeader>
             <DialogTitle>继续上次练习？</DialogTitle>
             <DialogDescription>
-              检测到您有未完成的练习进度。是否继续上次的练习？
+              检测到您有未完成的练习进度。
             </DialogDescription>
           </DialogHeader>
+          {(() => {
+            const session = storage.loadSession();
+            if (!session) return null;
+            const dict = getDictionaryById(session.dictionaryId);
+            const dictName = dict?.name || '未知词典';
+            const elapsed = formatElapsedTime(session.timestamp);
+            const answered = session.session.userAnswers.length;
+            const currentIndex = session.session.currentIndex;
+            return (
+              <div className="py-4 space-y-2">
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-medium">{dictName}</span>
+                  <span className="mx-2">·</span>
+                  <span>{elapsed}</span>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  已答 {answered}/{currentIndex} 题
+                </div>
+              </div>
+            );
+          })()}
           <DialogFooter>
             <Button variant="outline" onClick={handleDiscardSession}>
-              重新开始
+              放弃进度，重新开始
             </Button>
-            <Button onClick={handleContinueSession}>继续上次</Button>
+            <Button onClick={handleContinueSession}>继续练习</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Onboarding Dialog */}
+      <Dialog open={showOnboardingDialog} onOpenChange={setShowOnboardingDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">欢迎使用 en-learn</DialogTitle>
+            <DialogDescription>
+              让我们一起开始学习英语吧！
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            {/* Feature Introduction */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-muted-foreground">功能介绍</h3>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">📖</span>
+                  <div>
+                    <span className="font-medium">词典练习</span>
+                    <p className="text-sm text-muted-foreground">选择不同词库进行针对性学习</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">🎯</span>
+                  <div>
+                    <span className="font-medium">多种模式</span>
+                    <p className="text-sm text-muted-foreground">填空、听写、选择、连词成句</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">⭐</span>
+                  <div>
+                    <span className="font-medium">XP 等级</span>
+                    <p className="text-sm text-muted-foreground">答题获取经验值，解锁成就徽章</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">🏆</span>
+                  <div>
+                    <span className="font-medium">每日挑战</span>
+                    <p className="text-sm text-muted-foreground">完成任务获得额外奖励</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-lg">🧠</span>
+                  <div>
+                    <span className="font-medium">智能复习</span>
+                    <p className="text-sm text-muted-foreground">基于遗忘曲线自动安排复习</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Dictionary Quick Select */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium text-muted-foreground">选择要学习的词典</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: 'cet4', name: 'CET-4', desc: '大学英语四级' },
+                  { id: 'cet6', name: 'CET-6', desc: '大学英语六级' },
+                  { id: 'ielts', name: 'IELTS', desc: '雅思词汇' },
+                  { id: 'toefl', name: 'TOEFL', desc: '托福词汇' },
+                ].map((dict) => (
+                  <button
+                    key={dict.id}
+                    onClick={() => setSelectedOnboardingDictionary(dict.id)}
+                    className={`p-3 rounded-lg border-2 text-left transition-all ${
+                      selectedOnboardingDictionary === dict.id
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/50 hover:bg-accent'
+                    }`}
+                  >
+                    <div className="font-medium">{dict.name}</div>
+                    <div className="text-xs text-muted-foreground">{dict.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                setDictionaryId(selectedOnboardingDictionary);
+                storage.setOnboardingComplete();
+                setShowOnboardingDialog(false);
+              }}
+              className="w-full"
+              size="lg"
+            >
+              开始学习
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

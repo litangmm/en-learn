@@ -45,6 +45,8 @@ describe("App keyboard shortcuts", () => {
     localStorage.clear();
     vi.spyOn(storage, "hasActiveSession").mockReturnValue(false);
     vi.spyOn(storage, "loadSession").mockReturnValue(null);
+    vi.spyOn(storage, "hasOnboardingComplete").mockReturnValue(true);
+    vi.spyOn(storage, "setOnboardingComplete").mockImplementation(() => {});
     vi.spyOn(storage, "saveSession").mockImplementation(() => {});
     vi.spyOn(storage, "clearSession").mockImplementation(() => {});
     vi.spyOn(storage, "getMistakeCount").mockReturnValue(0);

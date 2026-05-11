@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, Eye, X, Trophy, Award, TrendingUp } from 'lucide-react';
+import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -23,6 +23,7 @@ import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { FocusModeOverlay } from '@/components/FocusModeOverlay';
+import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
@@ -67,6 +68,8 @@ function App() {
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [isFocusSession, setIsFocusSession] = useState(false);
+  const [focusSessionStats, setFocusSessionStats] = useState<{ duration: number; questionsCompleted: number } | null>(null);
+  const [showFocusSummary, setShowFocusSummary] = useState(false);
   const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
   const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
   const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
@@ -80,8 +83,15 @@ function App() {
     setIsFocusSession(true);
   }, []);
 
-  const endFocusSession = useCallback(() => {
+  const endFocusSession = useCallback((stats: { duration: number; questionsCompleted: number }) => {
+    setFocusSessionStats(stats);
+    setShowFocusSummary(true);
     setIsFocusSession(false);
+  }, []);
+
+  const handleCloseFocusSummary = useCallback(() => {
+    setShowFocusSummary(false);
+    setFocusSessionStats(null);
   }, []);
 
   const { isMarked, markFromPractice } = usePersonalWords();
@@ -869,6 +879,15 @@ function App() {
                     <Eye className="w-4 h-4" />
                     专注模式
                   </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={startFocusSession}
+                    className="gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    沉浸专注
+                  </Button>
                 </div>
               )}
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
@@ -960,6 +979,56 @@ function App() {
       />
       <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
       <Toaster richColors position="top-center" />
+
+      <FocusModeOverlay
+        isOpen={isFocusSession}
+        onClose={() => setIsFocusSession(false)}
+        onComplete={endFocusSession}
+        practiceComponent={
+          view === 'practice' && !state.isComplete ? (
+            <PracticeCard
+              sentence={currentSentence!}
+              inputs={state.currentInputs}
+              showResult={state.showResult}
+              isCorrect={state.isCorrect}
+              attempts={state.attempts}
+              isSpeaking={isSpeaking}
+              currentQuestion={currentQuestion}
+              totalQuestions={totalQuestions}
+              mode={practiceMode}
+              isFocusMode={true}
+              playbackRate={playbackRate}
+              onSpeedChange={setPlaybackRate}
+              options={options}
+              selectedChoiceId={state.selectedChoiceId}
+              onSelectChoice={selectChoice}
+              sentenceTokens={sentenceTokens}
+              orderedTokenIds={state.orderedTokenIds}
+              onSelectToken={selectToken}
+              onDeselectToken={deselectToken}
+              onSkip={nextSentence}
+              onInputChange={setInput}
+              onCheck={checkAnswer}
+              onNext={nextSentence}
+              onRetry={retry}
+              onSpeak={handleSpeak}
+              hintLevel={hintLevel}
+              shouldShowHint={shouldShowHint}
+              isMarked={isMarked(currentSentence!.blanks[0]?.word ?? '')}
+              onMark={(word, translation, english, chinese, sentenceId) => handleMarkWord(word, translation, english, chinese, sentenceId ?? currentSentence!.id)}
+            />
+          ) : null
+        }
+        totalQuestions={totalQuestions}
+        currentQuestion={currentQuestion}
+      />
+
+      {showFocusSummary && focusSessionStats && (
+        <FocusSessionSummary
+          stats={focusSessionStats}
+          onClose={handleCloseFocusSummary}
+        />
+      )}
     </div>
   );
 }

@@ -3,11 +3,11 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-81",
-      "mode": "tech-review",
-      "stage": "TECH_REVIEW",
+      "id": "2026-05-11-82",
+      "mode": "vision",
+      "stage": "COMMIT",
       "status": "completed",
-      "summary": "tech-review iter-001 主练习链路稳定性打磨完成。dir-1778465917386 全部 8 个问题执行：retry完整清除反馈+previousAttemptsRef语义修复、DictionaryBrowser移动端溢出修复、DictationMode/App听写提示澄清、useAdaptivePractice相似题过滤、SentenceReorderMode释义句跳过按钮、PracticeCard解析内容重写。NavigationContext._currentValue改标准useContext()。819测试全通过，build success，1 pre-existing lint warning。"
+      "summary": "epic-014 iter-001 提交完成。4 个提交：主练习链路稳定性打磨完成、shareTriggers.ts 重构提取、tech-review prompt 新增、cycle 80 报告归档。HEAD: 834d1fe。"
     },
     {
       "id": "2026-05-11-82",
@@ -94,10 +94,13 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级。"
     }
   ],
-  "status": "BRAINSTORM",
-  "selectedEpic": null,
-  "lastRun": "2026-05-11T08:17:00.000Z",
-  "cycleCount": 81,
+  "status": "DEPLOY",
+  "selectedEpic": {
+    "id": "epic-014",
+    "title": "主练习链路稳定性打磨"
+  },
+  "lastRun": "2026-05-11T12:25:00.000Z",
+  "cycleCount": 82,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {

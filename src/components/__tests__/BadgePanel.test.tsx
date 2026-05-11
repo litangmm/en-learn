@@ -3,6 +3,18 @@ import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { BadgePanel } from '../BadgePanel';
 import { BADGE_DEFINITIONS } from '@/services/storage';
 
+// Mock AchievementPanel
+vi.mock('@/components/AchievementPanel', () => ({
+  AchievementPanel: ({ badge, onClose }: { badge: unknown; onClose: () => void }) => {
+    if (!badge) return null;
+    return (
+      <div data-testid="achievement-panel-mock">
+        <button data-testid="mock-close" onClick={onClose}>Close</button>
+      </div>
+    );
+  },
+}));
+
 // Mock BADGE_DEFINITIONS to ensure stable test data
 vi.mock('@/services/storage', async () => {
   const actual = await vi.importActual<typeof import('@/services/storage')>('@/services/storage');
@@ -97,5 +109,37 @@ describe('BadgePanel', () => {
     expect(screen.getByTestId('category-review')).toBeInTheDocument();
     expect(screen.getByTestId('category-challenge')).toBeInTheDocument();
     expect(screen.getByTestId('category-special')).toBeInTheDocument();
+  });
+
+  it('clicking a badge card opens AchievementPanel', () => {
+    renderBadgePanel({ getProgress: () => 50 });
+
+    const card = screen.getByTestId('badge-card-correct-10');
+    fireEvent.click(card);
+
+    expect(screen.getByTestId('achievement-panel-mock')).toBeInTheDocument();
+  });
+
+  it('clicking AchievementPanel close button hides panel', () => {
+    renderBadgePanel({ getProgress: () => 50 });
+
+    const card = screen.getByTestId('badge-card-correct-10');
+    fireEvent.click(card);
+
+    const closeButton = screen.getByTestId('mock-close');
+    fireEvent.click(closeButton);
+
+    expect(screen.queryByTestId('achievement-panel-mock')).not.toBeInTheDocument();
+  });
+
+  it('unlocked badge passes isUnlocked=true to AchievementPanel', () => {
+    const unlockedIds = new Set(['first-steps']);
+    renderBadgePanel({ unlockedIds });
+
+    const card = screen.getByTestId('badge-card-first-steps');
+    fireEvent.click(card);
+
+    // Panel should be open with unlocked badge
+    expect(screen.getByTestId('achievement-panel-mock')).toBeInTheDocument();
   });
 });

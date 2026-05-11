@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Award,
@@ -14,6 +14,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { BADGE_DEFINITIONS } from '@/services/storage';
+import { AchievementPanel } from './AchievementPanel';
 import type { BadgeDefinition } from '@/data/types';
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -29,6 +30,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 interface BadgePanelProps {
   unlockedIds: Set<string>;
+  unlockedAtMap?: Map<string, number>; // badge id -> unlocked timestamp
   getProgress: (id: string) => number;
   onBack: () => void;
 }
@@ -56,7 +58,9 @@ function BadgeIcon({ name, className }: { name: string; className?: string }) {
   return <Icon className={className} size={48} />;
 }
 
-export function BadgePanel({ unlockedIds, getProgress, onBack }: BadgePanelProps) {
+export function BadgePanel({ unlockedIds, unlockedAtMap = new Map(), getProgress, onBack }: BadgePanelProps) {
+  const [selectedBadge, setSelectedBadge] = useState<BadgeDefinition | null>(null);
+
   const grouped = useMemo(() => {
     const map = new Map<string, BadgeDefinition[]>();
     for (const badge of BADGE_DEFINITIONS) {
@@ -115,12 +119,13 @@ export function BadgePanel({ unlockedIds, getProgress, onBack }: BadgePanelProps
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className={`relative rounded-xl border-2 p-4 flex flex-col items-center text-center transition-colors ${
+                        className={`relative rounded-xl border-2 p-4 flex flex-col items-center text-center transition-colors cursor-pointer ${
                           isUnlocked
-                            ? 'border-amber-400 bg-amber-50/50'
-                            : 'border-slate-200 bg-white'
+                            ? 'border-amber-400 bg-amber-50/50 hover:bg-amber-100'
+                            : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
                         }`}
                         data-testid={`badge-card-${badge.id}`}
+                        onClick={() => setSelectedBadge(badge)}
                       >
                         <div className="mb-2">
                           <BadgeIcon
@@ -166,6 +171,17 @@ export function BadgePanel({ unlockedIds, getProgress, onBack }: BadgePanelProps
             );
           })}
         </div>
+
+        {/* Achievement Detail Panel */}
+        {selectedBadge && (
+          <AchievementPanel
+            badge={selectedBadge}
+            isUnlocked={unlockedIds.has(selectedBadge.id)}
+            progress={getProgress(selectedBadge.id)}
+            unlockedAt={unlockedAtMap.get(selectedBadge.id)}
+            onClose={() => setSelectedBadge(null)}
+          />
+        )}
       </div>
     </div>
   );

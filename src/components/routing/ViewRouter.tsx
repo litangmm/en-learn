@@ -8,10 +8,12 @@ import { BadgePanel } from '@/components/BadgePanel';
 import { Leaderboard } from '@/components/Leaderboard';
 import { DictionaryBrowser } from '@/components/DictionaryBrowser';
 import { ProgressHub } from '@/components/ProgressHub';
+import { LearningProfile } from '@/components/LearningProfile';
 
 export type View =
   | 'practice'
   | 'progress'
+  | 'profile'
   | 'mistake-book'
   | 'history'
   | 'data'
@@ -25,6 +27,8 @@ export interface ViewRouterProps {
   view: View;
   // ProgressHub
   onNavigate: (view: View) => void;
+  // LearningProfile
+  onBackFromProfile?: () => void;
   // MistakeBook
   onPracticeMistakes: (sentenceIds: string[], dictionaryId: string) => void;
   onBackFromMistakeBook: () => void;
@@ -57,6 +61,7 @@ export function ViewRouter(props: ViewRouterProps) {
   const {
     view,
     onNavigate,
+    onBackFromProfile = () => {},
     onPracticeMistakes,
     onBackFromMistakeBook,
     onBackFromHistory,
@@ -81,6 +86,9 @@ export function ViewRouter(props: ViewRouterProps) {
   switch (view) {
     case 'progress':
       return <ProgressHub onNavigate={onNavigate} />;
+
+    case 'profile':
+      return <LearningProfile onNavigate={onNavigate} onBack={onBackFromProfile} />;
 
     case 'mistake-book':
       return (

@@ -124,6 +124,13 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
         >
           查看成就徽章
         </button>
+        <button
+          onClick={() => onNavigate('profile')}
+          className="w-full py-3 px-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors"
+          data-testid="profile-button"
+        >
+          学习档案
+        </button>
       </div>
     </div>
   );

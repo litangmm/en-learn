@@ -344,6 +344,10 @@ function App() {
     setView('progress');
   };
 
+  const handleBackFromProfile = () => {
+    setView('practice');
+  };
+
   const handleOpenMistakeBook = () => {
     setView('mistake-book');
   };
@@ -430,6 +434,9 @@ function App() {
         break;
       case 'progress':
         setView('progress');
+        break;
+      case 'profile':
+        setView('profile');
         break;
       case 'mistake-book':
         setMistakeCount(storage.getMistakeCount());
@@ -780,6 +787,7 @@ function App() {
         <ViewRouter
           view={view}
           onNavigate={handleNavigate}
+          onBackFromProfile={handleBackFromProfile}
           onPracticeMistakes={handlePracticeMistakes}
           onBackFromMistakeBook={handleBackFromMistakeBook}
           onBackFromHistory={handleBackFromHistory}

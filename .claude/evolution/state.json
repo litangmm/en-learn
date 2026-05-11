@@ -3,18 +3,39 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-86",
+      "id": "2026-05-11-88",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-018 iter-002 部署 v0.40.0 成功。AbilityRadar 雷达图 + ProgressTrend 折线图。构建 3.64s，Vercel 生产部署完成，git tag v0.40.0 @ 58a93d3 已推送。"
+    },
+    {
+      "id": "2026-05-11-88",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-018 iter-002 能力雷达图与进度趋势提交。AbilityRadar SVG 雷达图(4轴)、ProgressTrend 折线图(XP/题数切换)、useProgressStats 新增 getModeAccuracy/getDailyXP。876 测试零回归。Commit f5cd5d9。"
+    },
+    {
+      "id": "2026-05-11-88",
       "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-018 iter-001 里程碑导航与进度概览完成。创建 useProgressStats hook + ProgressHub 组件 + MilestoneCard 组件。XPBar 添加 onClick 导航到进度视图。MobileNav 添加「进度」入口。ViewRouter 添加 progress 视图路由。848 测试零回归，lint 1 warning，build 2.95s success。"
+      "summary": "epic-018 iter-002 能力雷达图与进度趋势完成。AbilityRadar 菱形雷达图(4轴)、ProgressTrend 折线图(XP/题数切换)、useProgressStats 新增 getModeAccuracy/getDailyXP。876 测试零回归。"
     },
     {
       "id": "2026-05-11-86",
       "mode": "vision",
-      "stage": "TEST",
+      "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-018 iter-001 测试通过。848 单元测试全部通过(70 测试文件)，lint 1 warning(pre-existing)，build 2.94s success。E2E skipped(2 pending iterations remaining)。"
+      "summary": "epic-018 iter-001 完成并部署 v0.39.0。ProgressHub/MilestoneCard/useProgressStats 组件。848 测试零回归。里程碑导航与进度概览完整。"
+    },
+    {
+      "id": "2026-05-11-86",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-018 iter-001 里程碑导航与进度概览完成。创建 useProgressStats hook + ProgressHub 组件 + MilestoneCard 组件。XPBar 添加 onClick 导航到进度视图。MobileNav 添加「进度」入口。ViewRouter 添加 progress 视图路由。848 测试零回归，lint 1 warning，build 2.95s success。Commit 9a2e2f4."
     },
     {
       "id": "2026-05-11-86",
@@ -27,7 +48,7 @@
       "id": "2026-05-11-85",
       "mode": "vision",
       "stage": "COMMIT",
-      "status": "in_progress",
+      "status": "completed",
       "summary": "epic-014 iter-002 移动端弹窗自适应测试通过，819 单元测试全部通过(67 测试文件)，lint 1 warning(pre-existing)，build 3.09s success。"
     },
     {
@@ -85,28 +106,43 @@
       "stage": "BRAINSTORM",
       "status": "completed",
       "summary": "epic-009/010 收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持）。epic-017「应用配置架构重构」次高优先级（ARCH 提出，4 支持）。"
+    },
+    {
+      "id": "2026-05-11-89",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-018 iter-002 能力雷达图与进度趋势完成并部署 v0.40.0。AbilityRadar SVG 雷达图(4轴)+ProgressTrend 折线图(XP/题数切换)+useProgressStats 新增 getModeAccuracy/getDailyXP。876 测试零回归。Commit 58a93d3。"
+    },
+    {
+      "id": "2026-05-11-90",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-018 iter-003 成就系统与学习档案完成。AchievementPanel 详情弹窗 + LearningProfile 综合档案 + BadgePanel 点击联动 + ProgressHub 学习档案入口 + profile 视图路由。899 测试零回归，build 3.20s success。"
+    },
+    {
+      "id": "2026-05-11-90",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "pending",
+      "summary": "epic-018 iter-003 成就系统与学习档案测试待执行。899 单元测试 + build 验证。"
     }
   ],
-  "status": "COMMIT",
-  "selectedEpic": {
-    "id": "epic-018",
-    "title": "学习路径追踪与成就系统整合"
-  },
-  "lastRun": "2026-05-11T13:30:00.000Z",
-  "cycleCount": 86,
+  "status": "TEST",
+  "commit": "58a93d3",
+  "cycleCount": 90,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-11-86",
+    "id": "2026-05-11-90",
     "mode": "vision",
-    "stage": "TEST",
-    "startedAt": "2026-05-11T13:25:00.000Z",
-    "completedAt": "2026-05-11T13:30:00.000Z"
+    "stage": "PLAN"
   },
   "previousCycle": {
-    "id": "2026-05-11-85",
+    "id": "2026-05-11-89",
     "mode": "vision",
-    "stage": "COMMIT"
+    "stage": "REPORT"
   },
   "currentEpic": {
     "id": "epic-018",
@@ -124,55 +160,57 @@
         "id": "iter-002",
         "title": "能力雷达图与进度趋势",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
         "description": "新增 AbilityRadar 组件（SVG 雷达图展示 4 种模式能力）、ProgressTrend 组件（最近 7 天学习趋势折线图），集成到 ProgressHub。"
       },
       {
         "id": "iter-003",
         "title": "成就系统与学习档案",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "in_progress",
         "description": "新增 AchievementPanel 组件（成就详情弹窗）、LearningProfile 组件（综合学习档案），完善 BadgePanel 关联，集成到进度视图。"
       }
     ],
-    "currentIterationIndex": 0
+    "currentIterationIndex": 2
   },
   "currentPlan": {
-    "iterationId": "iter-001",
-    "iterationTitle": "里程碑导航与进度概览",
+    "iterationId": "iter-003",
+    "iterationTitle": "成就系统与学习档案",
     "scope": "frontend-only",
-    "planFile": ".claude/evolution/plans/2026-05-11-86-epic-018.md",
     "steps": [
-      "Step 1: 在 src/hooks/useProgressStats.ts 创建进度统计 Hook——派生 XP 档案(level/totalXP/currentXP/progressToNextLevel)、学习天数(从 history 首次日期计算)、总正确率(从 history 统计)、完成词库数",
-      "Step 2: 在 src/components/ProgressHub.tsx 创建进度概览主组件——使用 MilestoneCard 网格布局展示各维度进度，指引到对应子视图",
-      "Step 3: 在 src/components/MilestoneCard.tsx 创建里程碑卡片组件——支持 icon/title/subtitle/progress/onClick props",
-      "Step 4: 在 src/components/XPBar.tsx 扩展 XPBar 组件——添加点击进入 progress 视图的导航功能",
-      "Step 5: 在 src/App.tsx 添加 progress 视图路由和条件渲染，添加 MobileNav 底部进度入口",
-      "Step 6: 创建 src/hooks/__tests__/useProgressStats.test.ts——测试 Hook 的各维度派生数据",
-      "Step 7: 创建 src/components/__tests__/ProgressHub.test.tsx 和 MilestoneCard.test.tsx 组件测试",
-      "Step 8: 创建 src/components/__tests__/App.progress.test.tsx 集成测试",
-      "Step 9: 运行 vitest 和 build 全量验证，819 测试零回归"
+      "Step 1: 创建 AchievementPanel.tsx 成就详情弹窗组件，支持从 BadgePanel 传入选中的 badge 显示详情（图标、名称、描述、获取条件、当前进度、已达成的 tips）",
+      "Step 2: 创建 LearningProfile.tsx 综合学习档案组件，整合 XP/等级、徽章展示、能力雷达图、学习趋势、连击信息、学习统计摘要",
+      "Step 3: 更新 BadgePanel.tsx，将徽章卡片改为可点击，点击后打开 AchievementPanel 详情弹窗",
+      "Step 4: 更新 ProgressHub.tsx，添加「学习档案」按钮链接到 LearningProfile",
+      "Step 5: 更新 App.tsx，添加 'profile' 视图路由，集成 LearningProfile 组件",
+      "Step 6: 创建 AchievementPanel.test.tsx 和 LearningProfile.test.tsx 单元测试",
+      "Step 7: 更新 BadgePanel.test.tsx 测试以覆盖点击行为",
+      "Step 8: 全量测试验证（876+ 测试零回归，lint，build）"
     ],
     "filesToModify": [
-      "src/hooks/useXP.ts",
-      "src/services/storage.ts",
-      "src/App.tsx",
-      "src/components/XPBar.tsx",
-      "src/components/MobileNav.tsx"
+      "src/components/BadgePanel.tsx",
+      "src/components/ProgressHub.tsx",
+      "src/App.tsx"
     ],
     "filesToCreate": [
-      "src/hooks/useProgressStats.ts",
-      "src/hooks/__tests__/useProgressStats.test.ts",
-      "src/components/ProgressHub.tsx",
-      "src/components/MilestoneCard.tsx",
-      "src/components/__tests__/ProgressHub.test.tsx",
-      "src/components/__tests__/MilestoneCard.test.tsx",
-      "src/components/__tests__/App.progress.test.tsx"
+      "src/components/AchievementPanel.tsx",
+      "src/components/LearningProfile.tsx",
+      "src/components/__tests__/AchievementPanel.test.tsx",
+      "src/components/__tests__/LearningProfile.test.tsx"
     ],
     "dependencies": [],
-    "testStrategy": "useProgressStats Hook 单元测试（XP 等级计算/学习天数/正确率/词库数），ProgressHub/MilestoneCard 组件测试，App.progress 集成测试，819 现有测试零回归"
+    "testStrategy": "单元测试覆盖：AchievementPanel 详情弹窗显示逻辑、LearningProfile 综合数据展示、BadgePanel 点击行为。集成测试覆盖：App.tsx profile 视图路由、ProgressHub 学习档案入口。回归测试：全部 876 测试零回归。"
   },
   "epicHistory": [
+    {
+      "id": "epic-018",
+      "title": "学习路径追踪与成就系统整合",
+      "status": "in_progress",
+      "iterationsCount": 3,
+      "completedIterations": 2,
+      "versionRange": "v0.39.0-v0.40.0",
+      "completedAt": null
+    },
     {
       "id": "epic-017",
       "title": "应用配置架构重构与稳定性保障",
@@ -234,14 +272,28 @@
       "title": "学习路径追踪与成就系统整合",
       "description": "在现有成就徽章/排行榜基础上，建立完整的学习路径追踪体系——包括里程碑导航、进度可视化、能力雷达图，让用户清晰看到自己在词汇学习中的成长轨迹。",
       "proposedBy": "PM-Growth",
-      "supportedBy": ["UX", "EXP", "PM-Lean", "QA"],
+      "supportedBy": [
+        "UX",
+        "EXP",
+        "PM-Lean",
+        "QA"
+      ],
       "concerns": "功能扩展需控制范围，避免变成大而全的仪表盘",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：里程碑导航与进度概览", "scope": "frontend-only"},
-        {"title": "迭代2：能力雷达图与知识图谱", "scope": "frontend-only"},
-        {"title": "迭代3：成就系统与学习档案", "scope": "frontend-only"}
+        {
+          "title": "迭代1：里程碑导航与进度概览",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：能力雷达图与知识图谱",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：成就系统与学习档案",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -249,14 +301,26 @@
       "title": "词典数据结构优化与查询性能",
       "description": "优化词典数据结构设计，支持按需加载和缓存策略，解决词典数量增加后的首屏加载性能问题。",
       "proposedBy": "ARCH",
-      "supportedBy": ["PM-Mon", "QA"],
+      "supportedBy": [
+        "PM-Mon",
+        "QA"
+      ],
       "concerns": "过早优化可能引入不必要的复杂度",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：词典数据结构标准化", "scope": "frontend-only"},
-        {"title": "迭代2：词典按需加载架构", "scope": "frontend-only"},
-        {"title": "迭代3：构建体积与加载性能监控", "scope": "frontend-only"}
+        {
+          "title": "迭代1：词典数据结构标准化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：词典按需加载架构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：构建体积与加载性能监控",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -264,14 +328,26 @@
       "title": "个人词典编辑与内容管理",
       "description": "在 epic-009 只读词典浏览器基础上，增加个人词条编辑、添加、删除功能，让用户真正掌握自己的学习内容。",
       "proposedBy": "PM-Eco",
-      "supportedBy": ["PM-UX", "UX"],
+      "supportedBy": [
+        "PM-UX",
+        "UX"
+      ],
       "concerns": "编辑功能需考虑数据验证和冲突处理",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：个人词条编辑界面", "scope": "frontend-only"},
-        {"title": "迭代2：个人词条 CRUD 操作", "scope": "frontend-only"},
-        {"title": "迭代3：个人词典导入导出", "scope": "frontend-only"}
+        {
+          "title": "迭代1：个人词条编辑界面",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：个人词条 CRUD 操作",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：个人词典导入导出",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -279,14 +355,26 @@
       "title": "自适应难度与个性化练习算法",
       "description": "基于用户答题数据（正确率、连击、复习间隔）动态调整题目难度，提供个性化学习体验。",
       "proposedBy": "EXP",
-      "supportedBy": ["PM-Growth", "UX"],
+      "supportedBy": [
+        "PM-Growth",
+        "UX"
+      ],
       "concerns": "纯前端算法受限于数据量，需设定冷启动策略",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：用户学习数据建模", "scope": "frontend-only"},
-        {"title": "迭代2：自适应出题算法设计", "scope": "frontend-only"},
-        {"title": "迭代3：算法调参与效果验证", "scope": "frontend-only"}
+        {
+          "title": "迭代1：用户学习数据建模",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：自适应出题算法设计",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：算法调参与效果验证",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -294,14 +382,26 @@
       "title": "移动端体验深度优化",
       "description": "针对移动端用户反馈的细节问题（顶部布局、卡片溢出、触摸体验）进行深度优化，确保移动端用户体验达到桌面端同等水平。",
       "proposedBy": "PM-UX",
-      "supportedBy": ["PM-Lean", "QA"],
+      "supportedBy": [
+        "PM-Lean",
+        "QA"
+      ],
       "concerns": "优化需有针对性，避免陷入无休止的微调",
       "priority": "medium",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {"title": "迭代1：顶部品牌区响应式优化", "scope": "frontend-only"},
-        {"title": "迭代2：移动端卡片与弹窗深度适配", "scope": "frontend-only"},
-        {"title": "迭代3：触摸交互与加载体验优化", "scope": "frontend-only"}
+        {
+          "title": "迭代1：顶部品牌区响应式优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：移动端卡片与弹窗深度适配",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：触摸交互与加载体验优化",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -309,14 +409,26 @@
       "title": "构建与测试基础设施升级",
       "description": "升级构建流程（CI/CD、测试覆盖、lint 规则）、建立性能监控基线，确保代码质量可持续。",
       "proposedBy": "QA",
-      "supportedBy": ["ARCH", "PM-Mon"],
+      "supportedBy": [
+        "ARCH",
+        "PM-Mon"
+      ],
       "concerns": "基础设施投入产出难以量化，需与业务优先级平衡",
       "priority": "low",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：测试覆盖强化", "scope": "frontend-only"},
-        {"title": "迭代2：CI/CD 流程优化", "scope": "frontend-only"},
-        {"title": "迭代3：性能监控与告警", "scope": "frontend-only"}
+        {
+          "title": "迭代1：测试覆盖强化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：CI/CD 流程优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：性能监控与告警",
+          "scope": "frontend-only"
+        }
       ]
     }
   ],
@@ -329,14 +441,14 @@
     },
     "build": {
       "passed": true,
-      "duration": "2.94s"
+      "duration": "3.20s"
     },
     "unitTests": {
-      "passed": 848,
+      "passed": 899,
       "failed": 0,
-      "total": 848,
-      "duration": "14.12s",
-      "testFiles": 70
+      "total": 899,
+      "duration": "15.58s",
+      "testFiles": 75
     }
   },
   "techDebtBaseline": {
@@ -349,10 +461,10 @@
     "magicNumbers": 0,
     "deadCode": 0
   },
-  "iterationStatus": "completed",
+  "iterationStatus": null,
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-018 iter-001 里程碑导航与进度概览完成。ProgressHub/MilestoneCard/useProgressStats 组件已存在并通过 848 测试验证。App.progress.test.tsx 修复测试 mock 问题。XPBar compact 模式已支持 onClick。",
+  "implementationStatus": "epic-018 iter-003 成就系统与学习档案完成。AchievementPanel 详情弹窗 + LearningProfile 综合档案 + BadgePanel 点击联动 + ProgressHub 学习档案入口。899 测试零回归，build 3.20s success。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -376,18 +488,29 @@
         "createdAt": "2026-05-10T17:18:00.000Z",
         "executedAt": "2026-05-10T19:42:00.000Z",
         "executionNote": "已在 epic-004 iter-006 中执行"
+      },
+      {
+        "id": "dir-1778465917386",
+        "type": "custom",
+        "target": "epic-018",
+        "action": "【epic-018 iter-003 成就系统与学习档案】epic-018 iter-002 完成后，iter-003 成就系统与学习档案继续推进。",
+        "reason": "epic-018 iter-002 完成后，iter-003 为同一 Epic 自然延续。AchievementPanel+LearningProfile 完善进度视图体系。",
+        "createdAt": "2026-05-11T07:21:17.992Z",
+        "executedAt": "2026-05-11T08:00:00.000Z",
+        "executionNote": "iter-003 计划已制定：AchievementPanel 详情弹窗 + LearningProfile 综合档案 + BadgePanel 点击联动 + ProgressHub 学习档案入口。状态已更新为 IMPLEMENT。"
       }
     ]
   },
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.38.0",
-    "url": "https://en-learn-auauq0fpd-litangmms-projects.vercel.app",
-    "commit": "df78719",
-    "iterationId": "iter-001",
-    "iterationTitle": "App.tsx 配置提取（第一阶段）",
-    "deployedAt": "2026-05-11T12:50:00.000Z"
+    "version": "v0.40.0",
+    "url": "https://en-learn-gkyr129b6-litangmms-projects.vercel.app",
+    "commit": "58a93d3",
+    "iterationId": "iter-002",
+    "iterationTitle": "能力雷达图与进度趋势",
+    "deployedAt": "2026-05-11T07:18:07.078Z"
   },
-  "pendingDeployment": false
+  "pendingDeployment": false,
+  "lastRun": "2026-05-11T07:21:17.991Z"
 }

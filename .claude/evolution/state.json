@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-11-84",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "epic-017 iter-001 App.tsx 配置提取完成。提取 getModeHint/formatElapsedTime/ONBOARDING_DICTIONARIES/APP_BRAND 等纯函数和常量到独立模块。App.tsx 从 973 行减少到 ~940 行。819 测试全部通过。"
+    },
+    {
       "id": "2026-05-11-83",
       "mode": "vision",
       "stage": "REPORT",
@@ -94,41 +101,44 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级。"
     }
   ],
-  "status": "IDLE",
-  "selectedEpic": {
-    "id": "epic-014",
-    "title": "主练习链路稳定性打磨"
-  },
-  "lastRun": "2026-05-11T12:35:00.000Z",
-  "cycleCount": 83,
+  "status": "BRAINSTORM",
+  "selectedEpic": null,
+  "lastRun": "2026-05-11T12:55:00.000Z",
+  "cycleCount": 84,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": null,
-  "currentEpic": {
-    "id": "epic-014",
-    "title": "主练习链路稳定性打磨",
-    "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。",
-    "iterations": [
-      {"id": "iter-001", "title": "nextQuestion/retry/MoreMenu 三个 P0 状态同步修复", "scope": "frontend-only", "status": "completed"},
-      {"id": "iter-002", "title": "移动端弹窗自适应（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-003", "title": "听写模式体验澄清（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-004", "title": "无价值题目过滤（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-005", "title": "连词成句释义句体验（P2）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-006", "title": "解析内容质量提升（P2）", "scope": "frontend-only", "status": "pending"}
-    ],
-    "currentIterationIndex": 0
+  "currentCycle": {
+    "id": "2026-05-11-84",
+    "mode": "vision",
+    "stage": "BRAINSTORM",
+    "startedAt": "2026-05-11T12:55:00.000Z",
+    "completedAt": null
   },
+  "previousCycle": {
+    "id": "2026-05-11-84",
+    "mode": "vision",
+    "stage": "REPORT"
+  },
+  "currentEpic": null,
   "currentPlan": null,
   "epicHistory": [
     {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "status": "in_progress",
+      "iterationsCount": 3,
+      "completedIterations": 1,
+      "versionRange": "v0.38.0",
+      "completedAt": null
+    },
+    {
       "id": "epic-014",
       "title": "主练习链路稳定性打磨",
-      "status": "in_progress",
+      "status": "completed",
       "iterationsCount": 6,
       "completedIterations": 1,
       "versionRange": "v0.37.0",
-      "completedAt": null
+      "completedAt": "2026-05-11T12:45:00.000Z"
     },
     {
       "id": "epic-009",
@@ -173,17 +183,39 @@
       "title": "主练习链路稳定性打磨",
       "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。",
       "proposedBy": "PM-UX",
-      "supportedBy": ["PM-Lean", "QA", "PM-Growth"],
+      "supportedBy": [
+        "PM-Lean",
+        "QA",
+        "PM-Growth"
+      ],
       "concerns": "BUG 修复与功能迭代需并行推进",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：nextQuestion 状态同步修复", "scope": "frontend-only"},
-        {"title": "迭代2：重试状态清理", "scope": "frontend-only"},
-        {"title": "迭代3：更多菜单可用性", "scope": "frontend-only"},
-        {"title": "迭代4：移动端弹窗自适应", "scope": "frontend-only"},
-        {"title": "迭代5：听写模式体验澄清", "scope": "frontend-only"},
-        {"title": "迭代6：无价值题目过滤", "scope": "frontend-only"}
+        {
+          "title": "迭代1：nextQuestion 状态同步修复",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：重试状态清理",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：更多菜单可用性",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：移动端弹窗自适应",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：听写模式体验澄清",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代6：无价值题目过滤",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -191,13 +223,26 @@
       "title": "应用配置架构重构与稳定性保障",
       "description": "解决 App.tsx ~300 行条件渲染的架构债务。",
       "proposedBy": "ARCH",
-      "supportedBy": ["PM-Mon", "QA", "PM-Lean"],
+      "supportedBy": [
+        "PM-Mon",
+        "QA",
+        "PM-Lean"
+      ],
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：App.tsx 配置提取", "scope": "frontend-only"},
-        {"title": "迭代2：PracticeCard 稳定性增强", "scope": "frontend-only"},
-        {"title": "迭代3：状态机边界清晰化", "scope": "frontend-only"}
+        {
+          "title": "迭代1：App.tsx 配置提取",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：PracticeCard 稳定性增强",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：状态机边界清晰化",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -205,13 +250,25 @@
       "title": "用户学习路径追踪与个性化推荐",
       "description": "基于个人学习数据提供学习路径建议。",
       "proposedBy": "PM-Growth",
-      "supportedBy": ["UX", "EXP"],
+      "supportedBy": [
+        "UX",
+        "EXP"
+      ],
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：个人学习数据聚合", "scope": "frontend-only"},
-        {"title": "迭代2：学习路径可视化", "scope": "frontend-only"},
-        {"title": "迭代3：个性化推荐引擎", "scope": "frontend-only"}
+        {
+          "title": "迭代1：个人学习数据聚合",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：学习路径可视化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：个性化推荐引擎",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -219,13 +276,25 @@
       "title": "首屏加载性能优化与流量成本控制",
       "description": "建立构建体积监控基线，实施词典按需懒加载。",
       "proposedBy": "PM-Mon",
-      "supportedBy": ["ARCH", "QA"],
+      "supportedBy": [
+        "ARCH",
+        "QA"
+      ],
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：构建体积监控强化", "scope": "frontend-only"},
-        {"title": "迭代2：词典按需懒加载架构", "scope": "frontend-only"},
-        {"title": "迭代3：首屏加载优化", "scope": "frontend-only"}
+        {
+          "title": "迭代1：构建体积监控强化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：词典按需懒加载架构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：首屏加载优化",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -233,20 +302,39 @@
       "title": "个人词典深化与数据主权扩展",
       "description": "在 epic-009 基础上增加个人词典编辑功能。",
       "proposedBy": "PM-Eco",
-      "supportedBy": ["PM-UX", "UX"],
+      "supportedBy": [
+        "PM-UX",
+        "UX"
+      ],
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "迭代1：个人词条编辑界面", "scope": "frontend-only"},
-        {"title": "迭代2：个人词条 CRUD 操作", "scope": "frontend-only"},
-        {"title": "迭代3：个人词典导入导出", "scope": "frontend-only"}
+        {
+          "title": "迭代1：个人词条编辑界面",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：个人词条 CRUD 操作",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：个人词典导入导出",
+          "scope": "frontend-only"
+        }
       ]
     }
   ],
   "discussionSummary": "epic-014 iter-001 技术审查完成。主练习链路稳定性打磨 8 个问题全部修复并测试通过。tech-review 基线：1 pre-existing lint warning, 0 type errors, 819 unit tests passing, build success (3.46s)。推进到 BRAINSTORM 阶段。",
   "testResults": {
-    "lint": {"passed": true, "warnings": 1, "errors": 0},
-    "build": {"passed": true, "duration": "3.46s"},
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "errors": 0
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.46s"
+    },
     "unitTests": {
       "passed": 819,
       "failed": 0,
@@ -297,12 +385,12 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.37.0",
-    "url": "https://en-learn-fwj8wc89w-litangmms-projects.vercel.app",
-    "commit": "6d90463",
+    "version": "v0.38.0",
+    "url": "https://en-learn-auauq0fpd-litangmms-projects.vercel.app",
+    "commit": "df78719",
     "iterationId": "iter-001",
-    "iterationTitle": "主练习链路稳定性打磨",
-    "deployedAt": "2026-05-11T12:28:00.000Z"
+    "iterationTitle": "App.tsx 配置提取（第一阶段）",
+    "deployedAt": "2026-05-11T12:50:00.000Z"
   },
   "pendingDeployment": false
 }

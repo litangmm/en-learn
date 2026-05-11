@@ -143,12 +143,16 @@
       "summary": "epic-028 iter-004 学习效率数据面板部署 v0.48.0 完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile 导航集成。构建 3.24s，Vercel 部署成功，git tag v0.48.0 @ 33cd246 已推送。1089 测试零回归。"
     }
   ],
-  "status": "IDLE",
+  "status": "IMPLEMENT",
   "commit": null,
-  "cycleCount": 107,
+  "cycleCount": 108,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-12-108",
+    "mode": "vision",
+    "stage": "PLAN"
+  },
   "previousCycle": {
     "id": "2026-05-12-106",
     "mode": "vision",
@@ -192,7 +196,7 @@
         "id": "iter-005",
         "title": "自适应出题权重算法优化",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "in_progress",
         "description": "结合间隔重复状态和错误率数据，构建综合出题权重评分。确保新词有适中的曝光率。提供权重算法的可视化说明。"
       }
     ],
@@ -201,36 +205,30 @@
     "totalIterations": 5
   },
   "plan": {
-    "iterationId": "iter-004",
-    "iterationTitle": "学习效率数据面板",
+    "iterationId": "iter-005",
+    "iterationTitle": "自适应出题权重算法优化",
     "scope": "frontend-only",
-    "planFile": "docs/superpowers/plans/2026-05-12-epic-028-iter-004-learning-efficiency-panel.md",
+    "planFile": "docs/superpowers/plans/2026-05-12-epic-028-iter-005-adaptive-question-weighting.md",
     "steps": [
-      "Step 1: Create useLearningEfficiency hook (3 metrics from reviewHistory)",
-      "Step 2: Create LearningEfficiencyPanel component",
-      "Step 3: Write unit tests for hook",
-      "Step 4: Write unit tests for component",
-      "Step 5: Integrate into App.tsx (add 'efficiency' view)",
-      "Step 6: Update routing.ts (add 'efficiency' to View type)",
-      "Step 7: Update App.profile.test.tsx mocks",
-      "Step 8: Run all unit tests",
-      "Step 9: Run lint",
-      "Step 10: Run build",
-      "Step 11: Commit"
+      "Step 1: Add constants (OVERDUE_BOOST, NOT_DUE_PENALTY) to useQuestionWeighting.ts",
+      "Step 2: Extend getSentenceWeight() to accept currentTime parameter and apply spaced repetition modifiers",
+      "Step 3: Propagate currentTime through getWeightedSentenceIds()",
+      "Step 4: Update usePractice.ts call site to pass Date.now()",
+      "Step 5: Write useQuestionWeighting.test.ts with comprehensive coverage",
+      "Step 6: Run all unit tests (expect ~1100 tests)",
+      "Step 7: Run lint",
+      "Step 8: Run build",
+      "Step 9: Commit"
     ],
     "filesToModify": [
-      "src/components/routing.ts",
-      "src/App.tsx",
-      "src/components/__tests__/App.profile.test.tsx"
+      "src/hooks/useQuestionWeighting.ts",
+      "src/hooks/usePractice.ts"
     ],
     "filesToCreate": [
-      "src/hooks/useLearningEfficiency.ts",
-      "src/hooks/__tests__/useLearningEfficiency.test.ts",
-      "src/components/LearningEfficiencyPanel.tsx",
-      "src/components/__tests__/LearningEfficiencyPanel.test.tsx"
+      "src/hooks/__tests__/useQuestionWeighting.test.ts"
     ],
     "dependencies": [],
-    "testStrategy": "测试学习效率指标计算（记忆保持率/遗忘曲线/薄弱点进步）、面板组件渲染、进度条显示、空状态处理"
+    "testStrategy": "测试权重公式：未到复习期降权、逾期复习提权、逾期+低正确率叠加、无复习数据回退、权重上限 5.0 不突破"
   },
   "epicHistory": [
     {
@@ -351,10 +349,10 @@
     "magicNumbers": 0,
     "deadCode": 0
   },
-  "iterationStatus": "completed",
+  "iterationStatus": "in_progress",
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-028 iter-004 学习效率数据面板完成。useLearningEfficiency hook(记忆保持率/遗忘曲线拟合/薄弱点攻克进度) + LearningEfficiencyPanel组件(综合评分/3指标卡片/进度条) + ViewRouter/View类型 + LearningProfile导航集成 + COLOR_MAP常量提取。1097 测试零回归，lint 1 warning，build 2.96s。",
+  "implementationStatus": "epic-028 iter-005 自适应出题权重算法优化计划制定完成。扩展 getSentenceWeight() 集成间隔重复状态（未到复习期降权30%、逾期复习提权1.5x、reviewHistory正确率修正），9 步计划，2 个修改文件，1 个新增测试文件。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -432,5 +430,5 @@
     "url": "https://en-learn-7zl63i96v-litangmms-projects.vercel.app"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T11:20:00.000Z"
+  "lastRun": "2026-05-12T11:25:00.000Z"
 }

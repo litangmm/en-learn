@@ -125,6 +125,13 @@
   - Commits: 1e73d65（代码）+ 15ab7fe（文档），版本 v0.23.0
 - **观察**: ARCH 在连续 20+ 个 cycle 未被选中后终于入选。关键转折点：App.tsx 复杂度已达灾难级临界点（~300 行条件渲染代码，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），重构窗口正在加速关闭。epic-003 全部 5 个迭代完成后，ARCH 持续提出的架构债务警告终于得到响应。ViewRouter 的 view → component 映射设计和 NavigationContext 的 Provider 模式实现了视图与逻辑解耦，为后续 iter-002（PracticeCard 策略模式）和 iter-003（构建体积监控基线）奠定基础。
 
+### 2026-05-12 (cycle-2026-05-12-103) — epic-028 iter-003 完成
+- **相关 Epic**: epic-028 iter-003「每日复习计划与提醒系统」—— 作为支持者
+- **结果**: epic-028 iter-003 **完成并部署**，v0.47.0，1052/1052 测试通过
+- **完成内容**: DailyReviewStats 类型 + useReviewStreak Hook + DailyReviewPlan 组件 + Header 复习指示器；全部零新增依赖、零构建体积增长
+- **当前状态**: **连续未被选中计数保持清零**（epic-028 支持者）
+- **观察**: iter-003 零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。DailyReviewPlan 作为纯展示组件，useReviewStreak Hook 的 getDueReviewItems/getReviewStats/getReviewStats 纯函数设计无副作用。**epic-028 剩余 iter-004（学习效率数据面板）、iter-005（自适应出题权重算法优化），继续支持，关注架构健康度**
+
 ### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
 - **相关 Epic**: epic-018 iter-002「能力雷达图与进度趋势」—— 作为支持者
 - **结果**: epic-018 iter-002 **完成并部署**，v0.40.0，876/876 测试通过

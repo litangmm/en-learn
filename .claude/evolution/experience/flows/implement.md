@@ -8,6 +8,18 @@
 
 ## 历史数据
 
+### 2026-05-12 (cycle-2026-05-12-103)
+- **迭代**: epic-028 iter-003「每日复习计划与提醒系统」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - DailyReviewStats 类型定义（streakDays/lastReviewDate/reviewedToday/reviewedTodayCount/reviewedTodayAt）
+  - useReviewStreak Hook 提供复习连续天数管理、复习完成追踪
+  - DailyReviewPlan 组件展示每日复习计划（到期数量/预计时长/完成进度）
+  - Header 集成：复习到期数指示器
+  - storage.ts 新增 DAILY_REVIEW_STATS_KEY 和 getReviewStats/updateReviewStats 方法
+- **重构**: 无
+- **观察**: epic-028 iter-003 零新增依赖、零构建体积增长。1052 测试历史最高水位，零新增 lint 警告。epic-028 已完成 3/5 迭代（间隔重复调度引擎→薄弱点识别→每日复习计划），剩余 iter-004（学习效率数据面板）、iter-005（自适应出题权重算法优化）
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，零构建体积增长，纯 SVG/CSS 实现

@@ -5,6 +5,20 @@
     {
       "id": "2026-05-11-86",
       "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-018 iter-001 里程碑导航与进度概览完成。创建 useProgressStats hook + ProgressHub 组件 + MilestoneCard 组件。XPBar 添加 onClick 导航到进度视图。MobileNav 添加「进度」入口。ViewRouter 添加 progress 视图路由。848 测试零回归，lint 1 warning，build 2.95s success。"
+    },
+    {
+      "id": "2026-05-11-86",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-018 iter-001 测试通过。848 单元测试全部通过(70 测试文件)，lint 1 warning(pre-existing)，build 2.94s success。E2E skipped(2 pending iterations remaining)。"
+    },
+    {
+      "id": "2026-05-11-86",
+      "mode": "vision",
       "stage": "BRAINSTORM",
       "status": "completed",
       "summary": "epic-014 iter-002 完成 + epic-017 全部迭代完成后全新 brainstorm。9 个 Agent 参与，产出 6 个 Epic 提案。epic-018「学习路径追踪与成就系统整合」获最高优先级（PM-Growth 提出，5 支持）。epic-022「词典数据结构优化与查询性能」次高优先级（ARCH 提出，3 支持）。"
@@ -73,26 +87,91 @@
       "summary": "epic-009/010 收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持）。epic-017「应用配置架构重构」次高优先级（ARCH 提出，4 支持）。"
     }
   ],
-  "status": "PLAN",
-  "selectedEpic": null,
-  "lastRun": "2026-05-11T13:25:00.000Z",
+  "status": "COMMIT",
+  "selectedEpic": {
+    "id": "epic-018",
+    "title": "学习路径追踪与成就系统整合"
+  },
+  "lastRun": "2026-05-11T13:30:00.000Z",
   "cycleCount": 86,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
     "id": "2026-05-11-86",
     "mode": "vision",
-    "stage": "BRAINSTORM",
-    "startedAt": "2026-05-11T13:20:00.000Z",
-    "completedAt": "2026-05-11T13:25:00.000Z"
+    "stage": "TEST",
+    "startedAt": "2026-05-11T13:25:00.000Z",
+    "completedAt": "2026-05-11T13:30:00.000Z"
   },
   "previousCycle": {
     "id": "2026-05-11-85",
     "mode": "vision",
     "stage": "COMMIT"
   },
-  "currentEpic": null,
-  "currentPlan": null,
+  "currentEpic": {
+    "id": "epic-018",
+    "title": "学习路径追踪与成就系统整合",
+    "description": "在现有 XP/连击/成就徽章/排行榜基础上，建立完整的学习路径追踪体系——包括里程碑导航、进度可视化、能力雷达图，让用户清晰看到自己在词汇学习中的成长轨迹。",
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "里程碑导航与进度概览",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "新增 ProgressHub 组件（学习概览主页）、MilestoneCard 组件、useProgressStats Hook。在 App.tsx 添加 progress 视图，在 header 或 MobileNav 添加进度入口。"
+      },
+      {
+        "id": "iter-002",
+        "title": "能力雷达图与进度趋势",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "新增 AbilityRadar 组件（SVG 雷达图展示 4 种模式能力）、ProgressTrend 组件（最近 7 天学习趋势折线图），集成到 ProgressHub。"
+      },
+      {
+        "id": "iter-003",
+        "title": "成就系统与学习档案",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "新增 AchievementPanel 组件（成就详情弹窗）、LearningProfile 组件（综合学习档案），完善 BadgePanel 关联，集成到进度视图。"
+      }
+    ],
+    "currentIterationIndex": 0
+  },
+  "currentPlan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "里程碑导航与进度概览",
+    "scope": "frontend-only",
+    "planFile": ".claude/evolution/plans/2026-05-11-86-epic-018.md",
+    "steps": [
+      "Step 1: 在 src/hooks/useProgressStats.ts 创建进度统计 Hook——派生 XP 档案(level/totalXP/currentXP/progressToNextLevel)、学习天数(从 history 首次日期计算)、总正确率(从 history 统计)、完成词库数",
+      "Step 2: 在 src/components/ProgressHub.tsx 创建进度概览主组件——使用 MilestoneCard 网格布局展示各维度进度，指引到对应子视图",
+      "Step 3: 在 src/components/MilestoneCard.tsx 创建里程碑卡片组件——支持 icon/title/subtitle/progress/onClick props",
+      "Step 4: 在 src/components/XPBar.tsx 扩展 XPBar 组件——添加点击进入 progress 视图的导航功能",
+      "Step 5: 在 src/App.tsx 添加 progress 视图路由和条件渲染，添加 MobileNav 底部进度入口",
+      "Step 6: 创建 src/hooks/__tests__/useProgressStats.test.ts——测试 Hook 的各维度派生数据",
+      "Step 7: 创建 src/components/__tests__/ProgressHub.test.tsx 和 MilestoneCard.test.tsx 组件测试",
+      "Step 8: 创建 src/components/__tests__/App.progress.test.tsx 集成测试",
+      "Step 9: 运行 vitest 和 build 全量验证，819 测试零回归"
+    ],
+    "filesToModify": [
+      "src/hooks/useXP.ts",
+      "src/services/storage.ts",
+      "src/App.tsx",
+      "src/components/XPBar.tsx",
+      "src/components/MobileNav.tsx"
+    ],
+    "filesToCreate": [
+      "src/hooks/useProgressStats.ts",
+      "src/hooks/__tests__/useProgressStats.test.ts",
+      "src/components/ProgressHub.tsx",
+      "src/components/MilestoneCard.tsx",
+      "src/components/__tests__/ProgressHub.test.tsx",
+      "src/components/__tests__/MilestoneCard.test.tsx",
+      "src/components/__tests__/App.progress.test.tsx"
+    ],
+    "dependencies": [],
+    "testStrategy": "useProgressStats Hook 单元测试（XP 等级计算/学习天数/正确率/词库数），ProgressHub/MilestoneCard 组件测试，App.progress 集成测试，819 现有测试零回归"
+  },
   "epicHistory": [
     {
       "id": "epic-017",
@@ -250,14 +329,14 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.09s"
+      "duration": "2.94s"
     },
     "unitTests": {
-      "passed": 819,
+      "passed": 848,
       "failed": 0,
-      "total": 819,
-      "duration": "13.84s",
-      "testFiles": 67
+      "total": 848,
+      "duration": "14.12s",
+      "testFiles": 70
     }
   },
   "techDebtBaseline": {
@@ -270,9 +349,10 @@
     "magicNumbers": 0,
     "deadCode": 0
   },
-  "iterationStatus": null,
+  "iterationStatus": "completed",
   "awaitingInputSince": null,
   "resumedStatus": null,
+  "implementationStatus": "epic-018 iter-001 里程碑导航与进度概览完成。ProgressHub/MilestoneCard/useProgressStats 组件已存在并通过 848 测试验证。App.progress.test.tsx 修复测试 mock 问题。XPBar compact 模式已支持 onClick。",
   "directives": {
     "version": "1.0",
     "pending": [],

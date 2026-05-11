@@ -143,7 +143,7 @@
       "summary": "epic-028 iter-004 学习效率数据面板部署 v0.48.0 完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile 导航集成。构建 3.24s，Vercel 部署成功，git tag v0.48.0 @ 33cd246 已推送。1089 测试零回归。"
     }
   ],
-  "status": "PLAN",
+  "status": "IDLE",
   "commit": null,
   "cycleCount": 107,
   "nextMode": "vision",

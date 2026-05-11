@@ -8,6 +8,7 @@ import { SmartReview } from '@/components/SmartReview';
 import { DailyChallengePanel } from '@/components/DailyChallengePanel';
 import { BadgePanel } from '@/components/BadgePanel';
 import { Leaderboard } from '@/components/Leaderboard';
+import { ProgressHub } from '@/components/ProgressHub';
 import type { DailyChallenge, LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
 
 // Mock child components
@@ -37,6 +38,10 @@ vi.mock('@/components/BadgePanel', () => ({
 
 vi.mock('@/components/Leaderboard', () => ({
   Leaderboard: vi.fn(() => <div data-testid="leaderboard">Leaderboard</div>),
+}));
+
+vi.mock('@/components/ProgressHub', () => ({
+  ProgressHub: vi.fn(() => <div data-testid="progress-hub">ProgressHub</div>),
 }));
 
 function createMockChallenges(): DailyChallenge[] {
@@ -81,6 +86,7 @@ function createMockLeaderboardEntries(): LeaderboardEntry[] {
 function createDefaultProps() {
   return {
     view: 'practice' as const,
+    onNavigate: vi.fn(),
     onPracticeMistakes: vi.fn(),
     onBackFromMistakeBook: vi.fn(),
     onBackFromHistory: vi.fn(),
@@ -202,6 +208,17 @@ describe('ViewRouter', () => {
       const { container } = render(<ViewRouter {...props} view="practice" />);
 
       expect(container.firstChild).toBeNull();
+    });
+
+    it('renders ProgressHub when view is progress', () => {
+      const props = createDefaultProps();
+      render(<ViewRouter {...props} view="progress" />);
+
+      const mockCalls = (ProgressHub as ReturnType<typeof vi.fn>).mock.calls;
+      expect(mockCalls.length).toBe(1);
+      expect(mockCalls[0][0]).toMatchObject({
+        onNavigate: props.onNavigate,
+      });
     });
 
     it('returns null for unknown views (default case)', () => {

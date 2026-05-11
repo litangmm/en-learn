@@ -519,7 +519,7 @@ describe('DictionaryBrowser', () => {
       render(<DictionaryBrowser onBack={mockOnBack} />);
 
       await waitFor(() => {
-        expect(screen.getByText('只看生词')).toBeInTheDocument();
+        expect(screen.getByText('生词')).toBeInTheDocument();
       });
     });
 
@@ -551,7 +551,7 @@ describe('DictionaryBrowser', () => {
       render(<DictionaryBrowser onBack={mockOnBack} />);
 
       await waitFor(() => {
-        expect(screen.getByText('只看生词')).toBeInTheDocument();
+        expect(screen.getByText('生词')).toBeInTheDocument();
       });
 
       // Find and click the switch
@@ -812,6 +812,65 @@ describe('DictionaryBrowser', () => {
       await waitFor(() => {
         expect(screen.getByText('加载词典失败')).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('Responsive layout', () => {
+    it('renders grid container that prevents overflow', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Find the grid container (should have min-w-0 class for overflow prevention)
+        const gridContainer = document.querySelector('[class*="min-w-0"][class*="grid"]');
+        expect(gridContainer).toBeInTheDocument();
+      });
+    });
+
+    it('renders cards with min-w-0 to prevent overflow', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Find cards with min-w-0 class
+        const cards = document.querySelectorAll('[class*="min-w-0"]');
+        expect(cards.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('renders cards with flex-col to handle content properly', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Find flex container cards
+        const flexCards = document.querySelectorAll('[class*="flex-col"]');
+        expect(flexCards.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('renders card titles with text truncation', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Find card titles with truncate class
+        const titles = document.querySelectorAll('[class*="truncate"]');
+        expect(titles.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('renders word count footer correctly', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        // Footer should show total count
+        expect(screen.getByText(/共 5 个单词/)).toBeInTheDocument();
+      });
+    });
+
+    it('renders with safe-area support class for mobile', async () => {
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      // Check that the content area has safe-area support class
+      const contentArea = document.querySelector('[class*="100dvh"]');
+      expect(contentArea).toBeInTheDocument();
     });
   });
 });

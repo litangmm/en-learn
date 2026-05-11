@@ -340,6 +340,10 @@ function App() {
     setShowRecoveryDialog(false);
   };
 
+  const handleOpenProgress = () => {
+    setView('progress');
+  };
+
   const handleOpenMistakeBook = () => {
     setView('mistake-book');
   };
@@ -423,6 +427,9 @@ function App() {
     switch (newView) {
       case 'practice':
         setView('practice');
+        break;
+      case 'progress':
+        setView('progress');
         break;
       case 'mistake-book':
         setMistakeCount(storage.getMistakeCount());
@@ -509,7 +516,7 @@ function App() {
             {/* Practice controls - visible on desktop in practice view */}
             {!state.isComplete && view === 'practice' && (
               <div className="flex items-center gap-3 flex-shrink-0">
-                <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
+                <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} />
                 <StreakFeedback streak={streak} />
                 <Button
                   variant="ghost"
@@ -772,6 +779,7 @@ function App() {
       <NavigationProvider view={view} onNavigate={handleNavigate}>
         <ViewRouter
           view={view}
+          onNavigate={handleNavigate}
           onPracticeMistakes={handlePracticeMistakes}
           onBackFromMistakeBook={handleBackFromMistakeBook}
           onBackFromHistory={handleBackFromHistory}
@@ -793,9 +801,9 @@ function App() {
           onBackFromLeaderboard={handleBackFromLeaderboard}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
-          {!state.isComplete ? (
+          {view === 'practice' && !state.isComplete && (
             <>
-              {isMobile && view === 'practice' && (
+              {isMobile && (
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <DictionarySelector
                     value={dictionaryId}
@@ -899,7 +907,8 @@ function App() {
                 />
               )}
             </>
-          ) : (
+          )}
+          {view === 'practice' && state.isComplete && (
             <AnimatePresence>
               <ResultModal
                 score={state.score}

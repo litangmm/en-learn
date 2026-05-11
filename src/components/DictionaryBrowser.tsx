@@ -152,33 +152,31 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
       </div>
 
       {/* Controls: Search, Level Filter and Dictionary Selector */}
-      <div className="flex flex-col sm:flex-row gap-3 p-4 border-b">
-        <div className="relative flex-1">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 p-4 border-b shrink-0">
+        <div className="relative min-w-0 flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="text"
             placeholder="搜索单词..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="pl-9 min-w-0"
           />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <div className="flex items-center gap-2">
             <Switch
               id="show-marked-only"
               checked={showMarkedOnly}
               onCheckedChange={setShowMarkedOnly}
             />
-            <label htmlFor="show-marked-only" className="text-sm cursor-pointer">
-              只看生词
+            <label htmlFor="show-marked-only" className="text-sm cursor-pointer whitespace-nowrap">
+              生词
             </label>
           </div>
-        </div>
-        <div className="flex gap-2">
           <Select value={levelFilter} onValueChange={handleLevelFilterChange}>
-            <SelectTrigger className="w-[130px]" title="按难度筛选">
-              <Filter className="h-4 w-4 mr-1" />
+            <SelectTrigger className="w-[90px] sm:w-[130px]" title="按难度筛选">
+              <Filter className="h-4 w-4 mr-1 shrink-0" />
               <SelectValue placeholder="难度" />
             </SelectTrigger>
             <SelectContent>
@@ -190,8 +188,8 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
             </SelectContent>
           </Select>
           <Select value={selectedDictionaryId} onValueChange={handleDictionaryChange}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="选择词典" />
+            <SelectTrigger className="w-[90px] sm:w-[140px]">
+              <SelectValue placeholder="词典" />
             </SelectTrigger>
             <SelectContent>
               {dictionaries.map(dict => (
@@ -205,7 +203,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto p-4 pb-24 md:pb-4 supports-[height:100dvh]:h-[100dvh] supports-[height:100dvh]:max-h-[100dvh]">
         {loading && (
           <div className="flex items-center justify-center h-32">
             <div className="text-muted-foreground">加载中...</div>
@@ -228,17 +226,17 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
         )}
 
         {!loading && !error && filteredSentences.length > 0 && (
-          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 overflow-hidden">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 min-w-0 auto-rows-auto">
             {filteredSentences.map(sentence => {
               const word = sentence.blanks[0]?.word || '';
               const marked = isMarked(word);
 
               return (
-                <Card key={sentence.id} className="relative overflow-hidden">
+                <Card key={sentence.id} className="relative overflow-hidden min-w-0 flex flex-col">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute top-3 right-3 h-8 w-8 z-10"
+                    className="absolute top-3 right-3 h-8 w-8 z-10 shrink-0"
                     onClick={() => toggleMark(word)}
                     title={marked ? '取消标记' : '标记为生词'}
                   >
@@ -249,25 +247,22 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
                   {marked && (
                     <Badge
                       variant="secondary"
-                      className="absolute top-3 right-12"
+                      className="absolute top-3 left-3 shrink-0"
                     >
                       新词
                     </Badge>
                   )}
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl">{word}</CardTitle>
+                  <CardHeader className="pb-2 shrink-0">
+                    <CardTitle className="text-xl truncate min-w-0">{word}</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 min-w-0 shrink-0">
                     <div>
                       <div className="text-sm text-muted-foreground mb-1">翻译</div>
-                      <div className="text-sm">{sentence.chinese}</div>
+                      <div className="text-sm break-words leading-relaxed">{sentence.chinese}</div>
                     </div>
                     <div>
                       <div className="text-sm text-muted-foreground mb-1">例句</div>
-                      <div className="text-sm text-foreground">{sentence.english}</div>
-                      <div className="text-sm text-muted-foreground mt-1">
-                        {sentence.chinese}
-                      </div>
+                      <div className="text-sm text-foreground break-words leading-relaxed">{sentence.english}</div>
                     </div>
                   </CardContent>
                 </Card>

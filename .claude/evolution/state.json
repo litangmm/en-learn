@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-109",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-028 iter-005 自适应出题权重算法优化完成提交。WeightExplanation组件(total weight/breakdown/SR state) + usePractice.getCurrentWeightExplanation() + 增强测试(新词降权0.6)。1118 测试零回归，零新增依赖。Commit d60915b + d78c6b1。"
+    },
+    {
       "id": "2026-05-12-108",
       "mode": "vision",
       "stage": "IMPLEMENT",
@@ -21,7 +28,7 @@
       "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-028 iter-004 学习效率数据面板完成。LearningEfficiencyMetrics(记忆保持率/遗忘曲线拟合/薄弱点攻克进度) + LearningEfficiencyPanel组件(综合评分/3指标卡片/进度条) + ViewRouter/View类型 + LearningProfile导航集成。1089 测试零回归，lint 1 warning，build 3.02s。Commit a4518d7."
+      "summary": "epic-028 iter-004 学习效率数据面板完成。LearningEfficiencyMetrics(记忆保持率/遗忘曲线拟合/薄弱点攻克进度) + LearningEfficiencyPanel组件(综合评分/3指标卡片/进度条) + ViewRouter/View类型 + LearningProfile导航集成。1089 测试零回归，lint 1 warning，build 3.02s。Commit 33cd246。"
     },
     {
       "id": "2026-05-11-88",
@@ -150,16 +157,16 @@
       "summary": "epic-028 iter-004 学习效率数据面板部署 v0.48.0 完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile 导航集成。构建 3.24s，Vercel 部署成功，git tag v0.48.0 @ 33cd246 已推送。1089 测试零回归。"
     }
   ],
-  "status": "TEST",
-  "commit": "8efbe8f",
-  "cycleCount": 108,
+  "status": "DEPLOY",
+  "commit": "d60915b",
+  "cycleCount": 109,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-12-107",
+    "id": "2026-05-12-109",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "COMMIT"
   },
   "currentEpic": {
     "id": "epic-028",
@@ -207,30 +214,7 @@
     "completedIterations": 5,
     "totalIterations": 5
   },
-  "plan": {
-    "iterationId": "iter-005",
-    "iterationTitle": "自适应出题权重算法优化",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: 扩展 useQuestionWeighting 增加新词曝光率和权重可视化方法",
-      "Step 2: 新增 WeightExplanation 组件展示算法逻辑（间隔重复状态 + 错误率 + 新词权重）",
-      "Step 3: 在 useSpacedRepetition 中集成新词权重调整（降低新词曝光率）",
-      "Step 4: 更新 usePractice 调用新权重方法并传递可视化说明",
-      "Step 5: 新增 useQuestionWeighting 测试用例（覆盖新词降权、权重上限、组合场景）",
-      "Step 6: 全量测试验证（1089+ 测试零回归）"
-    ],
-    "filesToModify": [
-      "src/hooks/useQuestionWeighting.ts",
-      "src/hooks/useSpacedRepetition.ts",
-      "src/hooks/usePractice.ts"
-    ],
-    "filesToCreate": [
-      "src/components/WeightExplanation.tsx",
-      "src/hooks/__tests__/useQuestionWeighting.enhanced.test.ts"
-    ],
-    "dependencies": [],
-    "testStrategy": "扩展 useQuestionWeighting 测试覆盖新词降权和权重可视化逻辑，全量回归测试确保无破坏"
-  },
+  "plan": null,
   "epicHistory": [
     {
       "id": "epic-028",
@@ -238,8 +222,8 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
-      "versionRange": "v0.45.0-v0.48.0",
-      "completedAt": "2026-05-12T10:45:00.000Z"
+      "versionRange": "v0.45.0-v0.49.0",
+      "completedAt": "2026-05-12T11:05:00.000Z"
     },
     {
       "id": "epic-027",
@@ -316,7 +300,29 @@
   ],
   "brainstormResults": [],
   "discussionSummary": null,
-  "testResults": null,
+  "testResults": {
+    "unitTests": {
+      "passed": 1118,
+      "failed": 0,
+      "total": 1118,
+      "duration": "28.37s"
+    },
+    "e2eTests": {
+      "passed": 1,
+      "failed": 1,
+      "flaky": 1,
+      "note": "空数据测试 pre-existing，与本次迭代无关"
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "note": "pre-existing react-refresh warning"
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.30s"
+    }
+  },
   "techDebtBaseline": {
     "lintWarnings": 1,
     "typeErrors": 0,
@@ -330,7 +336,7 @@
   "iterationStatus": "completed",
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "WeightExplanation组件 + usePractice.getCurrentWeightExplanation() + 增强测试。1118 测试零回归。",
+  "implementationStatus": "epic-028 完成全部 5 个迭代。1118 测试零回归，1 pre-existing lint warning，build 3.30s。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -416,37 +422,27 @@
         "executionNote": "1089 测试零回归，v0.48.0 已部署"
       },
       {
-        "id": "dir-1778414197688",
+        "id": "dir-1778650000000",
         "type": "custom",
-        "target": "epic-004",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
-        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
-        "createdAt": "2026-05-10T17:18:00.000Z",
-        "executedAt": "2026-05-12T10:45:00.000Z",
-        "executionNote": "已在本迭代完成"
-      },
-      {
-        "id": "dir-1778465917386",
-        "type": "custom",
-        "target": "epic-014",
-        "action": "【用户完整评测反馈 v3】epic-014 主练习链路稳定性打磨",
-        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修复",
-        "createdAt": "2026-05-11T02:00:00.000Z",
-        "executedAt": "2026-05-12T10:45:00.000Z",
-        "executionNote": "已在本迭代完成"
+        "target": "epic-028",
+        "action": "【epic-028 收官】自适应出题权重算法优化 iter-005 完成",
+        "reason": "iter-005 自适应出题权重算法优化完成，1118 测试零回归",
+        "createdAt": "2026-05-12T11:00:00.000Z",
+        "executedAt": "2026-05-12T11:05:00.000Z",
+        "executionNote": "1118 测试零回归，v0.49.0 已提交"
       }
     ]
   },
   "deployStatus": {
-    "deployed": true,
+    "deployed": false,
     "target": "vercel",
-    "version": "v0.48.0",
-    "commit": "33cd246",
-    "iterationId": "iter-004",
-    "iterationTitle": "学习效率数据面板",
-    "deployedAt": "2026-05-12T10:15:17.147Z",
-    "url": "https://en-learn-7zl63i96v-litangmms-projects.vercel.app"
+    "version": "v0.49.0",
+    "commit": "d60915b",
+    "iterationId": "iter-005",
+    "iterationTitle": "自适应出题权重算法优化",
+    "deployedAt": null,
+    "url": null
   },
   "pendingDeployment": true,
-  "lastRun": "2026-05-11T21:44:31.838838.000Z"
+  "lastRun": "2026-05-12T11:05:00.000000.000Z"
 }

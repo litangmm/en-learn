@@ -441,6 +441,122 @@ describe('usePersonalWords', () => {
     });
   });
 
+  describe('markFromPractice', () => {
+    it('adds a word with full sentence information', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.markFromPractice(
+          'apple',
+          '苹果',
+          'I ate an apple yesterday.',
+          '我昨天吃了一个苹果。'
+        );
+      });
+
+      expect(result.current.isMarked('apple')).toBe(true);
+      const words = result.current.getWords();
+      expect(words).toHaveLength(1);
+      expect(words[0]).toMatchObject({
+        word: 'apple',
+        translation: '苹果',
+        exampleSentence: 'I ate an apple yesterday.',
+        exampleSentenceCn: '我昨天吃了一个苹果。',
+        marked: true,
+      });
+    });
+
+    it('markFromPractice includes sentenceId when provided', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.markFromPractice(
+          'banana',
+          '香蕉',
+          'I like bananas.',
+          '我喜欢香蕉。',
+          'sent-123'
+        );
+      });
+
+      const words = result.current.getWords();
+      expect(words[0]).toMatchObject({
+        word: 'banana',
+        sentenceId: 'sent-123',
+      });
+    });
+
+    it('markFromPractice updates existing word with new information', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      // First add a basic word
+      act(() => {
+        result.current.markFromPractice('cherry', '樱桃', 'I love cherries.', '我爱樱桃。');
+      });
+
+      // Update with new info
+      act(() => {
+        result.current.markFromPractice(
+          'cherry',
+          '车厘子', // Updated translation
+          'Fresh cherries are delicious.',
+          '新鲜的车厘子很好吃。'
+        );
+      });
+
+      // Should still have only one word (updated)
+      expect(result.current.getCount()).toBe(1);
+      const words = result.current.getWords();
+      expect(words[0]).toMatchObject({
+        word: 'cherry',
+        translation: '车厘子', // Updated translation
+        exampleSentence: 'Fresh cherries are delicious.',
+        exampleSentenceCn: '新鲜的车厘子很好吃。',
+      });
+    });
+
+    it('markFromPractice calls storage.addPersonalWord with correct data', () => {
+      const addWordSpy = vi.spyOn(storage, 'addPersonalWord');
+
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.markFromPractice(
+          'date',
+          '枣',
+          'I ate a date.',
+          '我吃了一颗枣。'
+        );
+      });
+
+      expect(addWordSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          word: 'date',
+          translation: '枣',
+          exampleSentence: 'I ate a date.',
+          exampleSentenceCn: '我吃了一颗枣。',
+          marked: true,
+        })
+      );
+    });
+
+    it('markFromPractice can be called multiple times for different words', () => {
+      const { result } = renderHook(() => usePersonalWords());
+
+      act(() => {
+        result.current.markFromPractice('elderberry', '接骨木果', 'Elderberry wine.', '接骨木果酒。');
+      });
+
+      act(() => {
+        result.current.markFromPractice('fig', '无花果', 'Fresh figs.', '新鲜的无花果。');
+      });
+
+      expect(result.current.getCount()).toBe(2);
+      expect(result.current.isMarked('elderberry')).toBe(true);
+      expect(result.current.isMarked('fig')).toBe(true);
+    });
+  });
+
   describe('duplicate handling', () => {
     it('adding same word twice does not create duplicates', () => {
       const { result } = renderHook(() => usePersonalWords());

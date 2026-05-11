@@ -153,6 +153,10 @@ vi.mock('@/services/storage', () => ({
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
     loadSession: vi.fn(() => null),
   },
 }));

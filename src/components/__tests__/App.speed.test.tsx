@@ -74,6 +74,10 @@ vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
     resetXPProfile: vi.fn(),
     streak: 0,
     maxStreakReached: 0,
@@ -139,6 +143,10 @@ vi.mock('@/services/storage', () => ({
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
   },
 }));
 

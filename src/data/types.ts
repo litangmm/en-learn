@@ -238,6 +238,8 @@ export interface PersonalWord {
   marked: boolean;
   /** Timestamp when marked */
   markedAt: number;
+  /** Sentence ID for matching with dictionary entries (optional, for future use) */
+  sentenceId?: string;
 }
 
 /**

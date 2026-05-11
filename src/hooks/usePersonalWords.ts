@@ -85,6 +85,28 @@ export function usePersonalWords() {
     }
   }, [isMarked, removeWord, addWord]);
 
+  /**
+   * Mark a word from practice with full sentence information.
+   * If the word is already marked, updates it with the new information.
+   */
+  const markFromPractice = useCallback((
+    word: string,
+    translation: string,
+    exampleSentence: string,
+    exampleSentenceCn: string,
+    sentenceId?: string
+  ) => {
+    addWord({
+      word,
+      translation,
+      exampleSentence,
+      exampleSentenceCn,
+      marked: true,
+      markedAt: Date.now(),
+      ...(sentenceId !== undefined && { sentenceId }),
+    });
+  }, [addWord]);
+
   return {
     addWord,
     removeWord,
@@ -92,5 +114,6 @@ export function usePersonalWords() {
     getCount,
     getWords,
     toggleMark,
+    markFromPractice,
   };
 }

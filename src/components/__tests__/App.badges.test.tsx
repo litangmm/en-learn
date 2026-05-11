@@ -176,6 +176,10 @@ vi.mock('@/services/storage', () => ({
     })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
   },
 }));
 

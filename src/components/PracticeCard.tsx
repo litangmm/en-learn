@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, CheckCircle2, ArrowRight, RotateCcw } from 'lucide-react';
+import { Volume2, CheckCircle2, ArrowRight, RotateCcw, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { toast } from 'sonner';
 import type { Sentence, PracticeMode, SentenceToken, ChoiceOption, HintLevel } from '@/data/types';
 import { FillInBlanksMode } from '@/components/practice/modes/FillInBlanksMode';
 import { DictationMode } from '@/components/practice/modes/DictationMode';
@@ -38,6 +39,10 @@ interface PracticeCardProps {
   onSpeak: () => void;
   hintLevel?: HintLevel;
   shouldShowHint?: () => boolean;
+  /** Whether this word is already marked as a personal word */
+  isMarked?: boolean;
+  /** Callback when user marks/unmarks this word as a personal word */
+  onMark?: (word: string, translation: string, english: string, chinese: string, sentenceId: string) => void;
 }
 
 export function PracticeCard({
@@ -67,6 +72,8 @@ export function PracticeCard({
   onSpeak,
   hintLevel,
   shouldShowHint,
+  isMarked = false,
+  onMark,
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
   const isMultipleChoice = mode === 'multiple-choice';
@@ -220,6 +227,27 @@ export function PracticeCard({
             </div>
           )}
           <div className="flex items-center gap-2">
+            {onMark && (
+              <Button
+                variant={isMarked ? 'default' : 'ghost'}
+                size="icon"
+                onClick={() => {
+                  const word = sentence.blanks[0]?.word ?? '';
+                  const translation = sentence.chinese;
+                  const english = sentence.english;
+                  const chinese = sentence.chinese;
+                  const sentenceId = sentence.id;
+                  onMark(word, translation, english, chinese, sentenceId);
+                  if (!isMarked) {
+                    toast.success('已添加到生词本', { duration: 1500 });
+                  }
+                }}
+                className={`h-8 w-8 ${isMarked ? 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700' : 'text-muted-foreground hover:text-yellow-600 hover:bg-yellow-50'}`}
+                title={isMarked ? '已加入生词本' : '加入生词本'}
+              >
+                <Star className={`w-4 h-4 ${isMarked ? 'fill-current' : ''}`} />
+              </Button>
+            )}
             {onSpeedChange && (
               <ToggleGroup
                 type="single"

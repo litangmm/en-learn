@@ -24,6 +24,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { storage } from '@/services/storage';
+import { usePersonalWords } from '@/hooks/usePersonalWords';
 import type { View } from '@/components/routing/ViewRouter';
 
 interface DataManagerProps {
@@ -44,6 +45,7 @@ export function DataManager({ onBack, onNavigate }: DataManagerProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingImportData, setPendingImportData] = useState<unknown | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { getCount } = usePersonalWords();
 
   const handleExport = useCallback(() => {
     const data = storage.exportAllData();
@@ -265,6 +267,11 @@ export function DataManager({ onBack, onNavigate }: DataManagerProps) {
               >
                 <BookMarked className="w-4 h-4" />
                 生词本
+                {getCount() > 0 && (
+                  <Badge variant="secondary" className="ml-auto text-xs">
+                    {getCount()}
+                  </Badge>
+                )}
               </Button>
             )}
             <input

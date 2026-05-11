@@ -371,6 +371,11 @@ function isValidPersonalWord(data: unknown): data is PersonalWord {
     return false;
   }
 
+  // sentenceId is optional; if present, must be string
+  if (obj.sentenceId !== undefined && typeof obj.sentenceId !== 'string') {
+    return false;
+  }
+
   return true;
 }
 

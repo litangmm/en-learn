@@ -20,8 +20,10 @@ import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { useHintLevel } from '@/hooks/useHintLevel';
+import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { SharePromptToast } from '@/components/SharePromptToast';
+import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -112,6 +114,12 @@ function App() {
   const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
+
+  const { isMarked, markFromPractice } = usePersonalWords();
+
+  const handleMarkWord = (word: string, translation: string, english: string, chinese: string, sentenceId: string) => {
+    markFromPractice(word, translation, english, chinese, sentenceId);
+  };
 
   const {
     state,
@@ -913,6 +921,8 @@ function App() {
                     onSpeak={handleSpeak}
                     hintLevel={hintLevel}
                     shouldShowHint={shouldShowHint}
+                    isMarked={isMarked(currentSentence.blanks[0]?.word ?? '')}
+                    onMark={(word, translation, english, chinese, sentenceId) => handleMarkWord(word, translation, english, chinese, sentenceId ?? currentSentence.id)}
                   />
                 )}
               </AnimatePresence>
@@ -966,6 +976,7 @@ function App() {
         }}
       />
       <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

@@ -2,6 +2,24 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.46.0",
+      "tag": "v0.46.0",
+      "commit": "3356dbf",
+      "date": "2026-05-12T01:05:00.000Z",
+      "iterationId": "iter-002",
+      "title": "薄弱点智能识别与标记",
+      "features": [
+        "WeaknessDefinition 类型定义（4维检测）",
+        "useWeaknessDetection hook（高错误率/低正确率/忽略复习/模式弱点）",
+        "useWeaknessStats hook（统计聚合）",
+        "WeaknessTag 组件（Badge 样式标记）",
+        "WeaknessPanel 组件（分组列表/强化训练入口）",
+        "ViewRouter/MoreMenu 集成薄弱点入口",
+        "1032 测试零回归"
+      ],
+      "deployUrl": "https://en-learn-oqku6bobk-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.45.0",
       "tag": "v0.45.0",
       "commit": "29d29d8",

@@ -196,13 +196,31 @@ describe('useAdaptivePractice', () => {
 
         const { result } = renderHook(() => useAdaptivePractice());
 
-        // First call with fixed random values - should produce deterministic output
-        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
+        // Mock Math.random to return predictable values
+        // First batch for first call's filter+sort, second batch for first call's final shuffle
+        // Third batch for second call's filter+sort, fourth batch for second call's final shuffle
+        vi.spyOn(Math, 'random')
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.5)
+          .mockReturnValueOnce(0.9)
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.2)
+          .mockReturnValueOnce(0.3)
+          .mockReturnValueOnce(0.4)
+          .mockReturnValueOnce(0.6);
         const choices1 = result.current.getSmartDistractors('1', '1', mockSentences);
         const ids1 = choices1.map((c) => c.id);
 
-        // Second call with SAME random values - should produce SAME output
-        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
+        // Second call with SAME random values
+        vi.spyOn(Math, 'random')
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.5)
+          .mockReturnValueOnce(0.9)
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.2)
+          .mockReturnValueOnce(0.3)
+          .mockReturnValueOnce(0.4)
+          .mockReturnValueOnce(0.6);
         const choices2 = result.current.getSmartDistractors('1', '1', mockSentences);
         const ids2 = choices2.map((c) => c.id);
 
@@ -224,13 +242,29 @@ describe('useAdaptivePractice', () => {
 
         const { result } = renderHook(() => useAdaptivePractice());
 
-        // First call with one random sequence
-        vi.spyOn(Math, 'random').mockReturnValueOnce(0.1).mockReturnValueOnce(0.5).mockReturnValueOnce(0.9);
+        // First call with one random sequence (8 values for 2 sorts each)
+        vi.spyOn(Math, 'random')
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.5)
+          .mockReturnValueOnce(0.9)
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.2)
+          .mockReturnValueOnce(0.3)
+          .mockReturnValueOnce(0.4)
+          .mockReturnValueOnce(0.6);
         const choices1 = result.current.getSmartDistractors('1', '1', mockSentences);
         const ids1 = choices1.map((c) => c.id);
 
         // Second call with different random sequence
-        vi.spyOn(Math, 'random').mockReturnValueOnce(0.9).mockReturnValueOnce(0.1).mockReturnValueOnce(0.5);
+        vi.spyOn(Math, 'random')
+          .mockReturnValueOnce(0.9)
+          .mockReturnValueOnce(0.1)
+          .mockReturnValueOnce(0.5)
+          .mockReturnValueOnce(0.9)
+          .mockReturnValueOnce(0.8)
+          .mockReturnValueOnce(0.7)
+          .mockReturnValueOnce(0.6)
+          .mockReturnValueOnce(0.5);
         const choices2 = result.current.getSmartDistractors('1', '1', mockSentences);
         const ids2 = choices2.map((c) => c.id);
 

@@ -10,6 +10,42 @@ import { DictationMode } from '@/components/practice/modes/DictationMode';
 import { MultipleChoiceMode } from '@/components/practice/modes/MultipleChoiceMode';
 import { SentenceReorderMode } from '@/components/practice/modes/SentenceReorderMode';
 
+/**
+ * Generates an explanation for why the correct answer is correct.
+ * Avoids simply repeating the Chinese translation.
+ */
+function getExplanation(sentence: Sentence, isMultipleChoiceMode: boolean, isSentenceReorderMode: boolean): string {
+  const targetWord = sentence.blanks[0]?.word ?? '';
+  const chinese = sentence.chinese;
+
+  // For multiple-choice: show why this specific sentence is the right answer
+  if (isMultipleChoiceMode) {
+    const correctSentenceText = sentence.english;
+    const isDefinition = sentence.blanks.length === 1;
+    if (isDefinition) {
+      return `"${targetWord}" 在句子 "${correctSentenceText}" 中表示：${chinese}`;
+    }
+    return `这个句子表达的是：${chinese}。答案 "${targetWord}" 符合语境。`;
+  }
+
+  // For sentence-reorder: explain the sentence meaning
+  if (isSentenceReorderMode) {
+    const isDefinition = sentence.blanks.length === 1;
+    if (isDefinition) {
+      return `"${targetWord}" 的含义是：${chinese}`;
+    }
+    return `完整句子表达的意思是：${chinese}。`;
+  }
+
+  // Default: explain the blank word in context
+  const isDefinition = sentence.blanks.length === 1;
+  if (isDefinition) {
+    return `"${targetWord}" 的含义是：${chinese}`;
+  }
+  // For fill-in-blanks/dictation: explain the target word
+  return `这里应该填 "${targetWord}"，因为：${chinese}`;
+}
+
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
 interface PracticeCardProps {
@@ -32,6 +68,8 @@ interface PracticeCardProps {
   orderedTokenIds?: string[];
   onSelectToken?: (tokenId: string) => void;
   onDeselectToken?: (index: number) => void;
+  /** Callback when user skips definition sentence in sentence-reorder */
+  onSkip?: () => void;
   onInputChange: (index: number, value: string) => void;
   onCheck: (param?: string | string[]) => void;
   onNext: () => void;
@@ -65,6 +103,7 @@ export function PracticeCard({
   orderedTokenIds = [],
   onSelectToken,
   onDeselectToken,
+  onSkip,
   onInputChange,
   onCheck,
   onNext,
@@ -125,7 +164,7 @@ export function PracticeCard({
           <p className="text-base text-green-800">{correctAnswerText}</p>
         </motion.div>
 
-        {/* Explanation */}
+        {/* Explanation - Why this answer is correct */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -133,7 +172,7 @@ export function PracticeCard({
           className="p-4 bg-blue-50 rounded-xl border border-blue-200"
         >
           <p className="text-sm text-blue-700 font-medium mb-1">解析</p>
-          <p className="text-base text-blue-800">{sentence.chinese}</p>
+          <p className="text-base text-blue-800">{getExplanation(sentence, isMultipleChoice, isSentenceReorder)}</p>
         </motion.div>
       </div>
     );
@@ -178,6 +217,7 @@ export function PracticeCard({
             orderedTokenIds={orderedTokenIds}
             onSelectToken={onSelectToken ?? (() => {})}
             onDeselectToken={onDeselectToken ?? (() => {})}
+            onSkip={onSkip}
           />
         );
 

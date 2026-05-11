@@ -150,6 +150,15 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-11 (cycle-2026-05-11-80)
+- **相关质量门禁**: 单元测试回归、PersonalWord 类型测试、DictionaryBrowser 组件测试、LevelFilter 组件测试、DataManager 生词 Tab 测试、构建稳定性
+- **本次验证**: epic-009「个人词典管理与数据主权」全部 3 个迭代收官质量门禁验证
+  - iter-001 词典浏览器（只读）：708 测试
+  - iter-002 词条搜索与筛选：716 测试
+  - iter-003 个人生词标记：809 测试
+  - 全量回归：**809/809 单元测试通过**（历史新高位），lint 4 warnings（pre-existing），build 成功
+- **备注**: epic-009 全部 3 个迭代收官。iter-003 新增 PersonalWord marked/markedAt 字段测试，LevelFilter 8 级难度筛选测试，DataManager 生词 Tab 测试。809 测试是项目历史最高水位。**epic-009 收官后，QA 应关注下一 Epic（epic-010 自适应学习或 epic-011 周报）的质量门禁设计。dir-1778465917386 指令指出「主练习链路稳定性打磨」需特别关注状态同步测试覆盖**
+
 ### 2026-05-11 (cycle-2026-05-11-77)
 - **相关质量门禁**: 单元测试回归、Hook API 扩展测试、向后兼容测试、构建稳定性
 - **本次验证**: epic-010 iter-003「自适应出题权重」质量门禁验证

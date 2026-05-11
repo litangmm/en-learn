@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.42.0",
+      "tag": "v0.42.0",
+      "commit": "9ead4aa",
+      "date": "2026-05-11T08:01:00.728Z",
+      "iterationId": "iter-004",
+      "title": "徽章系统与数据联动",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-ijx6nsmqn-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.40.0",
       "tag": "v0.40.0",
       "commit": "58a93d3",

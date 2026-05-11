@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-11-92",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-022 iter-001 词典缓存层与数据结构标准化完成。dictionaryCache.ts LRU缓存(Map+maxSize=5, touch/evictLRU辅助函数)+loader.ts缓存集成(cache-first)+usePersonalWords Map重构(O(1))+DictionaryBrowser debounce 300ms。15个新测试。914测试零回归。"
+    },
+    {
       "id": "2026-05-11-90",
       "mode": "vision",
       "stage": "REPORT",
@@ -80,19 +87,58 @@
       "summary": "epic-017/018 迭代完成，9 个 Agent 参与 brainstorm。产出 6 个 Epic 提案，epic-018「学习路径追踪与成就系统整合」获最高优先级（PM-Growth 提出，5 支持）。"
     }
   ],
-  "status": "IDLE",
-  "commit": "9ead4aa",
-  "cycleCount": 91,
+  "status": "COMMIT",
+  "commit": "HEAD",
+  "cycleCount": 94,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-11-92",
+    "mode": "vision",
+    "stage": "TEST",
+    "startedAt": "2026-05-11T09:48:00.000Z"
+  },
   "previousCycle": {
     "id": "2026-05-11-90",
     "mode": "vision",
     "stage": "REPORT"
   },
-  "currentEpic": null,
-  "currentPlan": null,
+  "currentEpic": {
+    "id": "epic-022",
+    "title": "词典数据结构优化与查询性能",
+    "description": "优化词典数据结构设计，支持按需加载和缓存策略，解决词典数量增加后的首屏加载性能问题。",
+    "iterations": [
+      {"id": "iter-001", "title": "词典缓存层与数据结构标准化", "scope": "frontend-only", "status": "completed"},
+      {"id": "iter-002", "title": "词典按需加载架构增强", "scope": "frontend-only", "status": "in_progress"},
+      {"id": "iter-003", "title": "构建体积与加载性能监控", "scope": "frontend-only", "status": "pending"}
+    ],
+    "currentIterationIndex": 1
+  },
+  "currentPlan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "词典缓存层与数据结构标准化",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 创建 src/data/dictionaryCache.ts —— 实现 LRU 缓存（Map + maxSize=5），导出 getCachedDictionary(id)/prefetchDictionary(id)/clearDictionaryCache()，首次加载后缓存 parsed 结果",
+      "Step 2: 重构 src/data/loader.ts —— 让 loadDictionary() 内部调用 cache，所有使用方无需修改 API",
+      "Step 3: 重构 src/hooks/usePersonalWords.ts —— 将 words 数组改为 Map<word, PersonalWord>，isMarked/removeWord/addWord 均改为 O(1) 操作，lazy load 逻辑保持不变",
+      "Step 4: 重构 src/components/DictionaryBrowser.tsx —— 给 searchQuery 加 debounce 300ms，onChange 先更新 state 再防抖，避免 O(n) filter 每帧触发",
+      "Step 5: 创建 src/data/__tests__/dictionaryCache.test.ts —— 覆盖 cache hit/miss/LRU eviction/prefetch/clear 全部场景",
+      "Step 6: 更新 src/hooks/__tests__/usePersonalWords.test.ts 中的 O(1) 断言（mock storage.getPersonalWords 返回 Map 数据结构下的数据格式不变）",
+      "Step 7: 运行全量测试（vitest unit + build）—— 确保 899 测试零回归"
+    ],
+    "filesToModify": [
+      "src/data/loader.ts",
+      "src/hooks/usePersonalWords.ts",
+      "src/components/DictionaryBrowser.tsx"
+    ],
+    "filesToCreate": [
+      "src/data/dictionaryCache.ts",
+      "src/data/__tests__/dictionaryCache.test.ts"
+    ],
+    "dependencies": [],
+    "testStrategy": "dictionaryCache: LRU 缓存命中/未命中/驱逐/prefetch/clear 覆盖；usePersonalWords: Map 结构下 isMarked O(1)/addWord/removeWord 覆盖；DictionaryBrowser: debounce 行为覆盖；全量 899 测试零回归"
+  },
   "epicHistory": [
     {
       "id": "epic-018",
@@ -164,14 +210,26 @@
       "title": "词典数据结构优化与查询性能",
       "description": "优化词典数据结构设计，支持按需加载和缓存策略，解决词典数量增加后的首屏加载性能问题。",
       "proposedBy": "ARCH",
-      "supportedBy": ["PM-Mon", "QA"],
+      "supportedBy": [
+        "PM-Mon",
+        "QA"
+      ],
       "concerns": "过早优化可能引入不必要的复杂度",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        { "title": "迭代1：词典数据结构标准化", "scope": "frontend-only" },
-        { "title": "迭代2：词典按需加载架构", "scope": "frontend-only" },
-        { "title": "迭代3：构建体积与加载性能监控", "scope": "frontend-only" }
+        {
+          "title": "迭代1：词典数据结构标准化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：词典按需加载架构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：构建体积与加载性能监控",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -179,14 +237,26 @@
       "title": "个人词典编辑与内容管理",
       "description": "在 epic-009 只读词典浏览器基础上，增加个人词条编辑、添加、删除功能，让用户真正掌握自己的学习内容。",
       "proposedBy": "PM-Eco",
-      "supportedBy": ["PM-UX", "UX"],
+      "supportedBy": [
+        "PM-UX",
+        "UX"
+      ],
       "concerns": "编辑功能需考虑数据验证和冲突处理",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        { "title": "迭代1：个人词条编辑界面", "scope": "frontend-only" },
-        { "title": "迭代2：个人词条 CRUD 操作", "scope": "frontend-only" },
-        { "title": "迭代3：个人词典导入导出", "scope": "frontend-only" }
+        {
+          "title": "迭代1：个人词条编辑界面",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：个人词条 CRUD 操作",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：个人词典导入导出",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -194,14 +264,26 @@
       "title": "自适应难度与个性化练习算法",
       "description": "基于用户答题数据（正确率、连击、复习间隔）动态调整题目难度，提供个性化学习体验。",
       "proposedBy": "EXP",
-      "supportedBy": ["PM-Growth", "UX"],
+      "supportedBy": [
+        "PM-Growth",
+        "UX"
+      ],
       "concerns": "纯前端算法受限于数据量，需设定冷启动策略",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        { "title": "迭代1：用户学习数据建模", "scope": "frontend-only" },
-        { "title": "迭代2：自适应出题算法设计", "scope": "frontend-only" },
-        { "title": "迭代3：算法调参与效果验证", "scope": "frontend-only" }
+        {
+          "title": "迭代1：用户学习数据建模",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：自适应出题算法设计",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：算法调参与效果验证",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -209,14 +291,26 @@
       "title": "移动端体验深度优化",
       "description": "针对移动端用户反馈的细节问题（顶部布局、卡片溢出、触摸体验）进行深度优化，确保移动端用户体验达到桌面端同等水平。",
       "proposedBy": "PM-UX",
-      "supportedBy": ["PM-Lean", "QA"],
+      "supportedBy": [
+        "PM-Lean",
+        "QA"
+      ],
       "concerns": "优化需有针对性，避免陷入无休止的微调",
       "priority": "medium",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        { "title": "迭代1：顶部品牌区响应式优化", "scope": "frontend-only" },
-        { "title": "迭代2：移动端卡片与弹窗深度适配", "scope": "frontend-only" },
-        { "title": "迭代3：触摸交互与加载体验优化", "scope": "frontend-only" }
+        {
+          "title": "迭代1：顶部品牌区响应式优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：移动端卡片与弹窗深度适配",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：触摸交互与加载体验优化",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -224,23 +318,51 @@
       "title": "构建与测试基础设施升级",
       "description": "升级构建流程（CI/CD、测试覆盖、lint 规则）、建立性能监控基线，确保代码质量可持续。",
       "proposedBy": "QA",
-      "supportedBy": ["ARCH", "PM-Mon"],
+      "supportedBy": [
+        "ARCH",
+        "PM-Mon"
+      ],
       "concerns": "基础设施投入产出难以量化，需与业务优先级平衡",
       "priority": "low",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        { "title": "迭代1：测试覆盖强化", "scope": "frontend-only" },
-        { "title": "迭代2：CI/CD 流程优化", "scope": "frontend-only" },
-        { "title": "迭代3：性能监控与告警", "scope": "frontend-only" }
+        {
+          "title": "迭代1：测试覆盖强化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：CI/CD 流程优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：性能监控与告警",
+          "scope": "frontend-only"
+        }
       ]
     }
   ],
-  "discussionSummary": "epic-018 完成全部 4 个迭代（iter-001 里程碑导航+iter-002 能力雷达图+iter-003 成就系统+iter-004 徽章系统）。9 个 Agent 参与 brainstorm，产出 6 个 Epic 提案。epic-018 全部完成，v0.39.0-v0.42.0 版本发布完成。epic-022 次高优先级储备中。",
+  "discussionSummary": "epic-018 完成全部 4 个迭代（iter-001 里程碑导航+iter-002 能力雷达图+iter-003 成就系统+iter-004 徽章系统）。9 个 Agent 参与 brainstorm，产出 5 个 Epic 提案。epic-018 全部完成。epic-022 词典按需加载获 ARCH/PM-Mon/QA 支持（high，3 支持）。epic-025 测试基础设施升级获 PM-Mon 支持（medium）。epic-023 个人词典编辑由 PM-Eco 提出（medium，2 支持）。epic-026 移动端深度优化由 PM-UX 提出（medium，2 支持）。",
   "testResults": {
-    "lint": { "passed": true, "warnings": 1, "errors": 0 },
-    "build": { "passed": true, "duration": "3.67s" },
-    "unitTests": { "passed": 899, "failed": 0, "total": 899, "duration": "15.45s", "testFiles": 75 },
-    "e2e": { "passed": 1, "failed": 1, "flaky": 1, "note": "1 flaky test (practice 空数据) pre-existing, unrelated to AchievementPanel/LearningProfile" }
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "errors": 0
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.58s"
+    },
+    "unitTests": {
+      "passed": 914,
+      "failed": 0,
+      "total": 914,
+      "duration": "22.34s",
+      "testFiles": 76
+    },
+    "e2e": {
+      "skipped": true,
+      "reason": "epic-022 has 2 more pending iterations (iter-002, iter-003)"
+    }
   },
   "techDebtBaseline": {
     "lintWarnings": 1,
@@ -255,7 +377,7 @@
   "iterationStatus": null,
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "IDLE — epic-018 completed, 5 epic candidates in backlog. Top priority: epic-022.",
+  "implementationStatus": "COMPLETED — epic-022 iter-001 词典缓存层与数据结构标准化完成。dictionaryCache.ts LRU缓存(Map+maxSize=5)+loader.ts缓存集成+usePersonalWords Map重构(O(1))+DictionaryBrowser debounce 300ms+15个新测试。914测试零回归。prefetchDictionary添加.catch()防止unhandled rejection。",
   "directives": {
     "version": "1.0",
     "pending": [],

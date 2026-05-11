@@ -346,3 +346,76 @@ export interface DailyTrend {
   questions: number;
   accuracy: number;
 }
+
+/**
+ * Types of weakness that can be detected.
+ * - 'high-error': User has high error rate on this sentence
+ * - 'low-accuracy': User's accuracy on this sentence is below threshold
+ * - 'review-neglected': User has not reviewed this sentence for a long time
+ * - 'mode-weak': User is weak in a specific practice mode for this sentence
+ */
+export type WeaknessType = 'high-error' | 'low-accuracy' | 'review-neglected' | 'mode-weak';
+
+/**
+ * Definition of weakness detection parameters.
+ */
+export interface WeaknessDefinition {
+  /** The type of weakness */
+  weakType: WeaknessType;
+  /** Accuracy threshold for low-accuracy detection (e.g., 0.6 = 60%) */
+  accuracyThreshold: number;
+  /** Sentence count threshold for high-error detection */
+  sentenceCountThreshold: number;
+  /** Days threshold for review-neglected detection */
+  reviewNeglectedDays: number;
+}
+
+/**
+ * Default weakness detection parameters.
+ */
+export const DEFAULT_WEAKNESS_DEFINITION: WeaknessDefinition = {
+  weakType: 'high-error',
+  accuracyThreshold: 0.6, // Below 60% accuracy is considered weak
+  sentenceCountThreshold: 3, // At least 3 wrong answers to be considered high-error
+  reviewNeglectedDays: 7, // Not reviewed in 7+ days
+};
+
+/**
+ * Represents a detected weakness for a sentence.
+ */
+export interface Weakness {
+  /** The sentence ID with weakness */
+  sentenceId: string;
+  /** Type of weakness */
+  weakType: WeaknessType;
+  /** Dictionary this sentence belongs to */
+  dictionaryId: string;
+  /** Calculated accuracy rate (0-1) */
+  accuracy: number;
+  /** Total wrong answer count */
+  wrongCount: number;
+  /** Total correct answer count */
+  correctCount: number;
+  /** Total review count */
+  reviewCount: number;
+  /** Days since last review (null if never reviewed) */
+  daysSinceLastReview: number | null;
+  /** The practice mode this weakness is associated with (for mode-weak) */
+  mode?: PracticeMode;
+  /** Timestamp when detected */
+  detectedAt: number;
+}
+
+/**
+ * Aggregated weakness statistics.
+ */
+export interface WeaknessStats {
+  /** Total number of weak sentences */
+  totalWeakCount: number;
+  /** Weaknesses grouped by dictionary ID */
+  byDictionary: Record<string, number>;
+  /** Weaknesses grouped by weakness type */
+  byType: Record<WeaknessType, number>;
+  /** Overall strength score (0-100), higher is better */
+  overallStrength: number;
+}

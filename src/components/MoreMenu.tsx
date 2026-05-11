@@ -1,4 +1,4 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -14,6 +14,7 @@ interface MoreMenuProps {
   reviewDueCount: number;
   unclaimedCount: number;
   unlockedCount: number;
+  weaknessCount: number;
   isReviewMode: boolean;
   onOpenMistakeBook: () => void;
   onOpenHistory: () => void;
@@ -22,6 +23,7 @@ interface MoreMenuProps {
   onOpenChallenges: () => void;
   onOpenBadges: () => void;
   onOpenLeaderboard: () => void;
+  onOpenWeakness: () => void;
 }
 
 export function MoreMenu({
@@ -30,6 +32,7 @@ export function MoreMenu({
   reviewDueCount,
   unclaimedCount,
   unlockedCount,
+  weaknessCount,
   isReviewMode,
   onOpenMistakeBook,
   onOpenHistory,
@@ -38,6 +41,7 @@ export function MoreMenu({
   onOpenChallenges,
   onOpenBadges,
   onOpenLeaderboard,
+  onOpenWeakness,
 }: MoreMenuProps) {
   return (
     <DropdownMenu>
@@ -87,6 +91,17 @@ export function MoreMenu({
           {reviewDueCount > 0 && (
             <Badge variant="destructive" className="h-5 min-w-5 px-1.5 text-xs">
               {reviewDueCount}
+            </Badge>
+          )}
+        </DropdownMenuItem>
+
+        {/* 薄弱点训练 */}
+        <DropdownMenuItem onSelect={onOpenWeakness} onClick={onOpenWeakness} className="cursor-pointer">
+          <AlertTriangle className="w-4 h-4 text-red-500" />
+          <span className="flex-1">薄弱点训练</span>
+          {weaknessCount > 0 && (
+            <Badge variant="destructive" className="h-5 min-w-5 px-1.5 text-xs">
+              {weaknessCount}
             </Badge>
           )}
         </DropdownMenuItem>

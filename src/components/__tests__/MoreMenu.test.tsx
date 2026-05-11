@@ -58,6 +58,7 @@ describe('MoreMenu', () => {
   const mockOnOpenChallenges = vi.fn();
   const mockOnOpenBadges = vi.fn();
   const mockOnOpenLeaderboard = vi.fn();
+  const mockOnOpenWeakness = vi.fn();
 
   const defaultProps = {
     mistakeCount: 0,
@@ -65,6 +66,7 @@ describe('MoreMenu', () => {
     reviewDueCount: 0,
     unclaimedCount: 0,
     unlockedCount: 0,
+    weaknessCount: 0,
     isReviewMode: false,
     onOpenMistakeBook: mockOnOpenMistakeBook,
     onOpenHistory: mockOnOpenHistory,
@@ -73,6 +75,7 @@ describe('MoreMenu', () => {
     onOpenChallenges: mockOnOpenChallenges,
     onOpenBadges: mockOnOpenBadges,
     onOpenLeaderboard: mockOnOpenLeaderboard,
+    onOpenWeakness: mockOnOpenWeakness,
   };
 
   beforeEach(() => {

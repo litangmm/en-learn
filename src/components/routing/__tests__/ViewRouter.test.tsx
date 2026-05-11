@@ -44,6 +44,10 @@ vi.mock('@/components/ProgressHub', () => ({
   ProgressHub: vi.fn(() => <div data-testid="progress-hub">ProgressHub</div>),
 }));
 
+vi.mock('@/components/WeaknessPanel', () => ({
+  WeaknessPanel: vi.fn(() => <div data-testid="weakness-panel">WeaknessPanel</div>),
+}));
+
 function createMockChallenges(): DailyChallenge[] {
   return [
     {
@@ -94,6 +98,8 @@ function createDefaultProps() {
     onNavigateDataManager: vi.fn(),
     onPracticeReview: vi.fn(),
     onBackFromSmartReview: vi.fn(),
+    onPracticeWeaknesses: vi.fn(),
+    onBackFromWeakness: vi.fn(),
     challenges: createMockChallenges(),
     onClaimReward: vi.fn(),
     onBackFromChallenges: vi.fn(),

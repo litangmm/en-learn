@@ -9,6 +9,7 @@ import { Leaderboard } from '@/components/Leaderboard';
 import { DictionaryBrowser } from '@/components/DictionaryBrowser';
 import { ProgressHub } from '@/components/ProgressHub';
 import { LearningProfile } from '@/components/LearningProfile';
+import { WeaknessPanel } from '@/components/WeaknessPanel';
 
 export type View =
   | 'practice'
@@ -18,6 +19,7 @@ export type View =
   | 'history'
   | 'data'
   | 'review'
+  | 'weakness'
   | 'challenges'
   | 'badges'
   | 'leaderboard'
@@ -40,6 +42,9 @@ export interface ViewRouterProps {
   // SmartReview
   onPracticeReview: (sentenceIds: string[], dictionaryId: string) => void;
   onBackFromSmartReview: () => void;
+  // WeaknessPanel
+  onPracticeWeaknesses: (sentenceIds: string[], dictionaryId: string) => void;
+  onBackFromWeakness: () => void;
   // DailyChallengePanel
   challenges: DailyChallenge[];
   onClaimReward: (id: string) => void;
@@ -69,6 +74,8 @@ export function ViewRouter(props: ViewRouterProps) {
     onNavigateDataManager,
     onPracticeReview,
     onBackFromSmartReview,
+    onPracticeWeaknesses,
+    onBackFromWeakness,
     challenges,
     onClaimReward,
     onBackFromChallenges,
@@ -109,6 +116,14 @@ export function ViewRouter(props: ViewRouterProps) {
         <SmartReview
           onPracticeReview={onPracticeReview}
           onBack={onBackFromSmartReview}
+        />
+      );
+
+    case 'weakness':
+      return (
+        <WeaknessPanel
+          onPracticeWeaknesses={onPracticeWeaknesses}
+          onBack={onBackFromWeakness}
         />
       );
 

@@ -19,6 +19,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useWeaknessStats } from '@/hooks/useWeaknessStats';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
@@ -127,6 +128,7 @@ function App() {
   const { state: challengeState, unclaimedCount, trackActivity, claimReward } = useDailyChallenges();
   const { unlockedIds, unlockedCount, trackProgress, checkBadges, getBadgeProgressPercent } = useBadges();
   const { getLeaderboardEntries } = useLeaderboard();
+  const { stats: weaknessStats } = useWeaknessStats();
   const { hintLevel, shouldShowHint } = useHintLevel();
 
   // Initialize inputs when sentence changes (guard: skip if showResult=true to prevent state race)
@@ -447,6 +449,20 @@ function App() {
     setReviewDueCount(storage.getReviewQueueCount());
   };
 
+  const handleOpenWeakness = () => {
+    setView('weakness');
+  };
+
+  const handleBackFromWeakness = () => {
+    setView('practice');
+  };
+
+  const handlePracticeWeaknesses = (sentenceIds: string[], dictId: string) => {
+    setDictionaryId(dictId);
+    setPracticeSentenceIds(sentenceIds);
+    setView('practice');
+  };
+
   const handleNavigate = (newView: View) => {
     switch (newView) {
       case 'practice':
@@ -473,6 +489,9 @@ function App() {
         setReviewDueCount(storage.getReviewQueueCount());
         setIsReviewMode(false);
         setView('review');
+        break;
+      case 'weakness':
+        setView('weakness');
         break;
       case 'challenges':
         setView('challenges');
@@ -614,6 +633,7 @@ function App() {
                 reviewDueCount={reviewDueCount}
                 unclaimedCount={unclaimedCount}
                 unlockedCount={unlockedCount}
+                weaknessCount={weaknessStats.totalWeakCount}
                 isReviewMode={isReviewMode}
                 onOpenMistakeBook={handleOpenMistakeBook}
                 onOpenHistory={handleOpenHistory}
@@ -622,6 +642,7 @@ function App() {
                 onOpenChallenges={handleOpenChallenges}
                 onOpenBadges={handleOpenBadges}
                 onOpenLeaderboard={handleOpenLeaderboard}
+                onOpenWeakness={handleOpenWeakness}
               />
             </div>
           </div>
@@ -815,6 +836,8 @@ function App() {
           onNavigateDataManager={handleNavigate}
           onPracticeReview={handlePracticeReview}
           onBackFromSmartReview={handleBackFromSmartReview}
+          onPracticeWeaknesses={handlePracticeWeaknesses}
+          onBackFromWeakness={handleBackFromWeakness}
           challenges={challengeState.challenges}
           onClaimReward={claimReward}
           onBackFromChallenges={handleBackFromChallenges}
@@ -965,6 +988,7 @@ function App() {
           mistakeCount={mistakeCount}
           historyCount={historyCount}
           reviewDueCount={reviewDueCount}
+          weaknessCount={weaknessStats.totalWeakCount}
         />
       )}
 

@@ -2,6 +2,42 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.49.0",
+      "tag": "v0.49.0",
+      "commit": "e469d0e",
+      "date": "2026-05-11T21:57:32.735Z",
+      "iterationId": "iter-005",
+      "title": "自适应出题权重算法优化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-mwv3tkshm-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.48.0",
+      "tag": "v0.48.0",
+      "commit": "33cd246",
+      "date": "2026-05-11T18:15:17.147Z",
+      "iterationId": "iter-004",
+      "title": "学习效率数据面板",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-7zl63i96v-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.47.0",
+      "tag": "v0.47.0",
+      "commit": "0f3e3d0",
+      "date": "2026-05-11T17:49:38.171Z",
+      "iterationId": "iter-003",
+      "title": "每日复习计划与提醒系统",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-nozjb5en7-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.46.0",
       "tag": "v0.46.0",
       "commit": "3356dbf",

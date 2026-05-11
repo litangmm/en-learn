@@ -6,18 +6,39 @@ interface LearningEfficiencyPanelProps {
   onBack: () => void;
 }
 
+// Score thresholds for clean, maintainable code
+const SCORE_THRESHOLDS = {
+  EXCELLENT: 80,
+  GOOD: 60,
+  FAIR: 40,
+} as const;
+
+// Color mapping for metric cards to avoid duplication
+const COLOR_MAP = {
+  blue: { bg: 'bg-blue-100', text: 'text-blue-600', progress: 'bg-blue-500' },
+  green: { bg: 'bg-green-100', text: 'text-green-600', progress: 'bg-green-500' },
+  purple: { bg: 'bg-purple-100', text: 'text-purple-600', progress: 'bg-purple-500' },
+} as const;
+
 function getScoreColor(score: number): string {
-  if (score >= 80) return 'text-green-600';
-  if (score >= 60) return 'text-blue-600';
-  if (score >= 40) return 'text-orange-500';
+  if (score >= SCORE_THRESHOLDS.EXCELLENT) return 'text-green-600';
+  if (score >= SCORE_THRESHOLDS.GOOD) return 'text-blue-600';
+  if (score >= SCORE_THRESHOLDS.FAIR) return 'text-orange-500';
   return 'text-red-500';
 }
 
 function getScoreLabel(score: number): string {
-  if (score >= 80) return '优秀';
-  if (score >= 60) return '良好';
-  if (score >= 40) return '一般';
+  if (score >= SCORE_THRESHOLDS.EXCELLENT) return '优秀';
+  if (score >= SCORE_THRESHOLDS.GOOD) return '良好';
+  if (score >= SCORE_THRESHOLDS.FAIR) return '一般';
   return '需加强';
+}
+
+function getGradientClass(score: number): string {
+  if (score >= SCORE_THRESHOLDS.EXCELLENT) return 'from-green-500 to-green-600';
+  if (score >= SCORE_THRESHOLDS.GOOD) return 'from-blue-500 to-blue-600';
+  if (score >= SCORE_THRESHOLDS.FAIR) return 'from-orange-500 to-orange-600';
+  return 'from-red-500 to-red-600';
 }
 
 export function LearningEfficiencyPanel({ onBack }: LearningEfficiencyPanelProps) {
@@ -70,12 +91,7 @@ export function LearningEfficiencyPanel({ onBack }: LearningEfficiencyPanelProps
       </div>
 
       {/* Overall Score */}
-      <div className={`mb-6 p-6 bg-gradient-to-br ${
-        overallScore >= 80 ? 'from-green-500 to-green-600' :
-        overallScore >= 60 ? 'from-blue-500 to-blue-600' :
-        overallScore >= 40 ? 'from-orange-500 to-orange-600' :
-        'from-red-500 to-red-600'
-      } rounded-xl text-white text-center`}>
+      <div className={`mb-6 p-6 bg-gradient-to-br ${getGradientClass(overallScore)} rounded-xl text-white text-center`}>
         <p className="text-sm text-white/80 mb-1">综合效率评分</p>
         <p className="text-5xl font-bold">{overallScore}</p>
         <p className={`text-lg mt-1 ${overallScore >= 60 ? 'text-white' : 'text-white/90'}`}>
@@ -94,12 +110,7 @@ export function LearningEfficiencyPanel({ onBack }: LearningEfficiencyPanelProps
             className="bg-white rounded-xl border border-slate-200 p-4"
           >
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                card.color === 'blue' ? 'bg-blue-100 text-blue-600' :
-                card.color === 'green' ? 'bg-green-100 text-green-600' :
-                card.color === 'purple' ? 'bg-purple-100 text-purple-600' :
-                'bg-slate-100 text-slate-600'
-              }`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${COLOR_MAP[card.color].bg} ${COLOR_MAP[card.color].text}`}>
                 {card.icon}
               </div>
               <div className="flex-1">
@@ -116,12 +127,7 @@ export function LearningEfficiencyPanel({ onBack }: LearningEfficiencyPanelProps
             {/* Progress bar */}
             <div className="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-500 ${
-                  card.color === 'blue' ? 'bg-blue-500' :
-                  card.color === 'green' ? 'bg-green-500' :
-                  card.color === 'purple' ? 'bg-purple-500' :
-                  'bg-slate-500'
-                }`}
+                className={`h-full rounded-full transition-all duration-500 ${COLOR_MAP[card.color].progress}`}
                 style={{ width: `${card.value}%` }}
               />
             </div>
@@ -151,5 +157,3 @@ export function LearningEfficiencyPanel({ onBack }: LearningEfficiencyPanelProps
     </div>
   );
 }
-
-export default LearningEfficiencyPanel;

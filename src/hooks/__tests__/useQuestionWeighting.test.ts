@@ -417,5 +417,261 @@ describe('useQuestionWeighting', () => {
       const weight2 = result.current.getSentenceWeight('2', mockMistakes);
       expect(weight2).toBe(1.5);
     });
+
+    // Spaced repetition modifier tests
+    it('未到复习期降权 - NOT_DUE_PENALTY reduces weight when review is not due', () => {
+      const currentTime = Date.now();
+      const futureTime = currentTime + 86400000; // 1 day from now
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'not-due-sentence',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: futureTime,
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Base weight: 1.0 + 0.5 + 1.0 = 2.5
+      // NOT_DUE_PENALTY (0.3) applied
+      // Expected: 2.5 * 0.3 = 0.75
+      const weight = result.current.getSentenceWeight('not-due-sentence', mockMistakes, currentTime);
+      expect(weight).toBe(0.75);
+      expect(weight).toBeLessThan(1.0); // Should be less than default
+    });
+
+    it('逾期复习提权 - OVERDUE_BOOST increases weight when review is overdue', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'overdue-sentence',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Base weight: 1.0 + 0.5 + 1.0 = 2.5
+      // OVERDUE_BOOST (1.5) applied
+      // Expected: 2.5 * 1.5 = 3.75
+      const weight = result.current.getSentenceWeight('overdue-sentence', mockMistakes, currentTime);
+      expect(weight).toBe(3.75);
+      expect(weight).toBeGreaterThan(2.5); // Should be greater than base
+    });
+
+    it('逾期 + 低正确率叠加 - overdue with low review accuracy gets additional boost', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'overdue-low-accuracy',
+          wrongAnswers: ['wrong1', 'wrong2'],
+          correctAnswers: ['correct1'],
+          attempts: 3,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+          reviewHistory: [
+            { timestamp: Date.now() - 172800000, isCorrect: false, interval: 1, nextReviewDate: Date.now() },
+            { timestamp: Date.now() - 86400000, isCorrect: true, interval: 2, nextReviewDate: Date.now() + 86400000 },
+          ],
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Base weight: 1.0 + 0.5 + (2/3 * 1.0) = 2.167
+      // reviewAccuracyBonus: max(0, 1 - (1/2)) * 0.5 = 0.25
+      // OVERDUE_BOOST + reviewAccuracyBonus = 1.5 + 0.25 = 1.75
+      // Expected: 2.167 * 1.75 = 3.79
+      const weight = result.current.getSentenceWeight('overdue-low-accuracy', mockMistakes, currentTime);
+      expect(weight).toBeCloseTo(3.79, 1);
+      expect(weight).toBeGreaterThan(3.75); // Higher than just OVERDUE_BOOST
+    });
+
+    it('reviewHistory 全正确降权 - 100% correct review history has no accuracy bonus', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'perfect-reviews',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+          reviewHistory: [
+            { timestamp: Date.now() - 172800000, isCorrect: true, interval: 1, nextReviewDate: Date.now() },
+            { timestamp: Date.now() - 86400000, isCorrect: true, interval: 2, nextReviewDate: Date.now() + 86400000 },
+          ],
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Base weight: 1.0 + 0.5 + 1.0 = 2.5
+      // reviewAccuracyBonus: max(0, 1 - 1.0) * 0.5 = 0
+      // OVERDUE_BOOST only: 1.5
+      // Expected: 2.5 * 1.5 = 3.75
+      const weight = result.current.getSentenceWeight('perfect-reviews', mockMistakes, currentTime);
+      expect(weight).toBe(3.75);
+    });
+
+    it('无 reviewHistory 逾期默认提权 - overdue without reviewHistory gets base OVERDUE_BOOST', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'no-history',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+          // No reviewHistory
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Base weight: 1.0 + 0.5 + 1.0 = 2.5
+      // reviewAccuracyBonus: 0 (no reviewHistory)
+      // OVERDUE_BOOST only: 1.5
+      // Expected: 2.5 * 1.5 = 3.75
+      const weight = result.current.getSentenceWeight('no-history', mockMistakes, currentTime);
+      expect(weight).toBe(3.75);
+    });
+
+    it('权重上限 5.0 不突破 - spaced repetition modifiers respect MAX_WEIGHT cap', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago
+
+      // Create many mistakes to push weight close to cap, with overdue review
+      const manyMistakes: Mistake[] = [];
+      for (let i = 0; i < 10; i++) {
+        manyMistakes.push({
+          sentenceId: 'high-weight',
+          wrongAnswers: ['wrong1', 'wrong2', 'wrong3', 'wrong4'],
+          correctAnswers: ['correct'],
+          attempts: 5,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+          reviewHistory: [
+            { timestamp: Date.now() - 86400000, isCorrect: false, interval: 1, nextReviewDate: Date.now() },
+            { timestamp: Date.now() - 43200000, isCorrect: false, interval: 2, nextReviewDate: Date.now() },
+          ],
+        });
+      }
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      const weight = result.current.getSentenceWeight('high-weight', manyMistakes, currentTime);
+      expect(weight).toBe(5.0); // Should be capped at MAX_WEIGHT
+    });
+
+    it('getWeightedSentenceIds 集成 - overdue sentences prioritized over not-due sentences', () => {
+      const currentTime = Date.now();
+      const pastTime = currentTime - 86400000; // 1 day ago (overdue)
+      const futureTime = currentTime + 86400000; // 1 day from now (not due)
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'overdue-1',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: pastTime,
+        },
+        {
+          sentenceId: 'not-due-1',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: futureTime,
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Verify weight calculation
+      const overdueWeight = result.current.getSentenceWeight('overdue-1', mockMistakes, currentTime);
+      const notDueWeight = result.current.getSentenceWeight('not-due-1', mockMistakes, currentTime);
+
+      expect(overdueWeight).toBe(3.75); // 2.5 * 1.5
+      expect(notDueWeight).toBe(0.75); // 2.5 * 0.3
+      expect(overdueWeight).toBeGreaterThan(notDueWeight);
+
+      // Test selection: overdue should be selected first
+      vi.spyOn(Math, 'random').mockReturnValue(0.5);
+
+      const sentenceIds = ['overdue-1', 'not-due-1', 'new-sentence'];
+      const selected = result.current.getWeightedSentenceIds(sentenceIds, mockMistakes, 3, currentTime);
+
+      // 'overdue-1' should have highest weight and be first after sorting
+      expect(selected[0]).toBe('overdue-1');
+    });
+
+    it('currentTime 参数影响复习状态判断 - passing different currentTime changes spaced repetition behavior', () => {
+      const currentTime = Date.now();
+      const reviewTime = currentTime + 86400000; // 1 day from now (review due in 1 day)
+
+      const mockMistakes: Mistake[] = [
+        {
+          sentenceId: 'test-sentence',
+          wrongAnswers: ['wrong1'],
+          correctAnswers: ['correct1'],
+          attempts: 1,
+          timestamp: Date.now(),
+          dictionaryId: 'cet4',
+          reviewedCount: 0,
+          nextReviewAt: reviewTime,
+        },
+      ];
+
+      const { result } = renderHook(() => useQuestionWeighting());
+
+      // Using time BEFORE reviewTime: sentence appears not due
+      const timeBefore = currentTime;
+      const weightNotDue = result.current.getSentenceWeight('test-sentence', mockMistakes, timeBefore);
+      expect(weightNotDue).toBe(0.75); // NOT_DUE_PENALTY applied
+
+      // Using time AFTER reviewTime: sentence appears overdue
+      const timeAfter = currentTime + 172800000; // 2 days from now
+      const weightOverdue = result.current.getSentenceWeight('test-sentence', mockMistakes, timeAfter);
+      expect(weightOverdue).toBe(3.75); // OVERDUE_BOOST applied
+
+      // Weights differ based on currentTime
+      expect(weightNotDue).not.toBe(weightOverdue);
+    });
   });
 });

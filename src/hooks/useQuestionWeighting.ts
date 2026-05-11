@@ -3,6 +3,8 @@ import type { Mistake } from '@/data/types';
 const MAX_WEIGHT = 5.0;
 const DEFAULT_WEIGHT = 1.0;
 const MISTAKE_WEIGHT_INCREMENT = 0.5;
+const OVERDUE_BOOST = 1.5;
+const NOT_DUE_PENALTY = 0.3;
 
 /**
  * Hook providing adaptive question weighting for practice sessions.
@@ -20,15 +22,21 @@ export function useQuestionWeighting() {
    * - Default weight: 1.0 (new sentences never seen before)
    * - For each mistake record matching the sentenceId: increase by 0.5
    * - Additional boost: (totalErrors / totalAttempts) * 1.0
+   * - Spaced repetition modifiers:
+   *   - If not due for review (nextReviewAt > currentTime): apply NOT_DUE_PENALTY (0.3)
+   *   - If overdue for review (nextReviewAt <= currentTime): apply OVERDUE_BOOST (1.5) + reviewAccuracyBonus
+   *   - reviewAccuracyBonus = max(0, 1 - (correctCount / totalCount)) * 0.5
    * - Maximum weight cap: 5.0
    *
    * @param sentenceId - The sentence ID to calculate weight for
    * @param allMistakes - Array of all mistake records
+   * @param currentTime - Current timestamp in ms for spaced repetition calculation
    * @returns Weight value between 1.0 and MAX_WEIGHT (5.0)
    */
   function getSentenceWeight(
     sentenceId: string,
-    allMistakes: Mistake[]
+    allMistakes: Mistake[],
+    currentTime: number = Date.now()
   ): number {
     // Filter mistakes for this sentence
     const relevantMistakes = allMistakes.filter((m) => m.sentenceId === sentenceId);
@@ -57,6 +65,42 @@ export function useQuestionWeighting() {
       weight += errorRate * 1.0;
     }
 
+    // Apply spaced repetition modifier
+    let spacedRepetitionModifier = 1.0;
+
+    for (const mistake of relevantMistakes) {
+      if (mistake.nextReviewAt !== undefined) {
+        if (mistake.nextReviewAt > currentTime) {
+          // Not due for review yet - memory is stable, reduce frequency
+          spacedRepetitionModifier = Math.min(spacedRepetitionModifier, NOT_DUE_PENALTY);
+        } else if (mistake.nextReviewAt <= currentTime) {
+          // Overdue for review - forgetting curve decay, prioritize
+          // Calculate accuracy bonus based on review history
+          let correctCount = 0;
+          let totalReviews = 0;
+
+          if (mistake.reviewHistory && mistake.reviewHistory.length > 0) {
+            for (const review of mistake.reviewHistory) {
+              totalReviews++;
+              if (review.isCorrect) correctCount++;
+            }
+          }
+
+          // reviewAccuracyBonus: higher bonus for lower accuracy
+          // max 0.5 for 0% accuracy, 0 for 100% accuracy
+          const reviewAccuracyBonus = totalReviews > 0
+            ? Math.max(0, 1 - (correctCount / totalReviews)) * 0.5
+            : 0;
+
+          const boost = OVERDUE_BOOST + reviewAccuracyBonus;
+          spacedRepetitionModifier = Math.max(spacedRepetitionModifier, boost);
+        }
+      }
+    }
+
+    // Apply spaced repetition modifier to final weight
+    weight *= spacedRepetitionModifier;
+
     // Cap at maximum weight
     return Math.min(weight, MAX_WEIGHT);
   }
@@ -65,7 +109,7 @@ export function useQuestionWeighting() {
    * Get weighted sentence IDs with higher weights prioritized early.
    *
    * Algorithm:
-   * 1. Calculate weight for each sentence based on mistake history
+   * 1. Calculate weight for each sentence based on mistake history and spaced repetition state
    * 2. For first 5 sentences: use weighted random selection
    * 3. Fill remaining slots with random shuffle
    * 4. Return top N sentences in randomized order
@@ -73,12 +117,14 @@ export function useQuestionWeighting() {
    * @param sentenceIds - Array of sentence IDs to weight
    * @param allMistakes - Array of all mistake records
    * @param count - Number of sentences to return (default: 5)
+   * @param currentTime - Current timestamp in ms for spaced repetition calculation
    * @returns Array of sentence IDs with weights applied
    */
   function getWeightedSentenceIds(
     sentenceIds: string[],
     allMistakes: Mistake[],
-    count: number = 5
+    count: number = 5,
+    currentTime: number = Date.now()
   ): string[] {
     if (sentenceIds.length === 0) {
       return [];
@@ -92,7 +138,7 @@ export function useQuestionWeighting() {
     // Calculate weights for all sentences
     const weightedSentences = sentenceIds.map((id) => ({
       id,
-      weight: getSentenceWeight(id, allMistakes),
+      weight: getSentenceWeight(id, allMistakes, currentTime),
     }));
 
     // Sort by weight descending (higher weight = more priority)

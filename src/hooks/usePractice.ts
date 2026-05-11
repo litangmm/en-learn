@@ -140,7 +140,8 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
     let selectedIds: string[];
     if (hasMistakes) {
       // Use weighted selection to prioritize problematic sentences
-      selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10);
+      // Pass Date.now() for accurate spaced repetition state evaluation
+      selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10, Date.now());
     } else {
       // Fallback to simple shuffle when no mistakes exist
       const shuffled = [...allSentenceIds].sort(() => Math.random() - 0.5);

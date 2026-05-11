@@ -47,7 +47,7 @@ describe('FocusModeOverlay', () => {
         totalQuestions={10}
       />
     );
-    expect(screen.getByText('10 题')).toBeInTheDocument();
+    expect(screen.getByText('0/10 题')).toBeInTheDocument();
   });
 
   it('renders practice component', () => {

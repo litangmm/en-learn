@@ -9,6 +9,7 @@ interface FocusModeOverlayProps {
   onComplete: (stats: FocusSessionStats) => void;
   practiceComponent: React.ReactNode;
   totalQuestions: number;
+  currentQuestion?: number;
 }
 
 export interface FocusSessionStats {
@@ -23,6 +24,7 @@ export function FocusModeOverlay({
   onComplete,
   practiceComponent,
   totalQuestions,
+  currentQuestion = 0,
 }: FocusModeOverlayProps) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const startTimeRef = useRef<number>(0);
@@ -85,7 +87,7 @@ export function FocusModeOverlay({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full">
               <Target className="w-4 h-4 text-amber-400" />
-              <span className="text-white/80 text-sm">{totalQuestions} 题</span>
+              <span className="text-white/80 text-sm">{currentQuestion}/{totalQuestions} 题</span>
             </div>
           </div>
 

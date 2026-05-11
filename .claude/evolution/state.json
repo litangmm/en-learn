@@ -52,7 +52,7 @@
       "summary": "epic-027 全部 5 个迭代收官，v0.43.0-v0.44.0。938 测试历史最高水位，零新增依赖。报告生成、经验归档、状态更新完成。"
     }
   ],
-  "status": "BRAINSTORM",
+  "status": "PLAN",
   "commit": "fe865e6",
   "cycleCount": 96,
   "nextMode": "vision",

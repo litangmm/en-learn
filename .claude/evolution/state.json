@@ -108,7 +108,7 @@
       "summary": "epic-028 iter-003 每日复习计划与提醒系统完成。DailyReviewStats类型 + useReviewStreak hook + DailyReviewPlan组件 + App.tsx集成。1052 测试零回归，lint 1 warning，build 3.03s。Commit de5cc5a."
     }
   ],
-  "status": "COMMIT",
+  "status": "DEPLOY",
   "commit": "de5cc5a",
   "cycleCount": 104,
   "nextMode": "vision",

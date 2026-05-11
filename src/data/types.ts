@@ -49,6 +49,20 @@ export interface Dictionary {
   sentenceCount: number;
 }
 
+/**
+ * Single review result for tracking practice history.
+ */
+export interface ReviewResult {
+  /** Timestamp of the review (milliseconds) */
+  timestamp: number;
+  /** Whether the user answered correctly */
+  isCorrect: boolean;
+  /** The interval in days before this review */
+  interval: number;
+  /** Next scheduled review date (milliseconds) */
+  nextReviewDate: number;
+}
+
 export interface Mistake {
   sentenceId: string;
   wrongAnswers: string[];
@@ -59,6 +73,8 @@ export interface Mistake {
   reviewedCount: number;
   nextReviewAt?: number;
   lastReviewedAt?: number;
+  /** History of all review results for spaced repetition tracking */
+  reviewHistory?: ReviewResult[];
 }
 
 export const REVIEW_INTERVALS = [1, 3, 7, 14] as const;

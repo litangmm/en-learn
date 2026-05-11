@@ -1,6 +1,7 @@
 import type { PracticeState } from '@/hooks/usePractice';
 import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG } from '@/data/types';
+import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -199,6 +200,23 @@ function isValidMistake(data: unknown): data is Mistake {
 
   if (obj.lastReviewedAt !== undefined && typeof obj.lastReviewedAt !== 'number') {
     return false;
+  }
+
+  // reviewHistory is optional; if present, must be an array of valid ReviewResult
+  if (obj.reviewHistory !== undefined) {
+    if (!Array.isArray(obj.reviewHistory)) {
+      return false;
+    }
+    for (const review of obj.reviewHistory) {
+      if (typeof review !== 'object' || review === null) {
+        return false;
+      }
+      const r = review as Record<string, unknown>;
+      if (typeof r.timestamp !== 'number') return false;
+      if (typeof r.isCorrect !== 'boolean') return false;
+      if (typeof r.interval !== 'number') return false;
+      if (typeof r.nextReviewDate !== 'number') return false;
+    }
   }
 
   return true;
@@ -999,6 +1017,50 @@ export const StorageService = {
     };
 
     saveMistakes(mistakes);
+  },
+
+  /**
+   * Updates a mistake's review result with history tracking.
+   * This method is the canonical way to record review outcomes for spaced repetition.
+   *
+   * @param sentenceId - The sentence ID to update
+   * @param isCorrect - Whether the user answered correctly
+   * @returns The updated Mistake or undefined if not found
+   */
+  updateMistakeReviewResult(sentenceId: string, isCorrect: boolean): Mistake | undefined {
+    const mistakes = loadMistakes();
+    const index = mistakes.findIndex((m) => m.sentenceId === sentenceId);
+    if (index < 0) return undefined;
+
+    const mistake = mistakes[index];
+    const previousInterval = REVIEW_INTERVALS[
+      Math.min(mistake.reviewedCount, REVIEW_INTERVALS.length - 1)
+    ];
+
+    // Calculate new interval using SM-2 variant
+    const newInterval = calculateNextReviewInterval(previousInterval, isCorrect);
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    // Create review result entry
+    const reviewResult = createReviewResult(isCorrect, previousInterval);
+
+    // Update reviewedCount
+    const newReviewedCount = isCorrect ? mistake.reviewedCount + 1 : mistake.reviewedCount;
+
+    // Build updated mistake with review history
+    const existingHistory = mistake.reviewHistory ?? [];
+    const updatedMistake: Mistake = {
+      ...mistake,
+      reviewedCount: newReviewedCount,
+      nextReviewAt: now + newInterval * oneDayMs,
+      lastReviewedAt: now,
+      reviewHistory: [...existingHistory, reviewResult],
+    };
+
+    mistakes[index] = updatedMistake;
+    saveMistakes(mistakes);
+    return updatedMistake;
   },
 
   getBadgeProgress(): BadgeProgress {

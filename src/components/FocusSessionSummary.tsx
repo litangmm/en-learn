@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
 import { Clock, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { FocusSessionStats } from '@/components/FocusModeOverlay';
 
 interface FocusSessionSummaryProps {
-  stats: {
-    duration: number; // seconds
-    questionsCompleted: number;
-  };
+  stats: FocusSessionStats;
   onClose: () => void;
 }
 
@@ -21,7 +19,6 @@ export function FocusSessionSummary({ stats, onClose }: FocusSessionSummaryProps
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[110] flex items-center justify-center bg-black/50 p-4"
     >
       <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-2xl">

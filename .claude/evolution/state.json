@@ -104,18 +104,31 @@
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-11-81",
-    "mode": "tech-review",
-    "stage": "TECH_REVIEW",
-    "startedAt": "2026-05-11T03:34:29.366Z",
-    "completedAt": "2026-05-11T08:17:00.000Z"
+    "id": "2026-05-11-82",
+    "mode": "vision",
+    "stage": "COMMIT",
+    "startedAt": "2026-05-11T03:35:11.170Z",
+    "completedAt": "2026-05-11T12:25:00.000Z"
   },
   "previousCycle": {
     "id": "2026-05-11-82",
     "mode": "vision",
     "stage": "TEST"
   },
-  "currentEpic": null,
+  "currentEpic": {
+    "id": "epic-014",
+    "title": "主练习链路稳定性打磨",
+    "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。",
+    "iterations": [
+      {"id": "iter-001", "title": "nextQuestion/retry/MoreMenu 三个 P0 状态同步修复", "scope": "frontend-only", "status": "completed"},
+      {"id": "iter-002", "title": "移动端弹窗自适应（P1）", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-003", "title": "听写模式体验澄清（P1）", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-004", "title": "无价值题目过滤（P1）", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-005", "title": "连词成句释义句体验（P2）", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-006", "title": "解析内容质量提升（P2）", "scope": "frontend-only", "status": "pending"}
+    ],
+    "currentIterationIndex": 0
+  },
   "currentPlan": null,
   "epicHistory": [
     {
@@ -292,14 +305,12 @@
     ]
   },
   "deployStatus": {
-    "deployed": true,
+    "deployed": false,
     "target": "vercel",
-    "version": "v0.36.0",
-    "url": "https://en-learn-ein97lkfq-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-11T04:27:00.000Z",
-    "commit": "fcce1a1",
-    "iterationId": "iter-003",
-    "iterationTitle": "个人生词标记"
+    "version": "v0.37.0",
+    "commit": "834d1fe",
+    "iterationId": "iter-001",
+    "iterationTitle": "主练习链路稳定性打磨"
   },
   "pendingDeployment": true
 }

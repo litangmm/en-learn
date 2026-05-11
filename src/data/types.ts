@@ -458,3 +458,46 @@ export interface ReviewStreakData {
   /** True if streak can continue (practiced today or yesterday) */
   isStreakActive: boolean;
 }
+
+/**
+ * Types of achievement moments that can be triggered.
+ */
+export type AchievementMomentType =
+  | 'badge-unlock'   // Badge unlocked achievement
+  | 'level-up'       // Level upgrade achievement
+  | 'streak-milestone' // Streak milestone (7, 14, 30, 100 days)
+  | 'xp-milestone'   // XP milestone (100, 500, 1000, 2000, etc.)
+  | 'perfect-session'; // Perfect session (100% accuracy, all questions correct)
+
+/**
+ * Achievement moment data for display cards.
+ * Each moment represents a notable learning achievement.
+ */
+export interface AchievementMoment {
+  /** Unique trigger ID for deduplication */
+  id: string;
+  /** The type of achievement */
+  type: AchievementMomentType;
+  /** Headline text (bold, emotional) */
+  title: string;
+  /** Supporting text or data-driven stats */
+  subtitle?: string;
+  /** Badge ID for badge-unlock type */
+  badgeId?: string;
+  /** Badge title for badge-unlock type */
+  badgeTitle?: string;
+  /** Badge icon name for badge-unlock type */
+  badgeIcon?: string;
+  /** Current level for level-up type */
+  level?: number;
+  /** Current streak for streak-milestone type */
+  streak?: number;
+  /** XP value for xp-milestone type */
+  xp?: number;
+  /** Total correct answers for xp-milestone type */
+  totalCorrect?: number;
+  /** Accuracy percentage for perfect-session type */
+  accuracy?: number;
+  /** Timestamp when this moment was created */
+  createdAt: number;
+}

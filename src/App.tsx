@@ -28,11 +28,13 @@ import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusModeOverlay';
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
+import { AchievementMomentCard } from '@/components/AchievementMomentCard';
+import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
+import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter, AchievementMoment } from '@/data/types';
 import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
 import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
 import { getModeHint, formatElapsedTime, APP_BRAND, ONBOARDING_DICTIONARIES } from '@/utils/appHelpers';
@@ -79,6 +81,17 @@ function App() {
   const [leaderboardTimeFilter, setLeaderboardTimeFilter] = useState<LeaderboardTimeFilter>('today');
   const [selectedOnboardingDictionary, setSelectedOnboardingDictionary] = useState('cet4');
   const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
+  const [achievementMomentTrigger, setAchievementMomentTrigger] = useState<{ moment: AchievementMoment | null; key: number } | null>(null);
+
+  // Initialize achievement moment hook
+  const {
+    acknowledgeMoment,
+    checkLevelUp,
+    checkBadgeUnlock,
+    checkStreakMilestone,
+    checkXPMilestone,
+    checkPerfectSession,
+  } = useAchievementMoment();
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
 
@@ -135,6 +148,11 @@ function App() {
   const { data: streakData } = useReviewStreak();
   const currentStreak = streakData.currentStreak;
   const { hintLevel, shouldShowHint } = useHintLevel();
+
+  // Track previous level for detecting level-ups (initialized after profile is available)
+  const previousLevelRef = useRef(profile.currentLevel);
+  // Track total correct answers for XP milestone detection
+  const totalCorrectRef = useRef(0);
 
   // Initialize inputs when sentence changes (guard: skip if showResult=true to prevent state race)
   useEffect(() => {
@@ -237,6 +255,34 @@ function App() {
             setSharePrompt({ type: 'levelup', level: newLevel });
           });
         }
+        // Achievement moment: Level-up
+        const oldLevel = previousLevelRef.current;
+        const levelUpMoment = checkLevelUp(oldLevel, newLevel);
+        if (levelUpMoment) {
+          requestAnimationFrame(() => {
+            setAchievementMomentTrigger({ moment: levelUpMoment, key: Date.now() });
+          });
+        }
+        if (leveledUp) {
+          previousLevelRef.current = newLevel;
+        }
+        // Increment total correct counter
+        totalCorrectRef.current += 1;
+        const accuracy = state.attempts === 1 ? 100 : 50; // Estimate accuracy based on attempts
+        // Achievement moment: Streak milestone
+        const streakMoment = checkStreakMilestone(streak + 1);
+        if (streakMoment) {
+          requestAnimationFrame(() => {
+            setAchievementMomentTrigger({ moment: streakMoment, key: Date.now() });
+          });
+        }
+        // Achievement moment: XP milestone
+        const xpMoment = checkXPMilestone(profile.totalXP, totalCorrectRef.current, accuracy);
+        if (xpMoment) {
+          requestAnimationFrame(() => {
+            setAchievementMomentTrigger({ moment: xpMoment, key: Date.now() });
+          });
+        }
         trackActivity('answer');
         trackActivity('correct');
         trackActivity('streak', streak + 1);
@@ -247,10 +293,17 @@ function App() {
           requestAnimationFrame(() => {
             setBadgeUnlockTrigger({ badge: newBadges[0], key: Date.now() });
           });
+          // Achievement moment: Badge unlock
+          const badgeMoment = checkBadgeUnlock(newBadges[0]);
+          if (badgeMoment) {
+            requestAnimationFrame(() => {
+              setAchievementMomentTrigger({ moment: badgeMoment, key: Date.now() });
+            });
+          }
         }
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel, profile.totalXP, checkLevelUp, checkStreakMilestone, checkXPMilestone, checkBadgeUnlock]);
 
   // Reset streak on wrong answer
   useEffect(() => {
@@ -270,10 +323,17 @@ function App() {
       const accuracy = totalQuestions > 0 ? (state.score / (totalQuestions * 10)) * 100 : 0;
       if (accuracy === 100) {
         badgesRef.current.trackProgress('perfect_session');
+        // Achievement moment: Perfect session
+        const perfectMoment = checkPerfectSession(state.score, totalQuestions, streak);
+        if (perfectMoment) {
+          requestAnimationFrame(() => {
+            setAchievementMomentTrigger({ moment: perfectMoment, key: Date.now() });
+          });
+        }
       }
       badgesRef.current.checkBadges(profile.currentLevel);
     }
-  }, [state.isComplete, totalQuestions, state.score, profile.currentLevel]);
+  }, [state.isComplete, totalQuestions, state.score, profile.currentLevel, checkPerfectSession, streak]);
 
   // Auto-clear share prompt after 2 seconds
   useEffect(() => {
@@ -284,6 +344,17 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [sharePrompt]);
+
+  // Auto-dismiss achievement moment card after 3 seconds
+  useEffect(() => {
+    if (achievementMomentTrigger) {
+      const timer = setTimeout(() => {
+        setAchievementMomentTrigger(null);
+        acknowledgeMoment();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [achievementMomentTrigger, acknowledgeMoment]);
 
   useEffect(() => {
     if (!isReviewMode) {
@@ -1035,6 +1106,12 @@ function App() {
       />
       <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
       <Toaster richColors position="top-center" />
+      {achievementMomentTrigger && achievementMomentTrigger.moment && (
+        <AchievementMomentCard
+          moment={achievementMomentTrigger.moment}
+          triggerKey={String(achievementMomentTrigger.key)}
+        />
+      )}
 
       <FocusModeOverlay
         isOpen={isFocusSession}

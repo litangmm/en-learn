@@ -113,18 +113,21 @@
       "stage": "DEPLOY",
       "status": "completed",
       "summary": "epic-028 iter-003 每日复习计划与提醒系统部署 v0.47.0 完成。DailyReviewPlan + useReviewStreak + Header 复习指示器。构建 3.33s，Vercel 部署成功，git tag v0.47.0 @ 2e76f60 已推送。1052 测试零回归。"
+    },
+    {
+      "id": "2026-05-12-103",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-028 iter-003 收官，v0.47.0。DailyReviewPlan + useReviewStreak 完成，1052 测试零回归，零新增依赖。epic-028 完成 3/5 迭代。"
     }
   ],
-  "status": "REPORT",
+  "status": "IDLE",
   "commit": "2e76f60",
-  "cycleCount": 104,
+  "cycleCount": 105,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": {
-    "id": "2026-05-12-103",
-    "mode": "vision",
-    "stage": "DEPLOY"
-  },
+  "currentCycle": null,
   "previousCycle": {
     "id": "2026-05-12-103",
     "mode": "vision",
@@ -405,5 +408,5 @@
     "url": "https://en-learn.vercel.app"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T02:51:00.000Z"
+  "lastRun": "2026-05-12T10:30:00.000Z"
 }

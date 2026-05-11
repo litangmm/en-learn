@@ -30,6 +30,7 @@ function createMistake(overrides: Partial<Mistake> = {}): Mistake {
     timestamp: Date.now(),
     dictionaryId: 'cet4',
     reviewedCount: 0,
+    reviewHistory: [],
     ...overrides,
   };
 }
@@ -385,11 +386,7 @@ describe('useLearningEfficiency', () => {
       expect(result.current.weaknessProgress).toBe(100);
     });
 
-    it('handles undefined reviewHistory', () => {
-      const mistake = createMistake();
-      // @ts-expect-error - testing edge case where reviewHistory is undefined
-      delete mistake.reviewHistory;
-      vi.mocked(storage.getMistakes).mockReturnValue([mistake]);
+    it('handles empty reviewHistory', () => {
       const { result } = renderHook(() => useLearningEfficiency());
       expect(result.current.memoryRetentionRate).toBe(0);
       expect(result.current.forgettingCurveFit).toBe(0);

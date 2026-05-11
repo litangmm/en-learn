@@ -125,6 +125,28 @@ export interface DailyChallengeState {
   challenges: DailyChallenge[];
 }
 
+/**
+ * Daily review statistics for tracking user review activity.
+ * Used by the daily review plan and reminder system.
+ */
+export interface DailyReviewStats {
+  /** The date string in YYYY-MM-DD format */
+  date: string;
+  /** Number of items reviewed today */
+  reviewedCount: number;
+  /** Array of sentence IDs that were reviewed today */
+  completedReviewIds: string[];
+}
+
+/**
+ * State wrapper for daily review statistics.
+ * Contains the current day's review stats.
+ */
+export interface DailyReviewState {
+  /** Current daily review statistics */
+  stats: DailyReviewStats;
+}
+
 export type BadgeCategory = 'answer' | 'streak' | 'level' | 'session' | 'review' | 'challenge' | 'special';
 
 export type BadgeConditionType =
@@ -418,4 +440,21 @@ export interface WeaknessStats {
   byType: Record<WeaknessType, number>;
   /** Overall strength score (0-100), higher is better */
   overallStrength: number;
+}
+
+/**
+ * Review streak data for tracking consecutive days of practice.
+ * Used by the daily review plan and reminder system (epic-028).
+ */
+export interface ReviewStreakData {
+  /** Current consecutive days of practice */
+  currentStreak: number;
+  /** Best streak ever achieved */
+  longestStreak: number;
+  /** Last review date in YYYY-MM-DD format, null if never */
+  lastReviewDate: string | null;
+  /** Total days with at least one review */
+  totalReviewDays: number;
+  /** True if streak can continue (practiced today or yesterday) */
+  isStreakActive: boolean;
 }

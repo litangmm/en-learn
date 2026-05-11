@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
@@ -32,6 +32,7 @@ const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
 const ADAPTIVE_CONFIG_KEY = 'adaptive_config';
 const HINT_CONFIG_KEY = 'hint_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
+const DAILY_REVIEW_STATS_KEY = 'en-learn-daily-review-stats';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -306,6 +307,39 @@ function isValidDailyChallengeState(data: unknown): data is DailyChallengeState 
   }
 
   if (!obj.challenges.every(isValidDailyChallenge)) {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidDailyReviewStats(data: unknown): data is DailyReviewState {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.stats !== 'object' || obj.stats === null) {
+    return false;
+  }
+
+  const stats = obj.stats as Record<string, unknown>;
+
+  if (typeof stats.date !== 'string') {
+    return false;
+  }
+
+  if (typeof stats.reviewedCount !== 'number') {
+    return false;
+  }
+
+  if (!Array.isArray(stats.completedReviewIds)) {
+    return false;
+  }
+
+  // Verify all completedReviewIds are strings
+  if (!stats.completedReviewIds.every((id) => typeof id === 'string')) {
     return false;
   }
 
@@ -689,6 +723,38 @@ function saveDailyChallenges(state: DailyChallengeState): void {
   }
 }
 
+function loadReviewStats(): DailyReviewState | null {
+  const raw = localStorage.getItem(DAILY_REVIEW_STATS_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted daily review stats data, clearing');
+    localStorage.removeItem(DAILY_REVIEW_STATS_KEY);
+    return null;
+  }
+
+  if (!isValidDailyReviewStats(parsed)) {
+    console.warn('[StorageService] Invalid daily review stats schema, clearing');
+    localStorage.removeItem(DAILY_REVIEW_STATS_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveReviewStats(state: DailyReviewState): void {
+  try {
+    localStorage.setItem(DAILY_REVIEW_STATS_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save daily review stats:', error);
+  }
+}
+
 function hashString(str: string): number {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -944,6 +1010,61 @@ export const StorageService = {
 
   saveDailyChallenges(state: DailyChallengeState): void {
     saveDailyChallenges(state);
+  },
+
+  getReviewStats(): DailyReviewState {
+    const today = new Date().toISOString().split('T')[0];
+    const existing = loadReviewStats();
+
+    // If stats exist for today, return them
+    if (existing && existing.stats.date === today) {
+      return existing;
+    }
+
+    // Create new empty stats for today
+    const newState: DailyReviewState = {
+      stats: {
+        date: today,
+        reviewedCount: 0,
+        completedReviewIds: [],
+      },
+    };
+    saveReviewStats(newState);
+    return newState;
+  },
+
+  updateReviewStats(sentenceId: string): DailyReviewState {
+    const today = new Date().toISOString().split('T')[0];
+    const current = this.getReviewStats();
+
+    // If date changed, reset stats for new day
+    if (current.stats.date !== today) {
+      const newState: DailyReviewState = {
+        stats: {
+          date: today,
+          reviewedCount: 1,
+          completedReviewIds: [sentenceId],
+        },
+      };
+      saveReviewStats(newState);
+      return newState;
+    }
+
+    // Check if already reviewed
+    if (current.stats.completedReviewIds.includes(sentenceId)) {
+      return current;
+    }
+
+    // Add new reviewed item
+    const updated: DailyReviewState = {
+      stats: {
+        date: current.stats.date,
+        reviewedCount: current.stats.reviewedCount + 1,
+        completedReviewIds: [...current.stats.completedReviewIds, sentenceId],
+      },
+    };
+    saveReviewStats(updated);
+    return updated;
   },
 
   generateDailyChallenges(date: string): DailyChallengeState {

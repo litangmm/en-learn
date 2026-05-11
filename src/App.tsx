@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles } from 'lucide-react';
+import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles, Zap } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -20,6 +20,8 @@ import { useDailyChallenges } from '@/hooks/useDailyChallenges';
 import { useBadges } from '@/hooks/useBadges';
 import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { useWeaknessStats } from '@/hooks/useWeaknessStats';
+import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
+import { useReviewStreak } from '@/hooks/useReviewStreak';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
@@ -129,6 +131,9 @@ function App() {
   const { unlockedIds, unlockedCount, trackProgress, checkBadges, getBadgeProgressPercent } = useBadges();
   const { getLeaderboardEntries } = useLeaderboard();
   const { stats: weaknessStats } = useWeaknessStats();
+  const { dueCount } = useSpacedRepetition();
+  const { data: streakData } = useReviewStreak();
+  const currentStreak = streakData.currentStreak;
   const { hintLevel, shouldShowHint } = useHintLevel();
 
   // Initialize inputs when sentence changes (guard: skip if showResult=true to prevent state race)
@@ -644,6 +649,32 @@ function App() {
                 onOpenLeaderboard={handleOpenLeaderboard}
                 onOpenWeakness={handleOpenWeakness}
               />
+              {/* Review streak indicator - desktop only */}
+              <div className="hidden md:flex items-center gap-2 text-sm">
+                {dueCount > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleOpenSmartReview}
+                    className="relative text-blue-600 gap-1 p-1"
+                    data-testid="review-indicator"
+                  >
+                    <Zap className="w-4 h-4" />
+                    <span>{dueCount} 待复习</span>
+                    {currentStreak > 0 && (
+                      <Badge variant="outline" className="ml-1 h-5 text-xs border-orange-200 text-orange-600">
+                        {currentStreak}天
+                      </Badge>
+                    )}
+                  </Button>
+                )}
+                {dueCount === 0 && currentStreak > 0 && (
+                  <span className="text-xs text-slate-500 flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-orange-500" />
+                    连续 {currentStreak} 天
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>

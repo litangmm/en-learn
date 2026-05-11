@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-106",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-028 iter-004 学习效率数据面板完成。LearningEfficiencyMetrics(记忆保持率/遗忘曲线拟合/薄弱点攻克进度) + LearningEfficiencyPanel组件(综合评分/3指标卡片/进度条) + ViewRouter/View类型 + LearningProfile导航集成。1089 测试零回归，lint 1 warning，build 3.02s。Commit a4518d7."
+    },
+    {
       "id": "2026-05-11-88",
       "mode": "vision",
       "stage": "COMMIT",
@@ -122,9 +129,9 @@
       "summary": "epic-028 iter-003 收官，v0.47.0。DailyReviewPlan + useReviewStreak 完成，1052 测试零回归，零新增依赖。epic-028 完成 3/5 迭代。"
     }
   ],
-  "status": "IDLE",
-  "commit": "2e76f60",
-  "cycleCount": 105,
+  "status": "DEPLOY",
+  "commit": "a4518d7",
+  "cycleCount": 107,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
@@ -164,7 +171,7 @@
         "id": "iter-004",
         "title": "学习效率数据面板",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
         "description": "基于真实复习数据，计算并展示学习效率指标：记忆保持率、遗忘曲线拟合度、薄弱点攻克进度。以简洁图表呈现进步轨迹。"
       },
       {
@@ -175,38 +182,41 @@
         "description": "结合间隔重复状态和错误率数据，构建综合出题权重评分。确保新词有适中的曝光率。提供权重算法的可视化说明。"
       }
     ],
-    "currentIterationIndex": 3,
-    "completedIterations": 3,
+    "currentIterationIndex": 4,
+    "completedIterations": 4,
     "totalIterations": 5
   },
   "plan": {
-    "iterationId": "iter-003",
-    "iterationTitle": "每日复习计划与提醒系统",
+    "iterationId": "iter-004",
+    "iterationTitle": "学习效率数据面板",
     "scope": "frontend-only",
+    "planFile": "docs/superpowers/plans/2026-05-12-epic-028-iter-004-learning-efficiency-panel.md",
     "steps": [
-      "Step 1: 添加 DailyReviewStats 类型到 src/data/types.ts",
-      "Step 2: 添加复习连续数据存储方法到 src/services/storage.ts (DAILY_REVIEW_STATS_KEY, loadReviewStats, saveReviewStats, getReviewStats, updateReviewStats)",
-      "Step 3: 创建 src/hooks/useReviewStreak.ts (复习连续天数管理 hook)",
-      "Step 4: 创建 src/components/DailyReviewPlan.tsx (每日复习计划面板组件)",
-      "Step 5: 创建 src/components/__tests__/DailyReviewPlan.test.tsx (组件测试)",
-      "Step 6: 创建 src/hooks/__tests__/useReviewStreak.test.ts (hook 测试)",
-      "Step 7: App.tsx 集成 - Header 增加复习到期数指示器，复习入口显示连续天数",
-      "Step 8: 全量测试验证 (vitest unit tests)",
-      "Step 9: Build + Lint 验证"
+      "Step 1: Create useLearningEfficiency hook (3 metrics from reviewHistory)",
+      "Step 2: Create LearningEfficiencyPanel component",
+      "Step 3: Write unit tests for hook",
+      "Step 4: Write unit tests for component",
+      "Step 5: Integrate into App.tsx (add 'efficiency' view)",
+      "Step 6: Update routing.ts (add 'efficiency' to View type)",
+      "Step 7: Update App.profile.test.tsx mocks",
+      "Step 8: Run all unit tests",
+      "Step 9: Run lint",
+      "Step 10: Run build",
+      "Step 11: Commit"
     ],
     "filesToModify": [
-      "src/data/types.ts",
-      "src/services/storage.ts",
-      "src/App.tsx"
+      "src/components/routing.ts",
+      "src/App.tsx",
+      "src/components/__tests__/App.profile.test.tsx"
     ],
     "filesToCreate": [
-      "src/hooks/useReviewStreak.ts",
-      "src/components/DailyReviewPlan.tsx",
-      "src/components/__tests__/DailyReviewPlan.test.tsx",
-      "src/hooks/__tests__/useReviewStreak.test.ts"
+      "src/hooks/useLearningEfficiency.ts",
+      "src/hooks/__tests__/useLearningEfficiency.test.ts",
+      "src/components/LearningEfficiencyPanel.tsx",
+      "src/components/__tests__/LearningEfficiencyPanel.test.tsx"
     ],
     "dependencies": [],
-    "testStrategy": "测试复习连续天数计算、计划面板渲染、完成状态追踪"
+    "testStrategy": "测试学习效率指标计算（记忆保持率/遗忘曲线/薄弱点进步）、面板组件渲染、进度条显示、空状态处理"
   },
   "epicHistory": [
     {
@@ -304,17 +314,17 @@
     },
     "unitTests": {
       "passed": true,
-      "total": 1052,
+      "total": 1089,
       "failed": 0,
-      "duration": "17.53s"
+      "duration": "17.94s"
     },
     "build": {
       "passed": true,
-      "duration": "3.00s"
+      "duration": "3.02s"
     },
     "e2e": {
       "skipped": true,
-      "reason": "not last iteration (2 pending iterations remain)"
+      "reason": "not last iteration (1 pending iterations remain)"
     }
   },
   "techDebtBaseline": {
@@ -330,7 +340,7 @@
   "iterationStatus": "completed",
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-028 iter-003 每日复习计划与提醒系统完成。DailyReviewStats类型 + useReviewStreak hook + DailyReviewPlan组件 + App.tsx集成。1052 测试零回归，lint 1 warning，build 3.03s。",
+  "implementationStatus": "epic-028 iter-004 学习效率数据面板完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile。1089 测试零回归，lint 1 warning，build 3.02s。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -398,13 +408,13 @@
     ]
   },
   "deployStatus": {
-    "deployed": true,
+    "deployed": false,
     "target": "vercel",
-    "version": "v0.47.0",
-    "commit": "2e76f60",
-    "iterationId": "iter-003",
-    "iterationTitle": "每日复习计划与提醒系统",
-    "deployedAt": "2026-05-12T09:49:38.000Z",
+    "version": "v0.48.0",
+    "commit": "a4518d7",
+    "iterationId": "iter-004",
+    "iterationTitle": "学习效率数据面板",
+    "deployedAt": null,
     "url": "https://en-learn.vercel.app"
   },
   "pendingDeployment": false,

@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ProgressHub } from '../ProgressHub';
 
+// Mock useProgressStats hook
 const mockUseProgressStats = vi.hoisted(() => vi.fn(() => ({
   level: 2,
   totalXP: 150,
@@ -13,6 +14,16 @@ const mockUseProgressStats = vi.hoisted(() => vi.fn(() => ({
   totalQuestions: 40,
   totalCorrect: 34,
 })));
+
+// Mock AbilityRadar component
+vi.mock('../AbilityRadar', () => ({
+  AbilityRadar: vi.fn(() => <div data-testid="ability-radar">Radar Chart</div>),
+}));
+
+// Mock ProgressTrend component
+vi.mock('../ProgressTrend', () => ({
+  ProgressTrend: vi.fn(() => <div data-testid="progress-trend">Trend Chart</div>),
+}));
 
 vi.mock('@/hooks/useProgressStats', () => ({
   useProgressStats: mockUseProgressStats,

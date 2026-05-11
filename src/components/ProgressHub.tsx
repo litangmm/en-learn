@@ -1,5 +1,7 @@
-import { Trophy, Target, Calendar, TrendingUp, Star } from 'lucide-react';
+import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart } from 'lucide-react';
 import { MilestoneCard } from './MilestoneCard';
+import { AbilityRadar } from './AbilityRadar';
+import { ProgressTrend } from './ProgressTrend';
 import { useProgressStats } from '@/hooks/useProgressStats';
 import type { View } from './routing';
 
@@ -47,7 +49,7 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
       </div>
 
       {/* Milestone Grid */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mb-4">
         {/* Learning Days */}
         <MilestoneCard
           icon={<Calendar className="w-5 h-5" />}
@@ -83,8 +85,33 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
         />
       </div>
 
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        {/* Ability Radar */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Radar className="w-4 h-4 text-blue-500" />
+            <h2 className="text-sm font-medium text-slate-700">能力雷达</h2>
+          </div>
+          <div className="flex justify-center">
+            <AbilityRadar data={stats.modeAccuracy} size={200} />
+          </div>
+        </div>
+
+        {/* Progress Trend */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <LineChart className="w-4 h-4 text-green-500" />
+            <h2 className="text-sm font-medium text-slate-700">学习趋势</h2>
+          </div>
+          <div className="flex justify-center">
+            <ProgressTrend height={160} />
+          </div>
+        </div>
+      </div>
+
       {/* Quick Actions */}
-      <div className="mt-6 space-y-2">
+      <div className="space-y-2">
         <button
           onClick={() => onNavigate('history')}
           className="w-full py-3 px-4 bg-white border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors"

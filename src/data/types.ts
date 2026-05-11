@@ -309,3 +309,24 @@ export const HINT_PROBABILITIES: Record<HintLevel, number> = {
   medium: 0.5,
   high: 1,
 } as const;
+
+/**
+ * Mode accuracy data for radar chart display.
+ */
+export interface ModeAccuracy {
+  mode: PracticeMode;
+  accuracy: number;
+  totalQuestions: number;
+  correctCount: number;
+}
+
+/**
+ * Daily trend data for progress chart display.
+ */
+export interface DailyTrend {
+  date: string;
+  dayName: string;
+  xp: number;
+  questions: number;
+  accuracy: number;
+}

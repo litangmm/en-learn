@@ -94,26 +94,26 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级。"
     }
   ],
-  "status": "DEPLOY",
+  "status": "REPORT",
   "selectedEpic": {
     "id": "epic-014",
     "title": "主练习链路稳定性打磨"
   },
-  "lastRun": "2026-05-11T12:25:00.000Z",
+  "lastRun": "2026-05-11T12:28:00.000Z",
   "cycleCount": 82,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
     "id": "2026-05-11-82",
     "mode": "vision",
-    "stage": "COMMIT",
+    "stage": "DEPLOY",
     "startedAt": "2026-05-11T03:35:11.170Z",
-    "completedAt": "2026-05-11T12:25:00.000Z"
+    "completedAt": "2026-05-11T12:28:00.000Z"
   },
   "previousCycle": {
     "id": "2026-05-11-82",
     "mode": "vision",
-    "stage": "TEST"
+    "stage": "COMMIT"
   },
   "currentEpic": {
     "id": "epic-014",
@@ -305,12 +305,14 @@
     ]
   },
   "deployStatus": {
-    "deployed": false,
+    "deployed": true,
     "target": "vercel",
     "version": "v0.37.0",
-    "commit": "834d1fe",
+    "url": "https://en-learn-fwj8wc89w-litangmms-projects.vercel.app",
+    "commit": "6d90463",
     "iterationId": "iter-001",
-    "iterationTitle": "主练习链路稳定性打磨"
+    "iterationTitle": "主练习链路稳定性打磨",
+    "deployedAt": "2026-05-11T12:28:00.000Z"
   },
-  "pendingDeployment": true
+  "pendingDeployment": false
 }

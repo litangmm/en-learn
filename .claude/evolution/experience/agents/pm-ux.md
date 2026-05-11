@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-11 (cycle-2026-05-11-82)
+- **相关 Epic**: epic-014 iter-001「主练习链路稳定性打磨」—— **提案者**
+- **结果**: **epic-014 iter-001 完成**，819/819 测试通过，v0.37.0
+- **完成内容**: dir-1778465917386 指令的 8 个状态同步 bug 修复：Bug 1 nextQuestion 换题不刷新（AnimatePresence mode="wait" 移除）、Bug 2 retry 重试残留反馈（isRetrying 语义修复 + previousAttemptsRef）、Bug 3 MoreMenu 移动端不可用（fixed positioning）、Bug 4 DictionaryBrowser 移动端溢出（grid-cols 自适应）、Bug 5 听写模式提示文案不准确（明确说明首字母听写）、Bug 6 选择题题干与选项相似（相似题过滤）、Bug 7 连词成句释义句半禁用（跳过按钮）、Bug 8 解析重复中文释义（重写 getExplanation）、NavigationContext._currentValue 改标准 useContext
+- **当前状态**: **连续未被选中计数保持清零**（epic-014 提案者，持续推进）
+- **观察**: epic-014 iter-001 是 dir-1778465917386 用户完整评测反馈的直接响应。8 个状态同步 bug 直接影响用户核心练习体验（"点击下一题但题卡停在上一题"会让用户怀疑页面坏了），P0 优先级正确。getExplanation 重写体现了 PM-UX 的「解释为什么」而非「重复是什么」的设计原则。**epic-014 剩余 5 个迭代（iter-002~006），继续推进中**
+
 ### 2026-05-11 (cycle-2026-05-11-64)
 - **相关 Epic**: epic-009 iter-001「词典浏览器（只读）」—— 作为支持者
 - **结果**: epic-009 iter-001 完成，708/708 测试通过，v0.31.0

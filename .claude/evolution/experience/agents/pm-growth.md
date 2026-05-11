@@ -170,6 +170,14 @@
 ## 改进方向
 （由进化引擎自动总结）
 
+### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-001 + iter-002 完成
+- **相关 Epic**: epic-018「学习路径追踪与成就系统整合」—— **提案者 + 全程推进**
+- **结果**: **epic-018 iter-001 + iter-002 全部完成并部署**，v0.39.0 + v0.40.0
+  - iter-001 里程碑导航与进度概览：useProgressStats Hook + ProgressHub + MilestoneCard + XPBar onClick + MobileNav 进度入口 + ViewRouter progress 路由，848 测试通过
+  - iter-002 能力雷达图与进度趋势：AbilityRadar SVG 五边形雷达图(4轴) + ProgressTrend 折线图(XP/题数切换) + useProgressStats 新增 getModeAccuracy/getDailyXP，876 测试通过
+- **当前状态**: **连续未被选中计数保持清零**（提案者身份，Epic 进行中）
+- **观察**: epic-018「学习路径追踪」是成长感知体系的核心——用户可直观看到自己的四种模式能力分布（雷达图）和学习趋势（折线图）。AbilityRadar 的「能力四轴」和 ProgressTrend 的「7天趋势」将抽象的学习数据转化为直观视觉，帮助用户建立「看得见的进步」。iter-001（里程碑概览）+ iter-002（能力雷达+趋势）形成了完整的进度可视化体系，**iter-003（成就系统+学习档案）是最后一个拼图**。876 测试是项目历史最高水位
+
 ### 2026-05-11 (cycle-2026-05-11-86) — epic-018 iter-001 完成
 - **相关 Epic**: epic-018「学习路径追踪与成就系统整合」—— **提案者 + 高优先级胜出**
 - **结果**: epic-018 iter-001「里程碑导航与进度概览」**完成并部署**，v0.39.0，848/848 测试通过

@@ -8,6 +8,22 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-87) — epic-018 iter-002 完成
+- **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整执行**
+- **计划步骤**: 8 个步骤全部完成
+  1. useProgressStats Hook 新增 getModeAccuracy() 和 getDailyXP(7)
+  2. AbilityRadar.tsx — SVG 五边形雷达图，4轴（填空/选择/排序/听写）
+  3. ProgressTrend.tsx — SVG 折线图，7天趋势，XP/题数切换
+  4. ProgressHub.tsx 集成 AbilityRadar + ProgressTrend
+  5. AbilityRadar.test.tsx
+  6. ProgressTrend.test.tsx
+  7. useProgressStats.modeStats.test.ts
+  8. 全量测试验证（876 测试零回归）
+- **实际修改文件**:
+  - 修改: src/hooks/useProgressStats.ts, src/components/ProgressHub.tsx, src/data/types.ts
+  - 新增: src/components/AbilityRadar.tsx, src/components/ProgressTrend.tsx, src/components/__tests__/AbilityRadar.test.tsx, src/components/__tests__/ProgressTrend.test.tsx, src/hooks/__tests__/useProgressStats.modeStats.test.ts
+- **观察**: 零新增依赖，纯 SVG 实现。AbilityRadar 和 ProgressTrend 无图表库引入。876 测试是项目历史最高水位。epic-018 剩余 iter-003（成就系统/学习档案）pending
+
 ### 2026-05-11 (cycle-2026-05-11-82)
 - **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整执行**
 - **计划步骤**: 9 个 P0 bug 修复步骤全部完成

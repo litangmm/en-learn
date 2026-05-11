@@ -2,6 +2,20 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.40.0",
+      "tag": "v0.40.0",
+      "commit": "58a93d3",
+      "date": "2026-05-11T07:18:07.078Z",
+      "iterationId": "iter-002",
+      "title": "能力雷达图与进度趋势",
+      "features": [
+        "pm-growth.md: 更新 iter-002 经验档案",
+        "history/2026-05-11-86.md: epic-018 iter-002 完成记录",
+        "releases.json: v0.40.0 里程碑（AbilityRadar+ProgressTrend）"
+      ],
+      "deployUrl": "https://en-learn-gkyr129b6-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.39.0",
       "tag": "v0.39.0",
       "commit": "7435d6b",

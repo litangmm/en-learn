@@ -150,6 +150,15 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
+- **相关质量门禁**: 单元测试回归、Radar图渲染测试、折线图数据测试、Hook API 扩展测试、构建稳定性
+- **本次验证**: epic-018 iter-002「能力雷达图与进度趋势」质量门禁验证
+  - AbilityRadar 测试：4轴数据渲染、菱形/五边形填充区域、无数据占位、桌面/移动端响应式尺寸
+  - ProgressTrend 测试：7天趋势数据渲染、无数据占位、空数据提示、XP/题数切换
+  - useProgressStats 新增函数测试：getModeAccuracy 各模式正确率计算、getDailyXP 每日XP计算
+  - 全量回归：**876/876 单元测试通过**（73 测试文件，历史新高位），lint 1 warning（pre-existing），build 成功（3.45s）
+- **备注**: 876 测试是项目历史最高水位。新增测试来自 AbilityRadar（~15个）+ ProgressTrend（~15个）+ useProgressStats.modeStats（~8个）= 约38个新增测试。SVG 组件在 jsdom 环境中测试受限，通过 SVG 属性断言和条件渲染测试验证正确性。**epic-018 剩余 iter-003（成就系统/学习档案），继续关注测试覆盖完整性**
+
 ### 2026-05-11 (cycle-2026-05-11-83)
 - **相关质量门禁**: 单元测试回归、状态同步测试、边界情况自动化测试、构建稳定性
 - **本次验证**: epic-014 iter-001「主练习链路稳定性打磨」质量门禁验证

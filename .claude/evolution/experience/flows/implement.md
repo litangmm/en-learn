@@ -8,6 +8,18 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
+- **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，纯 SVG 实现，零构建体积增长
+- **关键决策**:
+  - AbilityRadar 使用纯 SVG 多边形绘制雷达图，4轴（填空/选择/排序/听写），桌面/移动端自适应尺寸
+  - ProgressTrend 使用纯 SVG path 绘制折线图，支持 XP/题数切换，7天趋势数据
+  - useProgressStats 新增 getModeAccuracy() 从历史记录计算各模式正确率，getDailyXP(7) 计算每日XP变化
+  - AbilityRadar 使用 getModeAccuracy 数据渲染菱形/五边形填充区域，无数据时显示占位文字
+  - ProgressTrend 使用 getDailyXP 数据渲染折线图，支持 touch 交互显示每日详情
+  - AbilityRadar 和 ProgressTrend 无图表库依赖，完全手写 SVG，降低构建体积
+- **观察**: 零新增依赖，纯 SVG 实现。876 测试是项目历史最高水位。epic-018 iter-001+iter-002 完整交付里程碑导航/能力雷达/进度趋势，iter-003（成就系统/学习档案）继续推进。
+
 ### 2026-05-11 (cycle-2026-05-11-83)
 - **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整实现**
 - **实现质量**: 高 — 8 个 P0 bug 全部修复，零新增依赖，零构建体积增长

@@ -125,6 +125,13 @@
   - Commits: 1e73d65（代码）+ 15ab7fe（文档），版本 v0.23.0
 - **观察**: ARCH 在连续 20+ 个 cycle 未被选中后终于入选。关键转折点：App.tsx 复杂度已达灾难级临界点（~300 行条件渲染代码，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），重构窗口正在加速关闭。epic-003 全部 5 个迭代完成后，ARCH 持续提出的架构债务警告终于得到响应。ViewRouter 的 view → component 映射设计和 NavigationContext 的 Provider 模式实现了视图与逻辑解耦，为后续 iter-002（PracticeCard 策略模式）和 iter-003（构建体积监控基线）奠定基础。
 
+### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
+- **相关 Epic**: epic-018 iter-002「能力雷达图与进度趋势」—— 作为支持者
+- **结果**: epic-018 iter-002 **完成并部署**，v0.40.0，876/876 测试通过
+- **完成内容**: AbilityRadar SVG 五边形雷达图(4轴)+ProgressTrend 折线图(XP/题数切换)+useProgressStats 新增 getModeAccuracy/getDailyXP；全部零新增依赖、纯 SVG 实现
+- **当前状态**: **连续未被选中计数保持清零**（epic-018 支持者）
+- **观察**: AbilityRadar 和 ProgressTrend 均为纯 SVG 实现，无图表库引入，这是 ARCH 倡导的「依赖最小化」原则的直接体现。useProgressStats Hook 的 getModeAccuracy/getDailyXP 纯函数设计无副作用，测试覆盖简单。**epic-018 剩余 iter-003（成就系统/学习档案）继续支持，关注架构健康度**
+
 ### 2026-05-11 (cycle-2026-05-11-83)
 - **相关 Epic**: epic-014 iter-001「主练习链路稳定性打磨」—— 作为贡献者
 - **结果**: epic-014 iter-001 完成，819/819 测试通过，v0.37.0

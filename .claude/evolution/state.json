@@ -105,23 +105,30 @@
       "mode": "vision",
       "stage": "COMMIT",
       "status": "completed",
-      "summary": "epic-028 iter-003 每日复习计划与提醒系统提交完成。代码提交 de5cc5a，state.json 更新提交 7325a4d/0f3e3d0。1052 测试零回归，lint 1 warning，build 3.03s。状态已更新为 DEPLOY。"
+      "summary": "epic-028 iter-003 每日复习计划与提醒系统提交完成。代码提交 de5cc5a，state.json 更新提交 7325a4d/0f3e3d0/2e76f60。1052 测试零回归，lint 1 warning，build 3.03s。状态已更新为 DEPLOY，下一阶段 DEPLOY 已完成（见下一条记录）。"
+    },
+    {
+      "id": "2026-05-12-103",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-028 iter-003 每日复习计划与提醒系统部署 v0.47.0 完成。DailyReviewPlan + useReviewStreak + Header 复习指示器。构建 3.33s，Vercel 部署成功，git tag v0.47.0 @ 2e76f60 已推送。1052 测试零回归。"
     }
   ],
-  "status": "DEPLOY",
-  "commit": "0014a68",
+  "status": "REPORT",
+  "commit": "2e76f60",
   "cycleCount": 104,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
     "id": "2026-05-12-103",
     "mode": "vision",
-    "stage": "COMMIT"
+    "stage": "DEPLOY"
   },
   "previousCycle": {
     "id": "2026-05-12-103",
     "mode": "vision",
-    "stage": "COMMIT"
+    "stage": "DEPLOY"
   },
   "currentEpic": {
     "id": "epic-028",
@@ -390,13 +397,13 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "version": "v0.46.0",
-    "commit": "6d97933",
-    "iterationId": "iter-002",
-    "iterationTitle": "薄弱点智能识别与标记",
-    "deployedAt": "2026-05-12T01:05:00.000Z",
+    "version": "v0.47.0",
+    "commit": "2e76f60",
+    "iterationId": "iter-003",
+    "iterationTitle": "每日复习计划与提醒系统",
+    "deployedAt": "2026-05-12T09:49:38.000Z",
     "url": "https://en-learn.vercel.app"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T02:30:00.000Z"
+  "lastRun": "2026-05-12T02:51:00.000Z"
 }

@@ -4,10 +4,19 @@ import { storage } from '@/services/storage';
 
 /**
  * Hook for managing personal words with lazy loading.
- * Words are only loaded from storage when first accessed.
+ * Uses Map<word, PersonalWord> for O(1) lookups and mutations.
  */
 export function usePersonalWords() {
-  const [words, setWords] = useState<PersonalWord[] | null>(null);
+  const [wordsMap, setWordsMap] = useState<Map<string, PersonalWord> | null>(null);
+
+  /** Convert array from storage to Map */
+  const loadMap = useCallback((): Map<string, PersonalWord> => {
+    const fresh = storage.getPersonalWords();
+    const map = new Map<string, PersonalWord>();
+    fresh.forEach(w => map.set(w.word, w));
+    setWordsMap(map);
+    return map;
+  }, []);
 
   /**
    * Add or update a personal word.
@@ -15,7 +24,11 @@ export function usePersonalWords() {
    */
   const addWord = useCallback((word: PersonalWord) => {
     storage.addPersonalWord(word);
-    setWords(storage.getPersonalWords());
+    setWordsMap(prev => {
+      const newMap = prev ? new Map(prev) : new Map<string, PersonalWord>();
+      newMap.set(word.word, word);
+      return newMap;
+    });
   }, []);
 
   /**
@@ -23,7 +36,12 @@ export function usePersonalWords() {
    */
   const removeWord = useCallback((word: string) => {
     storage.removePersonalWord(word);
-    setWords(storage.getPersonalWords());
+    setWordsMap(prev => {
+      if (!prev) return null;
+      const newMap = new Map(prev);
+      newMap.delete(word);
+      return newMap;
+    });
   }, []);
 
   /**
@@ -31,39 +49,27 @@ export function usePersonalWords() {
    * Triggers lazy load if words haven't been loaded yet.
    */
   const isMarked = useCallback((word: string): boolean => {
-    if (words === null) {
-      const fresh = storage.getPersonalWords();
-      setWords(fresh);
-      return fresh.some(w => w.word === word && w.marked);
-    }
-    return words.some(w => w.word === word && w.marked);
-  }, [words]);
+    const map = wordsMap ?? loadMap();
+    return map.get(word)?.marked ?? false;
+  }, [wordsMap, loadMap]);
 
   /**
    * Get the count of personal words.
    * Triggers lazy load if words haven't been loaded yet.
    */
   const getCount = useCallback((): number => {
-    if (words === null) {
-      const fresh = storage.getPersonalWords();
-      setWords(fresh);
-      return fresh.length;
-    }
-    return words.length;
-  }, [words]);
+    const map = wordsMap ?? loadMap();
+    return map.size;
+  }, [wordsMap, loadMap]);
 
   /**
    * Get all personal words.
    * Triggers lazy load if words haven't been loaded yet.
    */
   const getWords = useCallback((): PersonalWord[] => {
-    if (words === null) {
-      const fresh = storage.getPersonalWords();
-      setWords(fresh);
-      return fresh;
-    }
-    return words;
-  }, [words]);
+    const map = wordsMap ?? loadMap();
+    return Array.from(map.values());
+  }, [wordsMap, loadMap]);
 
   /**
    * Toggle the marked state of a word.

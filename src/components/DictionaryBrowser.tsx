@@ -39,6 +39,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
   const { onBack } = props;
   const [selectedDictionaryId, setSelectedDictionaryId] = useState<string>('cet4');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [levelFilter, setLevelFilter] = useState<string>('all');
   const [showMarkedOnly, setShowMarkedOnly] = useState(
     // Initialize from sessionStorage flag or prop
@@ -59,10 +60,19 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
     }
   }, []);
 
+  // Debounce search query (300ms delay before applying filter)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Handle dictionary change
   const handleDictionaryChange = useCallback((value: string) => {
     setSelectedDictionaryId(value);
     setSearchQuery(''); // Clear search when dictionary changes
+    setDebouncedSearch(''); // Clear debounced search when dictionary changes
     setLevelFilter('all'); // Reset level filter when dictionary changes
   }, []);
 
@@ -104,7 +114,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
     };
   }, [selectedDictionaryId]);
 
-  // Filter sentences based on search query, level filter, and marked status (case-insensitive)
+  // Filter sentences based on debounced search query, level filter, and marked status (case-insensitive)
   const filteredSentences = useMemo(() => {
     let result = sentences;
 
@@ -113,9 +123,9 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
       result = result.filter(sentence => sentence.level === levelFilter);
     }
 
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+    // Apply search filter (uses debounced value for 300ms delay)
+    if (debouncedSearch.trim()) {
+      const query = debouncedSearch.toLowerCase();
       result = result.filter(sentence => {
         const word = sentence.blanks[0]?.word.toLowerCase() || '';
         const english = sentence.english.toLowerCase();
@@ -133,7 +143,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
     }
 
     return result;
-  }, [sentences, searchQuery, levelFilter, showMarkedOnly, isMarked]);
+  }, [sentences, debouncedSearch, levelFilter, showMarkedOnly, isMarked]);
 
   return (
     <div className="flex flex-col h-full">

@@ -276,7 +276,7 @@ describe('FocusSession', () => {
     expect(overlay).toBeInTheDocument();
 
     // Check the sentence appears in the DOM (it may appear multiple times due to the overlay)
-    const sentences = screen.getAllByText((content, element) => {
+    const sentences = screen.getAllByText((_, element) => {
       return element?.textContent?.includes('早起的鸟儿有虫吃') ?? false;
     });
     expect(sentences.length).toBeGreaterThanOrEqual(1);

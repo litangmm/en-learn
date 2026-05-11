@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Clock, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FocusSessionStats } from '@/components/FocusModeOverlay';
+import type { FocusSessionStats } from '@/components/FocusModeOverlay';
 
 interface FocusSessionSummaryProps {
   stats: FocusSessionStats;

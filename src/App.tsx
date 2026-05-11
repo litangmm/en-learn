@@ -22,7 +22,7 @@ import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
-import { FocusModeOverlay } from '@/components/FocusModeOverlay';
+import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusModeOverlay';
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { Toaster } from '@/components/ui/sonner';
@@ -68,7 +68,7 @@ function App() {
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [isFocusSession, setIsFocusSession] = useState(false);
-  const [focusSessionStats, setFocusSessionStats] = useState<{ duration: number; questionsCompleted: number } | null>(null);
+  const [focusSessionStats, setFocusSessionStats] = useState<FocusSessionStats | null>(null);
   const [showFocusSummary, setShowFocusSummary] = useState(false);
   const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
   const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
@@ -83,8 +83,8 @@ function App() {
     setIsFocusSession(true);
   }, []);
 
-  const endFocusSession = useCallback((stats: { duration: number; questionsCompleted: number }) => {
-    setFocusSessionStats(stats);
+  const endFocusSession = useCallback((stats: { duration: number; questionsCompleted: number; accuracy?: number }) => {
+    setFocusSessionStats({ ...stats, accuracy: stats.accuracy ?? 0 });
     setShowFocusSummary(true);
     setIsFocusSession(false);
   }, []);

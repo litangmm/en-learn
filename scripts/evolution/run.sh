@@ -168,11 +168,11 @@ $questions_block
 EOF
 }
 
-# State file health check
+# State file health check & auto-backup
 if [ -f "$STATE_FILE" ]; then
   if ! node -e "JSON.parse(require('fs').readFileSync('$STATE_FILE', 'utf-8'))" 2>/dev/null; then
     log "WARN" "state.json is corrupted. Attempting recovery from backup..."
-    LATEST_BACKUP=$(ls -t "$EVOLUTION_DIR"/state.json.backup-* "$EVOLUTION_DIR"/backup/state-*.json 2>/dev/null | head -1)
+    LATEST_BACKUP=$(ls -t "$EVOLUTION_DIR"/backup/state-*.json 2>/dev/null | head -1)
     if [ -n "$LATEST_BACKUP" ]; then
       cp "$LATEST_BACKUP" "$STATE_FILE"
       log "INFO" "Recovered state from $LATEST_BACKUP"
@@ -180,6 +180,13 @@ if [ -f "$STATE_FILE" ]; then
       log "ERROR" "No backup found. State file corrupted."
       exit 1
     fi
+  else
+    # Create timestamped backup before each run
+    mkdir -p "$EVOLUTION_DIR/backup"
+    BACKUP_FILE="$EVOLUTION_DIR/backup/state-$(date +%Y-%m-%d-%H%M%S).json"
+    cp "$STATE_FILE" "$BACKUP_FILE"
+    # Keep only last 10 backups
+    ls -t "$EVOLUTION_DIR"/backup/state-*.json 2>/dev/null | tail -n +11 | xargs rm -f 2>/dev/null || true
   fi
 fi
 
@@ -392,6 +399,16 @@ EOF
       fs.writeFileSync('$STATE_FILE', JSON.stringify(state, null, 2));
     "
     exit $EXIT_CODE
+  fi
+
+  # Validate state.json after Agent writes (before next loop iteration)
+  if ! node -e "JSON.parse(require('fs').readFileSync('$STATE_FILE', 'utf-8'))" 2>/dev/null; then
+    log "WARN" "state.json corrupted after $STATUS, recovering..."
+    LATEST_BACKUP=$(ls -t "$EVOLUTION_DIR"/backup/state-*.json 2>/dev/null | head -1)
+    if [ -n "$LATEST_BACKUP" ]; then
+      cp "$LATEST_BACKUP" "$STATE_FILE"
+      log "INFO" "Recovered from $LATEST_BACKUP"
+    fi
   fi
 
   log "INFO" "Stage $STATUS completed successfully"

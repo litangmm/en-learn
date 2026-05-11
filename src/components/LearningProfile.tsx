@@ -1,4 +1,4 @@
-import { Star, Trophy, Target, Calendar, TrendingUp, Award, ChevronLeft } from 'lucide-react';
+import { Star, Trophy, Target, Calendar, TrendingUp, Award, ChevronLeft, Zap } from 'lucide-react';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
 import { useProgressStats } from '@/hooks/useProgressStats';
@@ -188,6 +188,13 @@ export function LearningProfile({ onNavigate, onBack }: LearningProfileProps) {
             className="w-full py-3 px-4 bg-amber-50 border border-amber-200 rounded-lg text-amber-700 font-medium hover:bg-amber-100 transition-colors"
           >
             查看全部成就徽章
+          </button>
+          <button
+            onClick={() => onNavigate('efficiency')}
+            className="w-full py-3 px-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors flex items-center gap-2"
+          >
+            <Zap className="w-4 h-4" />
+            查看学习效率
           </button>
           <button
             onClick={() => onNavigate('progress')}

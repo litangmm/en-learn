@@ -10,11 +10,13 @@ import { DictionaryBrowser } from '@/components/DictionaryBrowser';
 import { ProgressHub } from '@/components/ProgressHub';
 import { LearningProfile } from '@/components/LearningProfile';
 import { WeaknessPanel } from '@/components/WeaknessPanel';
+import { LearningEfficiencyPanel } from '@/components/LearningEfficiencyPanel';
 
 export type View =
   | 'practice'
   | 'progress'
   | 'profile'
+  | 'efficiency'
   | 'mistake-book'
   | 'history'
   | 'data'
@@ -45,6 +47,8 @@ export interface ViewRouterProps {
   // WeaknessPanel
   onPracticeWeaknesses: (sentenceIds: string[], dictionaryId: string) => void;
   onBackFromWeakness: () => void;
+  // LearningEfficiencyPanel
+  onBackFromEfficiency?: () => void;
   // DailyChallengePanel
   challenges: DailyChallenge[];
   onClaimReward: (id: string) => void;
@@ -76,6 +80,7 @@ export function ViewRouter(props: ViewRouterProps) {
     onBackFromSmartReview,
     onPracticeWeaknesses,
     onBackFromWeakness,
+    onBackFromEfficiency = () => {},
     challenges,
     onClaimReward,
     onBackFromChallenges,
@@ -96,6 +101,9 @@ export function ViewRouter(props: ViewRouterProps) {
 
     case 'profile':
       return <LearningProfile onNavigate={onNavigate} onBack={onBackFromProfile} />;
+
+    case 'efficiency':
+      return <LearningEfficiencyPanel onBack={onBackFromEfficiency} />;
 
     case 'mistake-book':
       return (

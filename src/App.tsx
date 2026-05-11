@@ -869,6 +869,7 @@ function App() {
           onBackFromSmartReview={handleBackFromSmartReview}
           onPracticeWeaknesses={handlePracticeWeaknesses}
           onBackFromWeakness={handleBackFromWeakness}
+          onBackFromEfficiency={() => handleNavigate('profile')}
           challenges={challengeState.challenges}
           onClaimReward={claimReward}
           onBackFromChallenges={handleBackFromChallenges}

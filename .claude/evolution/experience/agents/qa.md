@@ -169,7 +169,17 @@
   - 全量回归：**819/819 单元测试通过**（67 测试文件，历史新高位），lint 1 warning（pre-existing），build 成功（3.46s）
 - **备注**: epic-014 iter-001 是 dir-1778465917386 用户完整评测反馈的直接响应。8 个状态同步 bug 修复需要特别关注 nextQuestion/retry/MoreMenu 的边界测试覆盖。819 测试是项目历史最高水位。**epic-014 剩余 5 个迭代（iter-002~006），继续关注测试覆盖完整性**
 
-### 2026-05-11 (cycle-2026-05-11-80)
+### 2026-05-11 (cycle-2026-05-11-90) — epic-018 COMPLETED (899 tests, all-time high)
+- **相关质量门禁**: 单元测试回归、SVG 组件测试、成就系统测试、徽章系统测试、构建稳定性
+- **本次验证**: epic-018「学习路径追踪与成就系统整合」全部 4 个迭代质量门禁验证
+  - iter-001 里程碑导航：848 测试
+  - iter-002 能力雷达图 + 进度趋势：876 测试
+  - iter-003 成就系统 + 学习档案：899 测试
+  - iter-004 徽章系统 + 数据联动：899 测试（最终）
+  - 全量回归：**899/899 单元测试通过**（项目历史最高水位），lint 1 warning（pre-existing），build 3.67s success
+- **备注**: epic-018 全部 4 个迭代收官，899 测试是项目历史最高水位。SVG 组件（AbilityRadar/ProgressTrend）纯视觉测试通过，零新增图表库依赖。成就系统（AchievementPanel/LearningProfile）和徽章系统（BadgeCard/BadgeDetail/BadgeGrid）测试覆盖完整。**epic-018 收官后，下一 Epic 候选 epic-022「词典数据结构优化与查询性能」（high 优先级），QA 需关注词典按需加载的异步测试覆盖**
+
+### 2026-05-11 (cycle-2026-05-11-83)
 - **相关质量门禁**: 单元测试回归、PersonalWord 类型测试、DictionaryBrowser 组件测试、LevelFilter 组件测试、DataManager 生词 Tab 测试、构建稳定性
 - **本次验证**: epic-009「个人词典管理与数据主权」全部 3 个迭代收官质量门禁验证
   - iter-001 词典浏览器（只读）：708 测试

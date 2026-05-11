@@ -8,7 +8,17 @@
 
 ## 历史数据
 
-### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长，纯 SVG/CSS 实现
+- **关键决策**:
+  - FocusModeOverlay 使用 fixed inset-0 全屏绝对定位，z-50 确保覆盖所有内容，背景主题 dimmed overlay
+  - sessionTimer 通过 useEffect + setInterval 追踪专注时长，cleanup on unmount
+  - FocusSessionSummary 作为纯展示组件，props 驱动统计渲染，与 useXP/usePractice 状态自然对接
+  - FocusModeOverlay 动画使用 framer-motion opacity 过渡，FocusSessionSummary 使用 scale 弹入
+  - 模式切换时 initializeInputs() 重置输入，避免跨模式状态残留
+- **重构**: 无
+- **观察**: epic-027 全部 5 个迭代收官。专注模式全屏覆盖实现了「进入沉浸→计时追踪→完成统计」的完整闭环。938 测试历史新高位，零新增 lint 警告。
 - **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，纯 SVG 实现，零构建体积增长
 - **关键决策**:

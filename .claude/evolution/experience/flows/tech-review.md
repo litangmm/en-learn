@@ -8,7 +8,16 @@
 
 ## 历史数据
 
-### 2026-05-11 (cycle-2026-05-11-82)
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **技术审查通过**
+- **技术决策**:
+  - FocusModeOverlay 作为全屏绝对定位覆盖层（fixed inset-0），sessionTimer 追踪专注时长，背景主题 dimmed
+  - FocusSessionSummary 纯展示组件，接收 stats（duration/questionCount/accuracy/score/streak/mode）作为 props
+  - FocusSessionStats 类型与 useXP 返回的 streak/profile 结构保持一致，确保数据流类型安全
+  - FocusModeOverlay 使用 framer-motion 动画进场（opacity 0→1, 300ms），FocusSessionSummary 使用 scale 弹入动画
+  - App.tsx 中 isFocusMode 状态与 toggleFocusMode 回调贯穿整个会话，模式切换时调用 initializeInputs() 重置输入
+- **质量门禁通过**: lint 1 warning (pre-existing), build 3.48s, 938/938 unit tests passed
+- **观察**: epic-027 全部 5 个迭代收官。FocusModeOverlay 零新增依赖、零构建体积增长。会话统计（FocusSessionStats）作为 FocusSessionSummary 的数据载体，与 useXP/usePractice 的状态自然对接，无需额外存储层。epic-027 是纯前端 UI 迭代的完整闭环案例：状态同步修复→模式打磨→体验优化→全屏覆盖。
 - **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **技术审查通过**
 - **技术决策**:
   - AnimatePresence mode="wait" 移除实现题卡即时切换，避免题卡切换延迟导致的「题卡停在上一题」问题

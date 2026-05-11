@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.44.0",
+      "tag": "v0.44.0",
+      "commit": "fe865e6",
+      "date": "2026-05-11T15:32:24.908Z",
+      "iterationId": "iter-005",
+      "title": "专注模式全屏覆盖与模式切换优化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-eaal2cjfo-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.42.0",
       "tag": "v0.42.0",
       "commit": "9ead4aa",

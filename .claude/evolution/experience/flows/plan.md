@@ -8,7 +8,23 @@
 
 ## 历史数据
 
-### 2026-05-11 (cycle-2026-05-11-87) — epic-018 iter-002 完成
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整执行**
+- **计划步骤**: 10 步全部完成
+  1. FocusModeOverlay 组件设计（计时器+背景+退出按钮）
+  2. FocusSessionSummary 组件设计（统计展示）
+  3. App.tsx 集成（isFocusMode 状态）
+  4. FocusModeOverlay.test.tsx
+  5. FocusSessionSummary.test.tsx
+  6. App.focus-session.test.tsx
+  7. 全量测试验证（938 测试零回归）
+  8. Build + Lint 验证
+  9. 经验沉淀更新
+  10. Deploy + State 更新
+- **实际修改文件**: 与计划一致
+  - 修改: src/App.tsx
+  - 新增: src/components/FocusModeOverlay.tsx, src/components/FocusSessionSummary.tsx, src/components/__tests__/FocusModeOverlay.test.tsx, src/components/__tests__/FocusSessionSummary.test.tsx, src/components/__tests__/App.focus-session.test.tsx
+- **观察**: epic-027 全部 5 个迭代收官。专注模式全屏覆盖作为「视图状态扩展」而非「路由变更」，状态管理集中在 App.tsx。FocusSessionStats 与 useXP/usePractice 状态自然对接，零新增存储层。cycle-95 将触发全新 brainstorm，选下一 Epic。
 - **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整执行**
 - **计划步骤**: 8 个步骤全部完成
   1. useProgressStats Hook 新增 getModeAccuracy() 和 getDailyXP(7)

@@ -501,3 +501,59 @@ export interface AchievementMoment {
   /** Timestamp when this moment was created */
   createdAt: number;
 }
+
+/**
+ * Weekly report data structure containing stats for a specific week.
+ */
+export interface WeeklyReport {
+  /** Week start date in YYYY-MM-DD format */
+  weekStart: string;
+  /** Week end date in YYYY-MM-DD format */
+  weekEnd: string;
+  /** Total XP earned this week */
+  xpEarned: number;
+  /** Total questions answered this week */
+  questionsAnswered: number;
+  /** Total correct answers this week */
+  correctAnswers: number;
+  /** Best streak achieved this week */
+  bestStreak: number;
+  /** Number of learning days this week */
+  learningDays: number;
+  /** Total sessions completed this week */
+  sessionsCompleted: number;
+  /** Accuracy percentage (0-100) */
+  accuracy: number;
+  /** Comparison with previous week */
+  comparison?: {
+    xpChange: number; // percentage change
+    questionsChange: number;
+    accuracyChange: number;
+  };
+  /** Timestamp when this report was generated */
+  generatedAt: number;
+}
+
+/**
+ * Configuration for weekly report behavior.
+ */
+export interface WeeklyReportConfig {
+  /** Whether weekly report is enabled */
+  enabled: boolean;
+  /** Last week start date that was shown (to avoid showing the same week twice) */
+  lastShownWeekStart: string | null;
+  /** Whether user has dismissed the current report */
+  dismissed: boolean;
+  /** Last dismissal timestamp */
+  dismissedAt: number | null;
+}
+
+/**
+ * Default weekly report config.
+ */
+export const DEFAULT_WEEKLY_REPORT_CONFIG: WeeklyReportConfig = {
+  enabled: true,
+  lastShownWeekStart: null,
+  dismissed: false,
+  dismissedAt: null,
+};

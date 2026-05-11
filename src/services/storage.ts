@@ -1,6 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState } from '@/data/types';
-import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig } from '@/data/types';
+import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
 export interface StorageSchemaV1 {
@@ -33,6 +33,7 @@ const ADAPTIVE_CONFIG_KEY = 'adaptive_config';
 const HINT_CONFIG_KEY = 'hint_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const DAILY_REVIEW_STATS_KEY = 'en-learn-daily-review-stats';
+const WEEKLY_REPORT_CONFIG_KEY = 'en-learn-weekly-report-config';
 const MAX_HISTORY_ENTRIES = 100;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
@@ -340,6 +341,32 @@ function isValidDailyReviewStats(data: unknown): data is DailyReviewState {
 
   // Verify all completedReviewIds are strings
   if (!stats.completedReviewIds.every((id) => typeof id === 'string')) {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidWeeklyReportConfig(data: unknown): data is WeeklyReportConfig {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.enabled !== 'boolean') {
+    return false;
+  }
+
+  if (obj.lastShownWeekStart !== null && typeof obj.lastShownWeekStart !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.dismissed !== 'boolean') {
+    return false;
+  }
+
+  if (obj.dismissedAt !== null && typeof obj.dismissedAt !== 'number') {
     return false;
   }
 
@@ -752,6 +779,38 @@ function saveReviewStats(state: DailyReviewState): void {
     localStorage.setItem(DAILY_REVIEW_STATS_KEY, JSON.stringify(state));
   } catch (error) {
     console.warn('[StorageService] Failed to save daily review stats:', error);
+  }
+}
+
+function loadWeeklyReportConfig(): WeeklyReportConfig | null {
+  const raw = localStorage.getItem(WEEKLY_REPORT_CONFIG_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted weekly report config data, clearing');
+    localStorage.removeItem(WEEKLY_REPORT_CONFIG_KEY);
+    return null;
+  }
+
+  if (!isValidWeeklyReportConfig(parsed)) {
+    console.warn('[StorageService] Invalid weekly report config schema, clearing');
+    localStorage.removeItem(WEEKLY_REPORT_CONFIG_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveWeeklyReportConfig(config: WeeklyReportConfig): void {
+  try {
+    localStorage.setItem(WEEKLY_REPORT_CONFIG_KEY, JSON.stringify(config));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save weekly report config:', error);
   }
 }
 
@@ -1367,6 +1426,30 @@ export const StorageService = {
 
   setHintConfig(config: HintConfig): void {
     saveHintConfig(config);
+  },
+
+  getWeeklyReportConfig(): WeeklyReportConfig {
+    const config = loadWeeklyReportConfig();
+    return config ?? { ...DEFAULT_WEEKLY_REPORT_CONFIG };
+  },
+
+  saveWeeklyReportConfig(config: WeeklyReportConfig): void {
+    saveWeeklyReportConfig(config);
+  },
+
+  dismissWeeklyReport(): void {
+    const config = this.getWeeklyReportConfig();
+    config.dismissed = true;
+    config.dismissedAt = Date.now();
+    this.saveWeeklyReportConfig(config);
+  },
+
+  markWeeklyReportShown(weekStart: string): void {
+    const config = this.getWeeklyReportConfig();
+    config.lastShownWeekStart = weekStart;
+    config.dismissed = false;
+    config.dismissedAt = null;
+    this.saveWeeklyReportConfig(config);
   },
 
   exportAllData(): ExportData {

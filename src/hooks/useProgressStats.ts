@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { storage } from '@/services/storage';
-import { LEVEL_THRESHOLDS, type XPProfile, type PracticeMode, type ModeAccuracy, type DailyTrend } from '@/data/types';
+import { LEVEL_THRESHOLDS, type XPProfile, type PracticeMode, type ModeAccuracy, type DailyTrend, type WeeklyReport } from '@/data/types';
 
 export interface ProgressStats {
   xp: XPProfile;
@@ -182,4 +182,119 @@ export function getDailyXP(days: number = 7): DailyTrend[] {
   }
 
   return result;
+}
+
+/**
+ * Get the start of the week (Monday) for a given date.
+ */
+export function getWeekStart(date: Date): Date {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday as start of week
+  d.setDate(diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/**
+ * Get the end of the week (Sunday 23:59:59.999) for a given date.
+ */
+export function getWeekEnd(date: Date): Date {
+  const weekStart = getWeekStart(date);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
+  return weekEnd;
+}
+
+/**
+ * Format a date as YYYY-MM-DD string.
+ */
+function formatDateString(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+/**
+ * Get weekly statistics for a specific week.
+ * Aggregates XP, questions, accuracy, streak, and learning days from session history.
+ */
+export function getWeeklyStats(weekStart: Date): WeeklyReport {
+  const history = storage.getHistory();
+
+  const weekStartStr = formatDateString(weekStart);
+  const weekEnd = getWeekEnd(weekStart);
+  const weekEndStr = formatDateString(weekEnd);
+
+  // Filter history entries for this week
+  const weekEntries = history.filter(entry => {
+    const entryDateStr = new Date(entry.timestamp).toISOString().split('T')[0];
+    return entryDateStr >= weekStartStr && entryDateStr <= weekEndStr;
+  });
+
+  // Calculate stats
+  let xpEarned = 0;
+  let questionsAnswered = 0;
+  let correctAnswers = 0;
+  const uniqueDates = new Set<string>();
+
+  weekEntries.forEach(entry => {
+    xpEarned += entry.score;
+    questionsAnswered += entry.totalQuestions;
+    correctAnswers += entry.correctCount;
+    uniqueDates.add(new Date(entry.timestamp).toISOString().split('T')[0]);
+  });
+
+  const accuracy = questionsAnswered > 0
+    ? Math.round((correctAnswers / questionsAnswered) * 100)
+    : 0;
+
+  // Calculate best streak from history (this is session-level, not daily streak)
+  // For weekly report, we show total correct answers as "streak" metric
+  const bestStreak = correctAnswers;
+
+  // Get previous week's stats for comparison
+  const prevWeekStart = new Date(weekStart);
+  prevWeekStart.setDate(prevWeekStart.getDate() - 7);
+  const prevWeekEnd = getWeekEnd(prevWeekStart);
+
+  const prevWeekEntries = history.filter(entry => {
+    const entryDateStr = new Date(entry.timestamp).toISOString().split('T')[0];
+    const prevStartStr = formatDateString(prevWeekStart);
+    const prevEndStr = formatDateString(prevWeekEnd);
+    return entryDateStr >= prevStartStr && entryDateStr <= prevEndStr;
+  });
+
+  let prevXp = 0;
+  let prevQuestions = 0;
+  let prevCorrect = 0;
+  prevWeekEntries.forEach(entry => {
+    prevXp += entry.score;
+    prevQuestions += entry.totalQuestions;
+    prevCorrect += entry.correctCount;
+  });
+
+  const prevAccuracy = prevQuestions > 0
+    ? Math.round((prevCorrect / prevQuestions) * 100)
+    : 0;
+
+  // Calculate comparison
+  const comparison = {
+    xpChange: prevXp > 0 ? Math.round(((xpEarned - prevXp) / prevXp) * 100) : xpEarned > 0 ? 100 : 0,
+    questionsChange: prevQuestions > 0 ? Math.round(((questionsAnswered - prevQuestions) / prevQuestions) * 100) : questionsAnswered > 0 ? 100 : 0,
+    accuracyChange: accuracy - prevAccuracy,
+  };
+
+  return {
+    weekStart: weekStartStr,
+    weekEnd: weekEndStr,
+    xpEarned,
+    questionsAnswered,
+    correctAnswers,
+    bestStreak,
+    learningDays: uniqueDates.size,
+    sessionsCompleted: weekEntries.length,
+    accuracy,
+    comparison,
+    generatedAt: Date.now(),
+  };
 }

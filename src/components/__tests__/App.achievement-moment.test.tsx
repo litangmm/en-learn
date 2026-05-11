@@ -158,12 +158,36 @@ vi.mock('@/hooks/useAchievementMoment', () => ({
   sortMomentsByPriority: vi.fn((moments: AchievementMoment[]) => moments),
 }));
 
+vi.mock('@/hooks/useWeeklyReport', () => ({
+  useWeeklyReport: vi.fn(() => ({
+    report: null,
+    shouldShow: false,
+    dismiss: vi.fn(),
+    markShown: vi.fn(),
+    refresh: vi.fn(),
+  })),
+}));
+
 vi.mock('@/components/AchievementMomentCard', () => ({
   AchievementMomentCard: vi.fn(({ moment, triggerKey }: { moment: AchievementMoment; triggerKey?: string }) => (
     <div data-testid="achievement-moment-card">
       <span data-testid="moment-type">{moment?.type}</span>
       <span data-testid="moment-title">{moment?.title}</span>
       {triggerKey && <span data-testid="moment-trigger-key">{triggerKey}</span>}
+    </div>
+  )),
+}));
+
+vi.mock('@/components/WeeklyReportCard', () => ({
+  WeeklyReportCard: vi.fn(({ report, triggerKey, onDismiss }: {
+    report: any;
+    triggerKey?: string;
+    onDismiss?: () => void;
+  }) => (
+    <div data-testid="weekly-report-card">
+      <span data-testid="report-week">{report?.weekStart}</span>
+      {triggerKey && <span data-testid="report-trigger-key">{triggerKey}</span>}
+      {onDismiss && <button data-testid="report-dismiss" onClick={onDismiss}>关闭</button>}
     </div>
   )),
 }));

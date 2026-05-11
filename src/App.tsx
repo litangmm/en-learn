@@ -29,7 +29,9 @@ import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusMode
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { AchievementMomentCard } from '@/components/AchievementMomentCard';
+import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
+import { useWeeklyReport } from '@/hooks/useWeeklyReport';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -82,6 +84,10 @@ function App() {
   const [selectedOnboardingDictionary, setSelectedOnboardingDictionary] = useState('cet4');
   const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
   const [achievementMomentTrigger, setAchievementMomentTrigger] = useState<{ moment: AchievementMoment | null; key: number } | null>(null);
+  const [weeklyReportTrigger, setWeeklyReportTrigger] = useState<{ key: number } | null>(null);
+
+  // Initialize weekly report hook
+  const { report: weeklyReport, shouldShow: showWeeklyReport, dismiss: dismissWeeklyReport, markShown: markWeeklyReportShown } = useWeeklyReport();
 
   // Initialize achievement moment hook
   const {
@@ -230,6 +236,27 @@ function App() {
   // Track recent share triggers for frequency control (5-min deduplication)
   const recentShareTriggersRef = useRef<ShareTrigger[]>([]);
 
+  // Check for weekly report on visibility change (user returns to app)
+  const weeklyReportTriggeredRef = useRef(false);
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !weeklyReportTriggeredRef.current) {
+        // Check if should show weekly report after achievement moment is done
+        if (!achievementMomentTrigger && showWeeklyReport && weeklyReport) {
+          weeklyReportTriggeredRef.current = true;
+          // Use requestAnimationFrame to defer the state update
+          const frameId = requestAnimationFrame(() => {
+            setWeeklyReportTrigger({ key: Date.now() });
+          });
+          return () => cancelAnimationFrame(frameId);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [achievementMomentTrigger, showWeeklyReport, weeklyReport]);
+
   // Check if share trigger should be blocked (5-min deduplication)
   const checkRecentShare = (type: string, id: string): boolean => {
     return isRecentShareTrigger(recentShareTriggersRef.current, type, id);
@@ -355,6 +382,34 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [achievementMomentTrigger, acknowledgeMoment]);
+
+  // Trigger weekly report after achievement moment (if should show)
+  useEffect(() => {
+    // Only trigger if achievement moment is done and weekly report should show
+    if (!achievementMomentTrigger && showWeeklyReport && !weeklyReportTrigger) {
+      // Use requestAnimationFrame to defer the state update
+      const frameId = requestAnimationFrame(() => {
+        setWeeklyReportTrigger({ key: Date.now() });
+      });
+      return () => cancelAnimationFrame(frameId);
+    }
+  }, [achievementMomentTrigger, showWeeklyReport, weeklyReportTrigger]);
+
+  // Auto-dismiss weekly report after 5 seconds
+  useEffect(() => {
+    if (weeklyReportTrigger) {
+      const timer = setTimeout(() => {
+        setWeeklyReportTrigger(null);
+        markWeeklyReportShown();
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [weeklyReportTrigger, markWeeklyReportShown]);
+
+  const handleDismissWeeklyReport = useCallback(() => {
+    dismissWeeklyReport();
+    setWeeklyReportTrigger(null);
+  }, [dismissWeeklyReport]);
 
   useEffect(() => {
     if (!isReviewMode) {
@@ -494,6 +549,12 @@ function App() {
   };
 
   const handleOpenChallenges = () => {
+    // Trigger weekly report check when trophy entrance is clicked
+    if (showWeeklyReport && !weeklyReportTrigger) {
+      requestAnimationFrame(() => {
+        setWeeklyReportTrigger({ key: Date.now() });
+      });
+    }
     setView('challenges');
   };
 
@@ -1110,6 +1171,14 @@ function App() {
         <AchievementMomentCard
           moment={achievementMomentTrigger.moment}
           triggerKey={String(achievementMomentTrigger.key)}
+        />
+      )}
+
+      {weeklyReportTrigger && weeklyReport && (
+        <WeeklyReportCard
+          report={weeklyReport}
+          triggerKey={String(weeklyReportTrigger.key)}
+          onDismiss={handleDismissWeeklyReport}
         />
       )}
 

@@ -180,7 +180,7 @@ describe('App mode hints', () => {
     fireEvent.click(dictationButton);
 
     expect(
-      screen.getByText('听音频后，根据中文提示和首字母提示填写单词'),
+      screen.getAllByText(/首字母听写.*填写单词/)[0],
     ).toBeInTheDocument();
   });
 

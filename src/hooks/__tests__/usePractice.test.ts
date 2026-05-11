@@ -132,7 +132,7 @@ describe('usePractice', () => {
     expect(result.current.state.isCorrect).toBe(false);
     expect(result.current.state.score).toBe(0);
 
-    // Retry
+    // Retry (resets attempts to 0)
     act(() => {
       result.current.retry();
     });
@@ -146,6 +146,7 @@ describe('usePractice', () => {
     });
 
     expect(result.current.state.isCorrect).toBe(true);
+    // After retry + new attempt, attempts = 2 (retried from 1 wrong, now got correct)
     expect(result.current.state.attempts).toBe(2);
     expect(result.current.state.score).toBe(7); // 10 - (2-1)*3 = 7
   });
@@ -324,7 +325,7 @@ describe('usePractice', () => {
     expect(result.current.state.showResult).toBe(false);
   });
 
-  it('should retry without resetting attempts', async () => {
+  it('should reset attempts on retry', async () => {
     const { result } = renderHook(() => usePractice('test'));
 
     await waitFor(() => {
@@ -345,7 +346,7 @@ describe('usePractice', () => {
       result.current.retry();
     });
 
-    expect(result.current.state.attempts).toBe(1);
+    expect(result.current.state.attempts).toBe(0);
     expect(result.current.state.showResult).toBe(false);
     expect(result.current.state.isCorrect).toBe(false);
   });
@@ -753,6 +754,7 @@ describe('usePractice', () => {
       });
 
       expect(result.current.state.isCorrect).toBe(true);
+      // After retry, attempts carries over then increments to 2
       expect(result.current.state.attempts).toBe(2);
     });
   });
@@ -1001,6 +1003,251 @@ describe('usePractice', () => {
       const callArg = addHistorySpy.mock.calls[0][0];
       expect(callArg.duration).toBeGreaterThanOrEqual(1);
       expect(callArg.correctCount).toBe(3);
+    });
+  });
+
+  describe('nextSentence state reset', () => {
+    it('should reset showResult to false on nextSentence', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer first question correctly, showResult becomes true
+      act(() => {
+        result.current.setInput(0, 'catches');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.showResult).toBe(true);
+      expect(result.current.state.isCorrect).toBe(true);
+
+      // Call nextSentence
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      expect(result.current.state.showResult).toBe(false);
+      expect(result.current.state.isCorrect).toBe(false);
+      expect(result.current.state.currentIndex).toBe(1);
+    });
+
+    it('should reset attempts to 0 on nextSentence', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer first question wrong (attempts = 1)
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.attempts).toBe(1);
+
+      // Call nextSentence
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      expect(result.current.state.attempts).toBe(0);
+    });
+
+    it('should clear currentInputs on nextSentence', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Type some input (not submitting)
+      act(() => {
+        result.current.setInput(0, 'test input');
+      });
+
+      expect(result.current.state.currentInputs[0]).toBe('test input');
+
+      // Call nextSentence
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      expect(result.current.state.currentInputs[0]).toBe('');
+    });
+
+    it('should clear selectedChoiceId on nextSentence', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      // Call nextSentence
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      expect(result.current.state.selectedChoiceId).toBeNull();
+    });
+
+    it('should clear orderedTokenIds on nextSentence', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Call nextSentence
+      act(() => {
+        result.current.nextSentence();
+      });
+
+      expect(result.current.state.orderedTokenIds).toEqual([]);
+    });
+  });
+
+  describe('retry state reset', () => {
+    it('should reset showResult to false on retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Answer first question wrong
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.showResult).toBe(true);
+      expect(result.current.state.isCorrect).toBe(false);
+
+      // Call retry
+      act(() => {
+        result.current.retry();
+      });
+
+      expect(result.current.state.showResult).toBe(false);
+    });
+
+    it('should reset isCorrect to false on retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      act(() => {
+        result.current.setInput(0, 'catches');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      expect(result.current.state.isCorrect).toBe(true);
+
+      // Call retry
+      act(() => {
+        result.current.retry();
+      });
+
+      expect(result.current.state.isCorrect).toBe(false);
+    });
+
+    it('should clear currentInputs on retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      act(() => {
+        result.current.setInput(0, 'wrong answer');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      // Call retry
+      act(() => {
+        result.current.retry();
+      });
+
+      expect(result.current.state.currentInputs[0]).toBe('');
+    });
+
+    it('should clear selectedChoiceId on retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      act(() => {
+        result.current.setInput(0, 'wrong');
+      });
+      act(() => {
+        result.current.checkAnswer();
+      });
+
+      // Call retry
+      act(() => {
+        result.current.retry();
+      });
+
+      expect(result.current.state.selectedChoiceId).toBeNull();
+    });
+
+    it('should clear orderedTokenIds on retry', async () => {
+      vi.spyOn(storage, 'loadSession').mockReturnValue(null);
+
+      const { result } = renderHook(() => usePractice('test'));
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false);
+      });
+
+      // Call retry without any prior action
+      act(() => {
+        result.current.retry();
+      });
+
+      expect(result.current.state.orderedTokenIds).toEqual([]);
     });
   });
 });

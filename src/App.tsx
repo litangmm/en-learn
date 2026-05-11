@@ -29,6 +29,7 @@ import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
 import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
+import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
 
 // Share prompt type for level-up and badge celebrations
 export type SharePromptType = 'levelup' | 'badge';
@@ -43,7 +44,7 @@ function getModeHint(mode: PracticeMode): string {
     case 'fill-in-blanks':
       return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
     case 'dictation':
-      return '听音频后，根据中文提示和首字母提示填写单词';
+      return '首字母听写：听音频后，根据中文提示和首字母提示填写单词';
     case 'multiple-choice':
       return '选择最合适的答案后，点击提交答案按钮';
     case 'sentence-reorder':
@@ -76,20 +77,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import './App.css';
-
-// Share trigger frequency control - 5-minute deduplication
-export type ShareTrigger = { type: string; id: string; timestamp: number };
-
-export const isRecentShareTrigger = (
-  triggers: ShareTrigger[],
-  type: string,
-  id: string
-): boolean => {
-  const now = Date.now();
-  const fiveMinutesAgo = now - 5 * 60 * 1000;
-  const validTriggers = triggers.filter(t => t.timestamp > fiveMinutesAgo);
-  return validTriggers.some(t => t.type === type && t.id === id);
-};
 
 function App() {
   const isMobile = useIsMobile();
@@ -150,12 +137,12 @@ function App() {
   const { getLeaderboardEntries } = useLeaderboard();
   const { hintLevel, shouldShowHint } = useHintLevel();
 
-  // Initialize inputs when sentence changes
+  // Initialize inputs when sentence changes (guard: skip if showResult=true to prevent state race)
   useEffect(() => {
-    if (currentSentence && !state.isComplete) {
+    if (currentSentence && !state.isComplete && !state.showResult) {
       initializeInputs();
     }
-  }, [currentSentence?.id]);
+  }, [currentSentence?.id, currentSentence, state.isComplete, state.showResult, initializeInputs]);
 
   // Auto-play audio on new sentence
   useEffect(() => {
@@ -166,7 +153,7 @@ function App() {
       }, delay);
       return () => clearTimeout(timer);
     }
-  }, [currentSentence?.id, practiceMode]);
+  }, [currentSentence?.id, currentSentence, state.showResult, state.isComplete, practiceMode, speak]);
 
   // Global keyboard shortcuts
   const stateRef = useRef(state);
@@ -324,6 +311,7 @@ function App() {
   const handleModeChange = (mode: PracticeMode) => {
     if (mode === practiceMode) return;
     setPracticeMode(mode);
+    // initializeInputs() already clears showResult/isCorrect/attempts, preventing stale result UI
     initializeInputs();
     if (mode === 'sentence-reorder') {
       resetTokens();
@@ -891,7 +879,7 @@ function App() {
                 </div>
               )}
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 {currentSentence && (
                   <PracticeCard
                     key={currentSentence.id}
@@ -914,6 +902,7 @@ function App() {
                     orderedTokenIds={state.orderedTokenIds}
                     onSelectToken={selectToken}
                     onDeselectToken={deselectToken}
+                    onSkip={nextSentence}
                     onInputChange={setInput}
                     onCheck={checkAnswer}
                     onNext={nextSentence}

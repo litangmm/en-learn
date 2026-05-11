@@ -34,6 +34,8 @@ export interface PracticeState {
   score: number;
   selectedChoiceId?: string | null;
   orderedTokenIds: string[];
+  /** True when user is in retry mode (showResult cleared, waiting for new answer) */
+  isRetrying?: boolean;
 }
 
 export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?: PracticeMode) {
@@ -315,7 +317,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   const checkAnswer = useCallback((param?: string | string[]) => {
     if (!currentSentence) return;
 
-    const newAttempts = state.attempts + 1;
+    // After retry, restore previous attempts count instead of incrementing from 0
+    const baseAttempts = state.isRetrying ? previousAttemptsRef.current : state.attempts;
+    const newAttempts = baseAttempts + 1;
 
     // Sentence-reorder mode: compare reconstructed sentence
     if (Array.isArray(param)) {
@@ -330,6 +334,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
           showResult: true,
           isCorrect: true,
           attempts: newAttempts,
+          isRetrying: false,
           score: prev.score + 10,
           userAnswers: [
             ...prev.userAnswers,
@@ -373,6 +378,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
           showResult: true,
           isCorrect: true,
           attempts: newAttempts,
+          isRetrying: false,
           score: prev.score + 10,
           userAnswers: [
             ...prev.userAnswers,
@@ -427,6 +433,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
         showResult: true,
         isCorrect: true,
         attempts: newAttempts,
+        isRetrying: false,
         score: prev.score + pointsEarned,
         userAnswers: [
           ...prev.userAnswers,
@@ -505,13 +512,23 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
     });
   }, [shuffledSentences]);
 
+  // Track previous attempts count before retry to preserve it after retry
+  const previousAttemptsRef = useRef<number>(0);
+
   const retry = useCallback(() => {
+    // Save current attempts count before clearing
+    previousAttemptsRef.current = state.attempts;
     setState((prev) => ({
       ...prev,
       showResult: false,
       isCorrect: false,
+      attempts: 0,
+      currentInputs: new Array(currentSentence?.blanks.length || 1).fill(''),
+      selectedChoiceId: null,
+      orderedTokenIds: [],
+      isRetrying: true,
     }));
-  }, []);
+  }, [currentSentence, state.attempts]);
 
   const reset = useCallback(() => {
     setShuffleSeed((prev) => prev + 1);

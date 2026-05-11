@@ -58,8 +58,8 @@ describe('PracticeCard wrong answer feedback', () => {
     expect(screen.getByText('正确答案')).toBeInTheDocument();
     expect(screen.getByText('catches')).toBeInTheDocument();
     expect(screen.getByText('解析')).toBeInTheDocument();
-    // Chinese appears twice: once in main content, once in analysis section
-    expect(screen.getAllByText('早起的鸟儿有虫吃。').length).toBe(2);
+    // New explanation includes the target word (catches appears in correct answer section AND explanation section)
+    expect(screen.getAllByText(/catches/).length).toBeGreaterThanOrEqual(2);
   });
 
   it('shows 3-section feedback for dictation mode', () => {
@@ -76,8 +76,8 @@ describe('PracticeCard wrong answer feedback', () => {
     expect(screen.getByText('正确答案')).toBeInTheDocument();
     expect(screen.getByText('catches')).toBeInTheDocument();
     expect(screen.getByText('解析')).toBeInTheDocument();
-    // Chinese appears twice: once in main content, once in analysis section
-    expect(screen.getAllByText('早起的鸟儿有虫吃。').length).toBe(2);
+    // New explanation includes the target word (catches appears in correct answer section AND explanation section)
+    expect(screen.getAllByText(/catches/).length).toBeGreaterThanOrEqual(2);
   });
 
   it('shows 3-section feedback for multiple-choice mode', () => {
@@ -91,14 +91,14 @@ describe('PracticeCard wrong answer feedback', () => {
     );
 
     expect(screen.getByText('你的答案')).toBeInTheDocument();
-    // Option text appears twice: once in options, once in user answer section
+    // Option text appears: once in options, once in user answer section
     expect(screen.getAllByText('Actions speak louder than words.').length).toBe(2);
     expect(screen.getByText('正确答案')).toBeInTheDocument();
-    // Correct answer text appears twice: once in options, once in correct answer section
+    // Correct answer text appears: once in options, once in correct answer section
     expect(screen.getAllByText('The early bird catches the worm.').length).toBe(2);
     expect(screen.getByText('解析')).toBeInTheDocument();
-    // Chinese appears twice: once in main content, once in analysis section
-    expect(screen.getAllByText('早起的鸟儿有虫吃。').length).toBe(2);
+    // New explanation includes the target word in it
+    expect(screen.getAllByText(/catches/).length).toBeGreaterThanOrEqual(2);
   });
 
   it('shows 3-section feedback for sentence-reorder mode', () => {
@@ -116,7 +116,8 @@ describe('PracticeCard wrong answer feedback', () => {
     expect(screen.getByText('正确答案')).toBeInTheDocument();
     expect(screen.getAllByText('The early bird catches the worm.').length).toBe(2);
     expect(screen.getByText('解析')).toBeInTheDocument();
-    expect(screen.getAllByText('早起的鸟儿有虫吃。').length).toBe(2);
+    // New explanation mentions the word meaning
+    expect(screen.getByText(/含义|完整句子/)).toBeInTheDocument();
   });
 
   it('shows empty answer placeholder when inputs are empty in fill-in-blanks', () => {

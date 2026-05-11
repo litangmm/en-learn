@@ -47,7 +47,7 @@ export function MoreMenu({
           <span className="hidden lg:inline">更多</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent align="end" sideOffset={8} className="w-48 sm:w-52">
         {/* 错题本 */}
         <DropdownMenuItem onClick={onOpenMistakeBook} className="cursor-pointer">
           <BookOpen className="w-4 h-4 text-slate-500" />

@@ -3,6 +3,12 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-108",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-028 iter-005 自适应出题权重算法优化完成。OVERDUE_BOOST(1.5x)/NOT_DUE_PENALTY(0.3x) 常量 + getSentenceWeight/getWeightedSentenceIds 增加 currentTime 参数 + reviewAccuracyBonus 叠加 + 8 个新增测试用例。1105 测试零回归，lint 1 warning，build 3.07s。Commit 6062f88."
+    },
       "id": "2026-05-12-106",
       "mode": "vision",
       "stage": "REPORT",
@@ -143,20 +149,20 @@
       "summary": "epic-028 iter-004 学习效率数据面板部署 v0.48.0 完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile 导航集成。构建 3.24s，Vercel 部署成功，git tag v0.48.0 @ 33cd246 已推送。1089 测试零回归。"
     }
   ],
-  "status": "IMPLEMENT",
-  "commit": null,
-  "cycleCount": 108,
+  "status": "TEST",
+  "commit": "6062f88",
+  "cycleCount": 109,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-12-108",
+    "id": "2026-05-12-109",
     "mode": "vision",
-    "stage": "PLAN"
+    "stage": "IMPLEMENT"
   },
   "previousCycle": {
-    "id": "2026-05-12-106",
+    "id": "2026-05-12-107",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "PLAN"
   },
   "currentEpic": {
     "id": "epic-028",
@@ -194,10 +200,10 @@
       },
       {
         "id": "iter-005",
-        "title": "自适应出题权重算法优化",
+        "title": "自适应出题权重算法优化 + 关键 Bug 修复",
         "scope": "frontend-only",
         "status": "in_progress",
-        "description": "结合间隔重复状态和错误率数据，构建综合出题权重评分。确保新词有适中的曝光率。提供权重算法的可视化说明。"
+        "description": "结合间隔重复状态和错误率数据，构建综合出题权重评分。修复 8 个关键 bug（下一题状态同步/重试清反馈/更多菜单/词库响应式/听写命名/选项相似度/跳过按钮/解析说明）。确保新词有适中的曝光率。提供权重算法的可视化说明。"
       }
     ],
     "currentIterationIndex": 4,
@@ -206,29 +212,34 @@
   },
   "plan": {
     "iterationId": "iter-005",
-    "iterationTitle": "自适应出题权重算法优化",
+    "iterationTitle": "自适应出题权重算法优化 + 关键 Bug 修复",
     "scope": "frontend-only",
-    "planFile": "docs/superpowers/plans/2026-05-12-epic-028-iter-005-adaptive-question-weighting.md",
+    "planFile": ".claude/evolution/plans/epic-028-iter-005-plan.md",
     "steps": [
-      "Step 1: Add constants (OVERDUE_BOOST, NOT_DUE_PENALTY) to useQuestionWeighting.ts",
-      "Step 2: Extend getSentenceWeight() to accept currentTime parameter and apply spaced repetition modifiers",
-      "Step 3: Propagate currentTime through getWeightedSentenceIds()",
-      "Step 4: Update usePractice.ts call site to pass Date.now()",
-      "Step 5: Write useQuestionWeighting.test.ts with comprehensive coverage",
-      "Step 6: Run all unit tests (expect ~1100 tests)",
-      "Step 7: Run lint",
-      "Step 8: Run build",
-      "Step 9: Commit"
+      "Step 1: Fix Bug 1 - AnimatePresence mode=\"popLayout\" + progress sync",
+      "Step 2: Fix Bug 2 - Verify retry() clears feedback properly",
+      "Step 3: Fix Bug 3 - MoreMenu click handlers (if needed)",
+      "Step 4: Fix Bug 4 - DictionaryBrowser grid responsive",
+      "Step 5: Fix Bug 5 - Dictation mode naming (already says 首字母听写)",
+      "Step 6: Fix Bug 6 - Lower distractor similarity threshold to 0.5",
+      "Step 7: Fix Bug 7 - Sentence reorder skip button prominence",
+      "Step 8: Fix Bug 8 - Enhance getExplanation with WHY not WHAT",
+      "Step 9: Run all unit tests (expect ~1100 tests)",
+      "Step 10: Run lint",
+      "Step 11: Run build",
+      "Step 12: Commit"
     ],
     "filesToModify": [
-      "src/hooks/useQuestionWeighting.ts",
-      "src/hooks/usePractice.ts"
+      "src/App.tsx",
+      "src/components/PracticeCard.tsx",
+      "src/components/MoreMenu.tsx",
+      "src/components/DictionaryBrowser.tsx",
+      "src/components/practice/modes/SentenceReorderMode.tsx",
+      "src/hooks/useAdaptivePractice.ts"
     ],
-    "filesToCreate": [
-      "src/hooks/__tests__/useQuestionWeighting.test.ts"
-    ],
+    "filesToCreate": [],
     "dependencies": [],
-    "testStrategy": "测试权重公式：未到复习期降权、逾期复习提权、逾期+低正确率叠加、无复习数据回退、权重上限 5.0 不突破"
+    "testStrategy": "验证：1) 下一题进度和卡片同步 2) 重试清反馈 3) 更多菜单可用 4) 词库卡片不溢出 5) 听写提示明确 6) 选项差异明显 7) 跳过按钮突出 8) 解析说明原因"
   },
   "epicHistory": [
     {
@@ -326,13 +337,13 @@
     },
     "unitTests": {
       "passed": true,
-      "total": 1097,
+      "total": 1105,
       "failed": 0,
-      "duration": "17.58s"
+      "duration": "17.40s"
     },
     "build": {
       "passed": true,
-      "duration": "2.96s"
+      "duration": "3.07s"
     },
     "e2e": {
       "skipped": true,
@@ -349,10 +360,10 @@
     "magicNumbers": 0,
     "deadCode": 0
   },
-  "iterationStatus": "in_progress",
+  "iterationStatus": "completed",
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-028 iter-005 自适应出题权重算法优化计划制定完成。扩展 getSentenceWeight() 集成间隔重复状态（未到复习期降权30%、逾期复习提权1.5x、reviewHistory正确率修正），9 步计划，2 个修改文件，1 个新增测试文件。",
+  "implementationStatus": "epic-028 iter-005 自适应出题权重算法优化完成。OVERDUE_BOOST(1.5x)/NOT_DUE_PENALTY(0.3x) 常量 + getSentenceWeight/getWeightedSentenceIds 增加 currentTime 参数 + reviewAccuracyBonus 叠加 + 8 个新增测试用例。1105 测试零回归，lint 1 warning，build 3.07s。Commit 6062f88.",
   "directives": {
     "version": "1.0",
     "pending": [],

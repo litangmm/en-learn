@@ -292,5 +292,14 @@
   - 全量回归：**348/348 单元测试通过**（36 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 30 个专用测试，覆盖「连击状态 → 倍率计算 → 组件渲染 → App 集成 → 动画触发」完整链路。348 测试是项目历史新高位。7 个现有 App 测试文件因 useXP 新导出而更新 mock，零行为回归。动画组件通过 data-testid 和 aria 属性测试，CSS transition 的 jsdom 限制通过条件渲染断言绕过
 
+### 2026-05-12 (cycle-2026-05-12-113) — epic-029 iter-001 完成 (1207 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
+- **本次验证**: epic-029 iter-001「成就时刻动态卡片」质量门禁验证
+  - AchievementMomentCard 测试：5 种模板渲染条件、level-up 卡片（升级信息/等级进度条）、achievement-unlock 卡片（徽章图标/解锁进度）、streak-record 卡片（连击数字/历史记录）、XP-milestone 卡片（里程碑数字/等级显示）、perfect-score 卡片（满分徽章/正确率）
+  - useAchievementMoment 测试：升级事件检测、徽章解锁事件检测、连击新高事件检测、XP里程碑事件检测、满分事件检测、trigger ref 防止重复触发
+  - App.tsx 集成测试：升级事件 hook 调用、徽章事件 hook 调用、连击事件 hook 调用、XP里程碑 hook 调用、满分事件 hook 调用
+  - 全量回归：**1207/1207 单元测试通过**（历史最高水位），lint 1 warning（pre-existing react-refresh），build 3.05s 成功
+- **备注**: 1207 测试零回归，120 个新增测试（AchievementMomentCard ~45 + useAchievementMoment ~35 + App.tsx 集成 ~40）。成就时刻检测逻辑（升级/徽章/连击/XP/满分）与现有游戏化系统（XP/徽章/连击）深度集成，边界覆盖关键。**epic-029 剩余 iter-002~005 继续关注测试覆盖完整性**
+
 ## 改进方向
 （由进化引擎自动总结）

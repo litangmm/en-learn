@@ -2,6 +2,22 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.39.0",
+      "tag": "v0.39.0",
+      "commit": "7435d6b",
+      "date": "2026-05-11T05:30:07.357Z",
+      "iterationId": "iter-001",
+      "title": "里程碑导航与进度概览",
+      "features": [
+        "Create useProgressStats hook for XP profile, study days, accuracy, dict count",
+        "Create ProgressHub component with MilestoneCard grid layout",
+        "Add progress view to App.tsx and XPBar onClick navigation",
+        "Add progress entry to MobileNav",
+        "848 tests passing, 70 test files"
+      ],
+      "deployUrl": "https://en-learn-2pfopuz17-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.38.0",
       "tag": "v0.38.0",
       "commit": "df78719",

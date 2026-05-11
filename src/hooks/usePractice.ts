@@ -44,7 +44,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   // Hint level hook for dynamic hint adjustment
   const { recordCorrectAnswer, recordWrongAnswer, shouldShowHint } = useHintLevel();
   // Question weighting hook for adaptive sentence selection
-  const { getWeightedSentenceIds } = useQuestionWeighting();
+  const { getWeightedSentenceIds, getWeightExplanation } = useQuestionWeighting();
 
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -557,6 +557,14 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   const totalQuestions = shuffledSentences.length;
   const currentQuestion = state.currentIndex + 1;
 
+  // Memoized function to get weight explanation for the current sentence
+  const getCurrentWeightExplanation = useMemo(() => {
+    if (!currentSentence) return null;
+    const allMistakes = storage.getMistakes();
+    const currentTime = Date.now();
+    return getWeightExplanation(currentSentence.id, allMistakes, currentTime);
+  }, [currentSentence, getWeightExplanation]);
+
   return {
     state,
     currentSentence,
@@ -579,5 +587,6 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
     deselectToken,
     resetTokens,
     shouldShowHint,
+    getCurrentWeightExplanation,
   };
 }

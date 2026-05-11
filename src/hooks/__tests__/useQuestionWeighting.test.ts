@@ -11,9 +11,10 @@ describe('useQuestionWeighting', () => {
 
       const { result } = renderHook(() => useQuestionWeighting());
 
+      // NEW_WORD_PENALTY = 0.6: new sentence gets 1.0 * 0.6 = 0.6
       const weight = result.current.getSentenceWeight('1', []);
 
-      expect(weight).toBe(1.0);
+      expect(weight).toBe(0.6);
     });
 
     it('should increase weight by 0.5 for each mistake record', () => {
@@ -118,12 +119,13 @@ describe('useQuestionWeighting', () => {
       expect(weight).toBe(2.6);
     });
 
-    it('should return 1.0 for empty mistakes array', () => {
+    it('should return 0.6 for empty mistakes array (new word with NEW_WORD_PENALTY)', () => {
       const { result } = renderHook(() => useQuestionWeighting());
 
+      // Empty mistakes array means new word, which gets 1.0 * 0.6 = 0.6
       const weight = result.current.getSentenceWeight('any-id', []);
 
-      expect(weight).toBe(1.0);
+      expect(weight).toBe(0.6);
     });
 
     it('should handle 100% error rate correctly', () => {
@@ -223,7 +225,7 @@ describe('useQuestionWeighting', () => {
       // Use 10 sentences so count=5 triggers weighted selection
       const sentenceIds = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-      // Verify weights: sentence 2 (2.25) and 3 (2.0) should have higher weight than sentence 1 (1.0)
+      // Verify weights: sentence 2 (2.25) and 3 (2.0) should have higher weight than sentence 1 (0.6, new word)
       const w2 = result.current.getSentenceWeight('2', mockMistakes);
       const w3 = result.current.getSentenceWeight('3', mockMistakes);
       const w1 = result.current.getSentenceWeight('1', mockMistakes);
@@ -232,7 +234,7 @@ describe('useQuestionWeighting', () => {
       expect(w3).toBeGreaterThan(w1);
       expect(w2).toBe(2.25);
       expect(w3).toBe(2.0);
-      expect(w1).toBe(1.0);
+      expect(w1).toBe(0.6); // New word: 1.0 * 0.6 penalty
 
       // Test weighted selection by running multiple times
       // Higher weight sentences should appear more frequently in results
@@ -408,9 +410,10 @@ describe('useQuestionWeighting', () => {
 
       const { result } = renderHook(() => useQuestionWeighting());
 
-      // Sentence 1 has no mistakes
+      // Sentence 1 has no mistakes (new word with penalty)
+      // Weight = 1.0 * 0.6 = 0.6
       const weight = result.current.getSentenceWeight('1', mockMistakes);
-      expect(weight).toBe(1.0);
+      expect(weight).toBe(0.6);
 
       // Sentence 2 has mistakes (1 record, 0 errors)
       // weight = 1.0 + 0.5 + 0 = 1.5
@@ -672,6 +675,284 @@ describe('useQuestionWeighting', () => {
 
       // Weights differ based on currentTime
       expect(weightNotDue).not.toBe(weightOverdue);
+    });
+  });
+
+  describe('NEW_WORD_PENALTY = 0.6', () => {
+    describe('getSentenceWeight for new words', () => {
+      it('新词降权 - new sentence without mistakes should get weight 0.6 (1.0 * 0.6 penalty)', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // New sentence: base weight 1.0 * NEW_WORD_PENALTY 0.6 = 0.6
+        const weight = result.current.getSentenceWeight('new-sentence-id', []);
+
+        expect(weight).toBe(0.6);
+      });
+
+      it('新词在错误列表为空时 - new word with empty mistakes array gets 0.6 weight', () => {
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // Empty mistakes array means new word
+        const weight = result.current.getSentenceWeight('never-seen-sentence', []);
+
+        expect(weight).toBe(0.6);
+      });
+
+      it('新词权重远低于复习中的词 - new word weight is much lower than experienced words', () => {
+        const mockMistakes: Mistake[] = [
+          {
+            sentenceId: 'experienced-sentence',
+            wrongAnswers: ['a'],
+            correctAnswers: ['correct'],
+            attempts: 2,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+        ];
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // New word weight: 1.0 * 0.6 = 0.6
+        const newWordWeight = result.current.getSentenceWeight('new-word', mockMistakes);
+
+        // Experienced word weight: 1.0 + 0.5 + 0.5 = 2.0
+        const experiencedWeight = result.current.getSentenceWeight('experienced-sentence', mockMistakes);
+
+        expect(newWordWeight).toBe(0.6);
+        expect(experiencedWeight).toBe(2.0);
+        expect(newWordWeight).toBeLessThan(experiencedWeight);
+      });
+
+      it('有错题记录即使无错误也算非新词 - sentence with mistake records (even 0 wrong answers) is NOT a new word', () => {
+        const mockMistakes: Mistake[] = [
+          {
+            sentenceId: 'has-record',
+            wrongAnswers: [], // 0 wrong answers
+            correctAnswers: ['correct'],
+            attempts: 1,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+        ];
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // Has mistake record, so NOT a new word
+        // Weight = 1.0 + 0.5 + 0 = 1.5 (no penalty applied)
+        const weight = result.current.getSentenceWeight('has-record', mockMistakes);
+
+        expect(weight).toBe(1.5);
+        expect(weight).not.toBe(0.6); // Should NOT have new word penalty
+      });
+    });
+
+    describe('getWeightedSentenceIds with new words', () => {
+      it('新词仍然包含在结果中 - new words are still included but with lower priority', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const sentenceIds = ['new-1', 'new-2', 'new-3', 'new-4', 'new-5'];
+        const selected = result.current.getWeightedSentenceIds(sentenceIds, [], 5);
+
+        // All new words should be included (count >= available)
+        expect(selected).toHaveLength(5);
+        expect(selected.sort()).toEqual(['new-1', 'new-2', 'new-3', 'new-4', 'new-5']);
+      });
+
+      it('混合新旧词时老词优先 - when mixing new and experienced words, experienced words are selected first', () => {
+        const mockMistakes: Mistake[] = [
+          {
+            sentenceId: 'experienced-1',
+            wrongAnswers: ['a', 'b'],
+            correctAnswers: ['correct'],
+            attempts: 3,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+          {
+            sentenceId: 'experienced-2',
+            wrongAnswers: ['a'],
+            correctAnswers: ['correct'],
+            attempts: 2,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+        ];
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // Verify weights
+        const newWeight = result.current.getSentenceWeight('new-word', mockMistakes); // 0.6
+        const exp1Weight = result.current.getSentenceWeight('experienced-1', mockMistakes); // 2.33
+        const exp2Weight = result.current.getSentenceWeight('experienced-2', mockMistakes); // 2.0
+
+        expect(newWeight).toBe(0.6);
+        expect(exp1Weight).toBeGreaterThan(newWeight);
+        expect(exp2Weight).toBeGreaterThan(newWeight);
+
+        // Run selection multiple times to verify experienced words appear first
+        const sentenceIds = ['new-1', 'new-2', 'experienced-1', 'experienced-2'];
+        const results = Array.from({ length: 50 }, () =>
+          result.current.getWeightedSentenceIds(sentenceIds, mockMistakes, 2)
+        );
+
+        // Count how often experienced words appear in first 2 positions
+        const exp1InTop2 = results.filter(ids => ids.slice(0, 2).includes('experienced-1')).length;
+        const new1InTop2 = results.filter(ids => ids.slice(0, 2).includes('new-1')).length;
+
+        // Experienced words should appear more frequently due to higher weight
+        expect(exp1InTop2).toBeGreaterThan(new1InTop2);
+      });
+
+      it('新词权重仅0.6远低于老词 - new word weight 0.6 is well below experienced words', () => {
+        const mockMistakes: Mistake[] = [
+          {
+            sentenceId: 'experienced',
+            wrongAnswers: ['a'],
+            correctAnswers: ['correct'],
+            attempts: 2,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+        ];
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const newWeight = result.current.getSentenceWeight('new-word', mockMistakes);
+        const expWeight = result.current.getSentenceWeight('experienced', mockMistakes);
+
+        // New word: 1.0 * 0.6 = 0.6
+        expect(newWeight).toBe(0.6);
+
+        // Experienced: 1.0 + 0.5 + 0.5 = 2.0
+        expect(expWeight).toBe(2.0);
+
+        // Experienced is over 3x more likely to be selected
+        expect(expWeight / newWeight).toBeCloseTo(3.33, 1);
+      });
+    });
+
+    describe('getWeightExplanation for new words', () => {
+      it('新词解释包含所有必需字段 - explanation for new word includes isNewWord, spacedRepetitionState, newWordPenalty', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const explanation = result.current.getWeightExplanation('new-word', []);
+
+        expect(explanation.isNewWord).toBe(true);
+        expect(explanation.spacedRepetitionState).toBe('new');
+        expect(explanation.newWordPenalty).toBe(0.6);
+        expect(explanation.spacedRepetitionModifier).toBe(0.6);
+        expect(explanation.totalWeight).toBe(0.6);
+        expect(explanation.baseWeight).toBe(1.0);
+        expect(explanation.mistakeWeight).toBe(0);
+        expect(explanation.errorRateWeight).toBe(0);
+      });
+
+      it('新词解释文本包含新词信息 - explanation text for new word includes new word info', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const explanation = result.current.getWeightExplanation('new-word', []);
+
+        // Explanation should mention new word penalty
+        expect(explanation.explanation).toContain('新词');
+        expect(explanation.explanation).toContain('0.6');
+        expect(explanation.explanation).toContain('降权');
+      });
+
+      it('非新词解释不包含新词信息 - explanation for non-new word does not include new word penalty', () => {
+        const mockMistakes: Mistake[] = [
+          {
+            sentenceId: 'experienced',
+            wrongAnswers: ['a'],
+            correctAnswers: ['correct'],
+            attempts: 2,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          },
+        ];
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(mockMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const explanation = result.current.getWeightExplanation('experienced', mockMistakes);
+
+        expect(explanation.isNewWord).toBe(false);
+        expect(explanation.spacedRepetitionState).toBe('due');
+        expect(explanation.newWordPenalty).toBe(1.0); // Not a new word, so penalty is 1.0
+        expect(explanation.explanation).not.toContain('新词');
+      });
+    });
+
+    describe('NEW_WORD_PENALTY weight cap behavior', () => {
+      it('新词权重0.6远低于上限5.0 - new word weight 0.6 is well below MAX_WEIGHT cap 5.0', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const newWordWeight = result.current.getSentenceWeight('new-word', []);
+
+        expect(newWordWeight).toBe(0.6);
+        expect(newWordWeight).toBeLessThan(1.0);
+        expect(newWordWeight * 5).toBeLessThanOrEqual(3.0); // 0.6 * 5 = 3.0 < 5.0
+      });
+
+      it('新词永远不会超过0.6权重 - new word with penalty 0.6 will never exceed 0.6 (well below cap)', () => {
+        vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        // No matter what, new word base is 1.0 * 0.6 = 0.6
+        const weight = result.current.getSentenceWeight('any-new-word', []);
+
+        expect(weight).toBe(0.6);
+        expect(weight).toBeLessThanOrEqual(0.6); // Always exactly 0.6 for new words
+      });
+
+      it('有错题记录时权重才会累加 - experienced words can reach higher weights than new words', () => {
+        // Create high-weight mistake to test cap
+        const manyMistakes: Mistake[] = [];
+        for (let i = 0; i < 5; i++) {
+          manyMistakes.push({
+            sentenceId: 'high-weight',
+            wrongAnswers: ['a', 'b', 'c'],
+            correctAnswers: ['correct'],
+            attempts: 4,
+            timestamp: Date.now(),
+            dictionaryId: 'cet4',
+            reviewedCount: 0,
+          });
+        }
+        vi.spyOn(storage, 'getMistakes').mockReturnValue(manyMistakes);
+
+        const { result } = renderHook(() => useQuestionWeighting());
+
+        const highWeight = result.current.getSentenceWeight('high-weight', manyMistakes);
+        const newWordWeight = result.current.getSentenceWeight('new-word', manyMistakes);
+
+        // High weight sentence should approach or equal MAX_WEIGHT 5.0
+        expect(highWeight).toBeGreaterThan(newWordWeight);
+        expect(highWeight).toBeLessThanOrEqual(5.0);
+
+        // New word is always 0.6
+        expect(newWordWeight).toBe(0.6);
+      });
     });
   });
 });

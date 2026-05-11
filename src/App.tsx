@@ -22,6 +22,7 @@ import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
+import { FocusModeOverlay } from '@/components/FocusModeOverlay';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
@@ -65,6 +66,7 @@ function App() {
   const [isReviewMode, setIsReviewMode] = useState(false);
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('fill-in-blanks');
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [isFocusSession, setIsFocusSession] = useState(false);
   const [xpGainTrigger, setXpGainTrigger] = useState<{ amount: number; multiplier: number; key: number } | null>(null);
   const [badgeUnlockTrigger, setBadgeUnlockTrigger] = useState<{ badge: BadgeDefinition; key: number } | null>(null);
   const [leaderboardCategory, setLeaderboardCategory] = useState<LeaderboardCategory>('score');
@@ -73,6 +75,14 @@ function App() {
   const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
 
   const toggleFocusMode = () => setIsFocusMode(prev => !prev);
+
+  const startFocusSession = useCallback(() => {
+    setIsFocusSession(true);
+  }, []);
+
+  const endFocusSession = useCallback(() => {
+    setIsFocusSession(false);
+  }, []);
 
   const { isMarked, markFromPractice } = usePersonalWords();
 
@@ -865,7 +875,7 @@ function App() {
               <AnimatePresence>
                 {currentSentence && (
                   <PracticeCard
-                    key={currentSentence.id}
+                    key={`practice-${state.currentIndex}`}
                     sentence={currentSentence}
                     inputs={state.currentInputs}
                     showResult={state.showResult}

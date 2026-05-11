@@ -49,7 +49,7 @@ export function MoreMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="w-48 sm:w-52">
         {/* 错题本 */}
-        <DropdownMenuItem onClick={onOpenMistakeBook} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenMistakeBook} onClick={onOpenMistakeBook} className="cursor-pointer">
           <BookOpen className="w-4 h-4 text-slate-500" />
           <span className="flex-1">错题本</span>
           {mistakeCount > 0 && (
@@ -60,7 +60,7 @@ export function MoreMenu({
         </DropdownMenuItem>
 
         {/* 学习记录 */}
-        <DropdownMenuItem onClick={onOpenHistory} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenHistory} onClick={onOpenHistory} className="cursor-pointer">
           <History className="w-4 h-4 text-slate-500" />
           <span className="flex-1">学习记录</span>
           {historyCount > 0 && (
@@ -71,13 +71,13 @@ export function MoreMenu({
         </DropdownMenuItem>
 
         {/* 数据管理 */}
-        <DropdownMenuItem onClick={onOpenDataManager} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenDataManager} onClick={onOpenDataManager} className="cursor-pointer">
           <Database className="w-4 h-4 text-slate-500" />
           <span>数据管理</span>
         </DropdownMenuItem>
 
         {/* 智能复习 */}
-        <DropdownMenuItem onClick={onOpenSmartReview} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenSmartReview} onClick={onOpenSmartReview} className="cursor-pointer">
           {isReviewMode ? (
             <RefreshCw className="w-4 h-4 text-slate-500" />
           ) : (
@@ -92,7 +92,7 @@ export function MoreMenu({
         </DropdownMenuItem>
 
         {/* 每日挑战 */}
-        <DropdownMenuItem onClick={onOpenChallenges} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenChallenges} onClick={onOpenChallenges} className="cursor-pointer">
           <Trophy className="w-4 h-4 text-slate-500" />
           <span className="flex-1">每日挑战</span>
           {unclaimedCount > 0 && (
@@ -103,7 +103,7 @@ export function MoreMenu({
         </DropdownMenuItem>
 
         {/* 成就 */}
-        <DropdownMenuItem onClick={onOpenBadges} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenBadges} onClick={onOpenBadges} className="cursor-pointer">
           <Award className="w-4 h-4 text-slate-500" />
           <span className="flex-1">成就</span>
           {unlockedCount > 0 && (
@@ -114,7 +114,7 @@ export function MoreMenu({
         </DropdownMenuItem>
 
         {/* 排行 */}
-        <DropdownMenuItem onClick={onOpenLeaderboard} className="cursor-pointer">
+        <DropdownMenuItem onSelect={onOpenLeaderboard} onClick={onOpenLeaderboard} className="cursor-pointer">
           <TrendingUp className="w-4 h-4 text-slate-500" />
           <span>排行</span>
         </DropdownMenuItem>

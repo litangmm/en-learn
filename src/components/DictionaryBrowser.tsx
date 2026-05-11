@@ -267,12 +267,12 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
                   </CardHeader>
                   <CardContent className="space-y-3 min-w-0 shrink-0">
                     <div>
-                      <div className="text-sm text-muted-foreground mb-1">翻译</div>
-                      <div className="text-sm break-words leading-relaxed">{sentence.chinese}</div>
+                      <div className="text-sm text-muted-foreground mb-1 truncate min-w-0">翻译</div>
+                      <div className="text-sm break-words leading-relaxed overflow-wrap-anywhere truncate min-w-0">{sentence.chinese}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground mb-1">例句</div>
-                      <div className="text-sm text-foreground break-words leading-relaxed">{sentence.english}</div>
+                      <div className="text-sm text-muted-foreground mb-1 truncate min-w-0">例句</div>
+                      <div className="text-sm text-foreground break-words leading-relaxed overflow-wrap-anywhere truncate min-w-0">{sentence.english}</div>
                     </div>
                   </CardContent>
                 </Card>

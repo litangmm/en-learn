@@ -12,38 +12,59 @@ import { SentenceReorderMode } from '@/components/practice/modes/SentenceReorder
 
 /**
  * Generates an explanation for why the correct answer is correct.
- * Avoids simply repeating the Chinese translation.
+ * Focuses on explaining the "why" rather than just repeating the translation.
  */
 function getExplanation(sentence: Sentence, isMultipleChoiceMode: boolean, isSentenceReorderMode: boolean): string {
   const targetWord = sentence.blanks[0]?.word ?? '';
   const chinese = sentence.chinese;
+  const english = sentence.english;
 
   // For multiple-choice: show why this specific sentence is the right answer
   if (isMultipleChoiceMode) {
-    const correctSentenceText = sentence.english;
     const isDefinition = sentence.blanks.length === 1;
+
     if (isDefinition) {
-      return `"${targetWord}" 在句子 "${correctSentenceText}" 中表示：${chinese}`;
+      // Definition sentence: explain the word meaning clearly
+      return `正确答案是 "${targetWord}"，因为它在句子中表达的含义是"${chinese}"。这个词是题目要求掌握的词汇。`;
     }
-    return `这个句子表达的是：${chinese}。答案 "${targetWord}" 符合语境。`;
+
+    // Normal sentence: explain the context and why this sentence is correct
+    // Analyze what makes this sentence unique or correct
+    const keyWord = extractKeyWord(sentence);
+    return `正确答案是"${keyWord}"开头的句子。这个句子 "${english.substring(0, 50)}${english.length > 50 ? '...' : ''}" 表达的意思是"${chinese}"，与题目要求相符。其他选项可能意思相近但有细微差别，需要仔细区分。`;
   }
 
-  // For sentence-reorder: explain the sentence meaning
+  // For sentence-reorder: explain the sentence meaning and structure
   if (isSentenceReorderMode) {
     const isDefinition = sentence.blanks.length === 1;
+
     if (isDefinition) {
-      return `"${targetWord}" 的含义是：${chinese}`;
+      return `正确答案是 "${targetWord}"，表示"${chinese}"。这是一个释义型句子，需要理解单词含义才能正确排列。`;
     }
-    return `完整句子表达的意思是：${chinese}。`;
+
+    // Explain the sentence structure and meaning
+    const wordCount = sentence.english.split(/\s+/).length;
+    return `这道题需要将 ${wordCount} 个单词按正确顺序排列。完整句子的意思是"${chinese}"。注意英语句子的语序：主语在前，谓语在后，修饰成分要放在合适的位置。`;
   }
 
   // Default: explain the blank word in context
   const isDefinition = sentence.blanks.length === 1;
   if (isDefinition) {
-    return `"${targetWord}" 的含义是：${chinese}`;
+    return `这里应该填 "${targetWord}"，表示"${chinese}"。这个词常用于描述这种情况，在实际语境中要准确使用。`;
   }
-  // For fill-in-blanks/dictation: explain the target word
-  return `这里应该填 "${targetWord}"，因为：${chinese}`;
+  // For fill-in-blanks/dictation: explain the target word with context
+  return `这里应该填 "${targetWord}"，因为从句子 "${english.substring(0, 40)}${english.length > 40 ? '...' : ''}" 可以看出"${chinese}"这个含义。`;
+}
+
+/**
+ * Extract the main content word from a sentence for display.
+ */
+function extractKeyWord(sentence: Sentence): string {
+  const words = sentence.english.split(/\s+/);
+  if (words.length === 0) return '该';
+  // Return first 2-3 words as identifier
+  const preview = words.slice(0, 2).join(' ');
+  return preview.length > 30 ? preview.substring(0, 30) + '...' : preview;
 }
 
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;

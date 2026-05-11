@@ -946,7 +946,7 @@ function App() {
                 </div>
               )}
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
-              <AnimatePresence>
+              <AnimatePresence mode="popLayout">
                 {currentSentence && (
                   <PracticeCard
                     key={`practice-${state.currentIndex}`}

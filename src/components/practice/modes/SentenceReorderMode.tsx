@@ -6,6 +6,7 @@
  */
 
 import { motion } from 'framer-motion';
+import { useCallback, useEffect } from 'react';
 import type { SentenceReorderModeConfig } from '@/components/practice/types';
 import { isDefinitionSentence } from '@/data/types';
 import type { SentenceToken } from '@/data/types';
@@ -34,6 +35,24 @@ export function SentenceReorderMode({
     (t) => !orderedTokenIds.includes(t.id)
   );
 
+  // Handle keyboard support for skip
+  const handleSkip = useCallback(() => {
+    if (onSkip) {
+      onSkip();
+    }
+  }, [onSkip]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && isDefinition && onSkip) {
+        e.preventDefault();
+        handleSkip();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isDefinition, onSkip, handleSkip]);
+
   // Render sentence reorder mode
   const renderSentenceReorder = () => {
     if (isDefinition) {
@@ -45,7 +64,8 @@ export function SentenceReorderMode({
           {onSkip && (
             <button
               onClick={onSkip}
-              className="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg text-sm font-medium transition-colors"
+              className="w-full px-6 py-3 bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white rounded-lg text-base font-semibold transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+              autoFocus
             >
               跳过此题，换下一题 →
             </button>

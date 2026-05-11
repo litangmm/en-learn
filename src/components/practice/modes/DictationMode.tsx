@@ -103,6 +103,7 @@ export function DictationMode({
         <div className="text-center">
           <p className="text-sm text-slate-400">
             首字母听写：请听音频，根据中文提示{hintLevel === 'none' ? '（无首字母提示）' : '和首字母提示'}填写单词
+            {hintLevel === 'none' && '，完成后点击"检查"按钮验证答案'}
           </p>
         </div>
       )}

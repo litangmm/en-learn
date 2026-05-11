@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.45.0",
+      "tag": "v0.45.0",
+      "commit": "29d29d8",
+      "date": "2026-05-11T16:35:46.598Z",
+      "iterationId": "iter-001",
+      "title": "间隔重复调度引擎",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-788xymbqm-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.44.0",
       "tag": "v0.44.0",
       "commit": "fe865e6",

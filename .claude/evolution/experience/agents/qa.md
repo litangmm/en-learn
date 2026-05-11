@@ -188,6 +188,23 @@
   - 全量回归：**809/809 单元测试通过**（历史新高位），lint 4 warnings（pre-existing），build 成功
 - **备注**: epic-009 全部 3 个迭代收官。iter-003 新增 PersonalWord marked/markedAt 字段测试，LevelFilter 8 级难度筛选测试，DataManager 生词 Tab 测试。809 测试是项目历史最高水位。**epic-009 收官后，QA 应关注下一 Epic（epic-010 自适应学习或 epic-011 周报）的质量门禁设计。dir-1778465917386 指令指出「主练习链路稳定性打磨」需特别关注状态同步测试覆盖**
 
+### 2026-05-12 (cycle-2026-05-12-106) — epic-028 iter-004 完成
+- **相关质量门禁**: 单元测试回归、Hook API 扩展测试、组件渲染测试、向后兼容测试、构建稳定性
+- **本次验证**: epic-028 iter-004「学习效率数据面板」质量门禁验证
+  - useLearningEfficiency 测试：记忆保持率计算（perfect/total）、遗忘曲线拟合度（回顾及时性）、薄弱点攻克进度（已攻克/总数）
+  - LearningEfficiencyPanel 测试：综合评分渲染、3 指标卡片、进度条、零数据占位
+  - 全量回归：**1089/1089 单元测试通过**（历史新高位），lint 1 warning（pre-existing），build 3.02s success
+- **备注**: epic-028 iter-004 新增约 57 个测试（useLearningEfficiency + LearningEfficiencyPanel）。1089 测试是项目历史最高水位。三个效率指标的计算逻辑（记忆保持率/遗忘曲线拟合度/薄弱点攻克进度）均来自 reviewHistory 数据，需确保空数据/损坏数据的边界覆盖。**epic-028 剩余 1 个迭代（iter-005 自适应出题权重算法优化），继续关注测试覆盖完整性**
+
+### 2026-05-12 (cycle-2026-05-12-103) — epic-028 iter-003 完成
+- **相关质量门禁**: 单元测试回归、Hook API 扩展测试、向后兼容测试、构建稳定性
+- **本次验证**: epic-028 iter-003「每日复习计划与提醒系统」质量门禁验证
+  - useReviewStreak 测试：复习连续天数计算（streakDays/lastReviewDate）、reviewedToday 标记更新、reviewedTodayCount 增量
+  - DailyReviewPlan 测试：到期数量渲染、预计时长计算、完成进度条
+  - Header 复习指示器测试：复习到期数显示
+  - 全量回归：**1052/1052 单元测试通过**（历史新高位），lint 1 warning（pre-existing），build 3.00s success
+- **备注**: epic-028 iter-003 零新增依赖、零构建体积增长。1052 测试是项目历史最高水位。epic-028 剩余 2 个迭代（iter-004 学习效率数据面板、iter-005 自适应出题权重算法优化），继续关注测试覆盖完整性
+
 ### 2026-05-11 (cycle-2026-05-11-77)
 - **相关质量门禁**: 单元测试回归、Hook API 扩展测试、向后兼容测试、构建稳定性
 - **本次验证**: epic-010 iter-003「自适应出题权重」质量门禁验证

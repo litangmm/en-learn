@@ -8,6 +8,38 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-83)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整实现**
+- **实现质量**: 高 — 8 个 P0 bug 全部修复，零新增依赖，零构建体积增长
+- **关键决策**:
+  - Bug 1: AnimatePresence mode="wait" 移除，实现题卡即时切换
+  - Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef 语义正确化
+  - Bug 3: MoreMenu mobile fixed positioning（absolute → fixed）
+  - Bug 4: DictionaryBrowser grid-cols 自适应网格（grid-cols-1 sm:grid-cols-2）
+  - Bug 5: 听写模式提示文案澄清（明确说明首字母听写）
+  - Bug 6: useAdaptivePractice getSentenceOptions 相似题过滤
+  - Bug 7: SentenceReorderMode 释义句跳过按钮
+  - Bug 8: PracticeCard.tsx getExplanation 重写，解释"为什么选这个词"
+  - 额外: NavigationContext._currentValue 改标准 useContext
+- **重构**: shareTriggers.ts 提取（提升组件职责单一化）
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复并测试通过。819 测试历史新高位，零新增 lint 警告。epic-014 iter-002~006 继续 pending
+
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整实现**
+- **实现质量**: 高 — 8 个 P0 bug 全部修复，零新增依赖，零构建体积增长
+- **关键决策**:
+  - Bug 1: AnimatePresence mode="wait" 移除，实现题卡即时切换
+  - Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef 语义正确化
+  - Bug 3: MoreMenu mobile fixed positioning（absolute → fixed）
+  - Bug 4: DictionaryBrowser grid-cols 自适应网格（grid-cols-1 sm:grid-cols-2）
+  - Bug 5: 听写模式提示文案澄清（明确说明首字母听写）
+  - Bug 6: useAdaptivePractice getSentenceOptions 相似题过滤
+  - Bug 7: SentenceReorderMode 释义句跳过按钮
+  - Bug 8: PracticeCard.tsx getExplanation 重写，解释"为什么选这个词"
+  - 额外: NavigationContext._currentValue 改标准 useContext
+- **重构**: shareTriggers.ts 提取（提升组件职责单一化）
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复并测试通过。819 测试历史新高位，零新增 lint 警告。epic-014 iter-002~006 继续 pending
+
 ### 2026-05-11 (cycle-2026-05-11-80)
 - **迭代**: epic-009 iter-003「个人生词标记」—— **完整实现**
 - **实现质量**: 高 — 功能逻辑清晰，UI 交互完善，测试覆盖充分

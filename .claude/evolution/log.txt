@@ -865,3 +865,7 @@ null
 [2026-05-11T04:18:26Z] [INFO] Executing stage: COMMIT
 [2026-05-11T04:19:22Z] [INFO] Stage TEST completed successfully
 [2026-05-11T04:19:22Z] [INFO] Executing stage: COMMIT
+[2026-05-11T04:30:26Z] [INFO] Stage DEPLOY completed successfully
+[2026-05-11T04:30:26Z] [INFO] Executing stage: REPORT
+[2026-05-11T04:35:12Z] [INFO] Stage REPORT completed successfully
+[2026-05-11T04:35:12Z] [WARN] Status did not advance after stage REPORT (still REPORT). Stopping loop.

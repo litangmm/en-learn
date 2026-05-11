@@ -8,6 +8,20 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **技术审查通过**
+- **技术决策**:
+  - AnimatePresence mode="wait" 移除实现题卡即时切换，避免题卡切换延迟导致的「题卡停在上一题」问题
+  - retry() isRetrying 语义修复：showResult 时触发初始化清理，确保重试时旧反馈被清除
+  - previousAttemptsRef 语义正确化：重试后 previousAttempts 加 1，用于判断是否显示重试按钮
+  - MoreMenu mobile fixed positioning：从 absolute 改为 fixed，确保移动端菜单正确定位
+  - DictionaryBrowser grid-cols 自适应：grid-cols-1 sm:grid-cols-2，解决移动端卡片溢出问题
+  - getExplanation 重写：不再重复中文释义，而是解释"为什么选这个词"，体现「解释为什么」而非「重复是什么」的设计原则
+  - NavigationContext._currentValue 改标准 useContext：解决 stale closure 问题
+  - shareTriggers.ts 提取：将 share 触发逻辑从 App.tsx 条件渲染中提取为独立模块
+- **质量门禁通过**: lint 1 warning (pre-existing), 0 type errors, build passed (3.46s), 819/819 unit tests passed
+- **观察**: epic-014 iter-001 零新增依赖、零构建体积增长。8 个状态同步 bug 修复后，主练习链路稳定性显著提升。dir-1778465917386 指令的 8 个问题全部修复。shareTriggers.ts 提取是组件职责单一化的轻量实践。epic-014 iter-002~006 继续 pending
+
 ### 2026-05-11 (cycle-2026-05-11-59)
 - **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **技术审查通过**
 - **技术决策**:

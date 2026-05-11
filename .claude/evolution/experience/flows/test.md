@@ -8,6 +8,19 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **全部测试通过**
+- **测试覆盖**: 819/819 单元测试通过（67 个测试文件，历史新高位）
+  - retry() isRetrying 语义测试：isRetrying 标志正确设置/重置，previousAttemptsRef 语义修复
+  - AnimatePresence mode="wait" 移除验证：题卡即时切换，showResult 后立即初始化
+  - initializeInputs showResult guard 验证：正确题卡渲染，旧反馈清理
+  - MoreMenu mobile fixed positioning 测试：移动端固定定位，absolute → fixed 修复
+  - NavigationContext 标准 useContext() 测试：_currentValue 改标准 useContext
+  - getExplanation 重写测试：不再重复中文释义，解释"为什么选这个词"
+  - shareTriggers.ts 提取测试：share 触发逻辑职责分离验证
+- **E2E**: skipped（5 pending iterations remaining：iter-002~006）
+- **观察**: 819 测试是项目历史最新高水位，67 个测试文件。dir-1778465917386 指令的 8 个问题全部修复并测试通过。技术债基线：1 pre-existing lint warning, 0 type errors, 0 unused imports。E2E 因 epic-014 还有 5 个 pending iterations 而继续跳过
+
 ### 2026-05-11 (cycle-2026-05-11-59)
 - **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **全部测试通过**
 - **测试覆盖**: 649/649 单元测试通过（历史新高位，新增 26 个测试）

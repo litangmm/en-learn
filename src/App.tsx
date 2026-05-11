@@ -30,42 +30,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
 import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
 import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
-
-// Share prompt type for level-up and badge celebrations
-export type SharePromptType = 'levelup' | 'badge';
-export interface SharePrompt {
-  type: SharePromptType;
-  level?: number;
-  badge?: BadgeDefinition;
-}
-
-function getModeHint(mode: PracticeMode): string {
-  switch (mode) {
-    case 'fill-in-blanks':
-      return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
-    case 'dictation':
-      return '首字母听写：听音频后，根据中文提示和首字母提示填写单词';
-    case 'multiple-choice':
-      return '选择最合适的答案后，点击提交答案按钮';
-    case 'sentence-reorder':
-      return '点击单词组成正确句子，再次点击已选单词可撤回';
-    default:
-      return '听音频后，在输入框中填入缺失的单词，按 Enter 键快速提交';
-  }
-}
-
-function formatElapsedTime(timestamp: number): string {
-  const now = Date.now();
-  const diff = now - timestamp;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (minutes < 60) return `${minutes}分钟前`;
-  if (hours < 24) return `${hours}小时前`;
-  if (days === 1) return '昨天';
-  return `${days}天前`;
-}
+import { getModeHint, formatElapsedTime, APP_BRAND, ONBOARDING_DICTIONARIES } from '@/utils/appHelpers';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import {
@@ -76,7 +41,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import './App.css';
+
+// Share prompt type for level-up and badge celebrations
+export type SharePromptType = 'levelup' | 'badge';
+export interface SharePrompt {
+  type: SharePromptType;
+  level?: number;
+  badge?: BadgeDefinition;
+}
 
 function App() {
   const isMobile = useIsMobile();
@@ -528,8 +500,8 @@ function App() {
               <Headphones className="w-5 h-5 text-white" />
             </div>
             <div className="min-w-0">
-              <h1 className="font-bold text-slate-800 text-base md:text-lg leading-tight truncate">听力词汇练习</h1>
-              <p className="text-xs text-slate-500 hidden sm:block">听句子，填单词</p>
+              <h1 className="font-bold text-slate-800 text-base md:text-lg leading-tight truncate">{APP_BRAND.name}</h1>
+              <p className="text-xs text-slate-500 hidden sm:block">{APP_BRAND.subtitle}</p>
             </div>
           </div>
 
@@ -763,12 +735,7 @@ function App() {
             <div className="space-y-3">
               <h3 className="text-sm font-medium text-muted-foreground">选择要学习的词典</h3>
               <div className="grid grid-cols-2 gap-2">
-                {[
-                  { id: 'cet4', name: 'CET-4', desc: '大学英语四级' },
-                  { id: 'cet6', name: 'CET-6', desc: '大学英语六级' },
-                  { id: 'ielts', name: 'IELTS', desc: '雅思词汇' },
-                  { id: 'toefl', name: 'TOEFL', desc: '托福词汇' },
-                ].map((dict) => (
+                {ONBOARDING_DICTIONARIES.map((dict) => (
                   <button
                     key={dict.id}
                     onClick={() => setSelectedOnboardingDictionary(dict.id)}

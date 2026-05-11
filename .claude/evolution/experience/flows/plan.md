@@ -8,6 +8,24 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整执行**
+- **计划步骤**: 9 个 P0 bug 修复步骤全部完成
+  1. Bug 1: AnimatePresence mode="wait" 移除
+  2. Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef
+  3. Bug 3: MoreMenu mobile fixed positioning
+  4. Bug 4: DictionaryBrowser grid-cols 自适应
+  5. Bug 5: 听写模式提示文案澄清
+  6. Bug 6: useAdaptivePractice 相似题过滤
+  7. Bug 7: SentenceReorderMode 释义句跳过按钮
+  8. Bug 8: PracticeCard getExplanation 重写
+  9. NavigationContext._currentValue 改标准 useContext
+- **实际修改文件**: 与计划一致
+  - 修改: src/hooks/usePractice.ts, src/components/practice/PracticeCard.tsx, src/components/layout/MoreMenu.tsx, src/components/dictionary/DictionaryBrowser.tsx, src/components/App.tsx, src/hooks/useAdaptivePractice.ts, src/components/practice/SentenceReorderMode.tsx, src/components/layout/NavigationContext.tsx
+  - 新增: scripts/evolution/tech-review-prompt.md
+  - 重构: src/components/layout/shareTriggers.ts
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复。9 个步骤覆盖了从状态管理修复 → UI 布局修复 → 体验文案澄清 → 导航重构的完整链路。零新增依赖、零构建体积增长。epic-014 iter-002~006 继续 pending
+
 ### 2026-05-10 (cycle-2026-05-10-28)
 - **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **完整执行**
 - **计划步骤**: 8 步全部完成，涵盖数据文件检查、isDefinitionSentence 辅助函数、ChoiceOption 接口、options 中文文本扩展、displayText 逻辑、sentence-reorder 释义句警告、测试用例更新、全量验证

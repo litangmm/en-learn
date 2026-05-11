@@ -7,7 +7,7 @@
 
 ## 历史提案
 
-### 2026-05-11 (cycle-2026-05-11-82)
+### 2026-05-11 (cycle-2026-05-11-83)
 - **相关 Epic**: epic-014 iter-001「主练习链路稳定性打磨」—— **提案者**
 - **结果**: **epic-014 iter-001 完成**，819/819 测试通过，v0.37.0
 - **完成内容**: dir-1778465917386 指令的 8 个状态同步 bug 修复：Bug 1 nextQuestion 换题不刷新（AnimatePresence mode="wait" 移除）、Bug 2 retry 重试残留反馈（isRetrying 语义修复 + previousAttemptsRef）、Bug 3 MoreMenu 移动端不可用（fixed positioning）、Bug 4 DictionaryBrowser 移动端溢出（grid-cols 自适应）、Bug 5 听写模式提示文案不准确（明确说明首字母听写）、Bug 6 选择题题干与选项相似（相似题过滤）、Bug 7 连词成句释义句半禁用（跳过按钮）、Bug 8 解析重复中文释义（重写 getExplanation）、NavigationContext._currentValue 改标准 useContext

@@ -150,6 +150,16 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-11 (cycle-2026-05-11-83)
+- **相关质量门禁**: 单元测试回归、状态同步测试、边界情况自动化测试、构建稳定性
+- **本次验证**: epic-014 iter-001「主练习链路稳定性打磨」质量门禁验证
+  - retry() 语义验证：isRetrying 标志修复、previousAttemptsRef 语义正确化、showResult 时触发初始化清理
+  - AnimatePresence 行为验证：mode="wait" 移除后题卡即时切换测试
+  - MoreMenu mobile 定位测试：fixed positioning vs absolute 边界情况
+  - DictionaryBrowser grid-cols 自适应测试：grid-cols-1 sm:grid-cols-2 断点验证
+  - 全量回归：**819/819 单元测试通过**（67 测试文件，历史新高位），lint 1 warning（pre-existing），build 成功（3.46s）
+- **备注**: epic-014 iter-001 是 dir-1778465917386 用户完整评测反馈的直接响应。8 个状态同步 bug 修复需要特别关注 nextQuestion/retry/MoreMenu 的边界测试覆盖。819 测试是项目历史最高水位。**epic-014 剩余 5 个迭代（iter-002~006），继续关注测试覆盖完整性**
+
 ### 2026-05-11 (cycle-2026-05-11-80)
 - **相关质量门禁**: 单元测试回归、PersonalWord 类型测试、DictionaryBrowser 组件测试、LevelFilter 组件测试、DataManager 生词 Tab 测试、构建稳定性
 - **本次验证**: epic-009「个人词典管理与数据主权」全部 3 个迭代收官质量门禁验证

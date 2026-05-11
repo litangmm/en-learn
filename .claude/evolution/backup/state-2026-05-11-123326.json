@@ -3,11 +3,11 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-11-83",
+      "id": "2026-05-11-82",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "COMMIT",
       "status": "completed",
-      "summary": "epic-014 iter-001 归档完成。819 单元测试全部通过。8 个状态同步 bug 修复：AnimatePresence mode 移除/retry 语义修复/MoreMenu fixed positioning/DictionaryBrowser grid-cols 自适应/听写提示澄清/相似题过滤/释义句跳过/getExplanation 重写。shareTriggers.ts 提取重构。全部 Agent 经验档案更新。"
+      "summary": "epic-014 iter-001 提交完成。4 个提交：主练习链路稳定性打磨完成、shareTriggers.ts 重构提取、tech-review prompt 新增、cycle 80 报告归档。HEAD: 834d1fe。"
     },
     {
       "id": "2026-05-11-82",
@@ -94,17 +94,27 @@
       "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级。"
     }
   ],
-  "status": "IDLE",
+  "status": "REPORT",
   "selectedEpic": {
     "id": "epic-014",
     "title": "主练习链路稳定性打磨"
   },
-  "lastRun": "2026-05-11T12:35:00.000Z",
-  "cycleCount": 83,
+  "lastRun": "2026-05-11T12:28:00.000Z",
+  "cycleCount": 82,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": null,
+  "currentCycle": {
+    "id": "2026-05-11-82",
+    "mode": "vision",
+    "stage": "DEPLOY",
+    "startedAt": "2026-05-11T03:35:11.170Z",
+    "completedAt": "2026-05-11T12:28:00.000Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-11-82",
+    "mode": "vision",
+    "stage": "COMMIT"
+  },
   "currentEpic": {
     "id": "epic-014",
     "title": "主练习链路稳定性打磨",

@@ -125,6 +125,13 @@
   - Commits: 1e73d65（代码）+ 15ab7fe（文档），版本 v0.23.0
 - **观察**: ARCH 在连续 20+ 个 cycle 未被选中后终于入选。关键转折点：App.tsx 复杂度已达灾难级临界点（~300 行条件渲染代码，管理 9 个视图 × 4 种练习模式 × 专注模式 × 响应式断点 + 游戏化系统），重构窗口正在加速关闭。epic-003 全部 5 个迭代完成后，ARCH 持续提出的架构债务警告终于得到响应。ViewRouter 的 view → component 映射设计和 NavigationContext 的 Provider 模式实现了视图与逻辑解耦，为后续 iter-002（PracticeCard 策略模式）和 iter-003（构建体积监控基线）奠定基础。
 
+### 2026-05-11 (cycle-2026-05-11-83)
+- **相关 Epic**: epic-014 iter-001「主练习链路稳定性打磨」—— 作为贡献者
+- **结果**: epic-014 iter-001 完成，819/819 测试通过，v0.37.0
+- **完成内容**: shareTriggers.ts 重构提取（提升组件职责单一化）；NavigationContext._currentValue 改标准 useContext；shareTriggers 是从 App.tsx 的条件渲染逻辑中提取的职责分离实践
+- **当前状态**: **连续未被选中计数保持清零**（epic-014 贡献者）
+- **观察**: shareTriggers.ts 重构是 ARCH 提出的「组件职责单一化」理念的具体实践——将 share 触发逻辑从 App.tsx 条件渲染中提取为独立模块。NavigationContext._currentValue 改标准 useContext 解决了 React Context 在某些场景下的 stale closure 问题。**epic-014 剩余 5 个迭代（iter-002~006），ARCH 可继续关注架构健康度**
+
 ### 2026-05-11 (cycle-2026-05-11-64)
 - **相关 Epic**: epic-009 iter-001「词典浏览器（只读）」—— 作为支持者
 - **结果**: epic-009 iter-001 完成，708/708 测试通过，v0.31.0

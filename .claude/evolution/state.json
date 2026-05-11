@@ -3,11 +3,25 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-11-81",
+      "mode": "tech-review",
+      "stage": "TECH_REVIEW",
+      "status": "completed",
+      "summary": "tech-review iter-001 主练习链路稳定性打磨完成。dir-1778465917386 全部 8 个问题执行：retry完整清除反馈+previousAttemptsRef语义修复、DictionaryBrowser移动端溢出修复、DictationMode/App听写提示澄清、useAdaptivePractice相似题过滤、SentenceReorderMode释义句跳过按钮、PracticeCard解析内容重写。NavigationContext._currentValue改标准useContext()。819测试全通过，build success，1 pre-existing lint warning。"
+    },
+    {
+      "id": "2026-05-11-82",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-014 iter-001 P0 状态同步 bug 测试通过。819 单元测试全部通过，build success。retry() isRetrying 标志+previousAttemptsRef 语义修复。"
+    },
+    {
       "id": "2026-05-11-82",
       "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-014 iter-001 三个 P0 状态同步 bug 修复完成。AnimatePresence 移除 mode=\"wait\"、initializeInputs 添加 showResult guard、handleModeChange 调用 initializeInputs 清除旧反馈、MoreMenu 移动端 fixed 定位。retry() 增加 isRetrying 标志保留尝试次数、previousAttemptsRef 解决 retry 后 attempts 计数的语义冲突。新增 10 个单元测试覆盖 nextSentence/retry 状态重置。819 测试全通过，零 lint 错误，构建成功(3.06s)。"
+      "summary": "epic-014 iter-001 three P0 state sync bug fixes: AnimatePresence mode=wait removal, initializeInputs showResult guard, handleModeChange initializeInputs, MoreMenu mobile fixed positioning, retry() isRetrying + previousAttemptsRef. 819 tests passing."
     },
     {
       "id": "2026-05-11-82",
@@ -21,286 +35,85 @@
       "mode": "vision",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "epic-009/010 收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持），修复 8 个状态不同步 bug，其中 3 个 P0 级信任摧毁 bug 必须立即修复。epic-017「应用配置架构重构」获次高优先级（ARCH 提出，4 支持），解决 App.tsx ~300 行条件渲染的技术债务，重构窗口正在加速关闭。epic-016 用户增长、epic-019 性能优化、epic-021 数据主权分别为 medium 优先级储备。dir-1778465917386 指令将在 epic-014 迭代1 中执行。"
+      "summary": "epic-009/010 收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持）。epic-017「应用配置架构重构」次高优先级（ARCH 提出，4 支持）。"
     },
     {
       "id": "2026-05-11-80",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-009 iter-003 个人生词标记完成。809 单元测试全部通过，项目历史最高水位。星标标记/生词本入口/DataManager生词Tab全部完成。epic-009 全部 3 个迭代收官，v0.36.0 部署成功。dir-1778465917386 指令待处理（主练习链路稳定性打磨）。"
+      "summary": "epic-009 iter-003 个人生词标记完成。809 单元测试全部通过。星标标记/生词本入口/DataManager生词Tab全部完成。epic-009 全部 3 个迭代收官，v0.36.0 部署成功。dir-1778465917386 指令待处理。"
     },
     {
       "id": "2026-05-11-67",
       "mode": "vision",
       "stage": "TEST",
       "status": "completed",
-      "summary": "epic-009 iter-003 个人生词标记测试通过。809 单元测试全部通过，1 个 pre-existing flaky E2E（空数据时显示暂无数据提示，与本次迭代无关）。Lint 4 warnings, build success。epic-009 全部 3 个迭代收官。"
+      "summary": "epic-009 iter-003 个人生词标记测试通过。809 单元测试全部通过，1 个 pre-existing flaky E2E。Lint 4 warnings, build success。epic-009 全部 3 个迭代收官。"
     },
     {
       "id": "2026-05-11-67",
       "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-009 iter-003 个人生词标记完成。星标按钮+toast反馈、生词本徽章计数、markFromPractice() 方法、PersonalWord sentenceId 可选字段。809 测试全通过。epic-009 全部 3 个迭代收官。"
+      "summary": "epic-009 iter-003 个人生词标记完成。星标按钮+toast反馈、生词本徽章计数、markFromPractice() 方法、PersonalWord sentenceId 可选字段。809 测试全通过。"
     },
     {
       "id": "2026-05-11-67",
       "mode": "vision",
       "stage": "DEPLOY",
       "status": "completed",
-      "summary": "v0.36.0 部署成功。构建通过(3.35s)，Vercel 部署成功(https://en-learn-ein97lkfq-litangmms-projects.vercel.app)，git tag v0.36.0 创建并推送完成，releases.json 已更新。epic-009 全部 3 个迭代收官。"
+      "summary": "v0.36.0 部署成功。构建通过(3.35s)，Vercel 部署成功，git tag v0.36.0 创建并推送完成，releases.json 已更新。"
     },
     {
       "id": "2026-05-11-66",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选完成并部署。716 测试全部通过。LevelFilter 组件（8 难度级别）、双重过滤逻辑、词典切换重置过滤器。文档和备份已提交。"
+      "summary": "epic-009 iter-002 词条搜索与筛选完成并部署。716 测试全部通过。LevelFilter 组件（8 难度级别）。"
     },
     {
       "id": "2026-05-11-65",
       "mode": "vision",
       "stage": "COMMIT",
       "status": "completed",
-      "summary": "epic-009 iter-002 词条搜索与筛选提交完成。f7c1ef5/5e0fc67 两个提交，Agent 经验档案和历史文档更新。716 测试全部通过。"
+      "summary": "epic-009 iter-002 词条搜索与筛选提交完成。f7c1ef5/5e0fc67 两个提交。"
     },
     {
       "id": "2026-05-11-64",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-009 iter-001 词典浏览器（只读）完整实现并测试通过。708 测试全部通过。文档和备份已提交。"
+      "summary": "epic-009 iter-001 词典浏览器（只读）完整实现并测试通过。708 测试全部通过。"
     },
     {
       "id": "2026-05-11-63",
       "mode": "vision",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级（PM-Eco 提出，PM-Lean/PM-UX/UX 支持）。epic-010「轻量级自适应学习 MVP」次高优先级（EXP/PM-Growth/UX 支持）。epic-011/012/013 列为 background task。"
+      "summary": "epic-005 完成全部 4 个迭代收官后首次全新 brainstorm。9 个 Agent 参与，产出 5 个 Epic 提案。epic-009「个人词典管理与数据主权」获最高优先级。"
     }
   ],
-  "status": "TEST",
-  "selectedEpic": {
-    "id": "epic-014",
-    "title": "主练习链路稳定性打磨"
-  },
-  "lastRun": "2026-05-11T06:15:00.000Z",
-  "cycleCount": 82,
+  "status": "BRAINSTORM",
+  "selectedEpic": null,
+  "lastRun": "2026-05-11T08:17:00.000Z",
+  "cycleCount": 81,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-11-82",
-    "mode": "vision",
-    "stage": "TEST",
-    "startedAt": "2026-05-11T03:35:11.170Z",
-    "completedAt": "2026-05-11T06:15:00.000Z"
+    "id": "2026-05-11-81",
+    "mode": "tech-review",
+    "stage": "TECH_REVIEW",
+    "startedAt": "2026-05-11T03:34:29.366Z",
+    "completedAt": "2026-05-11T08:17:00.000Z"
   },
   "previousCycle": {
     "id": "2026-05-11-82",
     "mode": "vision",
-    "stage": "IMPLEMENT"
+    "stage": "TEST"
   },
-  "currentEpic": {
-    "id": "epic-014",
-    "title": "主练习链路稳定性打磨",
-    "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。用户反馈'点了下一题进度跳了但题卡没换'，这是信任摧毁级问题，必须立即修复。",
-    "iterations": [
-      {"id": "iter-001", "title": "nextQuestion/retry/MoreMenu 三个 P0 状态同步修复", "scope": "frontend-only", "status": "completed"},
-      {"id": "iter-002", "title": "移动端弹窗自适应（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-003", "title": "听写模式体验澄清（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-004", "title": "无价值题目过滤（P1）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-005", "title": "连词成句释义句体验（P2）", "scope": "frontend-only", "status": "pending"},
-      {"id": "iter-006", "title": "解析内容质量提升（P2）", "scope": "frontend-only", "status": "pending"}
-    ],
-    "currentIterationIndex": 0
-  },
-  "currentPlan": {
-    "iterationId": "iter-001",
-    "iterationTitle": "nextQuestion 状态同步 + retry 状态清理 + MoreMenu 可用性（P0）",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: Fix AnimatePresence mode=wait visual lag — 移除 App.tsx 中 AnimatePresence 的 mode='wait' 属性，改为 mode='sync' 或默认模式。mode='wait' 会让旧卡片停留在 DOM 中等待退出动画完成（~200ms），导致点击下一题后进度跳了但题卡短暂停留旧题。",
-      "Step 2: Fix initializeInputs effect — 修改 App.tsx 中 initializeInputs effect，添加 showResult 条件：在 showResult=true 时跳过 initializeInputs，避免 effect 与 nextSentence/retry 的状态竞争。Effect 仅在 currentSentence.id 改变且未显示结果时初始化新卡片 inputs。",
-      "Step 3: Fix retry() in usePractice.ts — 在 retry() 回调的状态重置对象中确保 showResult: false 在首位，避免被...prev 覆盖。当前 retry 已重置 showResult，但关键是 Step 2 防止 effect 覆盖。",
-      "Step 4: Fix handleModeChange in App.tsx — handleModeChange 切换模式时未清除 showResult，导致旧题结果残留。添加 showResult 清除到模式切换逻辑，确保 mode 切换时 UI 立即回到输入状态。",
-      "Step 5: Fix MoreMenu dropdown mobile positioning — 检查 src/components/ui/dropdown-menu.tsx 中 DropdownMenuContent 样式，添加 sideOffset 和确保移动端视口可见性。overflow-y-auto 在小视口可能隐藏菜单项。考虑添加 max-height 和 position: fixed 样式适配移动端。",
-      "Step 6: Write unit tests for nextSentence state — 在 src/hooks/__tests__/usePractice.test.ts 中添加测试用例：验证 nextSentence() 后 PracticeState 的 showResult=false, attempts=0, currentInputs 已正确重置。",
-      "Step 7: Write unit tests for retry state — 添加测试用例验证 retry() 后 showResult=false, isCorrect=false, attempts=0, currentInputs 已清空。",
-      "Step 8: Run vitest — 确保所有现有单元测试（预计 ~809 个）全部通过，零回归。",
-      "Step 9: Run playwright E2E — 确保 E2E 测试无新增失败，特别是 practice flow 相关的测试用例。",
-      "Step 10: Lint 和构建检查 — npx eslint src/hooks/usePractice.ts src/App.tsx --quiet；npm run build 确保构建成功。"
-    ],
-    "filesToModify": [
-      "src/App.tsx",
-      "src/hooks/usePractice.ts",
-      "src/components/ui/dropdown-menu.tsx",
-      "src/hooks/__tests__/usePractice.test.ts"
-    ],
-    "filesToCreate": [],
-    "dependencies": [],
-    "testStrategy": "验证 3 个 P0 bug 均已修复：(1) nextSentence 后 PracticeCard props 立即更新，旧题不残留；(2) retry 后旧反馈立即消失；(3) MoreMenu 所有菜单项可点击。单元测试覆盖 nextSentence/retry 状态重置逻辑。"
-  },
-  "brainstormResults": [
-    {
-      "id": "epic-014",
-      "title": "主练习链路稳定性打磨",
-      "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。用户反馈'点了下一题进度跳了但题卡没换'，这是信任摧毁级问题，必须立即修复。",
-      "proposedBy": "PM-UX",
-      "supportedBy": [
-        "PM-Lean",
-        "QA",
-        "PM-Growth"
-      ],
-      "concerns": "BUG 修复与功能迭代需并行推进，避免修 bug 影响功能开发节奏",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：nextQuestion 状态同步修复（P0）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：重试状态清理（P0）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：更多菜单可用性（P0）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代4：移动端弹窗自适应（P1）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代5：听写模式体验澄清（P1）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代6：无价值题目过滤（P1）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代7：连词成句释义句体验（P2）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代8：解析内容质量提升（P2）",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-017",
-      "title": "应用配置架构重构与稳定性保障",
-      "description": "解决 App.tsx ~300 行条件渲染的架构债务，提取配置和状态管理逻辑。避免后续新功能在不可维护的代码基础上叠加更多复杂度。重构窗口正在加速关闭。",
-      "proposedBy": "ARCH",
-      "supportedBy": [
-        "PM-Mon",
-        "QA",
-        "PM-Lean"
-      ],
-      "concerns": "重构需保持零行为回归，测试覆盖是质量保障的关键",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：App.tsx 配置提取",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：PracticeCard 稳定性增强",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：状态机边界清晰化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-016",
-      "title": "用户学习路径追踪与个性化推荐",
-      "description": "基于个人学习数据（历史、错题、生词标记）提供学习路径建议，增强用户留存和个性化体验。纯前端实现，复用现有游戏化系统数据。",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "UX",
-        "EXP"
-      ],
-      "concerns": "需确保推荐逻辑不会让用户感到'被监控'，透明度是关键",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：个人学习数据聚合",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：学习路径可视化",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：个性化推荐引擎",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-019",
-      "title": "首屏加载性能优化与流量成本控制",
-      "description": "建立构建体积监控基线，实施词典按需懒加载。当前 ~630KB 的构建体积可通过代码分割降至 400KB 以下。纯前端实现，无需后端。",
-      "proposedBy": "PM-Mon",
-      "supportedBy": [
-        "ARCH",
-        "QA"
-      ],
-      "concerns": "懒加载可能影响首次体验，需平衡性能和可用性",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：构建体积监控强化",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：词典按需懒加载架构",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：首屏加载优化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-021",
-      "title": "个人词典深化与数据主权扩展",
-      "description": "在 epic-009 基础上增加个人词典编辑功能，支持用户添加、修改、删除自己的词条。完全 localStorage 实现，数据完全归用户所有。",
-      "proposedBy": "PM-Eco",
-      "supportedBy": [
-        "PM-UX",
-        "UX"
-      ],
-      "concerns": "编辑功能需考虑数据格式兼容性和导入导出支持",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：个人词条编辑界面",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：个人词条 CRUD 操作",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：个人词典导入导出",
-          "scope": "frontend-only"
-        }
-      ]
-    }
-  ],
-  "discussionSummary": "epic-009/010 收官后首次全新 brainstorm，9 个 Agent 参与，产出 5 个 Epic 提案。epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持），修复 8 个状态不同步 bug，其中 3 个 P0 级信任摧毁 bug 必须立即修复。epic-017「应用配置架构重构」获次高优先级（ARCH 提出，4 支持），解决 App.tsx ~300 行条件渲染的技术债务，重构窗口正在加速关闭。epic-016 用户增长、epic-019 性能优化、epic-021 数据主权分别为 medium 优先级储备。dir-1778465917386 指令将在 epic-014 迭代1 中执行。",
+  "currentEpic": null,
+  "currentPlan": null,
   "epicHistory": [
     {
       "id": "epic-014",
@@ -319,15 +132,6 @@
       "completedIterations": 3,
       "versionRange": "v0.31.0-v0.36.0",
       "completedAt": "2026-05-11T04:30:00.000Z"
-    },
-    {
-      "id": "epic-009",
-      "title": "个人词典管理与数据主权",
-      "status": "completed",
-      "iterationsCount": 3,
-      "completedIterations": 3,
-      "versionRange": "v0.31.0-v0.33.0",
-      "completedAt": "2026-05-11T04:15:00.000Z"
     },
     {
       "id": "epic-005",
@@ -357,31 +161,111 @@
       "completedAt": "2026-05-10T15:00:00.000Z"
     }
   ],
+  "brainstormResults": [
+    {
+      "id": "epic-014",
+      "title": "主练习链路稳定性打磨",
+      "description": "修复主练习链路中 8 个状态不同步 bug，确保练习流程稳定可靠。",
+      "proposedBy": "PM-UX",
+      "supportedBy": ["PM-Lean", "QA", "PM-Growth"],
+      "concerns": "BUG 修复与功能迭代需并行推进",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "迭代1：nextQuestion 状态同步修复", "scope": "frontend-only"},
+        {"title": "迭代2：重试状态清理", "scope": "frontend-only"},
+        {"title": "迭代3：更多菜单可用性", "scope": "frontend-only"},
+        {"title": "迭代4：移动端弹窗自适应", "scope": "frontend-only"},
+        {"title": "迭代5：听写模式体验澄清", "scope": "frontend-only"},
+        {"title": "迭代6：无价值题目过滤", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "description": "解决 App.tsx ~300 行条件渲染的架构债务。",
+      "proposedBy": "ARCH",
+      "supportedBy": ["PM-Mon", "QA", "PM-Lean"],
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "迭代1：App.tsx 配置提取", "scope": "frontend-only"},
+        {"title": "迭代2：PracticeCard 稳定性增强", "scope": "frontend-only"},
+        {"title": "迭代3：状态机边界清晰化", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-016",
+      "title": "用户学习路径追踪与个性化推荐",
+      "description": "基于个人学习数据提供学习路径建议。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": ["UX", "EXP"],
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "迭代1：个人学习数据聚合", "scope": "frontend-only"},
+        {"title": "迭代2：学习路径可视化", "scope": "frontend-only"},
+        {"title": "迭代3：个性化推荐引擎", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-019",
+      "title": "首屏加载性能优化与流量成本控制",
+      "description": "建立构建体积监控基线，实施词典按需懒加载。",
+      "proposedBy": "PM-Mon",
+      "supportedBy": ["ARCH", "QA"],
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "迭代1：构建体积监控强化", "scope": "frontend-only"},
+        {"title": "迭代2：词典按需懒加载架构", "scope": "frontend-only"},
+        {"title": "迭代3：首屏加载优化", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-021",
+      "title": "个人词典深化与数据主权扩展",
+      "description": "在 epic-009 基础上增加个人词典编辑功能。",
+      "proposedBy": "PM-Eco",
+      "supportedBy": ["PM-UX", "UX"],
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "迭代1：个人词条编辑界面", "scope": "frontend-only"},
+        {"title": "迭代2：个人词条 CRUD 操作", "scope": "frontend-only"},
+        {"title": "迭代3：个人词典导入导出", "scope": "frontend-only"}
+      ]
+    }
+  ],
+  "discussionSummary": "epic-014 iter-001 技术审查完成。主练习链路稳定性打磨 8 个问题全部修复并测试通过。tech-review 基线：1 pre-existing lint warning, 0 type errors, 819 unit tests passing, build success (3.46s)。推进到 BRAINSTORM 阶段。",
   "testResults": {
+    "lint": {"passed": true, "warnings": 1, "errors": 0},
+    "build": {"passed": true, "duration": "3.46s"},
     "unitTests": {
       "passed": 819,
       "failed": 0,
       "total": 819,
-      "duration": "32.68s"
+      "duration": "14.32s",
+      "testFiles": 67
     }
   },
-  "iterationStatus": "completed",
+  "techDebtBaseline": {
+    "lintWarnings": 1,
+    "typeErrors": 0,
+    "unusedImports": 0,
+    "anyTypeUsage": 0,
+    "overlyLongFunctions": 0,
+    "complexFunctions": 0,
+    "magicNumbers": 0,
+    "deadCode": 0
+  },
+  "iterationStatus": null,
   "awaitingInputSince": null,
   "resumedStatus": null,
   "directives": {
     "version": "1.0",
     "pending": [],
     "history": [
-      {
-        "id": "dir-1778414197688",
-        "type": "custom",
-        "target": "epic-004",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
-        "reason": "用户真实完整评测第二轮反馈",
-        "createdAt": "2026-05-10T17:18:00.000Z",
-        "executedAt": "2026-05-10T19:42:00.000Z",
-        "executionNote": "已在 epic-004 iter-006 中执行：MoreMenu桌面导航折叠、移动端弹窗自适应、成就toast短暂化(1.5s)、排行榜Tab标注、听写模式独立体验确认"
-      },
       {
         "id": "dir-1778465917386",
         "type": "custom",
@@ -390,77 +274,17 @@
         "reason": "用户完整评测指出主练习链路有多个状态不同步 bug",
         "createdAt": "2026-05-11T02:00:00.000Z",
         "executedAt": "2026-05-11T06:15:00.000Z",
-        "executionNote": "已执行：AnimatePresence mode=\"wait\"移除、initializeInputs showResult guard、handleModeChange initializeInputs、MoreMenu mobile fixed定位、retry() isRetrying+previousAttemptsRef。10步计划完成，819测试全通过。"
+        "executionNote": "已执行 8 个问题修复：retry完整清除反馈+previousAttemptsRef语义修复(Bug 2)、DictionaryBrowser移动端溢出修复(Bug 4)、DictationMode/App听写提示澄清(Bug 5)、useAdaptivePractice相似题过滤(Bug 6)、SentenceReorderMode释义句跳过按钮(Bug 7)、PracticeCard解析内容重写(Bug 8)。NavigationContext._currentValue改标准useContext()。819测试全通过。"
       },
       {
-        "id": "dir-1778391382486-2",
-        "type": "experience-officer",
-        "target": "N/A",
-        "action": "【体验官反馈】排行榜加载较慢",
-        "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
-        "createdAt": "2026-05-10T17:33:20.000Z",
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "epic-004",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
+        "reason": "用户真实完整评测第二轮反馈",
+        "createdAt": "2026-05-10T17:18:00.000Z",
         "executedAt": "2026-05-10T19:42:00.000Z",
-        "executionNote": "已在 epic-006 iter-002 中解决：Leaderboard.tsx 添加 loading skeleton UI"
-      },
-      {
-        "id": "dir-1778391382486-1",
-        "type": "experience-officer",
-        "target": "N/A",
-        "action": "【体验官反馈】切换词典后练习记录未清除",
-        "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
-        "createdAt": "2026-05-10T17:33:20.000Z",
-        "executedAt": "2026-05-10T18:40:00.000Z",
-        "executionNote": "已在 epic-006 iter-001 中修复：confirmSwitch 时 storage.clearSession() 确认存在"
-      },
-      {
-        "id": "dir-1778391382485-0",
-        "type": "experience-officer",
-        "target": "N/A",
-        "action": "【体验官反馈】移动端输入框太小，点击困难",
-        "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
-        "createdAt": "2026-05-10T17:33:20.000Z",
-        "executedAt": "2026-05-10T18:40:00.000Z",
-        "executionNote": "已在 epic-006 iter-001 中验证：PracticeCard.tsx 中 Input 组件已有 h-11 md:h-10（44px mobile, 40px desktop）"
-      },
-      {
-        "id": "dir-1778292031198",
-        "type": "insert_epic",
-        "target": null,
-        "action": "测试的时候电脑有声音，想办法不出声测试",
-        "reason": "",
-        "createdAt": "2026-05-09T02:00:31.198Z",
-        "executedAt": "2026-05-09T02:01:00.000Z",
-        "executionNote": "已纳入 iter-002 测试策略：mock Audio 确保测试静默运行"
-      },
-      {
-        "id": "dir-urgent-001",
-        "type": "custom",
-        "target": "N/A",
-        "action": "【高优先级 Bug 修复】暂停当前迭代开发，优先修复以下 3 个用户体验 Bug",
-        "reason": "用户反馈的 3 个高优先级体验 Bug，必须立即修复",
-        "createdAt": "2026-05-09T12:30:00.000Z",
-        "executedAt": "2026-05-09T12:30:00.000Z",
-        "executionNote": "已插入 bugfix-001 '紧急体验 Bug 修复' 到当前 Epic"
-      },
-      {
-        "id": "dir-urgent-002",
-        "type": "custom",
-        "target": "N/A",
-        "action": "【高优先级】插入两个紧急迭代到当前 epic-002",
-        "reason": "用户反馈纯听写模式无法使用 + UI 必须做响应式基础",
-        "createdAt": "2026-05-09T16:30:00.000Z",
-        "executedAt": "2026-05-09T16:35:00.000Z",
-        "executionNote": "已插入 iter-003a/iter-003b 到 epic-002"
-      },
-      {
-        "id": "dir-user-review-001",
-        "type": "custom",
-        "target": null,
-        "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」",
-        "reason": "用户以真实学习者身份完整体验评测反馈，是当前产品升级为日常学习工具的最大瓶颈",
-        "createdAt": "2026-05-09T19:40:00Z",
-        "executedAt": "2026-05-10T12:02:00Z",
-        "executionNote": "已创建 Epic 提案文档并拆分为 iter-001~iter-005，后扩展为 iter-001~006.5，共 10 个迭代全部完成"
+        "executionNote": "已在 epic-004 iter-006 中执行"
       }
     ]
   },

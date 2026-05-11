@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.36.0",
+      "tag": "v0.36.0",
+      "commit": "fcce1a1",
+      "date": "2026-05-11T02:27:09.558Z",
+      "iterationId": "iter-003",
+      "title": "个人生词标记",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-ein97lkfq-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.35.0",
       "tag": "v0.35.0",
       "commit": "cba1eed",

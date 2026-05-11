@@ -2,6 +2,19 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.50.0",
+      "tag": "v0.50.0",
+      "commit": "4502d42",
+      "date": "2026-05-11T23:09:34.907Z",
+      "iterationId": "iter-001",
+      "title": "成就时刻动态卡片",
+      "features": [
+        "Update agent experience files (arch, exp, qa, ux)",
+        "Add epic-028 release notes to releases.json"
+      ],
+      "deployUrl": "https://en-learn-hfwib5i61-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.49.0",
       "tag": "v0.49.0",
       "commit": "e469d0e",

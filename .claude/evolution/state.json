@@ -101,11 +101,11 @@
       "summary": "epic-028 iter-002 收官，v0.46.0。薄弱点智能识别与标记完成，1032 测试零回归。报告生成、经验归档、状态更新完成。"
     },
     {
-      "id": "2026-05-12-104",
+      "id": "2026-05-12-103",
       "mode": "vision",
-      "stage": "IMPLEMENT",
+      "stage": "COMMIT",
       "status": "completed",
-      "summary": "epic-028 iter-003 每日复习计划与提醒系统完成。DailyReviewStats类型 + useReviewStreak hook + DailyReviewPlan组件 + App.tsx集成。1052 测试零回归，lint 1 warning，build 3.03s。Commit de5cc5a."
+      "summary": "epic-028 iter-003 每日复习计划与提醒系统提交完成。代码提交 de5cc5a，state.json 更新提交 7325a4d/0f3e3d0。1052 测试零回归，lint 1 warning，build 3.03s。状态已更新为 DEPLOY。"
     }
   ],
   "status": "DEPLOY",
@@ -119,9 +119,9 @@
     "stage": "COMMIT"
   },
   "previousCycle": {
-    "id": "2026-05-12-98",
+    "id": "2026-05-12-103",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "COMMIT"
   },
   "currentEpic": {
     "id": "epic-028",

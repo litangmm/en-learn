@@ -150,6 +150,15 @@
   - 全量回归：**459/459 单元测试通过**（47 测试文件，历史新高位），lint 0 errors（3 pre-existing warnings），build 成功
 - **备注**: 本次迭代新增 8 个测试，覆盖了释义型题目的识别逻辑和选项文本处理。PracticeCard.choice 和 usePractice.choice 的测试扩展展示了增量测试策略。isDefinitionSentence 的「引号检测」边界清晰，测试覆盖无遗漏。459 测试是项目历史新高位。E2E: skipped（2 pending iterations remaining）
 
+### 2026-05-11 (cycle-2026-05-11-77)
+- **相关质量门禁**: 单元测试回归、Hook API 扩展测试、向后兼容测试、构建稳定性
+- **本次验证**: epic-010 iter-003「自适应出题权重」质量门禁验证
+  - useQuestionWeighting 测试：getSentenceWeight 无错题(1.0)/1错题(1.5)/2错题(2.0)/3+错题(2.5)、新词中等权重(1.0)、errorRate 权重叠加(×1.25)
+  - getWeightedSentenceIds 测试：权重越大概率越靠前、空历史回退均匀分布、无 sentences 返回空数组、权重分布概率验证
+  - usePractice weighted shuffle 集成测试：useQuestionWeighting 被调用、getWeightedSentenceIds 优先级应用
+  - 全量回归：**804/804 单元测试通过**（历史新高位），lint 0 errors（4 pre-existing warnings），build 成功
+- **备注**: epic-010 全部 3 个迭代收官，804 测试是项目历史最高水位。iter-003 的 useQuestionWeighting hook 测试覆盖了权重算法边界（无错题/新词/高错误率）。向后兼容设计（fallback 到均匀 shuffle）经零回归验证。**epic-010 收官后，QA 应关注下一 Epic（epic-011/013）的质量门禁设计**
+
 ### 2026-05-11 (cycle-2026-05-11-64)
 - **相关质量门禁**: 单元测试回归、PersonalWord 类型测试、DictionaryBrowser 组件测试、构建稳定性
 - **本次验证**: epic-009 iter-001「词典浏览器（只读）」质量门禁验证

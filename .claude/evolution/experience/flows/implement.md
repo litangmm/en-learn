@@ -8,6 +8,17 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-76)
+- **迭代**: epic-010 iter-003「自适应出题权重」—— **完整实现**
+- **实现质量**: 高 — 算法设计轻量，向后兼容完善
+- **关键决策**:
+  - useQuestionWeighting hook 提供 getSentenceWeight(id) 和 getWeightedSentenceIds(ids) 两个核心函数
+  - getSentenceWeight 使用错题次数（more mistakes = higher weight）和错误率（higher error rate = higher weight）双维度计算权重
+  - getWeightedSentenceIds 使用加权随机洗牌：高权重句子更频繁出现在靠前位置
+  - 向后兼容：若无错题历史，回退到均匀随机洗牌，确保新用户零感知降级
+  - 集成到 usePractice.ts：替换简单的 shuffle 为 weighted shuffle，优先出薄弱词
+- **观察**: 零新增依赖，零新增组件，零构建体积增长。epic-010 全部 3 个迭代收官（智能干扰项 v0.34.0、动态提示级别 v0.34.1、自适应出题权重 v0.35.0），804 测试是项目历史最高水位。自适应学习三件套（干扰项/提示级别/出题权重）完整交付，纯前端无外部依赖
+
 ### 2026-05-11 (cycle-2026-05-11-59)
 - **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **完整实现**
 - **实现质量**: 高 — 零 bug，零 lint 错误，649 测试全通过

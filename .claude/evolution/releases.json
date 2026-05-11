@@ -2,6 +2,47 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.35.0",
+      "tag": "v0.35.0",
+      "commit": "cba1eed",
+      "date": "2026-05-10T22:27:05.170Z",
+      "iterationId": "iter-003",
+      "title": "自适应出题权重",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-32876bfxb-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.34.0",
+      "tag": "v0.34.0",
+      "commit": "59a655d",
+      "date": "2026-05-10T21:26:17.998Z",
+      "iterationId": "iter-001",
+      "title": "智能干扰项生成",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-860kzaba1-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.33.0",
+      "tag": "v0.33.0",
+      "commit": "f0bbc76",
+      "date": "2026-05-10T20:24:14.148Z",
+      "iterationId": "iter-003",
+      "title": "个人生词标记",
+      "features": [
+        "添加 toggleMark 方法标记/取消标记生词",
+        "词条卡片添加星形标记按钮",
+        "「只看生词」筛选开关",
+        "生词数量徽章实时显示",
+        "生词本快捷入口",
+        "732 测试全部通过"
+      ],
+      "deployUrl": "https://en-learn-jlk6q9xma-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.32.0",
       "tag": "v0.32.0",
       "commit": "cea641a",

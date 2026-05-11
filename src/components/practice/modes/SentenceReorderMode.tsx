@@ -21,6 +21,7 @@ export function SentenceReorderMode({
   isFocusMode = false,
   onSelectToken,
   onDeselectToken,
+  onSkip,
 }: SentenceReorderModeProps) {
   // Check if this is a definition sentence - if so, show warning
   const isDefinition = isDefinitionSentence(sentence);
@@ -37,10 +38,18 @@ export function SentenceReorderMode({
   const renderSentenceReorder = () => {
     if (isDefinition) {
       return (
-        <div className="p-6 bg-amber-50 rounded-xl border border-amber-200 text-center">
+        <div className="space-y-4 p-6 bg-amber-50 rounded-xl border border-amber-200 text-center">
           <p className="text-amber-700 font-medium text-base">
             此题目为释义型句子，不适合连词成句练习
           </p>
+          {onSkip && (
+            <button
+              onClick={onSkip}
+              className="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg text-sm font-medium transition-colors"
+            >
+              跳过此题，换下一题 →
+            </button>
+          )}
         </div>
       );
     }

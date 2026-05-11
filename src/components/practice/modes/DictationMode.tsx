@@ -102,7 +102,7 @@ export function DictationMode({
       {!showResult && (
         <div className="text-center">
           <p className="text-sm text-slate-400">
-            请听音频，根据中文提示{hintLevel === 'none' ? '（无首字母提示）' : hintLevel === 'high' ? '和首字母提示' : '填写单词'}
+            首字母听写：请听音频，根据中文提示{hintLevel === 'none' ? '（无首字母提示）' : '和首字母提示'}填写单词
           </p>
         </div>
       )}

@@ -49,7 +49,7 @@ describe('PracticeCard dictation mode', () => {
 
   it('shows dictation mode instruction text', () => {
     render(<PracticeCard {...baseProps} mode="dictation" hintLevel="high" />);
-    expect(screen.getByText('请听音频，根据中文提示和首字母提示')).toBeInTheDocument();
+    expect(screen.getByText('首字母听写：请听音频，根据中文提示和首字母提示填写单词')).toBeInTheDocument();
   });
 
   it('shows first-letter hint below each input in dictation mode', () => {

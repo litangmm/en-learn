@@ -144,6 +144,8 @@ export interface SentenceReorderModeProps {
   onSelectToken: (tokenId: string) => void;
   /** Callback when a token is deselected (removed from arrangement) */
   onDeselectToken: (index: number) => void;
+  /** Callback when user skips this definition sentence */
+  onSkip?: () => void;
 }
 
 /**

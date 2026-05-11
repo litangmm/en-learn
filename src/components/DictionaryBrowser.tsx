@@ -228,17 +228,17 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
         )}
 
         {!loading && !error && filteredSentences.length > 0 && (
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 overflow-hidden">
             {filteredSentences.map(sentence => {
               const word = sentence.blanks[0]?.word || '';
               const marked = isMarked(word);
 
               return (
-                <Card key={sentence.id} className="relative">
+                <Card key={sentence.id} className="relative overflow-hidden">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="absolute top-3 right-3 h-8 w-8"
+                    className="absolute top-3 right-3 h-8 w-8 z-10"
                     onClick={() => toggleMark(word)}
                     title={marked ? '取消标记' : '标记为生词'}
                   >

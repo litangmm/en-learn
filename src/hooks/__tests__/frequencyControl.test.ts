@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isRecentShareTrigger, type ShareTrigger } from '../../App';
+import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
 
 describe('isRecentShareTrigger frequency control', () => {
   it('returns false for empty triggers array', () => {

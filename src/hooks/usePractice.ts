@@ -318,7 +318,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
     if (!currentSentence) return;
 
     // After retry, restore previous attempts count instead of incrementing from 0
-    const baseAttempts = state.isRetrying ? previousAttemptsRef.current : state.attempts;
+    const baseAttempts = previousAttemptsRef.current > 0 ? previousAttemptsRef.current : state.attempts;
     const newAttempts = baseAttempts + 1;
 
     // Sentence-reorder mode: compare reconstructed sentence

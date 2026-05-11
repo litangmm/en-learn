@@ -133,7 +133,8 @@ describe("App keyboard shortcuts", () => {
 
     fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
 
-    // Chinese appears twice after wrong answer: main content + analysis section
-    expect(screen.getAllByText("早起的鸟儿有虫吃。").length).toBe(2);
+    // Wrong answer feedback should remain visible; pressing Enter should NOT advance
+    expect(screen.getByText("你的答案")).toBeInTheDocument();
+    expect(screen.getByText("正确答案")).toBeInTheDocument();
   });
 });

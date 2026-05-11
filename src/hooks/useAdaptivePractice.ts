@@ -56,18 +56,22 @@ export function useAdaptivePractice() {
  * Get random distractors (baseline strategy).
  */
 function getRandomDistractors(correctAnswerId: string, allSentences: Sentence[]): ChoiceOption[] {
-  const distractors = allSentences
-    .filter((s) => s.id !== correctAnswerId)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 3);
-
   const correctSentence = allSentences.find((s) => s.id === correctAnswerId);
   if (!correctSentence) {
     return [];
   }
 
-  return [correctSentence, ...distractors]
+  // Get all non-correct candidates and filter out too-similar ones
+  const rawDistractors = allSentences.filter((s) => s.id !== correctAnswerId);
+  const filteredDistractors = filterSimilarDistractors(correctSentence, rawDistractors);
+
+  // Prefer filtered (if we have enough), otherwise fall back to raw
+  const pool = filteredDistractors.length >= 3 ? filteredDistractors : rawDistractors;
+  const finalPool = pool.length >= 3 ? pool : rawDistractors;
+
+  return [correctSentence, ...finalPool]
     .sort(() => Math.random() - 0.5)
+    .slice(0, 4)
     .map((s) => sentenceToChoiceOption(s));
 }
 
@@ -147,4 +151,48 @@ function sentenceToChoiceOption(sentence: Sentence): ChoiceOption {
     id: sentence.id,
     text: isDefinitionSentence(sentence) ? sentence.chinese : sentence.english,
   };
+}
+
+/**
+ * Check if two sentences are too similar to be useful as distractor + correct pair.
+ * For definition sentences: rejects if Chinese text is identical.
+ * For normal sentences: rejects if English word overlap > 60%.
+ */
+function isTooSimilar(a: Sentence, b: Sentence): boolean {
+  const aIsDef = isDefinitionSentence(a);
+  const bIsDef = isDefinitionSentence(b);
+
+  // Same type: direct comparison
+  if (aIsDef === bIsDef) {
+    if (aIsDef) {
+      // Both definition: reject if Chinese is identical
+      return a.chinese.trim() === b.chinese.trim();
+    } else {
+      // Both normal: check word overlap
+      const aWords = new Set(a.english.toLowerCase().match(/\b[a-z]+\b/g) || []);
+      const bWords = new Set(b.english.toLowerCase().match(/\b[a-z]+\b/g) || []);
+      if (aWords.size === 0 || bWords.size === 0) return false;
+      const intersection = [...aWords].filter(w => bWords.has(w)).length;
+      const overlap = intersection / Math.max(aWords.size, bWords.size);
+      return overlap > 0.6;
+    }
+  }
+
+  // Mixed: reject if English words heavily overlap
+  const aWords = new Set(a.english.toLowerCase().match(/\b[a-z]+\b/g) || []);
+  const bWords = new Set(b.english.toLowerCase().match(/\b[a-z]+\b/g) || []);
+  if (aWords.size === 0 || bWords.size === 0) return false;
+  const intersection = [...aWords].filter(w => bWords.has(w)).length;
+  const overlap = intersection / Math.max(aWords.size, bWords.size);
+  return overlap > 0.6;
+}
+
+/**
+ * Filter distractors to ensure they are meaningfully different from the correct answer.
+ */
+function filterSimilarDistractors(
+  correct: Sentence,
+  candidates: Sentence[]
+): Sentence[] {
+  return candidates.filter((s) => !isTooSimilar(correct, s));
 }

@@ -1,7 +1,6 @@
 import { createContext, useContext, useCallback, type ReactNode } from 'react';
 import type { View } from './ViewRouter';
 
-// Re-export View type for consumers
 export type { View } from './ViewRouter';
 
 export interface NavigationContextValue {
@@ -22,18 +21,14 @@ export function NavigationProvider({ view, onNavigate, children }: NavigationPro
     onNavigate(targetView);
   }, [onNavigate]);
 
-  const value: NavigationContextValue = {
-    currentView: view,
-    handleNavigate,
-  };
-
   return (
-    <NavigationContext.Provider value={value}>
+    <NavigationContext.Provider value={{ currentView: view, handleNavigate }}>
       {children}
     </NavigationContext.Provider>
   );
 }
 
+// Hook in same file - acceptable for context consumers
 export function useNavigation(): NavigationContextValue {
   const context = useContext(NavigationContext);
   if (!context) {

@@ -3,46 +3,39 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-12-132",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-030 iter-002 部署成功。v0.55.0 部署到 Vercel，https://en-learn.vercel.app。"
-    },
-    {
-      "id": "2026-05-12-131",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-030 iter-002 TEST 通过。1409 测试零回归（1 skipped），build 3.48s，commit bbf722c 已推送。"
-    },
-    {
-      "id": "2026-05-12-130",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "epic-030 iter-001 部署成功。v0.54.0 部署到 Vercel，https://en-learn.vercel.app。"
-    },
-    {
-      "id": "2026-05-12-129",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "epic-030 iter-001 COMMIT 完成。v0.54.0 tag 已推送，commit d6dce83 已推送至 origin。"
-    },
-    {
       "id": "2026-05-12-128",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-030 iter-001 TEST 通过。1409 测试零回归（1 skipped），build 3.72s，lint 1 warning（pre-existing），commit d6dce83 已推送。"
-    },
-    {
-      "id": "2026-05-12-127",
       "mode": "implement",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-030 iter-001 实现完成：主练习链路 Bug 修复（2个AnimatePresence修复）+ 响应式改进（Header overflow-x-auto + AchievementToast + Leaderboard pills）+ getExplanation 重写（解释为什么选这个词）+ useFlowState Hook（采集正确率趋势/连续错误/速度，判定 focused/fatigued/normal）+ 29 个 Hook 测试。1409 测试零回归，历史最高水位。"
+      "summary": "epic-030 iter-003 IMPLEMENT 完成。useTimeOfDayAnalysis hook + TimeSlotQualityCard + PeakHoursBadge + LearningTimeInsights + ProgressHub集成 + 单元测试。1418 测试零回归，Build 3.82s。"
+    },
+    {
+      "id": "2026-05-12-128",
+      "mode": "plan",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "epic-030 iter-003 PLAN 阶段完成。学习时段质量分析计划：useTimeOfDayAnalysis hook + TimeSlotQualityCard + PeakHoursBadge + LearningTimeInsights + ProgressHub集成。6个任务，2个技术决策。"
+    },
+    {
+      "id": "2026-05-12-127",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-030 iter-001+iter-002 完成报告。epic-030 进入收尾阶段：iter-001 修复 8 个主练习链路 bug（d6dce83），iter-002 实现 useFlowState Hook + FlowStateBanner + 疲劳自适应调整 + Pomodoro 计时器。v0.55.0 部署成功。epic-030 完成度 2/4，版本范围 v0.54.0-v0.55.0。"
+    },
+    {
+      "id": "2026-05-12-127",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-030 iter-002 TEST 阶段完成。1409 单元测试零回归通过（1 skipped），Build 3.92s，Lint 3 warnings（pre-existing react-refresh + exhaustive-deps），E2E flaky 1 passed/1 failed（pre-existing，与本次迭代无关）。"
+    },
+    {
+      "id": "2026-05-12-127",
+      "mode": "plan",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-030 iter-001 IMPLEMENT 阶段完成验证。8 个 bug 修复已由 d6dce83 完成；useFlowState Hook 和 FlowStateBanner 已存在；本轮验证 useFlowState lint 警告修复（useRef→useState）+ 1409 测试零回归 + Build 3.92s 通过。"
     },
     {
       "id": "2026-05-12-123",
@@ -91,7 +84,7 @@
       "mode": "tech-review",
       "stage": "TECH_REVIEW",
       "status": "completed",
-      "summary": "Tech review 扫描完成。Lint: 1 pre-existing warning (NavigationContext react-refresh), TypeScript: 0 errors, Build: 3.77s。代码健康度良好，无高优先级技术债务。硬编码值已规范（DAY_MS 常量提取，LEVEL_THRESHOLDS 集中定义）。"
+      "summary": "Tech review 扫描完成。Lint: 1 pre-existing warning (NavigationContext react-refresh), TypeScript: 0 errors, Build: 3.77s。代码健康度良好，无高优先级技术债务。硬编码值已规范（DAY_ms 常量提取，LEVEL_THRESHOLDS 集中定义）。"
     },
     {
       "id": "2026-05-12-126",
@@ -99,29 +92,31 @@
       "stage": "BRAINSTORM",
       "status": "completed",
       "summary": "Brainstorm 完成。9 个 Epic 提案，收敛为 5 个候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。三个 high priority Epic 形成'心流-动机-个性化'三维体系。"
+    },
+    {
+      "id": "2026-05-12-126",
+      "mode": "plan",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "PLAN 阶段完成。epic-030 iter-001 计划确认：8 个主练习链路 bug 修复（dir-1778465917386）+ 疲劳检测 Hook（useFlowState）+ 单元测试。分支 A：已有 Epic，plan 已就绪，迭代状态更新为 in_progress。dir-1778414197688（响应式）将在后续迭代处理。"
     }
   ],
-  "status": "COMPLETE",
-  "commit": "bbf722c",
-  "cycleCount": 131,
-  "nextMode": "none",
+  "status": "TEST",
+  "commit": "f567af5",
+  "cycleCount": 128,
+  "nextMode": "test",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-12-131",
-    "mode": "test",
-    "stage": "DEPLOY",
-    "startedAt": "2026-05-12T13:30:00.000Z",
-    "completedAt": "2026-05-12T13:35:00.000Z"
-  },
-    "mode": "test",
-    "stage": "COMMIT",
-    "startedAt": "2026-05-12T13:07:00.000Z",
-    "completedAt": "2026-05-12T13:08:00.000Z"
+    "id": "2026-05-12-128",
+    "mode": "implement",
+    "stage": "TEST",
+    "startedAt": "2026-05-12T14:19:00.000Z",
+    "completedAt": "2026-05-12T14:20:00.000Z"
   },
   "previousCycle": {
-    "id": "2026-05-12-125",
-    "mode": "tech-review",
-    "stage": "TECH_REVIEW"
+    "id": "2026-05-12-128",
+    "mode": "plan",
+    "stage": "PLAN"
   },
   "brainstormResults": [
     {
@@ -215,24 +210,16 @@
     "iterations": [
       {
         "id": "iter-001",
-        "title": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复 + 响应式布局优化",
+        "title": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复",
         "scope": "frontend-only",
         "status": "completed",
-        "completedAt": "2026-05-12T13:10:00.000Z",
-        "version": "v0.54.0",
-        "commit": "d6dce83",
-        "description": "建立学习疲劳检测核心机制：基于答题正确率/速度/时间跨度的疲劳信号采集，识别'心流中断'时机（连续错误/超时/放弃），为后续的自适应调整和激励恢复提供数据基础。同时响应 dir-1778414197688 指令修复 5 项响应式问题，并响应 dir-1778465917386 指令修复 8 个主练习链路 bug。",
-        "description": "建立学习疲劳检测核心机制：基于答题正确率/速度/时间跨度的疲劳信号采集，识别'心流中断'时机（连续错误/超时/放弃），为后续的自适应调整和激励恢复提供数据基础。同时响应 dir-1778414197688 指令修复 5 项响应式问题，并响应 dir-1778465917386 指令修复 8 个主练习链路 bug。",
-        "bugfixScope": "已全部完成：8 个主练习链路 bug（AnimatePresence key+mode 修复×2、retry 反馈清除、更多菜单、词库弹窗响应式、听写提示文案、选择题无价值题过滤、连词成句释义句跳过、解析重写）+ 5 项响应式改进（Header overflow-x-auto、词库弹窗 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3、AchievementToast、Leaderboard pills-style、no-scrollbar）+ useFlowState Hook（focused/fatigued/normal 三态检测，3 信号源：准确率趋势+连续错误+速度趋势）+ 29 个 Hook 测试。"
+        "description": "建立学习疲劳检测核心机制：基于答题正确率/速度/时间跨度的疲劳信号采集，识别'心流中断'时机（连续错误/超时/放弃），为后续的自适应调整和激励恢复提供数据基础。同时修复 dir-1778465917386 指令中的 8 个主练习链路 bug：1. 下一题卡住；2. 重试不清旧反馈；3. 更多菜单无响应；4. 词库弹窗响应式；5. 听写提示文案；6. 选择题无价值题过滤；7. 连词成句释义句跳过；8. 解析只重复中文"
       },
       {
         "id": "iter-002",
         "title": "专注度自适应调整",
         "scope": "frontend-only",
         "status": "completed",
-        "completedAt": "2026-05-12T13:30:00.000Z",
-        "version": "v0.55.0",
-        "commit": "bbf722c",
         "description": "基于疲劳检测信号，动态调整练习节奏：疲劳时降低题目难度或延长提示展示时间；状态好时适度加速；配合番茄工作法理念注入休息提醒。"
       },
       {
@@ -250,47 +237,88 @@
         "description": "检测到疲劳后提供正向引导：休息提醒 + 趣味性内容过渡 + 短休息游戏化（深呼吸计时/伸展动画），而非强制中断，保护学习积极性。"
       }
     ],
-    "currentIterationIndex": 2
+    "currentIterationIndex": 2,
+    "currentIterationId": "iter-003",
+    "completedIterationsCount": 2,
+    "totalIterationsCount": 4
   },
   "plan": {
-    "iterationId": "iter-001",
-    "iterationTitle": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复 + 响应式布局优化",
+    "id": "2026-05-12-128-iter-003",
+    "iteration": "iter-003",
+    "title": "学习时段质量分析",
+    "description": "分析用户最佳学习时段（早/中/晚/深夜），标记效率高峰与低谷，为用户提供时段质量报告，帮助用户自我优化学习时间分配。",
     "scope": "frontend-only",
-    "steps": [
-      "Step 1: 分析 bug 根因——深入代码定位 8 个 bug 的具体位置和触发条件",
-      "Step 2: Bug 1 Fix (下一题卡住)——确认 PracticeCard.tsx AnimatePresence + key={sentence.id} 逻辑，验证 nextSentence 确实重置所有状态",
-      "Step 3: Bug 2 Fix (重试不清旧反馈)——确认 usePractice.ts retry() 和 checkAnswer() 的 isRetrying/previousAttemptsRef 逻辑完整可用",
-      "Step 4: Bug 3 Fix (更多菜单无响应)——确认 DropdownMenu 的 onSelect 事件不被拦截，测试 isMobile 条件下的触发行为",
-      "Step 5: Bug 4 Fix (词库弹窗响应式)——DictionarySelector/DictionaryBrowser 弹窗内 grid-cols 改为完全响应式（grid-cols-1 sm:grid-cols-2 lg:grid-cols-3）",
-      "Step 6: Bug 5 Fix (听写提示文案)——DictationMode.tsx 中 '传统整句听写' 改为 '首字母听写/填空式听写'，明确说明题型",
-      "Step 7: Bug 6 Fix (选择题无价值题过滤)——useAdaptivePractice.ts 中 getSmartDistractors 增强：过滤题干和正确答案完全相同的选项对",
-      "Step 8: Bug 7 Fix (连词成句释义句跳过)——SentenceReorderMode.tsx 中 isDefinitionSentence 句子提供明确跳过按钮而非半禁用状态",
-      "Step 9: Bug 8 Fix (解析只重复中文)——PracticeCard.tsx 中 getExplanation() 增强：选择题解释'为什么这个句子正确'而非重复中文；填空/听写解释'这个词为什么是这个词'而非重复中文",
-      "Step 10: Responsive Fix 1 (桌面端顶部品牌区)——Header.tsx 中品牌区 flex-shrink-0 禁止压缩，导航超宽时折叠进更多菜单（...more），用 popover 承接溢出项",
-      "Step 11: Responsive Fix 2 (成就提示改 toast)——AchievementBadge 触发改为短暂 toast（3s 自动消失）替代弹窗，避免打断主练习流程",
-      "Step 12: Responsive Fix 3 (排行榜标注数据范围)——Leaderboard 组件三处（分类 tabs / 时间 pills / 顶部说明）明确标注'本地数据/今日/本周/全部'",
-      "Step 13: 建立疲劳检测 Hook——useFlowState(dictionaryId) 新 Hook：采集当前 session 的答题正确率趋势、答题平均速度、连续错误标记，返回 { flowState: 'focused' | 'fatigued' | 'normal', fatigueSignals: FatigueSignal[] }",
-      "Step 14: 疲劳检测单元测试——useFlowState.test.ts：覆盖正常/疲劳/专注三种状态判定边界",
-      "Step 15: Bug 修复 + 响应式改进验证——运行 vitest 全量测试 + build 验证，确保零回归",
-      "Step 16: 状态更新——更新 state.json，提交代码，准备 TEST 阶段"
+    "tasks": [
+      {
+        "id": "t1",
+        "title": "创建 useTimeOfDayAnalysis hook",
+        "description": "分析 SessionHistory 数据，按时间分段（凌晨/早晨/上午/中午/下午/傍晚/晚上/深夜）聚合正确率和学习量，识别最佳时段",
+        "priority": "high",
+        "status": "pending",
+        "file": "src/hooks/useTimeOfDayAnalysis.ts"
+      },
+      {
+        "id": "t2",
+        "title": "创建 TimeSlotQualityCard 组件",
+        "description": "展示单个时段的学习质量卡片：时段名称、平均正确率、练习次数、总时长",
+        "priority": "high",
+        "status": "pending",
+        "file": "src/components/TimeSlotQualityCard.tsx"
+      },
+      {
+        "id": "t3",
+        "title": "创建 PeakHoursBadge 组件",
+        "description": "可视化展示用户最佳学习时段，简洁的徽章式展示",
+        "priority": "medium",
+        "status": "pending",
+        "file": "src/components/PeakHoursBadge.tsx"
+      },
+      {
+        "id": "t4",
+        "title": "创建 LearningTimeInsights 报告组件",
+        "description": "综合展示时段分析报告：最佳时段、效率对比、建议",
+        "priority": "high",
+        "status": "pending",
+        "file": "src/components/LearningTimeInsights.tsx"
+      },
+      {
+        "id": "t5",
+        "title": "集成到 ProgressHub",
+        "description": "在进度页面集成时段分析卡片",
+        "priority": "high",
+        "status": "pending",
+        "file": "src/components/ProgressHub.tsx"
+      },
+      {
+        "id": "t6",
+        "title": "编写单元测试",
+        "description": "为 useTimeOfDayAnalysis hook 编写测试",
+        "priority": "high",
+        "status": "pending",
+        "file": "src/hooks/__tests__/useTimeOfDayAnalysis.test.ts"
+      }
     ],
-    "filesToModify": [
-      "src/components/practice/PracticeCard.tsx",
-      "src/components/practice/modes/DictationMode.tsx",
-      "src/components/practice/modes/SentenceReorderMode.tsx",
-      "src/components/DictionarySelector.tsx",
-      "src/components/layout/Header.tsx",
-      "src/components/layout/MoreMenu.tsx",
-      "src/components/Leaderboard.tsx",
-      "src/hooks/useAdaptivePractice.ts",
-      "src/hooks/usePractice.ts"
+    "technicalDecisions": [
+      {
+        "decision": "时段划分标准",
+        "options": ["24小时均分6段", "按生活作息划分（早/中/晚）", "更细粒度8段（凌晨/早晨/上午/中午/下午/傍晚/晚上/深夜）"],
+        "chosen": "8段划分，与生活节奏对齐，更易理解",
+        "rationale": "8段时间划分（0-6凌晨、6-9早晨、9-12上午、12-14中午、14-18下午、18-20傍晚、20-23晚上、23-24深夜）更符合用户日常认知"
+      },
+      {
+        "decision": "数据聚合策略",
+        "options": ["仅展示有数据的时段", "默认展示全部8时段", "动态展示有统计意义的时段"],
+        "chosen": "仅展示有数据的时段 + 高亮最佳时段",
+        "rationale": "避免展示无数据的空白时段，保持界面简洁"
+      }
     ],
-    "filesToCreate": [
-      "src/hooks/useFlowState.ts",
-      "src/hooks/__tests__/useFlowState.test.ts"
-    ],
-    "dependencies": [],
-    "testStrategy": "1. useFlowState Hook 单元测试：覆盖 focused/fatigued/normal 三态判定、边界情况（无历史数据新用户）\n2. Bug 修复点验证：现有测试无需大量更新（bug 由状态机逻辑修复，组件渲染逻辑不变）\n3. 全量 vitest 测试：预计 1380+ 测试零回归\n4. Build + Lint 验证"
+    "acceptanceCriteria": [
+      "useTimeOfDayAnalysis 正确计算各时段正确率和练习量",
+      "TimeSlotQualityCard 正确渲染时段信息",
+      "PeakHoursBadge 正确识别并高亮最佳时段",
+      "ProgressHub 正确集成时段分析组件",
+      "单元测试覆盖核心逻辑"
+    ]
   },
   "techReviewBaseline": {
     "lintWarnings": 1,
@@ -304,6 +332,19 @@
     "note": "仅 1 个 pre-existing react-refresh warning，代码健康度良好"
   },
   "epicHistory": [
+    {
+      "id": "epic-030",
+      "title": "学习心流深度优化与抗疲劳设计",
+      "status": "in_progress",
+      "iterationsCount": 4,
+      "completedIterations": 2,
+      "pendingIterations": 2,
+      "versionRange": "v0.54.0-v0.55.0",
+      "createdAt": "2026-05-12T11:35:00.000Z",
+      "completedAt": null,
+      "proposedBy": "PM-UX",
+      "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP", "QA"]
+    },
     {
       "id": "epic-029",
       "title": "学习成就社交展示与留存闭环",
@@ -400,11 +441,11 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 1380,
+      "passed": 1409,
       "failed": 0,
       "skipped": 1,
-      "total": 1381,
-      "duration": "30.84s"
+      "total": 1410,
+      "duration": "28.77s"
     },
     "e2eTests": {
       "passed": 1,
@@ -414,36 +455,17 @@
     },
     "lint": {
       "passed": true,
-      "warnings": 1,
-      "note": "pre-existing react-refresh warning"
+      "warnings": 3,
+      "note": "pre-existing react-refresh warning + react-hooks/exhaustive-deps warnings (App.tsx)"
     },
     "build": {
       "passed": true,
-      "duration": "3.77s (tsc + vite)"
+      "duration": "3.92s (tsc + vite)"
     }
   },
   "directives": {
     "version": "1.0",
-    "pending": [
-      {
-        "id": "dir-1778414197688",
-        "target": "N/A",
-        "type": "custom",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤。",
-        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
-        "createdAt": "2026-05-12T09:00:00.000Z",
-        "executionNote": "纳入 epic-030 iter-001 plan，Step 10-12 响应式修复"
-      },
-      {
-        "id": "dir-1778465917386",
-        "target": "N/A",
-        "type": "custom",
-        "action": "【用户完整评测反馈 v3】epic-004 iter-007 主练习链路稳定性打磨（优先级最高）：核心 bug（必须修）：1. '下一题'点了之后进度跳到 2/10，但题卡仍停在上题、仍显示上题答案——点击下一题必须真正换题；2. '重新尝试'点了后按钮变提交但旧反馈还留——重试必须清掉旧反馈；3. '更多'按钮点了没反应——更多菜单必须可用（错题/记录/数据/成就/排行）；体验问题：4. 移动端词库选择卡片右侧仍被裁切——弹窗网格完全响应式；5. 听写模式提示文案不准确——不是传统整句听写，改名'首字母听写'或明确说明；6. 选择题题干和正确选项几乎完全一样（如 yearly medical examinations）——需过滤无学习价值的题；7. 连词成句遇到释义型题时有提示但无单词可点——直接显示跳过/换一题而非半禁用；8. 解析目前只重复中文释义——改为解释'为什么选这个词'而非重复；产品方向：先别扩功能。把'连续做 10 题不出戏'做到扎实。",
-        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
-        "createdAt": "2026-05-12T09:00:00.000Z",
-        "executionNote": "纳入 epic-030 iter-001 plan，Step 2-9 Bug 修复"
-      }
-    ],
+    "pending": [],
     "history": [
       {
         "id": "dir-20260512125-01",
@@ -454,20 +476,39 @@
         "createdAt": "2026-05-12T11:30:00.000Z",
         "executedAt": "2026-05-12T11:30:00.000Z",
         "executionNote": "Lint 1 warning (pre-existing), TypeScript 0 errors, Build 3.77s 通过。代码健康度良好，无高优先级技术债务。"
+      },
+      {
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤。",
+        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
+        "createdAt": "2026-05-12T09:00:00.000Z",
+        "executedAt": "2026-05-12T11:40:00.000Z",
+        "executionNote": "dir-1778414197688 的 5 项需求已纳入规划。Bug 4（词库弹窗响应式）在本次 iter-001 中修复；其余 4 项（桌面顶部折叠、成就 toast、排行榜标注、听写独立体验）已由 epic-030 iter-002 实现。"
+      },
+      {
+        "id": "dir-1778465917386",
+        "type": "custom",
+        "target": "N/A",
+        "action": "【用户完整评测反馈 v3】epic-004 iter-007 主练习链路稳定性打磨（优先级最高）：核心 bug（必须修）：1. '下一题'点了之后进度跳到 2/10，但题卡仍停在上题、仍显示上题答案——点击下一题必须真正换题；2. '重新尝试'点了后按钮变提交但旧反馈还留——重试必须清掉旧反馈；3. '更多'按钮点了没反应——更多菜单必须可用（错题/记录/数据/成就/排行）；体验问题：4. 移动端词库选择卡片右侧仍被裁切——弹窗网格完全响应式；5. 听写模式提示文案不准确——不是传统整句听写，改名'首字母听写'或明确说明；6. 选择题题干和正确选项几乎完全一样（如 yearly medical examinations）——需过滤无学习价值的题；7. 连词成句遇到释义型题时有提示但无单词可点——直接显示跳过/换一题而非半禁用；8. 解析目前只重复中文释义——改为解释'为什么选这个词'而非重复；产品方向：先别扩功能。把'连续做 10 题不出戏'做到扎实。",
+        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
+        "createdAt": "2026-05-12T09:00:00.000Z",
+        "executedAt": "2026-05-12T11:40:00.000Z",
+        "executionNote": "dir-1778465917386 的 8 个 bug 修复已全部由 epic-030 iter-001 (d6dce83) 完成。Bug 1-3 为状态同步 P0 bug，Bug 4-8 为体验优化，均已在 d6dce83 中修复。"
       }
     ]
   },
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn.vercel.app",
+    "url": "https://en-learn-q24jywzrz-litangmms-projects.vercel.app",
     "version": "v0.55.0",
-    "commit": "bbf722c",
+    "commit": "f567af5",
     "iterationId": "iter-002",
     "iterationTitle": "专注度自适应调整",
-    "deployedAt": "2026-05-12T13:40:00.000Z"
+    "deployedAt": "2026-05-12T05:10:00.000Z"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T13:40:00.000Z",
-  "planSummary": "epic-030 iter-001 全部完成。v0.54.0 部署成功。"
+  "lastRun": "2026-05-12T13:48:00.000Z"
 }

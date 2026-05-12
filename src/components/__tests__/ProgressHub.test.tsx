@@ -49,6 +49,20 @@ vi.mock('../ReviewStreakCalendar', () => ({
   )),
 }));
 
+// Mock LearningTimeInsights component
+vi.mock('../LearningTimeInsights', () => ({
+  LearningTimeInsights: vi.fn(() => (
+    <div data-testid="learning-time-insights">Time Insights</div>
+  )),
+}));
+
+// Mock storage.getHistory
+vi.mock('@/services/storage', () => ({
+  storage: {
+    getHistory: vi.fn(() => []),
+  },
+}));
+
 vi.mock('@/hooks/useProgressStats', async () => {
   const actual = await vi.importActual('@/hooks/useProgressStats');
   return {

@@ -5,6 +5,7 @@ import { ProgressTrend } from './ProgressTrend';
 import { WeeklyReportCard } from './WeeklyReportCard';
 import { DictionaryProgressOverview } from './DictionaryProgressOverview';
 import { ReviewStreakCalendar } from './ReviewStreakCalendar';
+import { LearningTimeInsights } from './LearningTimeInsights';
 import { useProgressStats, getThisWeekReport, getDictionaryProgress, getReviewStreak } from '@/hooks/useProgressStats';
 import type { View } from './routing';
 
@@ -122,6 +123,11 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
       <div className="space-y-4 mb-4">
         {/* Weekly Report Card */}
         <WeeklyReportCard report={weeklyReport} />
+
+        {/* Learning Time Insights */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <LearningTimeInsights />
+        </div>
 
         {/* Two-column layout for Dictionary Progress and Review Streak */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

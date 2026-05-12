@@ -3,6 +3,17 @@
 ## 有效模式
 （由进化引擎自动总结）
 
+### 2026-05-13 (cycle-2026-05-13-180)
+- **迭代**: epic-055 iter-001「个人生词复习模式」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - PersonalDictionary 类型 + storage.getPersonalDictionary/setPersonalDictionary CRUD（支持 `personal` 特殊值）
+  - DictionarySelector 扩展：个人词库选项（personalWords 非空时显示）
+  - usePractice personal 模式：PersonalWordIndex.getAllAsSentences() 获取题目，禁用词典切换
+  - PersonalPracticePanel 组件：词数/掌握度/开始按钮，轻量入口
+- **重构**: 无（零新增组件，仅 Hook 扩展和轻量入口组件）
+- **观察**: epic-055 iter-001 完成（1/5），1873 测试历史最高水位。零新增依赖、零构建体积增长，完全符合「依赖最小化」原则。PersonalPracticePanel 仅在 personalWords 非空时显示，不影响默认词典选择体验。**epic-055 完成度 1/5，剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）**
+
 ## 常见问题
 （由进化引擎自动总结）
 

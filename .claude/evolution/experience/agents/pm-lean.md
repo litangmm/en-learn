@@ -192,5 +192,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-029 支持者）
 - **观察**: iter-001 完美体现 MVP 思维——成就时刻动态卡片不引入新数据存储，完全复用现有 ShareCardData 数据结构。5 种时刻模板（升级/徽章解锁/连击新高/XP里程碑/满分）覆盖关键成就节点，与现有游戏化体系（XP/连击/徽章）自然衔接。**epic-029 剩余 iter-002~005 继续支持**
 
+### 2026-05-13 (cycle-2026-05-13-180) — epic-055 iter-001 完成 (1873 tests, 历史最高水位)
+- **提案 Epic**: epic-055「个人词库深度挖掘与复用引擎」
+- **结果**: **epic-055 iter-001 完成并部署**，v0.73.0，1873/1878 测试通过（5 skipped，历史最高水位）
+- **完成内容**: PersonalDictionary 类型 + storage.getPersonalDictionary/setPersonalDictionary CRUD（支持 `personal` 特殊值）+ DictionarySelector 个人词库选项 + usePractice personal 模式（PersonalWordIndex.getAllAsSentences() 获取题目）+ PersonalPracticePanel 组件（词数/掌握度/开始按钮）+ 全链路测试（36 tests）；零新增依赖、零构建体积增长
+- **新增测试**: storage.personal-dictionary.test.ts (14) + usePractice.personal.test.ts (10) + PersonalPracticePanel.test.tsx (12) = 36 tests
+- **当前状态**: **提案者完成 iter-001，iter-002~005 继续 pending**
+- **观察**: iter-001 完美体现 MVP 思维——个人生词复习模式完全复用 PersonalWordIndex（epic-043 iter-004）和 PersonalWord marked 标记（epic-009 iter-003），零新增数据存储。PersonalPracticePanel 作为轻量入口组件，仅在 personalWords 非空时显示，不影响默认词典选择体验。个人词库复习的 MVP 已验证：「从个人词库而非全部词典出题，让用户专注于自己的薄弱词」。**epic-055 剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）继续推进，iter-002 可基于个人错题历史生成更精准干扰项**
+
 ## 改进方向
 （由进化引擎自动总结）

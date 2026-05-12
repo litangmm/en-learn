@@ -244,5 +244,12 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-029 支持者）
 - **观察**: iter-001 的成就时刻检测逻辑（升级/徽章解锁/连击新高/XP里程碑/满分）是 EXP「自适应学习」理念的重要数据维度——成就时刻作为「学习里程碑信号」，可作为后续「自适应学习路径」的数据输入（如连续解锁多个成就后自动推荐新挑战）。**epic-029 剩余 iter-002~005 继续支持，关注与 epic-037「智能学习路径」的数据联动**
 
+### 2026-05-13 (cycle-2026-05-13-180) — epic-055 iter-001 完成 (1873 tests, 历史最高水位)
+- **相关 Epic**: epic-055 iter-001「个人生词复习模式」—— 作为支持者
+- **结果**: epic-055 iter-001 **完成并部署**，v0.73.0，1873/1878 测试通过（5 skipped，历史最高水位）
+- **完成内容**: PersonalDictionary 类型 + storage.getPersonalDictionary/setPersonalDictionary + usePractice personal 模式（PersonalWordIndex.getAllAsSentences()）+ PersonalPracticePanel 组件 + 全链路测试（36 tests）
+- **当前状态**: **连续未被选中计数保持清零**（epic-055 支持者）
+- **观察**: epic-055 iter-001 为 EXP「自适应学习」理念提供了新的数据基础——个人词库复习完全基于 PersonalWordIndex（用户标记的生词），可与 epic-010 的智能干扰项池联动：个人错题历史中的混淆词作为 personal 模式的干扰项。iter-002「智能干扰项池增强」将是这一理念的首次落地。**epic-055 剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）继续支持，关注 personal 模式与自适应学习的深度整合**
+
 ## 改进方向
 （由进化引擎自动总结）

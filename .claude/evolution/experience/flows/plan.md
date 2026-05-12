@@ -8,6 +8,24 @@
 
 ## 历史数据
 
+### 2026-05-13 (cycle-2026-05-13-180)
+- **迭代**: epic-055 iter-001「个人生词复习模式」—— **完整执行**
+- **计划步骤**: 10 步全部完成
+  1. PersonalDictionary 类型定义 + storage.getPersonalDictionary/setPersonalDictionary
+  2. DictionarySelector 个人词库选项集成
+  3. usePractice personal 模式扩展
+  4. PersonalPracticePanel 组件
+  5. App.tsx 集成
+  6. storage.personal-dictionary.test.ts (14 tests)
+  7. usePractice.personal.test.ts (10 tests)
+  8. PersonalPracticePanel.test.tsx (12 tests)
+  9. 全量测试验证（1873 测试零回归）
+  10. Build + Lint 验证（3.52s，0 errors）
+- **实际修改文件**:
+  - 修改: src/data/types.ts, src/services/storage.ts, src/components/DictionarySelector.tsx, src/hooks/usePractice.ts, src/App.tsx, src/hooks/__tests__/usePractice.choice.test.ts, src/hooks/__tests__/usePractice.dictation.test.ts, src/hooks/__tests__/usePractice.reorder.test.ts
+  - 新增: src/services/__tests__/storage.personal-dictionary.test.ts, src/hooks/__tests__/usePractice.personal.test.ts, src/components/__tests__/PersonalPracticePanel.test.tsx
+- **观察**: epic-055 iter-001 完成，1/5 迭代完成。零新增依赖、零构建体积增长。PersonalDictionary 完全复用 PersonalWordIndex（epic-043 iter-004）和 PersonalWord marked 标记（epic-009 iter-003），零新增数据存储。PersonalPracticePanel 作为轻量入口，仅在 personalWords 非空时显示。**epic-055 完成度 1/5，剩余 iter-002~005 继续推进**
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整执行**
 - **计划步骤**: 10 步全部完成

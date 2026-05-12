@@ -246,6 +246,18 @@
 - **E2E**: 16/16 视觉测试通过
 - **观察**: epic-050 全部 4 个迭代完成，1833 测试历史最高水位。从 iter-001（1714 测试）到 iter-004（1833 测试），增长 119 个测试，全程零回归。**epic-050 仅剩 iter-005（性能回归自动检测）pending，准备进入全新 brainstorm 周期**
 
+### 2026-05-13 (cycle-2026-05-13-180)
+- **迭代**: epic-055 iter-001「个人生词复习模式」—— **全部测试通过**
+- **测试覆盖**: 1873/1878 单元测试通过（5 skipped，历史最高水位，零回归）
+  - storage.personal-dictionary.test.ts: 14 tests（PersonalDictionary CRUD + personal 特殊值 + 存储持久化）
+  - usePractice.personal.test.ts: 10 tests（personal 模式初始化 + getAllAsSentences 调用 + 词典切换禁用）
+  - PersonalPracticePanel.test.tsx: 12 tests（词数/掌握度/开始按钮/条件渲染/personalWords 为空隐藏）
+  - 全量回归：之前 1873 个测试全部通过（5 skipped）
+- **E2E**: skipped（4 pending iterations remaining：iter-002~005）
+- **观察**: 1873 测试零回归，新增 36 个测试（14 + 10 + 12）。零新增依赖、零构建体积增长，完全符合「依赖最小化」原则。personal 模式的测试覆盖了特殊值处理（`dictionaryId === 'personal'` 分支）和边界条件（personalWords 为空时隐藏选项）。**epic-055 完成度 1/5，剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）**
+
+## 历史数据
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **测试覆盖**: 72/72 单元测试通过

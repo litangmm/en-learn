@@ -8,6 +8,18 @@
 
 ## 历史数据
 
+### 2026-05-13 (cycle-2026-05-13-182)
+- **状态**: epic-055 iter-001 完成，1/5 迭代完成，epic-058 刚刚中选
+- **Epic 完成**: epic-055 iter-001（v0.73.0）
+- **待处理**: epic-058「学习动机流失预警与挽回系统」新当选，4 个迭代 pending（流失信号识别/分级召回干预/召回效果追踪/流失预警数据看板）
+- **观察**: epic-058 在本次 brainstorm 中以 4 支持（PM-Growth 提案，PM-UX/PM-Lean/UX/EXP 支持）当选。PM-Growth 指出「epic-036/037/029 完成了用户来了做什么，但缺失用户不来怎么办」，数据基础（useGoals/useReviewStreak/useXP/sessionHistory）已完全就绪。epic-060「性能回归自动检测」（PM-Mon 提出）和 epic-057「跨模态协同学习」（EXP 提出）列为备选。
+
+### 2026-05-13 (cycle-2026-05-13-180)
+- **状态**: epic-055 iter-001 完成，1/5 迭代完成
+- **Epic 完成**: epic-055「个人词库深度挖掘与复用引擎」iter-001（v0.73.0）
+- **待处理**: epic-055 iter-002~005 pending，run.sh 会自动检测并继续 PLAN
+- **观察**: epic-055 iter-001 完成个人生词复习模式 MVP，1873 测试历史最高水位。零新增依赖、零构建体积增长。PM-Lean 提案的 epic-055 在第一轮 brainstorm 即当选（5 支持最高）。剩余 4 个迭代（智能干扰项池/个人练习集/学习路线图/导出分享）继续推进。epic-057「跨模态协同学习」列为备选（EXP 提出，high priority，large effort）
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **状态**: epic-027 全部 5 个迭代完成，下轮 cycle-95 触发全新 brainstorm
 - **Epic 完成**: epic-027「沉浸式多模态练习模式」（v0.43.0-v0.44.0）

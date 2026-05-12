@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.73.0",
+      "tag": "v0.73.0",
+      "commit": "c691835",
+      "date": "2026-05-12T21:46:57.440Z",
+      "iterationId": "iter-001",
+      "title": "个人生词复习模式",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-6dqzhhmur-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.72.0",
       "tag": "v0.72.0",
       "commit": "b1e16ae",

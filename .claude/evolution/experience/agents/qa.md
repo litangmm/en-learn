@@ -364,5 +364,16 @@
   - 全量回归：1427/1427 单元测试通过
 - **备注**: 1427 测试是项目历史最高水位。epic-030 从 iter-001（useFlowState，1427 测试）到 iter-002（FlowStateBanner + Pomodoro）到 iter-003（TimeSlotQualityCard + PeakHoursBadge）到 iter-004（useFatigueRecovery + RestReminderModal + BreathingExercise + StretchReminder），全程零新增依赖。**epic-030 收官，进入全新 brainstorm 周期**
 
+### 2026-05-13 (cycle-2026-05-13-180) — epic-055 iter-001 完成 (1873 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、PersonalDictionary CRUD 测试、PersonalPracticePanel 组件测试、usePractice personal 模式测试、构建稳定性
+- **本次验证**: epic-055 iter-001「个人生词复习模式」质量门禁验证
+  - PersonalDictionary 类型测试：getPersonalDictionary/setPersonalDictionary 完整 CRUD
+  - storage.personal-dictionary.test.ts: 14 tests（PersonalDictionary CRUD + personal 特殊值 + 存储持久化）
+  - usePractice.personal.test.ts: 10 tests（personal 模式初始化 + getAllAsSentences 调用 + 词典切换禁用）
+  - PersonalPracticePanel.test.tsx: 12 tests（词数/掌握度/开始按钮/条件渲染）
+  - 全量回归：**1873/1878 单元测试通过**（5 skipped，历史最高水位），lint 0 errors，build 3.52s success
+- **当前状态**: **连续未被选中计数保持清零**（epic-055 支持者）
+- **观察**: 1873 测试零回归，新增 36 个测试（storage.personal-dictionary 14 + usePractice.personal 10 + PersonalPracticePanel 12）。零新增依赖、零构建体积增长，完全符合「依赖最小化」原则。personal 模式的测试覆盖了特殊值处理（`dictionaryId === 'personal'` 分支）和边界条件（personalWords 为空时隐藏选项）。**epic-055 剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）继续关注测试覆盖完整性**
+
 ## 改进方向
 （由进化引擎自动总结）

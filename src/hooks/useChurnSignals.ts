@@ -37,8 +37,10 @@ const STREAK_BROKEN_THRESHOLD_DAYS = 2;
 /**
  * Calculate session gap signal from practice history.
  * Detects when user hasn't practiced for a concerning period.
+ * @param history - Session history array
+ * @param now - Current timestamp (default: Date.now()) - injectable for testing
  */
-export function calculateSessionGapSignal(history: SessionHistory[]): ChurnSignal | null {
+export function calculateSessionGapSignal(history: SessionHistory[], now: number = Date.now()): ChurnSignal | null {
   if (history.length === 0) {
     // No history - check if user is completely new
     return null;
@@ -47,30 +49,29 @@ export function calculateSessionGapSignal(history: SessionHistory[]): ChurnSigna
   // Sort by timestamp descending (most recent first)
   const sorted = [...history].sort((a, b) => b.timestamp - a.timestamp);
   const lastSession = sorted[0];
-  const now = Date.now();
   const daysSinceLastSession = Math.floor((now - lastSession.timestamp) / (1000 * 60 * 60 * 24));
 
   if (daysSinceLastSession >= SESSION_GAP_THRESHOLDS.critical) {
     return {
-      id: `session_gap_${Date.now()}`,
+      id: `session_gap_${now}`,
       type: 'session_gap',
       severity: 'critical',
       description: `已 ${daysSinceLastSession} 天没有练习了`,
       value: daysSinceLastSession,
       threshold: SESSION_GAP_THRESHOLDS.critical,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 
   if (daysSinceLastSession >= SESSION_GAP_THRESHOLDS.high) {
     return {
-      id: `session_gap_${Date.now()}`,
+      id: `session_gap_${now}`,
       type: 'session_gap',
       severity: 'high',
       description: `已 ${daysSinceLastSession} 天没有练习了`,
       value: daysSinceLastSession,
       threshold: SESSION_GAP_THRESHOLDS.high,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 
@@ -80,29 +81,31 @@ export function calculateSessionGapSignal(history: SessionHistory[]): ChurnSigna
 /**
  * Calculate review backlog signal from spaced repetition data.
  * Detects when user has accumulated too many overdue reviews.
+ * @param overdueCount - Number of overdue review items
+ * @param now - Current timestamp (default: Date.now()) - injectable for testing
  */
-export function calculateReviewBacklogSignal(overdueCount: number): ChurnSignal | null {
+export function calculateReviewBacklogSignal(overdueCount: number, now: number = Date.now()): ChurnSignal | null {
   if (overdueCount >= REVIEW_BACKLOG_THRESHOLDS.critical) {
     return {
-      id: `review_backlog_${Date.now()}`,
+      id: `review_backlog_${now}`,
       type: 'review_backlog',
       severity: 'critical',
       description: `有 ${overdueCount} 道复习题待完成`,
       value: overdueCount,
       threshold: REVIEW_BACKLOG_THRESHOLDS.critical,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 
   if (overdueCount >= REVIEW_BACKLOG_THRESHOLDS.high) {
     return {
-      id: `review_backlog_${Date.now()}`,
+      id: `review_backlog_${now}`,
       type: 'review_backlog',
       severity: 'high',
       description: `复习队列积压 ${overdueCount} 道题`,
       value: overdueCount,
       threshold: REVIEW_BACKLOG_THRESHOLDS.high,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 
@@ -112,8 +115,10 @@ export function calculateReviewBacklogSignal(overdueCount: number): ChurnSignal 
 /**
  * Calculate accuracy drop signal from recent session history.
  * Detects when user's accuracy is trending downward.
+ * @param history - Session history array
+ * @param now - Current timestamp (default: Date.now()) - injectable for testing
  */
-export function calculateAccuracyDropSignal(history: SessionHistory[]): ChurnSignal | null {
+export function calculateAccuracyDropSignal(history: SessionHistory[], now: number = Date.now()): ChurnSignal | null {
   if (history.length < ACCURACY_WINDOW_SIZE) {
     return null;
   }
@@ -135,13 +140,13 @@ export function calculateAccuracyDropSignal(history: SessionHistory[]): ChurnSig
 
   if (declinePercent >= ACCURACY_DROP_THRESHOLD) {
     return {
-      id: `accuracy_drop_${Date.now()}`,
+      id: `accuracy_drop_${now}`,
       type: 'accuracy_drop',
       severity: 'medium',
       description: `正确率下降了 ${declinePercent.toFixed(0)}%`,
       value: Math.round(declinePercent),
       threshold: ACCURACY_DROP_THRESHOLD,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 
@@ -151,10 +156,14 @@ export function calculateAccuracyDropSignal(history: SessionHistory[]): ChurnSig
 /**
  * Calculate goal slack signal from goal progress data.
  * Detects when user is significantly behind on their daily/weekly goals.
+ * @param dailyGoalProgress - Array of {current, target} for daily goals
+ * @param weeklyGoalProgress - Array of {current, target} for weekly goals
+ * @param now - Current timestamp (default: Date.now()) - injectable for testing
  */
 export function calculateGoalSlackSignal(
   dailyGoalProgress: { current: number; target: number }[],
-  weeklyGoalProgress: { current: number; target: number }[]
+  weeklyGoalProgress: { current: number; target: number }[],
+  now: number = Date.now()
 ): ChurnSignal | null {
   // Check daily goals first
   for (const goal of dailyGoalProgress) {
@@ -162,13 +171,13 @@ export function calculateGoalSlackSignal(
       const behindPercent = ((goal.target - goal.current) / goal.target) * 100;
       if (behindPercent >= GOAL_SLACK_THRESHOLD && goal.current < goal.target) {
         return {
-          id: `goal_slack_${Date.now()}`,
+          id: `goal_slack_${now}`,
           type: 'goal_slack',
           severity: 'high',
           description: `今日目标完成度 ${((goal.current / goal.target) * 100).toFixed(0)}%`,
           value: Math.round(behindPercent),
           threshold: GOAL_SLACK_THRESHOLD,
-          detectedAt: Date.now(),
+          detectedAt: now,
         };
       }
     }
@@ -180,13 +189,13 @@ export function calculateGoalSlackSignal(
       const behindPercent = ((goal.target - goal.current) / goal.target) * 100;
       if (behindPercent >= GOAL_SLACK_THRESHOLD && goal.current < goal.target) {
         return {
-          id: `goal_slack_${Date.now()}`,
+          id: `goal_slack_${now}`,
           type: 'goal_slack',
           severity: 'medium',
           description: `本周目标完成度 ${((goal.current / goal.target) * 100).toFixed(0)}%`,
           value: Math.round(behindPercent),
           threshold: GOAL_SLACK_THRESHOLD,
-          detectedAt: Date.now(),
+          detectedAt: now,
         };
       }
     }
@@ -198,10 +207,14 @@ export function calculateGoalSlackSignal(
 /**
  * Calculate streak broken signal from review streak data.
  * Detects when user hasn't reviewed for 2+ days (streak at risk).
+ * @param lastReviewDate - Last review date string (YYYY-MM-DD format)
+ * @param currentStreak - Current streak count
+ * @param now - Current timestamp (default: Date.now()) - injectable for testing
  */
 export function calculateStreakBrokenSignal(
   lastReviewDate: string | null,
-  currentStreak: number
+  currentStreak: number,
+  now: number = Date.now()
 ): ChurnSignal | null {
   if (lastReviewDate === null) {
     return null; // No streak data yet
@@ -218,13 +231,13 @@ export function calculateStreakBrokenSignal(
 
     if (daysSince >= STREAK_BROKEN_THRESHOLD_DAYS) {
       return {
-        id: `streak_broken_${Date.now()}`,
+        id: `streak_broken_${now}`,
         type: 'streak_broken',
         severity: 'high',
         description: `连续学习已中断 ${daysSince} 天`,
         value: daysSince,
         threshold: STREAK_BROKEN_THRESHOLD_DAYS,
-        detectedAt: Date.now(),
+        detectedAt: now,
       };
     }
   }
@@ -232,13 +245,13 @@ export function calculateStreakBrokenSignal(
   // Streak is at risk if last review was yesterday (still high severity)
   if (lastReviewDate === yesterday && currentStreak > 0) {
     return {
-      id: `streak_broken_${Date.now()}`,
+      id: `streak_broken_${now}`,
       type: 'streak_broken',
       severity: 'high',
       description: '连续学习 streak 面临中断风险',
       value: 1,
       threshold: STREAK_BROKEN_THRESHOLD_DAYS,
-      detectedAt: Date.now(),
+      detectedAt: now,
     };
   }
 

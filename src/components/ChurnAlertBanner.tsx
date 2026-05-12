@@ -100,8 +100,9 @@ function getRiskDescription(topFactors: ChurnSignal[]): string {
 }
 
 /**
- * Check if banner should be shown based on localStorage dismissal.
- * Returns false if dismissed within the dismiss duration.
+ * Check if banner should be hidden based on localStorage dismissal.
+ * Returns true if dismissed within the dismiss duration (banner should be hidden).
+ * Returns false if dismissal expired (banner should be shown).
  */
 function isDismissed(): boolean {
   try {
@@ -111,12 +112,12 @@ function isDismissed(): boolean {
     const { dismissedAt } = JSON.parse(stored);
     const now = Date.now();
 
-    // Check if we're past the dismiss duration
+    // Check if we're still within the dismiss duration
     if (now - dismissedAt < DISMISS_DURATION_MS) {
-      return true;
+      return true; // Within dismiss window, hide banner
     }
 
-    // Dismissal expired, clear it
+    // Dismissal expired, clear it and show banner
     localStorage.removeItem(DISMISS_STORAGE_KEY);
     return false;
   } catch {

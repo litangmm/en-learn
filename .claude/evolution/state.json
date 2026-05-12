@@ -737,7 +737,7 @@
     "stage": "PLAN",
     "startedAt": "2026-05-13T10:06:09.054Z"
   },
-  "status": "PLAN",
+  "status": "IMPLEMENT",
   "commit": null,
   "cycleCount": 182,
   "nextMode": null,
@@ -745,7 +745,36 @@
   "implementationStatus": null,
   "currentEpic": "epic-058",
   "pendingIterations": [],
-  "plan": null,
+  "plan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "流失信号识别系统",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: Define ChurnSignal types in src/data/types.ts (ChurnSignal, SignalType enum, SignalSeverity, ChurnRiskLevel, ChurnAssessment)",
+      "Step 2: Create useChurnSignals hook in src/hooks/useChurnSignals.ts (calculateChurnSignals from available data: useGoals/XP/reviewStreak/spacedRepetition/history, getChurnRiskLevel helper, getTopRiskFactors)",
+      "Step 3: Create ChurnAlertBanner component in src/components/ChurnAlertBanner.tsx (inline Banner with context + CTA, dismissible, auto-show for high-risk)",
+      "Step 4: Integrate into App.tsx (show ChurnAlertBanner in header when riskLevel is 'high' or 'critical', pass signals + onDismiss + onEngage)",
+      "Step 5: Write useChurnSignals.test.ts (13 tests: risk level thresholds, all signal calculations, edge cases)",
+      "Step 6: Write ChurnAlertBanner.test.tsx (5 tests: render, severity styles, dismiss, CTA)",
+      "Step 7: Write App.churn-alert.test.tsx (2 tests: show/hide banner, dismiss state)",
+      "Step 8: Update 11 existing App test mocks (XP level 1, empty history, no streak → riskLevel=low)",
+      "Step 9: Run full test suite (1873 target, zero regression)",
+      "Step 10: Build + Lint verification (3.5s, 0 errors)"
+    ],
+    "filesToModify": [
+      "src/data/types.ts",
+      "src/App.tsx",
+      "src/components/__tests__/App.churn-alert.test.tsx"
+    ],
+    "filesToCreate": [
+      "src/hooks/useChurnSignals.ts",
+      "src/hooks/__tests__/useChurnSignals.test.ts",
+      "src/components/ChurnAlertBanner.tsx",
+      "src/components/__tests__/ChurnAlertBanner.test.tsx"
+    ],
+    "dependencies": [],
+    "testStrategy": "useChurnSignals: risk level thresholds (critical/high/medium/low), each signal calculation (goal/accuracy/streak/review/backlog), edge cases (no data/edge dates). ChurnAlertBanner: render variants, severity styling, dismiss behavior, CTA click. App: banner show/hide, dismiss persistence. 40+ new tests total."
+  },
   "epicHistory": [
     {
       "id": "epic-058",
@@ -757,7 +786,7 @@
           "id": "iter-001",
           "title": "流失信号识别系统",
           "scope": "frontend-only",
-          "status": "pending"
+          "status": "in_progress"
         },
         {
           "id": "iter-002",
@@ -781,6 +810,7 @@
       "iterationsCount": 4,
       "completedIterations": 0,
       "pendingIterations": 4,
+      "currentIterationIndex": 0,
       "createdAt": "2026-05-13T10:06:00.000Z",
       "proposedBy": "PM-Growth",
       "supportedBy": [

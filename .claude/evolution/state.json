@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-132",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-030 iter-002 部署成功。v0.55.0 部署到 Vercel，https://en-learn.vercel.app。"
+    },
+    {
       "id": "2026-05-12-131",
       "mode": "test",
       "stage": "TEST",
@@ -94,10 +101,10 @@
       "summary": "Brainstorm 完成。9 个 Epic 提案，收敛为 5 个候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。三个 high priority Epic 形成'心流-动机-个性化'三维体系。"
     }
   ],
-  "status": "DEPLOY",
+  "status": "COMPLETE",
   "commit": "bbf722c",
-  "cycleCount": 130,
-  "nextMode": "deploy",
+  "cycleCount": 131,
+  "nextMode": "none",
   "failedAttempts": 0,
   "currentCycle": {
     "id": "2026-05-12-131",
@@ -454,13 +461,13 @@
     "deployed": true,
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
-    "version": "v0.54.0",
-    "commit": "d6dce83",
-    "iterationId": "iter-001",
-    "iterationTitle": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复 + 响应式布局优化",
-    "deployedAt": "2026-05-12T13:10:00.000Z"
+    "version": "v0.55.0",
+    "commit": "bbf722c",
+    "iterationId": "iter-002",
+    "iterationTitle": "专注度自适应调整",
+    "deployedAt": "2026-05-12T13:40:00.000Z"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T13:10:00.000Z",
+  "lastRun": "2026-05-12T13:40:00.000Z",
   "planSummary": "epic-030 iter-001 全部完成。v0.54.0 部署成功。"
 }

@@ -6,6 +6,17 @@
 ## 常见问题
 （由进化引擎自动总结）
 
+### 2026-05-13 (cycle-2026-05-13-155)
+- **迭代**: epic-043 iter-003「搜索性能优化（debounce + 索引查询）」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - searchByQuery O(1) 查询实现（prefix/tokens/whole-word 多模式支持）
+  - search-performance.benchmark.test.ts 验证 O(1) 查询性能，防止性能回归
+  - searchByQuery 索引集成测试（16 tests，覆盖空查询/前缀查询/多词查询/Unicode 兼容）
+  - 搜索防抖机制（300ms debounce）减少无效查询
+- **重构**: 无（零新增组件，仅索引查询 API 和搜索防抖集成）
+- **观察**: epic-043 iter-003 完成（3/5），1806 测试历史最高水位。searchByQuery 的 O(1) 查询性能验证了架构决策的正确性。search-performance.benchmark.test.ts 提供了可量化的性能回归检测。epic-043 完成度 3/5，剩余 iter-004（PersonalWord 独立索引）、iter-005（数据迁移脚本）继续推进
+
 ### 2026-05-12 (cycle-2026-05-12-152)
 - **迭代**: epic-043 iter-002「按需加载与懒加载策略」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，零构建体积增长

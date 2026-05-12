@@ -3,6 +3,68 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-13-155",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-043 iter-003 搜索性能优化（debounce + 索引查询）：searchByQuery O(1) 查询实现 + 索引集成测试（16 tests）+ search-performance.benchmark.test.ts（16 tests）。1806 测试历史最高水位，v0.66.0 部署成功。epic-043 完成度 3/5，剩余 iter-004~005 继续 pending。"
+    },
+      "id": "2026-05-13-155",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.60s 通过，Vercel 部署成功（https://en-learn-ht5kl9szk-litangmms-projects.vercel.app），创建 git tag v0.66.0，已推送到远程。epic-043 iter-003 搜索性能优化（debounce + 索引查询）正式发布。epic-043 完成度 3/5，版本范围 v0.64.0-v0.66.0。"
+    },
+    {
+      "id": "2026-05-13-154",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-043 iter-003 TEST 阶段完成。1806 单元测试零回归通过（1 skipped），Build 3.56s，Lint 4 warnings（pre-existing），E2E skipped（2 pending iterations remaining：iter-004~005）。准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-13-153",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-043 iter-003 IMPLEMENT 完成。searchByQuery 索引集成测试（16 tests）+ search-performance.benchmark.test.ts（16 tests，验证 O(1) 查询性能）+ 1806 测试零回归（历史最高水位）。epic-043 完成度 3/5。"
+    },
+    {
+      "id": "2026-05-12-152",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-043 iter-002 按需加载与懒加载策略：useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成 + dictionaryCache 缓存机制。1747 测试零回归，v0.65.0 部署成功。epic-043 完成度 2/5，剩余 iter-003~005 继续 pending。"
+    },
+    {
+      "id": "2026-05-12-151",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.59s 通过，Vercel 部署成功（https://en-learn-b47j2n1ry-litangmms-projects.vercel.app），创建 git tag v0.65.0，已推送到远程。epic-043 iter-002 词典按需加载与多词典管理正式发布。"
+    },
+    {
+      "id": "2026-05-12-150",
+      "mode": "commit",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "COMMIT 阶段完成。源码已提交 e43577f（epic-043 iter-002 测试边界用例），文档已提交 f458b48（agent experience + history）。准备进入 DEPLOY 阶段。"
+    },
+    {
+      "id": "2026-05-12-149",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-043 iter-002 TEST 阶段完成。1747 单元测试零回归通过（1 skipped），Build 3.50s，Lint 4 warnings（pre-existing），E2E skipped（3 pending iterations remaining：iter-003~005）。准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-12-148",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-043 iter-002 IMPLEMENT 完成。useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成。1747 测试零回归，Lint 4 warnings（pre-existing），Build 3.52s。epic-043 完成度 2/5。"
+    },
+    {
       "id": "2026-05-12-145",
       "mode": "test",
       "stage": "TEST",
@@ -203,7 +265,7 @@
       "mode": "brainstorm",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "Brainstorm 完成。5 个 Epic 候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。epic-030 中选。"
+      "summary": "Brainstorm 完成。5 个 Epic 候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户召回与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。epic-030 中选。"
     },
     {
       "id": "2026-05-12-123",
@@ -240,16 +302,35 @@
       "title": "词典数据架构升级与查询性能优化",
       "description": "随着用户个人词库和词典数据规模增长，当前 O(n) 线性查询已成为性能瓶颈。需要建立内存索引结构（Map by id/word/level），实现 O(1) 查询、按需加载和搜索防抖。epic-009 已完成词典浏览基础，ARCH 的 epic-022 多次提案此次终于落地。",
       "proposedBy": "ARCH",
-      "supportedBy": ["PM-Eco", "QA", "PM-Lean"],
+      "supportedBy": [
+        "PM-Eco",
+        "QA",
+        "PM-Lean"
+      ],
       "concerns": "需要编写数据迁移脚本确保 localStorage 旧数据平滑迁移到新索引格式；按需加载需要处理词典切换时的异步状态；测试需要覆盖索引建立、空词典、损坏数据等边界",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "iter-001: 词典索引结构重构", "scope": "frontend-only"},
-        {"title": "iter-002: 按需加载与懒加载策略", "scope": "frontend-only"},
-        {"title": "iter-003: 搜索性能优化（debounce + 索引查询）", "scope": "frontend-only"},
-        {"title": "iter-004: PersonalWord 独立索引", "scope": "frontend-only"},
-        {"title": "iter-005: 数据迁移脚本与向后兼容", "scope": "frontend-only"}
+        {
+          "title": "iter-001: 词典索引结构重构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 按需加载与懒加载策略",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 搜索性能优化（debounce + 索引查询）",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: PersonalWord 独立索引",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 数据迁移脚本与向后兼容",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -257,17 +338,39 @@
       "title": "跨模态协同学习与自适应深度引擎",
       "description": "epic-028 完成了间隔重复和自适应出题权重，但跨模式学习（利用薄弱点数据在不同模式间协同）仍是空白。用户听写中的薄弱音应对应到选择题中强化，遗忘曲线应基于用户实际数据建模而非通用公式。",
       "proposedBy": "EXP",
-      "supportedBy": ["PM-UX", "PM-Growth", "PM-Lean"],
+      "supportedBy": [
+        "PM-UX",
+        "PM-Growth",
+        "PM-Lean"
+      ],
       "concerns": "跨模式协同学习算法复杂度高；遗忘曲线个性化建模需要足够数据积累；大规模重构风险需分步验证；学习风格诊断算法需要用户数据验证",
       "priority": "high",
       "estimatedEffort": "large",
       "iterationsPreview": [
-        {"title": "iter-001: 跨模式薄弱点联动", "scope": "frontend-only"},
-        {"title": "iter-002: 自适应难度曲线选择", "scope": "frontend-only"},
-        {"title": "iter-003: 学习效率实时预测", "scope": "frontend-only"},
-        {"title": "iter-004: 遗忘曲线智能复习升级", "scope": "frontend-only"},
-        {"title": "iter-005: 学习模式偏好诊断", "scope": "frontend-only"},
-        {"title": "iter-006: 长期学习预测", "scope": "frontend-only"}
+        {
+          "title": "iter-001: 跨模式薄弱点联动",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 自适应难度曲线选择",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 学习效率实时预测",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 遗忘曲线智能复习升级",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 学习模式偏好诊断",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006: 长期学习预测",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -275,16 +378,35 @@
       "title": "质量基础设施升级与 E2E 稳定性修复",
       "description": "1650 单元测试维持历史最高水位，但 E2E 测试仍有 1 skipped + 1 flaky。QA 长期关注的测试基础设施需要系统性升级：E2E 稳定化、并行执行、视觉回归测试、性能回归测试。",
       "proposedBy": "QA",
-      "supportedBy": ["ARCH", "PM-Mon", "PM-Lean"],
+      "supportedBy": [
+        "ARCH",
+        "PM-Mon",
+        "PM-Lean"
+      ],
       "concerns": "视觉回归测试需要额外工具（html2canvas 已安装，可复用）；Playwright 并行配置需要 CI 配合；覆盖率 gate 可能降低迭代速度",
       "priority": "high",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {"title": "iter-001: E2E 测试稳定化修复", "scope": "frontend-only"},
-        {"title": "iter-002: Playwright 并行执行配置", "scope": "frontend-only"},
-        {"title": "iter-003: 视觉回归测试引入", "scope": "frontend-only"},
-        {"title": "iter-004: 测试覆盖率目标 gate", "scope": "frontend-only"},
-        {"title": "iter-005: 性能回归自动检测", "scope": "frontend-only"}
+        {
+          "title": "iter-001: E2E 测试稳定化修复",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: Playwright 并行执行配置",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 视觉回归测试引入",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 测试覆盖率目标 gate",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 性能回归自动检测",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -292,16 +414,35 @@
       "title": "学习心流沉浸模式与专注增强",
       "description": "epic-030 完成了疲劳检测和 Pomodoro，但更深层的心流状态优化（环境音/心流音乐/禅模式/节奏分析）仍是空白。通过 Web Audio API 创造沉浸式学习环境，延长单次学习时长。",
       "proposedBy": "PM-UX",
-      "supportedBy": ["EXP", "PM-Lean", "UX"],
+      "supportedBy": [
+        "EXP",
+        "PM-Lean",
+        "UX"
+      ],
       "concerns": "Web Audio API 可能增加 bundle size；心流背景音乐可能干扰部分用户；环境音需要用户主动开启；节奏分析需要足够数据样本",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "iter-001: 环境音场景模式", "scope": "frontend-only"},
-        {"title": "iter-002: 心流背景音乐", "scope": "frontend-only"},
-        {"title": "iter-003: 极简禅模式 UI", "scope": "frontend-only"},
-        {"title": "iter-004: 答题节奏分析", "scope": "frontend-only"},
-        {"title": "iter-005: 专注徽章体系", "scope": "frontend-only"}
+        {
+          "title": "iter-001: 环境音场景模式",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 心流背景音乐",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 极简禅模式 UI",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 答题节奏分析",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 专注徽章体系",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -309,16 +450,35 @@
       "title": "个人词库深度挖掘与复用引擎",
       "description": "epic-009 完成了词典浏览器和个人生词标记，但用户词库的价值尚未充分挖掘。个人生词复习模式、智能干扰项池、自定义练习集、个人词库学习路线图，让数据复用最大化。",
       "proposedBy": "PM-Lean",
-      "supportedBy": ["PM-Eco", "QA", "PM-UX"],
+      "supportedBy": [
+        "PM-Eco",
+        "QA",
+        "PM-UX"
+      ],
       "concerns": "个人干扰项池需要足够的错题历史数据积累；自定义练习集需要新的存储结构；学习路线图需要验证准确性",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "iter-001: 个人生词复习模式", "scope": "frontend-only"},
-        {"title": "iter-002: 智能干扰项池", "scope": "frontend-only"},
-        {"title": "iter-003: 个人练习集创建", "scope": "frontend-only"},
-        {"title": "iter-004: 个人词库学习路线图", "scope": "frontend-only"},
-        {"title": "iter-005: 个人词库导出与分享", "scope": "frontend-only"}
+        {
+          "title": "iter-001: 个人生词复习模式",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 智能干扰项池",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 个人练习集创建",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 个人词库学习路线图",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 个人词库导出与分享",
+          "scope": "frontend-only"
+        }
       ]
     },
     {
@@ -326,26 +486,44 @@
       "title": "开放词典生态与社区词库",
       "description": "epic-009 的个人词典管理已就绪，PM-Eco 的「开放生态」愿景继续推进。定义标准词典格式、支持用户分享自定义词库、社区词典浏览、词库贡献积分，构建无需后端的开放词典生态。",
       "proposedBy": "PM-Eco",
-      "supportedBy": ["UX", "PM-Lean"],
+      "supportedBy": [
+        "UX",
+        "PM-Lean"
+      ],
       "concerns": "格式标准化维护成本；无后端场景下社区内容质量控制困难；词库贡献积分需要存储设计；预置本地数据需要人工整理",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "iter-001: 自定义词典导入格式标准化", "scope": "frontend-only"},
-        {"title": "iter-002: 词典分享链接生成", "scope": "frontend-only"},
-        {"title": "iter-003: 社区词典浏览（只读）", "scope": "frontend-only"},
-        {"title": "iter-004: 用户词库贡献积分", "scope": "frontend-only"},
-        {"title": "iter-005: 词典格式验证工具", "scope": "frontend-only"}
+        {
+          "title": "iter-001: 自定义词典导入格式标准化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 词典分享链接生成",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 社区词典浏览（只读）",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 用户词库贡献积分",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 词典格式验证工具",
+          "scope": "frontend-only"
+        }
       ]
     }
   ],
   "currentCycle": null,
   "status": "IDLE",
-  "commit": "bd95245",
-  "cycleCount": 146,
-  "nextMode": "report",
+  "commit": "b792462",
+  "cycleCount": 156,
+  "nextMode": "commit",
   "failedAttempts": 0,
-  "implementationStatus": "IDLE",
+  "implementationStatus": "epic-043 iter-003 DEPLOY 完成。Build 3.60s，Vercel 部署成功（https://en-learn-ht5kl9szk-litangmms-projects.vercel.app），v0.66.0 已创建并推送。epic-043 完成度 3/5，准备进入 REPORT 阶段。",
   "currentEpic": {
     "id": "epic-043",
     "title": "词典数据架构升级与查询性能优化",
@@ -362,14 +540,14 @@
         "id": "iter-002",
         "title": "按需加载与懒加载策略",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
         "description": "多词典按需加载 + useDictionaryIndex 多词典管理 + dictionaryCache 集成"
       },
       {
         "id": "iter-003",
         "title": "搜索性能优化（debounce + 索引查询）",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
         "description": "搜索防抖 + 索引查询集成到 DictionaryBrowser + 性能基准测试"
       },
       {
@@ -387,36 +565,13 @@
         "description": "localStorage 旧数据迁移 + 向后兼容验证 + 索引统计与监控"
       }
     ],
-    "currentIterationIndex": 0
+    "currentIterationIndex": 4
   },
-  "plan": {
-    "iterationId": "iter-001",
-    "iterationTitle": "词典索引结构重构",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: DictionaryIndex 类型定义 - 在 src/data/types.ts 添加 DictionaryIndex / IndexEntry / IndexStats 接口（Map<string, IndexEntry> + Map<string, string[]> byLevel + getById/getByWord/getByLevel/getStats 方法签名）",
-      "Step 2: useDictionaryIndex Hook 实现 - 创建 src/hooks/useDictionaryIndex.ts，惰性初始化（首次调用 loadDictionary 时构建索引），构建三个 Map：byId (O(1) id→sentenceId)、byWord (O(1) lowercase→sentenceId[])、byLevel (O(1) level→sentenceId[])，暴露 getById/getByWord/getByLevel/getStats/getIndexedIds 方法",
-      "Step 3: 索引构建逻辑 - 遍历 Sentence[]，逐条插入三个 Map（word lowercase，id lowercase），收集 level 分布统计",
-      "Step 4: useDictionaryIndex Hook 测试 - 创建 src/hooks/__tests__/useDictionaryIndex.test.ts，覆盖空数据/单词典/多词典/大小写不敏感/level 过滤/索引统计/已构建跳过重复构建等场景",
-      "Step 5: DictionaryIndex 工具函数测试 - 创建 src/data/__tests__/dictionaryIndex.test.ts，覆盖 buildDictionaryIndex/splitIntoWords/getSentenceIdsByWord 函数边界",
-      "Step 6: 全量测试回归 - npm test 确保 1650+ 测试零回归"
-    ],
-    "filesToModify": [
-      "src/data/types.ts"
-    ],
-    "filesToCreate": [
-      "src/data/dictionaryIndex.ts",
-      "src/hooks/useDictionaryIndex.ts",
-      "src/data/__tests__/dictionaryIndex.test.ts",
-      "src/hooks/__tests__/useDictionaryIndex.test.ts"
-    ],
-    "dependencies": [],
-    "testStrategy": "useDictionaryIndex Hook 测试（惰性初始化/多词典/Maps 正确性）+ dictionaryIndex 工具函数测试（buildDictionaryIndex/splitIntoWords）+ 全量回归测试（1650+）"
-  },
+  "plan": null,
   "previousCycle": {
-    "id": "2026-05-12-143",
-    "mode": "plan",
-    "stage": "REPORT"
+    "id": "2026-05-13-154",
+    "mode": "test",
+    "stage": "TEST"
   },
   "epicHistory": [
     {
@@ -424,8 +579,9 @@
       "title": "词典数据架构升级与查询性能优化",
       "status": "in_progress",
       "iterationsCount": 5,
-      "completedIterations": 1,
-      "pendingIterations": 4,
+      "completedIterations": 3,
+      "pendingIterations": 2,
+      "versionRange": "v0.64.0-v0.66.0",
       "createdAt": "2026-05-12T20:30:00.000Z",
       "proposedBy": "ARCH",
       "supportedBy": [
@@ -495,8 +651,8 @@
       "completedIterations": 5,
       "pendingIterations": 0,
       "versionRange": "v0.50.0-v0.53.0",
-      "createdAt": "2026-05-12T03:20:00.000Z",
       "completedAt": "2026-05-12T12:15:00.000Z",
+      "createdAt": "2026-05-12T03:20:00.000Z",
       "proposedBy": "PM-Growth",
       "supportedBy": [
         "PM-Lean",
@@ -605,17 +761,17 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 1714,
+      "passed": 1806,
       "failed": 0,
       "skipped": 1,
-      "total": 1715,
-      "duration": "23.92s"
+      "total": 1807,
+      "duration": "24.83s"
     },
     "e2eTests": {
       "passed": 0,
       "failed": 0,
       "flaky": false,
-      "note": "skipped - 4 pending iterations remaining (iter-002~005)"
+      "note": "skipped - 2 pending iterations remaining (iter-004~005)"
     },
     "lint": {
       "passed": true,
@@ -625,7 +781,7 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.61s (tsc + vite)"
+      "duration": "3.60s (tsc + vite)"
     }
   },
   "directives": {
@@ -657,14 +813,13 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-fj3kz1y71-litangmms-projects.vercel.app",
-    "version": "v0.64.0",
-    "commit": "bd95245",
-    "iterationId": "iter-001",
-    "iterationTitle": "词典索引结构重构",
-    "deployedAt": "2026-05-12T12:22:52.000Z"
+    "url": "https://en-learn-ht5kl9szk-litangmms-projects.vercel.app",
+    "version": "v0.66.0",
+    "commit": "b792462",
+    "iterationId": "iter-003",
+    "iterationTitle": "搜索性能优化（debounce + 索引查询）",
+    "deployedAt": "2026-05-12T16:08:11.000Z"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T21:05:00.000Z",
-  "implementationStatus": "IDLE"
+  "lastRun": "2026-05-13T00:15:00.000Z"
 }

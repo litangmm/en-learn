@@ -3,11 +3,18 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-120",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-029 iter-004 成就徽章墙导出测试通过。1346 测试零回归，1 skipped，lint 1 warning，build 3.77s。"
+    },
+    {
       "id": "2026-05-12-119",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-029 iter-004 成就徽章墙导出报告完成。1346 测试零回归，BadgeExportPanel + useBadgeExport hook 完整实现。"
+      "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + 全面测试。"
     },
     {
       "id": "2026-05-12-118",

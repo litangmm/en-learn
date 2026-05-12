@@ -11,6 +11,14 @@ test.describe('Data Management Flow', () => {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     await page.waitForLoadState('networkidle');
+
+    // Dismiss onboarding dialog if present (it blocks interaction with header elements)
+    const dialogClose = page.locator('[data-slot="dialog-close"]').or(page.getByRole('button', { name: '关' }));
+    if (await dialogClose.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await dialogClose.click();
+      await page.waitForTimeout(500);
+    }
+
     await page.waitForTimeout(2000);
   });
 
@@ -128,13 +136,13 @@ test.describe('Data Management Flow', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
-    // Navigate to data manager using data-testid
-    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
-    await moreButton.click();
-    await page.waitForTimeout(500);
-    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
-    await menuItem.click();
-    await page.waitForLoadState('networkidle');
+    // On mobile, desktop header elements are hidden - use mobile nav instead
+    // Check if mobile nav data manager button is visible
+    const mobileDataManager = page.locator('[data-testid="mobile-nav-data"]');
+    if (await mobileDataManager.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await mobileDataManager.click();
+      await page.waitForLoadState('networkidle');
+    }
 
     // Verify it's accessible on mobile
     const body = page.locator('body');

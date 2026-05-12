@@ -2,17 +2,19 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  // Disable parallel to reduce test flakiness from shared state
-  fullyParallel: false,
+  // Enable parallel execution for faster test runs
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  // Always retry on failure to handle transient failures
+  // Retry on failure to handle transient failures
   retries: 2,
-  // Single worker for maximum stability (no parallel interference)
-  workers: 1,
+  // 2 workers for balanced parallelization without overwhelming resources
+  workers: process.env.CI ? 2 : 2,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
+    // Record video on retry for CI debugging
+    video: 'on-first-retry',
     // Stable timeouts for CI reliability
     actionTimeout: 15000,
     expect: {

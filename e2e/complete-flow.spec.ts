@@ -11,6 +11,15 @@ test.describe('Complete User Journey', () => {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     await page.waitForLoadState('networkidle');
+
+    // Dismiss onboarding dialog if present (it blocks interaction with header elements)
+    // Try multiple selectors for the close/escape action
+    const dialogClose = page.locator('[data-slot="dialog-close"]').or(page.getByRole('button', { name: '关' }));
+    if (await dialogClose.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await dialogClose.click();
+      await page.waitForTimeout(500);
+    }
+
     await page.waitForTimeout(2000);
   });
 

@@ -3,7 +3,14 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-12-129",
+      "id": "2026-05-12-131",
+      "mode": "brainstorm",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "Brainstorm 完成。9 个 Epic 候选：epic-036（用户召回与留存引擎，4 支持）、epic-037（学习动机可视化，5 支持）、epic-038（代码健康度监控，3 支持）、epic-039（新手引导，2 支持）、epic-040（学习档案，1 支持）、epic-041（PWA离线，1 支持）、epic-042（学习路径可视化，2 支持）、epic-043（E2E稳定化，1 支持）、epic-044（深度个性化，1 支持）。epic-036 中选。"
+    },
+    {
+      "id": "2026-05-12-131",
       "mode": "report",
       "stage": "REPORT",
       "status": "completed",
@@ -35,7 +42,7 @@
       "mode": "test",
       "stage": "TEST",
       "status": "completed",
-      "summary": "epic-030 iter-003 TEST 阶段完成。1418 单元测试零回归通过（1 skipped），Build 3.82s。commit 962c218。"
+      "summary": "epic-030 iter-003 TEST 阶段完成。1418 单元测试零回归通过（1 skipped），Build 3.82s，commit 962c218。"
     },
     {
       "id": "2026-05-12-128",
@@ -115,97 +122,310 @@
       "summary": "epic-029 iter-005 学习数据可视化完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + ProgressHub集成。1381 测试零回归，v0.53.0 部署成功。"
     }
   ],
-  "status": "IDLE",
+  "status": "PLAN",
   "commit": "37e271b",
-  "cycleCount": 130,
-  "nextMode": "brainstorm",
+  "cycleCount": 132,
+  "nextMode": "plan",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-12-132",
+    "mode": "brainstorm",
+    "stage": "PLAN",
+    "startedAt": "2026-05-12T07:09:00.000Z",
+    "brainstormResults": [
+      {
+        "id": "epic-036",
+        "title": "用户召回与留存引擎",
+        "description": "构建完整的复习提醒 + Streak 保护 + 成就缺失推荐三位一体留存引擎，让用户持续回访形成学习习惯。产品已有完善的学习数据体系（epic-028 间隔重复 + epic-029 成就体系 + epic-030 疲劳检测），但没有任何机制驱动用户明天回来继续学习。核心创新：复习时机优化提醒 + 渐进式 Streak 保护罩 + 成就缺失引导推荐。",
+        "proposedBy": "PM-Growth",
+        "supportedBy": [
+          "PM-Lean",
+          "UX",
+          "EXP"
+        ],
+        "concerns": "Notification API 授权率可能偏低（10-20%），需要明确的降级策略（App 内 Toast）",
+        "priority": "high",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 复习时机优化提醒",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: Streak 保护罩机制",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 成就缺失分析推荐",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 回归引导体验",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036b",
+        "title": "学习动机深度可视化系统",
+        "description": "将 epic-028 的学习效率数据（记忆保持率、遗忘曲线拟合度、薄弱点攻克进度）和 epic-030 的时段质量数据转化为直观的目标进度感知，通过'对比激励'（与上周相比）驱动持续学习。核心创新：学习目标卡 + 效率对比仪表盘 + 里程碑庆祝仪式。",
+        "proposedBy": "PM-UX",
+        "supportedBy": [
+          "PM-Growth",
+          "UX",
+          "EXP",
+          "QA"
+        ],
+        "concerns": "里程碑庆祝仪式可能打断学习心流，需要严格的触发时机控制",
+        "priority": "high",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 学习目标卡设计",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 效率对比激励机制",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 里程碑庆祝仪式",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 效率趋势仪表盘",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036c",
+        "title": "代码健康度监控与零新增债务体系",
+        "description": "建立代码健康度监控基线，将 App.tsx 膨胀检测、Hook 复杂度检测、测试覆盖率下降检测自动化，确保'构建体积不超阈值、测试水位不下降'成为常态而非依赖人工检查。",
+        "proposedBy": "PM-Mon",
+        "supportedBy": [
+          "ARCH",
+          "QA"
+        ],
+        "concerns": "App.tsx 拆分可能引入短期回归风险，需谨慎执行",
+        "priority": "medium",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: App.tsx 膨胀检测",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: Hook 复杂度监控",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 测试覆盖率门禁",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 构建体积实时监控",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036d",
+        "title": "零门槛入门引导系统",
+        "description": "为零注册用户提供完整的第一英里体验——词典选择引导 → 练习模式推荐 → 学习节奏示范，让用户在第一次打开时就感受到产品的'智能化'。产品愿景写着'打开即用，无需注册，零门槛'，但实际上新用户没有任何引导。",
+        "proposedBy": "PM-Lean",
+        "supportedBy": [
+          "UX"
+        ],
+        "concerns": "引导流程可能被老用户视为干扰，需要明确的显示条件（如 localStorage 中不存在 completedOnboarding 时显示）",
+        "priority": "medium",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 词典选择引导",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 模式推荐卡片",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 学习节奏示范",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 快速上手 Checklist",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036e",
+        "title": "个人学习档案与数据主权",
+        "description": "构建个人学习档案视图，将用户在所有词典、所有模式、所有时段的练习数据整合为可阅读、可导出、可持续追踪的'学习履历'。",
+        "proposedBy": "PM-Eco",
+        "supportedBy": [],
+        "concerns": "数据导出需要向后兼容，ExportData schema 扩展需谨慎；PM-Eco 已连续多轮未被选中",
+        "priority": "low",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 学习档案概览",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 个人学习数据导出",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 生词复习追踪",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 词典学习进度矩阵",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036f",
+        "title": "PWA 离线优先与安装体验",
+        "description": "将 App 打造为可离线使用的 PWA，让用户在弱网/无网环境下仍能完成练习，并在首次访问时引导用户安装到主屏幕。",
+        "proposedBy": "ARCH",
+        "supportedBy": [],
+        "concerns": "Workbox 引入体积成本，PM-Mon 强烈要求体积收益分析；需要评估引入依赖的 ROI",
+        "priority": "medium",
+        "estimatedEffort": "medium",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: Service Worker 缓存策略",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 离线练习模式",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 安装引导",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 离线体验质量保障",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036g",
+        "title": "自适应学习路径可视化仪表盘",
+        "description": "将 epic-028 的智能间隔重复和自适应出题引擎'可视化'——让用户清晰看到'系统为什么给我推荐这道题'和'我的学习路径是什么'。",
+        "proposedBy": "UX",
+        "supportedBy": [
+          "EXP"
+        ],
+        "concerns": "与 epic-036b（动机可视化）功能部分重叠，建议合并或明确边界",
+        "priority": "medium",
+        "estimatedEffort": "small",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 学习路径可视化",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 出题理由卡片",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 自适应目标推荐",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 学习节奏可视化",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036h",
+        "title": "质量保障体系自动化与 E2E 稳定化",
+        "description": "修复 playwright E2E 测试的 flaky 状态，建立测试覆盖率基线，将质量门禁真正集成到 CI pipeline，让'测试零回归'成为可自动验证的常态。",
+        "proposedBy": "QA",
+        "supportedBy": [],
+        "concerns": "Playwright flaky 问题根因复杂，需要深入调试；E2E 在 CI 环境可能仍不稳定",
+        "priority": "medium",
+        "estimatedEffort": "medium",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: Playwright E2E 稳定化",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 测试覆盖率基线",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 自动化回归测试套件",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: CI 质量门禁配置",
+            "scope": "frontend-only"
+          }
+        ]
+      },
+      {
+        "id": "epic-036i",
+        "title": "深度个性化学习路径引擎",
+        "description": "将 epic-028 的间隔重复数据 + epic-029 的成就数据 + epic-030 的疲劳/时段数据整合为统一的'用户状态模型'，动态推荐最佳练习策略。",
+        "proposedBy": "EXP",
+        "supportedBy": [],
+        "concerns": "算法复杂度可能导致解释性不足；需要配合 Epic-036g 的出题理由卡片才能让用户理解推荐逻辑",
+        "priority": "low",
+        "estimatedEffort": "medium",
+        "iterationsPreview": [
+          {
+            "title": "iter-1: 用户状态实时模型",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-2: 动态模式推荐",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-3: 遗忘曲线动态校准",
+            "scope": "frontend-only"
+          },
+          {
+            "title": "iter-4: 个性化学习报告",
+            "scope": "frontend-only"
+          }
+        ]
+      }
+    ],
+    "currentEpic": null,
+    "selectedEpic": "epic-036",
+    "discussionSummary": "Round 1 产出了 9 个 Epic 候选，Round 2 进行了全面的交叉评审。核心分歧集中在：Epic-036（留存）与 Epic-037（动机）的优先级权衡——PM-Growth 主张留存优先（没有人就没有动机可谈），PM-UX 主张动机优先（没有动机留住了也会流失）。最终决策：Epic-036 中选，原因：产品刚完成核心功能构建，epic-028/029/030 的数据体系已完备，但没有任何留存机制驱动用户明天回来；Streak 保护罩和复习提醒是用户价值最直接的留存功能；Notification API 授权率风险通过 App 内 Toast 降级方案可控。Epic-037 将作为 Epic-036 完成后的最高优先级候选。"
+  },
   "previousCycle": {
-    "id": "2026-05-12-129",
-    "mode": "implement",
-    "stage": "REPORT"
+    "id": "2026-05-12-131",
+    "mode": "brainstorm",
+    "stage": "BRAINSTORM"
   },
   "brainstormResults": [
     {
-      "id": "epic-030",
-      "title": "学习心流深度优化与抗疲劳设计",
-      "description": "基于用户答题行为数据，实时检测学习疲劳状态，动态调整练习难度和节奏，让用户始终处于'最近发展区'，维持最佳学习心流。核心创新：疲劳感知 + 难度自适应 + 效率时段分析。",
-      "proposedBy": "PM-UX",
-      "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP", "QA"],
-      "concerns": "疲劳检测算法需要足够的 session 数据积累才有意义，对新用户效果有限",
-      "priority": "high",
-      "estimatedEffort": "small",
-      "status": "completed",
-      "iterationsPreview": [
-        {"title": "iter-1: 学习节奏感知与疲劳检测", "scope": "frontend-only"},
-        {"title": "iter-2: 专注度自适应调整", "scope": "frontend-only"},
-        {"title": "iter-3: 学习时段质量分析", "scope": "frontend-only"},
-        {"title": "iter-4: 疲劳恢复激励机制", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-030b",
-      "title": "学习动机可视化与目标设定系统",
-      "description": "将用户的学习数据转化为清晰的目标进度感知，通过对比激励（与上周相比）而非绝对值激励用户持续学习。核心创新：学习目标卡 + 效率趋势预测 + 里程碑庆祝仪式。",
-      "proposedBy": "UX",
-      "supportedBy": ["PM-Growth", "PM-UX", "PM-Lean", "EXP"],
-      "concerns": "目标设定需要用户主动参与，可能增加上手门槛",
-      "priority": "high",
-      "estimatedEffort": "small",
-      "iterationsPreview": [
-        {"title": "iter-1: 学习目标卡设计", "scope": "frontend-only"},
-        {"title": "iter-2: 学习效率趋势预测", "scope": "frontend-only"},
-        {"title": "iter-3: 对比激励机制", "scope": "frontend-only"},
-        {"title": "iter-4: 学习里程碑庆祝仪式", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-030c",
-      "title": "深度个性化学习路径引擎",
-      "description": "将 epic-028 的静态间隔重复升级为动态校准，基于用户实际遗忘速度而非固定间隔安排复习。同时根据用户实时状态动态推荐练习模式。核心创新：遗忘曲线实时校准 + 动态模式推荐。",
-      "proposedBy": "EXP",
-      "supportedBy": ["PM-UX", "UX", "PM-Growth", "PM-Lean", "ARCH"],
-      "concerns": "动态校准算法需要跨时间维度的数据积累，对新用户价值有限；需避免过度个性化导致用户体验碎片化",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-1: 学习状态实时检测", "scope": "frontend-only"},
-        {"title": "iter-2: 动态练习推荐", "scope": "frontend-only"},
-        {"title": "iter-3: 遗忘曲线动态校准", "scope": "frontend-only"},
-        {"title": "iter-4: 个性化学习报告", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-030d",
-      "title": "用户留存与召回机制深化",
-      "description": "基于间隔重复到期时间和学习 streak，设计召回机制和 streak 保护机制，确保用户持续回访。核心创新：复习提醒时机优化 + streak 保护罩 + 成就缺失推荐。",
+      "id": "epic-036",
+      "title": "用户召回与留存引擎",
+      "description": "构建完整的复习提醒 + Streak 保护 + 成就缺失推荐三位一体留存引擎，让用户持续回访形成学习习惯。",
       "proposedBy": "PM-Growth",
-      "supportedBy": ["PM-Lean", "PM-Eco", "UX"],
-      "concerns": "召回机制需要用户授权通知，纯前端无法实现真正的推送；streak 保护可能降低 streak 的稀缺感",
-      "priority": "medium",
+      "supportedBy": ["PM-Lean", "UX", "EXP"],
+      "concerns": "Notification API 授权率可能偏低（10-20%），需要明确的降级策略（App 内 Toast）",
+      "priority": "high",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {"title": "iter-1: 复习提醒推送机制", "scope": "frontend-only"},
-        {"title": "iter-2: 学习连续 streak 保护机制", "scope": "frontend-only"},
-        {"title": "iter-3: 成就缺失分析", "scope": "frontend-only"},
-        {"title": "iter-4: 个性化学习目标设定", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-030e",
-      "title": "质量保障体系自动化",
-      "description": "修复 playwright E2E 测试的 flaky 状态，建立测试覆盖率基线，将质量门禁真正集成到 CI pipeline。核心创新：E2E 稳定化 + 覆盖率监控 + 视觉回归测试。",
-      "proposedBy": "QA",
-      "supportedBy": ["ARCH", "PM-Mon"],
-      "concerns": "iter-4 视觉回归测试需要引入新依赖，增加构建体积；E2E 测试在 CI 环境中可能不稳定",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-1: Playwright E2E 测试稳定化", "scope": "frontend-only"},
-        {"title": "iter-2: 测试覆盖率基线", "scope": "frontend-only"},
-        {"title": "iter-3: 自动化回归测试套件", "scope": "frontend-only"},
-        {"title": "iter-4: 视觉回归测试", "scope": "frontend-only"}
+        {"title": "iter-1: 复习时机优化提醒", "scope": "frontend-only"},
+        {"title": "iter-2: Streak 保护罩机制", "scope": "frontend-only"},
+        {"title": "iter-3: 成就缺失分析推荐", "scope": "frontend-only"},
+        {"title": "iter-4: 回归引导体验", "scope": "frontend-only"}
       ]
     }
   ],
@@ -242,6 +462,7 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
+      "pendingIterations": 0,
       "versionRange": "v0.50.0-v0.53.0",
       "createdAt": "2026-05-12T03:20:00.000Z",
       "completedAt": "2026-05-12T12:15:00.000Z",
@@ -254,8 +475,11 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
+      "pendingIterations": 0,
       "versionRange": "v0.45.0-v0.49.0",
-      "completedAt": "2026-05-12T11:20:00.000Z"
+      "completedAt": "2026-05-12T11:20:00.000Z",
+      "proposedBy": "EXP",
+      "supportedBy": ["PM-UX", "UX", "PM-Growth", "PM-Lean", "ARCH"]
     },
     {
       "id": "epic-027",
@@ -263,6 +487,7 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
+      "pendingIterations": 0,
       "versionRange": "v0.43.0-v0.44.0",
       "completedAt": "2026-05-11T15:35:00.000Z"
     },
@@ -272,6 +497,7 @@
       "status": "completed",
       "iterationsCount": 4,
       "completedIterations": 4,
+      "pendingIterations": 0,
       "versionRange": "v0.39.0-v0.42.0",
       "completedAt": "2026-05-11T08:01:00.000Z"
     },
@@ -281,6 +507,7 @@
       "status": "completed",
       "iterationsCount": 3,
       "completedIterations": 3,
+      "pendingIterations": 0,
       "versionRange": "v0.38.0",
       "completedAt": "2026-05-11T12:50:00.000Z"
     },
@@ -290,6 +517,7 @@
       "status": "completed",
       "iterationsCount": 6,
       "completedIterations": 6,
+      "pendingIterations": 0,
       "versionRange": "v0.37.0",
       "completedAt": "2026-05-11T13:15:00.000Z"
     },
@@ -299,6 +527,7 @@
       "status": "completed",
       "iterationsCount": 3,
       "completedIterations": 5,
+      "pendingIterations": 0,
       "versionRange": "v0.31.0-v0.36.0",
       "completedAt": "2026-05-11T04:30:00.000Z"
     },
@@ -308,6 +537,7 @@
       "status": "completed",
       "iterationsCount": 4,
       "completedIterations": 4,
+      "pendingIterations": 0,
       "versionRange": "v0.27.0-v0.30.0",
       "completedAt": "2026-05-11T02:15:00.000Z"
     },
@@ -317,6 +547,7 @@
       "status": "completed",
       "iterationsCount": 3,
       "completedIterations": 3,
+      "pendingIterations": 0,
       "versionRange": "v0.23.0-v0.25.0",
       "completedAt": "2026-05-10T19:42:00.000Z"
     },
@@ -326,6 +557,7 @@
       "status": "completed",
       "iterationsCount": 10,
       "completedIterations": 10,
+      "pendingIterations": 0,
       "versionRange": "v0.14.0-v0.26.0",
       "completedAt": "2026-05-10T15:00:00.000Z"
     }

@@ -18,6 +18,18 @@
 - **重构**: 无
 - **观察**: epic-030 全部 4 个迭代收官（v0.54.0-v0.57.0），1427 测试历史最高水位。从疲劳检测（iter-001 useFlowState）到自适应调整（iter-002 FlowStateBanner）到时段分析（iter-003 TimeSlotQualityCard）到疲劳恢复（iter-004 RestReminderModal），完整的心流优化体系。**进入全新 brainstorm 周期，候选 Epic：epic-030b（学习动机可视化）/epic-030c（深度个性化学习路径）**
 
+### 2026-05-12 (cycle-2026-05-12-136)
+- **迭代**: epic-037 iter-001「每日/每周学习目标设定 UI」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - Goal 类型定义（GoalType/GoalPeriod/Goal/GoalState 枚举和接口）
+  - storage 层扩展（GOALS_KEY + getGoals/saveGoals/generateDefaultGoals 方法）
+  - useGoals Hook 提供惰性初始化和日期感知重置（每日目标每日重置，每周目标每周重置）
+  - GoalSettingPanel 组件提供预设值（每日题数 10/20/30，每日 XP 50/100/150）+ 自定义输入双模式
+  - ViewRouter goals 视图 + App.tsx 集成（目标按钮入口在 XPBar 区域）
+- **重构**: 无
+- **观察**: epic-037 iter-001 完成，1495 测试历史最高水位。目标设定 UI 与 DailyChallengePanel 的视觉语言一致，降低用户学习成本。惰性初始化（首次访问才加载）和日期感知重置确保目标状态在正确时机重置，避免跨天/跨周状态残留。**epic-037 剩余 iter-002（进度追踪）~ iter-004（流失预警）继续推进**
+
 ## 历史数据
 
 ### 2026-05-12 (cycle-2026-05-12-120)

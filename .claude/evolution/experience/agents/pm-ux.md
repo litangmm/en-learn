@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-12 (cycle-2026-05-12-136) — epic-037 iter-001 完成
+- **相关 Epic**: epic-037 iter-001「每日/每周学习目标设定 UI」—— **提案者**
+- **结果**: **epic-037 iter-001 完成**，1495/1496 测试通过（历史最高水位），v0.61.0
+- **完成内容**: Goal 类型定义（GoalType/GoalPeriod/Goal/GoalState）+ storage 层（GOALS_KEY + getGoals/saveGoals/generateDefaultGoals）+ useGoals Hook（惰性初始化/日期感知重置/CRUD）+ GoalSettingPanel（预设+自定义双模式）+ ViewRouter goals 视图 + App.tsx 集成（目标按钮入口）
+- **当前状态**: **连续未被选中计数保持清零**（epic-037 提案者，1/4 迭代完成）
+- **观察**: epic-037「学习动机可视化与目标设定系统」填补了产品「用户自设目标」这一核心 gap——游戏化体系（XP/连击/徽章/排行榜）解决了「系统给什么目标」，但从未解决「用户自己想要什么」。useGoals Hook 的惰性初始化和日期感知重置确保目标状态在正确时机重置，零新增依赖、零构建体积增长。**epic-037 剩余 iter-002（进度追踪）~ iter-004（流失预警）继续推进中**
+
 ### 2026-05-11 (cycle-2026-05-11-89) — epic-018 iter-002 完成
 - **相关 Epic**: epic-018 iter-002「能力雷达图与进度趋势」—— 作为支持者
 - **结果**: epic-018 iter-002 **完成并部署**，v0.40.0，876/876 测试通过

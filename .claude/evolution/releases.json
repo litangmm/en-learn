@@ -2,6 +2,23 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.61.0",
+      "tag": "v0.61.0",
+      "commit": "c47e5cc",
+      "date": "2026-05-12T18:42:00.000Z",
+      "iterationId": "iter-001",
+      "title": "每日/每周学习目标设定 UI",
+      "features": [
+        "Goal 类型定义（GoalType/GoalPeriod 枚举 + Goal/GoalState 接口）",
+        "storage.getGoals/saveGoals + defaultGoals 生成",
+        "useGoals hook（惰性初始化/日期感知重置/CRUD/预设目标值）",
+        "GoalSettingPanel（每日/每周预设按钮+自定义输入+保存）",
+        "ViewRouter goals 视图 + MoreMenu 学习目标入口",
+        "1495 测试零回归，3.37s build"
+      ],
+      "deployUrl": "https://en-learn-lnldqmsjd-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.60.0",
       "tag": "v0.60.0",
       "commit": "5706da4",

@@ -82,6 +82,7 @@ export function MobileNav({
               }`}
               aria-label={item.label}
               aria-current={isActive ? 'page' : undefined}
+              data-testid={`mobile-nav-${item.id}`}
             >
               <div className="relative">
                 <Icon className="w-5 h-5" />

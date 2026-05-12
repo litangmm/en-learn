@@ -94,17 +94,19 @@ describe('spaced-repetition algorithm', () => {
 
     it('computes nextReviewDate using the algorithm', () => {
       // interval=1, correct → next=2 (doubling)
-      const result = createReviewResult(true, 1);
-      const expectedNext = calculateNextReviewDate(2);
+      const now = 1000000000000;
+      const result = createReviewResult(true, 1, now);
+      const expectedNext = calculateNextReviewDate(2, now);
       expect(result.nextReviewDate).toBe(expectedNext);
     });
 
     it('handles wrong answers correctly', () => {
-      const result = createReviewResult(false, 7);
+      const now = 1000000000000;
+      const result = createReviewResult(false, 7, now);
       expect(result.isCorrect).toBe(false);
       expect(result.interval).toBe(7);
       // wrong → reset to 1 → nextReviewDate = now + 1 day
-      const expectedNext = calculateNextReviewDate(1);
+      const expectedNext = calculateNextReviewDate(1, now);
       expect(result.nextReviewDate).toBe(expectedNext);
     });
   });

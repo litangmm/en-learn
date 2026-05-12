@@ -15,17 +15,17 @@ test.describe('Data Management Flow', () => {
   });
 
   test('navigate to data manager', async ({ page }) => {
-    // Open more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Open more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
 
-    // Click on 数据管理 (data management)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /数据/i }).first();
+    // Click on 数据管理 (data management) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
 
-    // Wait for navigation
-    await page.waitForTimeout(1000);
+    // Wait for navigation with network idle
+    await page.waitForLoadState('networkidle');
 
     // Verify data manager view is visible
     const dataManagerContent = page.getByText(/数据管理|数据备份|Export|Import/i).or(
@@ -35,13 +35,13 @@ test.describe('Data Management Flow', () => {
   });
 
   test('data manager shows export and import options', async ({ page }) => {
-    // Navigate to data manager
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // Look for export and import related buttons/links
     const exportButton = page.locator('button').filter({ hasText: /导出|Export|下载|Download/i }).or(
@@ -62,28 +62,27 @@ test.describe('Data Management Flow', () => {
   });
 
   test('data manager shows current data counts', async ({ page }) => {
-    // Navigate to data manager
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // Look for data statistics - history count, mistake count etc.
-    // These should be visible in the data manager view
     const body = page.locator('body');
     await expect(body).toBeVisible({ timeout: 5000 });
   });
 
   test('back navigation from data manager works', async ({ page }) => {
-    // Navigate to data manager
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // Look for back button
     const backButton = page.locator('button').filter({ hasText: /返回|Back|取消|Cancel/i }).or(
@@ -93,7 +92,7 @@ test.describe('Data Management Flow', () => {
     // Click back button if visible
     if (await backButton.isVisible({ timeout: 3000 }).catch(() => false)) {
       await backButton.click();
-      await page.waitForTimeout(1000);
+      await page.waitForLoadState('networkidle');
 
       // Verify we're back on the main practice view
       await expect(page.locator('main')).toBeVisible({ timeout: 5000 });
@@ -101,13 +100,13 @@ test.describe('Data Management Flow', () => {
   });
 
   test('navigate to dictionary browser from data manager', async ({ page }) => {
-    // Navigate to data manager
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // Look for dictionary browser link
     const dictionaryLink = page.locator('button, a').filter({ hasText: /词典|词典库|Dictionary|Browser/i }).or(
@@ -117,7 +116,7 @@ test.describe('Data Management Flow', () => {
     // Click if visible
     if (await dictionaryLink.isVisible({ timeout: 3000 }).catch(() => false)) {
       await dictionaryLink.click();
-      await page.waitForTimeout(1000);
+      await page.waitForLoadState('networkidle');
 
       // Verify dictionary browser view
       const body = page.locator('body');
@@ -129,13 +128,13 @@ test.describe('Data Management Flow', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
-    // Navigate to data manager
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // Verify it's accessible on mobile
     const body = page.locator('body');
@@ -143,13 +142,13 @@ test.describe('Data Management Flow', () => {
   });
 
   test('empty data state shows appropriate message', async ({ page }) => {
-    // Navigate to data manager with empty data
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Navigate to data manager with empty data using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
     await page.waitForTimeout(500);
-    const menuItem = page.locator('[role="menuitem"]').filter({ hasText: /数据/i }).first();
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
 
     // With empty data, should show 0 counts or appropriate empty state
     // Verify the page loaded without errors

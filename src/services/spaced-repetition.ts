@@ -40,10 +40,11 @@ export function calculateNextReviewInterval(
  * Calculates the next review date based on current time and interval.
  *
  * @param intervalDays - Interval in days
+ * @param timestamp - Optional timestamp to use as "now" (defaults to Date.now(), useful for testing)
  * @returns Timestamp (milliseconds) for the next review
  */
-export function calculateNextReviewDate(intervalDays: number): number {
-  const now = Date.now();
+export function calculateNextReviewDate(intervalDays: number, timestamp?: number): number {
+  const now = timestamp ?? Date.now();
   const oneDayMs = 24 * 60 * 60 * 1000;
   return now + intervalDays * oneDayMs;
 }
@@ -53,18 +54,22 @@ export function calculateNextReviewDate(intervalDays: number): number {
  *
  * @param isCorrect - Whether the user answered correctly
  * @param interval - The interval used for this review (before calculating next)
+ * @param now - Optional timestamp to use as "now" (defaults to Date.now(), useful for testing)
  * @returns A complete ReviewResult object
  */
 export function createReviewResult(
   isCorrect: boolean,
-  interval: number
+  interval: number,
+  now?: number
 ): ReviewResult {
+  const timestamp = now ?? Date.now();
   return {
-    timestamp: Date.now(),
+    timestamp,
     isCorrect,
     interval,
     nextReviewDate: calculateNextReviewDate(
-      calculateNextReviewInterval(interval, isCorrect)
+      calculateNextReviewInterval(interval, isCorrect),
+      timestamp
     ),
   };
 }

@@ -40,101 +40,99 @@ test.describe('Complete User Journey', () => {
   });
 
   test('more menu opens and shows navigation options', async ({ page }) => {
-    // Find and click more menu button
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).or(
-      page.locator('[aria-label*="more"]')
-    ).first();
+    // Find and click more menu button using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
 
     await moreButton.click();
 
-    // Verify dropdown menu appears with options
-    const menu = page.locator('[role="menu"], [data-radix-popper-content]').first();
+    // Verify dropdown menu appears with data-testid
+    const menu = page.locator('[data-testid="more-menu-content"]');
     await expect(menu).toBeVisible({ timeout: 5000 });
   });
 
   test('navigate to mistake book via more menu', async ({ page }) => {
-    // Click more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Click more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
 
     // Wait for menu to appear
     await page.waitForTimeout(500);
 
-    // Click on 错题本 (mistake book)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /错题/i }).first();
+    // Click on 错题本 (mistake book) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-mistake-book"]');
     await menuItem.click();
 
     // Verify navigation to mistake book view
-    await page.waitForTimeout(1000);
+    await page.waitForLoadState('networkidle');
     // Check URL or view content
     await expect(page.locator('body')).toBeVisible();
   });
 
   test('navigate to history via more menu', async ({ page }) => {
-    // Click more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Click more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
 
     // Wait for menu to appear
     await page.waitForTimeout(500);
 
-    // Click on 历史记录 (history)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /历史/i }).first();
+    // Click on 历史记录 (history) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-history"]');
     await menuItem.click();
 
-    // Verify navigation
-    await page.waitForTimeout(1000);
+    // Verify navigation with network idle
+    await page.waitForLoadState('networkidle');
     await expect(page.locator('body')).toBeVisible();
   });
 
   test('navigate to data manager via more menu', async ({ page }) => {
-    // Click more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Click more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
 
     // Wait for menu to appear
     await page.waitForTimeout(500);
 
-    // Click on 数据管理 (data management)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /数据/i }).first();
+    // Click on 数据管理 (data management) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-data-manager"]');
     await menuItem.click();
 
-    // Verify navigation
-    await page.waitForTimeout(1000);
+    // Verify navigation with network idle
+    await page.waitForLoadState('networkidle');
     await expect(page.locator('body')).toBeVisible();
   });
 
   test('navigate to badges via more menu', async ({ page }) => {
-    // Click more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Click more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
 
     // Wait for menu to appear
     await page.waitForTimeout(500);
 
-    // Click on 成就徽章 (badges)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /成就|徽章/i }).first();
+    // Click on 成就徽章 (badges) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-badges"]');
     await menuItem.click();
 
-    // Verify navigation
-    await page.waitForTimeout(1000);
+    // Verify navigation with network idle
+    await page.waitForLoadState('networkidle');
     await expect(page.locator('body')).toBeVisible();
   });
 
   test('navigate to leaderboard via more menu', async ({ page }) => {
-    // Click more menu
-    const moreButton = page.locator('button').filter({ hasText: /更多|More/i }).first();
+    // Click more menu using data-testid
+    const moreButton = page.locator('[data-testid="more-menu-trigger"]');
     await moreButton.click();
 
     // Wait for menu to appear
     await page.waitForTimeout(500);
 
-    // Click on 排行榜 (leaderboard)
-    const menuItem = page.locator('[role="menuitem"], [role="menu"] [role="menuitem"]').filter({ hasText: /排行/i }).first();
+    // Click on 排行榜 (leaderboard) using data-testid
+    const menuItem = page.locator('[data-testid="menuitem-leaderboard"]');
     await menuItem.click();
 
-    // Verify navigation
-    await page.waitForTimeout(1000);
+    // Verify navigation with network idle
+    await page.waitForLoadState('networkidle');
     // Verify leaderboard specific content
     await expect(page.locator('body')).toBeVisible();
   });
@@ -143,15 +141,13 @@ test.describe('Complete User Journey', () => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
 
-    // Look for progress button in mobile nav
-    const progressButton = page.locator('button').filter({ hasText: /进度|Progress/i }).or(
-      page.locator('[aria-label*="progress"]')
-    ).first();
+    // Look for progress button in mobile nav using data-testid
+    const progressButton = page.locator('[data-testid="mobile-nav-progress"]');
 
     // If mobile nav exists, click it
     if (await progressButton.isVisible({ timeout: 2000 }).catch(() => false)) {
       await progressButton.click();
-      await page.waitForTimeout(1000);
+      await page.waitForLoadState('networkidle');
       await expect(page.locator('body')).toBeVisible();
     }
   });

@@ -36,18 +36,19 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
   DropdownMenuContent: vi.fn(({ children }: { children: React.ReactNode }) => (
     <div data-testid="dropdown-content">{children}</div>
   )),
-  DropdownMenuItem: vi.fn(({ children, onClick, ...props }: {
+  DropdownMenuItem: vi.fn(({ children, onClick }: {
     children: React.ReactNode;
     onClick?: () => void;
-  }) => (
-    <div
-      data-testid="dropdown-item"
-      onClick={onClick}
-      {...props}
-    >
-      {children}
-    </div>
-  )),
+  }) => {
+    return (
+      <div
+        data-testid-base="dropdown-item"
+        onClick={onClick}
+      >
+        {children}
+      </div>
+    );
+  }),
 }));
 
 describe('MoreMenu', () => {
@@ -131,7 +132,7 @@ describe('MoreMenu', () => {
   it('calls onOpenMistakeBook when 错题本 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const mistakeBookItem = screen.getByText('错题本').closest('[data-testid="dropdown-item"]');
+    const mistakeBookItem = screen.getByText('错题本').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(mistakeBookItem!);
 
     expect(mockOnOpenMistakeBook).toHaveBeenCalledTimes(1);
@@ -140,7 +141,7 @@ describe('MoreMenu', () => {
   it('calls onOpenHistory when 学习记录 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const historyItem = screen.getByText('学习记录').closest('[data-testid="dropdown-item"]');
+    const historyItem = screen.getByText('学习记录').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(historyItem!);
 
     expect(mockOnOpenHistory).toHaveBeenCalledTimes(1);
@@ -149,7 +150,7 @@ describe('MoreMenu', () => {
   it('calls onOpenDataManager when 数据管理 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const dataManagerItem = screen.getByText('数据管理').closest('[data-testid="dropdown-item"]');
+    const dataManagerItem = screen.getByText('数据管理').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(dataManagerItem!);
 
     expect(mockOnOpenDataManager).toHaveBeenCalledTimes(1);
@@ -158,7 +159,7 @@ describe('MoreMenu', () => {
   it('calls onOpenSmartReview when 智能复习 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const smartReviewItem = screen.getByText('智能复习').closest('[data-testid="dropdown-item"]');
+    const smartReviewItem = screen.getByText('智能复习').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(smartReviewItem!);
 
     expect(mockOnOpenSmartReview).toHaveBeenCalledTimes(1);
@@ -167,7 +168,7 @@ describe('MoreMenu', () => {
   it('calls onOpenChallenges when 每日挑战 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const challengesItem = screen.getByText('每日挑战').closest('[data-testid="dropdown-item"]');
+    const challengesItem = screen.getByText('每日挑战').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(challengesItem!);
 
     expect(mockOnOpenChallenges).toHaveBeenCalledTimes(1);
@@ -176,7 +177,7 @@ describe('MoreMenu', () => {
   it('calls onOpenBadges when 成就 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const badgesItem = screen.getByText('成就').closest('[data-testid="dropdown-item"]');
+    const badgesItem = screen.getByText('成就').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(badgesItem!);
 
     expect(mockOnOpenBadges).toHaveBeenCalledTimes(1);
@@ -185,7 +186,7 @@ describe('MoreMenu', () => {
   it('calls onOpenLeaderboard when 排行 item clicked', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const leaderboardItem = screen.getByText('排行').closest('[data-testid="dropdown-item"]');
+    const leaderboardItem = screen.getByText('排行').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(leaderboardItem!);
 
     expect(mockOnOpenLeaderboard).toHaveBeenCalledTimes(1);
@@ -195,7 +196,7 @@ describe('MoreMenu', () => {
     const openDropdownAndGetItem = (text: string) => {
       const trigger = screen.getByTestId('dropdown-trigger');
       fireEvent.click(trigger);
-      return screen.getByText(text).closest('[data-testid="dropdown-item"]');
+      return screen.getByText(text).closest('[data-testid-base="dropdown-item"]');
     };
 
     it('shows mistake count badge when mistakeCount > 0', () => {
@@ -292,7 +293,7 @@ describe('MoreMenu', () => {
       fireEvent.click(screen.getByTestId('dropdown-trigger'));
 
       // Brain icon is used when not in review mode
-      const smartReviewItem = screen.getByText('智能复习').closest('[data-testid="dropdown-item"]');
+      const smartReviewItem = screen.getByText('智能复习').closest('[data-testid-base="dropdown-item"]');
       expect(smartReviewItem?.querySelector('.lucide-brain')).toBeInTheDocument();
       expect(smartReviewItem?.querySelector('.lucide-refresh-cw')).not.toBeInTheDocument();
     });
@@ -304,7 +305,7 @@ describe('MoreMenu', () => {
       fireEvent.click(screen.getByTestId('dropdown-trigger'));
 
       // RefreshCw icon is used when in review mode
-      const smartReviewItem = screen.getByText('智能复习').closest('[data-testid="dropdown-item"]');
+      const smartReviewItem = screen.getByText('智能复习').closest('[data-testid-base="dropdown-item"]');
       expect(smartReviewItem?.querySelector('.lucide-refresh-cw')).toBeInTheDocument();
       expect(smartReviewItem?.querySelector('.lucide-brain')).not.toBeInTheDocument();
     });
@@ -313,8 +314,9 @@ describe('MoreMenu', () => {
   it('renders all items with cursor-pointer class', () => {
     render(<MoreMenu {...defaultProps} />);
 
-    const items = screen.getAllByTestId('dropdown-item');
-    items.forEach((item) => {
+    // Use base testid that all items share
+    const baseItems = screen.queryAllByTestId('dropdown-item-base');
+    baseItems.forEach((item) => {
       expect(item).toHaveClass('cursor-pointer');
     });
   });
@@ -323,8 +325,8 @@ describe('MoreMenu', () => {
     render(<MoreMenu {...defaultProps} />);
 
     // Check that spans with flex-1 exist for items that have badges
-    const mistakeBookItem = screen.getByText('错题本');
-    const mistakeBookSpan = mistakeBookItem.parentElement?.querySelector('span.flex-1');
+    const mistakeBookItem = screen.getByText('错题本').closest('[data-testid-base="dropdown-item"]');
+    const mistakeBookSpan = mistakeBookItem?.querySelector('span.flex-1');
     expect(mistakeBookSpan).toBeInTheDocument();
   });
 });

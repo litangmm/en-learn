@@ -1,4 +1,4 @@
-import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart } from 'lucide-react';
+import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart, Target as GoalIcon } from 'lucide-react';
 import { MilestoneCard } from './MilestoneCard';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
@@ -6,14 +6,18 @@ import { WeeklyReportCard } from './WeeklyReportCard';
 import { DictionaryProgressOverview } from './DictionaryProgressOverview';
 import { ReviewStreakCalendar } from './ReviewStreakCalendar';
 import { LearningTimeInsights } from './LearningTimeInsights';
+import { GoalProgressCard } from './GoalProgressCard';
 import { useProgressStats, getThisWeekReport, getDictionaryProgress, getReviewStreak } from '@/hooks/useProgressStats';
 import type { View } from './routing';
+import type { Goal } from '@/data/types';
 
 export interface ProgressHubProps {
   onNavigate: (view: View) => void;
+  /** Goals for progress display (optional, for integration) */
+  goals?: Goal[];
 }
 
-export function ProgressHub({ onNavigate }: ProgressHubProps) {
+export function ProgressHub({ onNavigate, goals }: ProgressHubProps) {
   const stats = useProgressStats();
 
   // Get data for new visualization cards
@@ -56,6 +60,51 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
           />
         </div>
       </div>
+
+      {/* Goals Progress Section (epic-037 iter-002) */}
+      {goals && goals.length > 0 && (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <GoalIcon className="w-4 h-4 text-blue-500" />
+            <h2 className="text-sm font-medium text-slate-700">学习目标</h2>
+            <span className="text-xs text-slate-400 ml-auto">
+              {goals.filter(g => g.completed).length}/{goals.length} 已完成
+            </span>
+          </div>
+
+          {/* Daily Goals */}
+          {goals.filter(g => g.period === 'daily').length > 0 && (
+            <div className="mb-3">
+              <p className="text-xs text-slate-400 mb-2">今日目标</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {goals.filter(g => g.period === 'daily').map(goal => (
+                  <GoalProgressCard
+                    key={goal.id}
+                    goal={goal}
+                    mode="full"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Weekly Goals */}
+          {goals.filter(g => g.period === 'weekly').length > 0 && (
+            <div>
+              <p className="text-xs text-slate-400 mb-2">本周目标</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {goals.filter(g => g.period === 'weekly').map(goal => (
+                  <GoalProgressCard
+                    key={goal.id}
+                    goal={goal}
+                    mode="full"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Milestone Grid */}
       <div className="grid grid-cols-2 gap-3 mb-4">

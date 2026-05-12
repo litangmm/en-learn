@@ -110,7 +110,7 @@ export function ViewRouter(props: ViewRouterProps) {
 
   switch (view) {
     case 'progress':
-      return <ProgressHub onNavigate={onNavigate} />;
+      return <ProgressHub onNavigate={onNavigate} goals={goals} />;
 
     case 'profile':
       return <LearningProfile onNavigate={onNavigate} onBack={onBackFromProfile} />;

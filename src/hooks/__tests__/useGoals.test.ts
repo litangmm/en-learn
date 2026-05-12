@@ -294,4 +294,56 @@ describe('useGoals', () => {
 
     expect(result.current.completedWeeklyGoals).toBe(2);
   });
+
+  // -------------------------------------------------------------------------
+  // trackProgressRef Tests (epic-037 iter-002)
+  // -------------------------------------------------------------------------
+
+  it('trackProgressRef exists and is a ref object', () => {
+    const { result } = renderHook(() => useGoals());
+
+    expect(result.current.trackProgressRef).toBeDefined();
+    expect(typeof result.current.trackProgressRef).toBe('object');
+    expect('current' in result.current.trackProgressRef!).toBe(true);
+  });
+
+  it('trackProgressRef.current is the same as trackProgress', () => {
+    const { result } = renderHook(() => useGoals());
+
+    expect(result.current.trackProgressRef.current).toBe(result.current.trackProgress);
+  });
+
+  it('trackProgressRef can be used to update goals from outside the hook', () => {
+    const { result } = renderHook(() => useGoals());
+
+    const questionsGoal = result.current.state.goals.find(
+      (g) => g.type === 'questions' && g.period === 'daily'
+    )!;
+    const initialCurrent = questionsGoal.current;
+
+    // Use the ref to track progress (simulating useEffect usage)
+    act(() => {
+      result.current.trackProgressRef.current('questions', 3);
+    });
+
+    const updated = result.current.state.goals.find(
+      (g) => g.type === 'questions' && g.period === 'daily'
+    );
+    expect(updated!.current).toBe(initialCurrent + 3);
+  });
+
+  it('trackProgressRef.current is stable across re-renders', () => {
+    const { result } = renderHook(() => useGoals());
+
+    // Initial ref should be a function
+    expect(typeof result.current.trackProgressRef.current).toBe('function');
+
+    // Update goals (triggers re-render)
+    act(() => {
+      result.current.updateGoals(result.current.state.goals.map(g => ({ ...g, target: g.target + 10 })));
+    });
+
+    // After re-render, trackProgressRef.current should still be a valid function
+    expect(typeof result.current.trackProgressRef.current).toBe('function');
+  });
 });

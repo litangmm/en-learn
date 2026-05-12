@@ -35,6 +35,8 @@ import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { AchievementToast } from '@/components/AchievementToast';
 import { RecallReminderToast } from '@/components/RecallReminderToast';
+import { GoalCompletionToast } from '@/components/GoalCompletionToast';
+import { useGoalCompletionNotifier } from '@/hooks/useGoalCompletionNotifier';
 import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { useWeeklyReport } from '@/hooks/useWeeklyReport';
@@ -161,7 +163,14 @@ function App() {
   const currentStreak = streakData.currentStreak;
   const { status: recallStatus, dueCount: recallDueCount, dismiss: dismissRecall } = useRecallReminder();
   const { hintLevel, shouldShowHint } = useHintLevel();
-  const { state: goalsState, updateGoals } = useGoals();
+  const { state: goalsState, updateGoals, trackProgressRef, dailyGoals } = useGoals();
+  const { completedGoal, triggerKey: goalTriggerKey, dismiss: dismissGoalCompletion } = useGoalCompletionNotifier();
+
+  // Helper: get daily questions goal progress for XPBar
+  const dailyQuestionsGoal = dailyGoals.find(g => g.type === 'questions');
+  const dailyQuestionsGoalProgress = dailyQuestionsGoal
+    ? { current: dailyQuestionsGoal.current, target: dailyQuestionsGoal.target }
+    : null;
 
   // Track previous level for detecting level-ups (initialized after profile is available)
   const previousLevelRef = useRef(profile.currentLevel);
@@ -342,6 +351,10 @@ function App() {
         trackActivity('streak', streak + 1);
         badgesRef.current.trackProgress('correct');
         badgesRef.current.trackProgress('streak', streak + 1);
+        // Goal progress tracking (epic-037 iter-002)
+        trackProgressRef.current('questions', 1);
+        trackProgressRef.current('xp', finalXP);
+        trackProgressRef.current('streak', streak + 1);
         const newBadges = badgesRef.current.checkBadges(profile.currentLevel);
         if (newBadges.length > 0) {
           requestAnimationFrame(() => {
@@ -357,7 +370,7 @@ function App() {
         }
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel, profile.totalXP, checkLevelUp, checkStreakMilestone, checkXPMilestone, checkBadgeUnlock]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel, profile.totalXP, checkLevelUp, checkStreakMilestone, checkXPMilestone, checkBadgeUnlock, trackProgressRef]);
 
   // Reset streak on wrong answer
   useEffect(() => {
@@ -370,8 +383,10 @@ function App() {
       badgesRef.current.trackProgress('wrong');
       badgesRef.current.trackProgress('streak', 0);
       badgesRef.current.checkBadges(profile.currentLevel);
+      // Goal progress tracking (epic-037 iter-002)
+      trackProgressRef.current('streak', 0);
     }
-  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity, profile.currentLevel]);
+  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity, profile.currentLevel, trackProgressRef]);
   // Session completion badge tracking
   useEffect(() => {
     if (state.isComplete) {
@@ -745,7 +760,7 @@ function App() {
             {/* Practice controls - visible on desktop in practice view */}
             {!state.isComplete && view === 'practice' && (
               <div className="flex items-center gap-3 flex-shrink-0">
-                <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} />
+                <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} goalProgress={dailyQuestionsGoalProgress} />
                 <StreakFeedback streak={streak} />
                 <SessionTimer sessionStartMs={sessionStartTimeForTimer} />
                 <Button
@@ -879,7 +894,7 @@ function App() {
               <span className="text-sm font-medium text-slate-700">
                 第 {currentQuestion}/{totalQuestions} 题
               </span>
-              <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact />
+              <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact goalProgress={dailyQuestionsGoalProgress} />
               <StreakFeedback streak={streak} />
               <span className="text-sm text-slate-500">
                 得分: {state.score}
@@ -1236,6 +1251,12 @@ function App() {
         dueCount={recallDueCount}
         onStartReview={() => handleNavigate('review')}
         onDismiss={dismissRecall}
+      />
+
+      <GoalCompletionToast
+        completedGoal={completedGoal}
+        triggerKey={goalTriggerKey}
+        onDismiss={dismissGoalCompletion}
       />
 
       {achievementMomentTrigger && achievementMomentTrigger.moment && (

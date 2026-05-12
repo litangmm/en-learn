@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type { Goal, GoalType, GoalPeriod, GoalState } from '@/data/types';
 import { storage } from '@/services/storage';
 
@@ -166,6 +166,12 @@ export function useGoals() {
     []
   );
 
+  // Stable ref for trackProgress (useRef to avoid stale closure in useEffect)
+  const trackProgressRef = useRef(trackProgress);
+  useEffect(() => {
+    trackProgressRef.current = trackProgress;
+  }, [trackProgress]);
+
   /**
    * Update a single goal's target (and optionally reset its progress).
    */
@@ -249,6 +255,7 @@ export function useGoals() {
 
     // Progress tracking
     trackProgress,
+    trackProgressRef,
 
     // Goal CRUD
     updateGoals,

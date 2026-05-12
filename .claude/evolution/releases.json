@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.51.0",
+      "tag": "v0.51.0",
+      "commit": "c72a016",
+      "date": "2026-05-11T23:58:33.035Z",
+      "iterationId": "iter-002",
+      "title": "周报推送机制",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-1e2fpm51u-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.50.0",
       "tag": "v0.50.0",
       "commit": "4502d42",

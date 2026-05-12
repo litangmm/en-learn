@@ -3,6 +3,14 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DictionaryBrowser } from '../DictionaryBrowser';
 import type { Sentence } from '@/data/types';
 
+// Mock useDictionaryIndex hook to prevent it from affecting tests
+vi.mock('@/hooks/useDictionaryIndex', () => ({
+  useDictionaryIndex: vi.fn(() => ({
+    loadDictionary: vi.fn().mockResolvedValue(undefined),
+    getStats: vi.fn().mockReturnValue(null),
+  })),
+}));
+
 const mockSentences: Sentence[] = [
   {
     id: '1',

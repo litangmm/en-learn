@@ -15,6 +15,7 @@ import {
 import { dictionaries } from '@/data/dictionaries';
 import { loadDictionary } from '@/data/loader';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
+import { useDictionaryIndex } from '@/hooks/useDictionaryIndex';
 import type { Sentence } from '@/data/types';
 
 /** Available difficulty levels for filtering */
@@ -53,6 +54,9 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
 
   const { isMarked, toggleMark, getCount } = usePersonalWords();
 
+  // Dictionary index management - preload index for fast lookups
+  const { loadDictionary: loadDictionaryIndex } = useDictionaryIndex();
+
   // Clear sessionStorage flag on mount if present
   useEffect(() => {
     if (sessionStorage.getItem('dict-browser-marked-only') === 'true') {
@@ -80,6 +84,13 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
   const handleLevelFilterChange = useCallback((value: string) => {
     setLevelFilter(value);
   }, []);
+
+  // Preload dictionary index for fast lookups (runs alongside main data loading)
+  useEffect(() => {
+    loadDictionaryIndex(selectedDictionaryId).catch(() => {
+      // Silent fail - index loading is non-critical, main data loading handles errors
+    });
+  }, [selectedDictionaryId, loadDictionaryIndex]);
 
   // Initial load and reload when dictionary changes
   useEffect(() => {

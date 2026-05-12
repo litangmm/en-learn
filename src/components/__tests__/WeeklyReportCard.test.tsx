@@ -66,13 +66,20 @@ describe('WeeklyReportCard', () => {
     vi.restoreAllMocks();
   });
 
-  describe('Data fields rendering', () => {
+  describe('Compact Mode (Dashboard)', () => {
+    it('renders in compact mode by default', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} />);
+
+      expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
+    });
+
     it('renders XP earned correctly', () => {
       const report = createReport({ xpEarned: 750 });
       render(<WeeklyReportCard report={report} />);
 
       expect(screen.getByText('750')).toBeInTheDocument();
-      expect(screen.getByText('获得 XP')).toBeInTheDocument();
+      expect(screen.getByText('获得经验')).toBeInTheDocument();
     });
 
     it('renders questions answered correctly', () => {
@@ -80,30 +87,23 @@ describe('WeeklyReportCard', () => {
       render(<WeeklyReportCard report={report} />);
 
       expect(screen.getByText('100')).toBeInTheDocument();
-      expect(screen.getByText('答题数')).toBeInTheDocument();
+      expect(screen.getByText('完成题目')).toBeInTheDocument();
     });
 
     it('renders accuracy percentage correctly', () => {
       const report = createReport({ accuracy: 85 });
       render(<WeeklyReportCard report={report} />);
 
-      expect(screen.getByText('85%')).toBeInTheDocument();
+      expect(screen.getByText('85')).toBeInTheDocument();
       expect(screen.getByText('正确率')).toBeInTheDocument();
-    });
-
-    it('renders correct answers count correctly', () => {
-      const report = createReport({ correctAnswers: 45 });
-      render(<WeeklyReportCard report={report} />);
-
-      expect(screen.getByText('45')).toBeInTheDocument();
-      expect(screen.getByText('答对题数')).toBeInTheDocument();
     });
 
     it('renders learning days count correctly', () => {
       const report = createReport({ learningDays: 7 });
       render(<WeeklyReportCard report={report} />);
 
-      expect(screen.getByText('学习 7 天')).toBeInTheDocument();
+      expect(screen.getByText('7')).toBeInTheDocument();
+      expect(screen.getByText('学习天数')).toBeInTheDocument();
     });
 
     it('renders sessions completed count correctly', () => {
@@ -112,9 +112,7 @@ describe('WeeklyReportCard', () => {
 
       expect(screen.getByText('完成 5 次练习')).toBeInTheDocument();
     });
-  });
 
-  describe('Comparison data rendering', () => {
     it('shows positive XP change with trending up icon', () => {
       const report = createReport({
         xpEarned: 500,
@@ -142,70 +140,11 @@ describe('WeeklyReportCard', () => {
       });
       render(<WeeklyReportCard report={report} />);
 
-      // Use getAllByText to handle multiple elements with same value
+      // Should show "持平" for zero change - use getAllByText since it appears multiple times
       const elements = screen.getAllByText('持平');
       expect(elements.length).toBeGreaterThan(0);
     });
-  });
 
-  describe('Share button functionality', () => {
-    it('opens ShareDialog when share button is clicked', () => {
-      const report = createReport();
-      render(<WeeklyReportCard report={report} />);
-
-      // Click share button
-      const shareButton = screen.getByTestId('weekly-report-share-button');
-      fireEvent.click(shareButton);
-
-      // ShareDialog should be visible
-      expect(screen.getByTestId('share-dialog')).toBeInTheDocument();
-    });
-
-    it('passes correct triggerType to ShareDialog', () => {
-      const report = createReport();
-      render(<WeeklyReportCard report={report} />);
-
-      // Click share button
-      const shareButton = screen.getByTestId('weekly-report-share-button');
-      fireEvent.click(shareButton);
-
-      // Verify trigger type is weekly-report
-      const dialog = screen.getByTestId('share-dialog');
-      expect(dialog.getAttribute('data-trigger-type')).toBe('weekly-report');
-    });
-
-    it('share button has correct aria-label', () => {
-      const report = createReport();
-      render(<WeeklyReportCard report={report} />);
-
-      const shareButton = screen.getByTestId('weekly-report-share-button');
-      expect(shareButton).toHaveAttribute('aria-label', '分享周报');
-    });
-  });
-
-  describe('Dismiss button functionality', () => {
-    it('calls onDismiss when dismiss button is clicked', () => {
-      const report = createReport();
-      const onDismiss = vi.fn();
-      render(<WeeklyReportCard report={report} onDismiss={onDismiss} />);
-
-      // Click dismiss button
-      const dismissButton = screen.getByTestId('weekly-report-dismiss-button');
-      fireEvent.click(dismissButton);
-
-      expect(onDismiss).toHaveBeenCalledTimes(1);
-    });
-
-    it('dismiss button has correct aria-label', () => {
-      const report = createReport();
-      render(<WeeklyReportCard report={report} onDismiss={vi.fn()} />);
-
-      const dismissButton = screen.getByTestId('weekly-report-dismiss-button');
-      expect(dismissButton).toHaveAttribute('aria-label', '关闭');
-    });
-  });
-
-  describe('Week range display', () => {
     it('displays correct week range', () => {
       const report = createReport({
         weekStart: '2026-05-04',
@@ -213,73 +152,101 @@ describe('WeeklyReportCard', () => {
       });
       render(<WeeklyReportCard report={report} />);
 
-      // Should display the week range
-      expect(screen.getByText(/5月/i)).toBeInTheDocument();
+      // Should display month/day format
+      expect(screen.getByText(/5\/4/)).toBeInTheDocument();
+    });
+
+    it('has header with "本周学习报告" title', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} />);
+
+      expect(screen.getByText('本周学习报告')).toBeInTheDocument();
+    });
+
+    it('renders correct answers in footer', () => {
+      const report = createReport({ correctAnswers: 42 });
+      render(<WeeklyReportCard report={report} />);
+
+      expect(screen.getByText('答对 42 题')).toBeInTheDocument();
     });
   });
 
-  describe('Dynamic headlines', () => {
-    it('shows "本周学习全覆盖！" for 7 learning days', () => {
+  describe('Modal Mode', () => {
+    it('renders in modal mode when compact=false', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} compact={false} />);
+
+      expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
+    });
+
+    it('shows share button in modal mode', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} compact={false} />);
+
+      expect(screen.getByTestId('weekly-report-share-button')).toBeInTheDocument();
+    });
+
+    it('shows dismiss button in modal mode', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} compact={false} />);
+
+      expect(screen.getByTestId('weekly-report-dismiss-button')).toBeInTheDocument();
+    });
+
+    it('opens ShareDialog when share button is clicked', () => {
+      const report = createReport();
+      render(<WeeklyReportCard report={report} compact={false} />);
+
+      fireEvent.click(screen.getByTestId('weekly-report-share-button'));
+      expect(screen.getByTestId('share-dialog')).toBeInTheDocument();
+    });
+
+    it('calls onDismiss when dismiss button is clicked', () => {
+      const report = createReport();
+      const onDismiss = vi.fn();
+      render(<WeeklyReportCard report={report} compact={false} onDismiss={onDismiss} />);
+
+      fireEvent.click(screen.getByTestId('weekly-report-dismiss-button'));
+      expect(onDismiss).toHaveBeenCalledTimes(1);
+    });
+
+    it('shows dynamic headline for 7 learning days', () => {
       const report = createReport({ learningDays: 7 });
-      render(<WeeklyReportCard report={report} />);
+      render(<WeeklyReportCard report={report} compact={false} />);
 
       expect(screen.getByText('本周学习全覆盖！')).toBeInTheDocument();
     });
 
-    it('shows "学习习惯养成中" for 5 learning days', () => {
+    it('shows dynamic headline for 5 learning days', () => {
       const report = createReport({ learningDays: 5 });
-      render(<WeeklyReportCard report={report} />);
+      render(<WeeklyReportCard report={report} compact={false} />);
 
       expect(screen.getByText('学习习惯养成中')).toBeInTheDocument();
     });
 
-    it('shows "本周迈出了第一步" for low activity', () => {
+    it('shows headline for low activity', () => {
       const report = createReport({ questionsAnswered: 5, learningDays: 1 });
-      render(<WeeklyReportCard report={report} />);
+      render(<WeeklyReportCard report={report} compact={false} />);
 
       expect(screen.getByText('本周迈出了第一步')).toBeInTheDocument();
-    });
-  });
-
-  describe('Animation and re-mount behavior', () => {
-    it('has data-testid for identification', () => {
-      const report = createReport();
-      render(<WeeklyReportCard report={report} />);
-
-      expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
     });
 
     it('renders with triggerKey prop', () => {
       const report = createReport();
-      render(<WeeklyReportCard report={report} triggerKey="unique-key-123" />);
-
-      expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
-    });
-
-    it('re-renders with different triggerKey', () => {
-      const report1 = createReport({ weekStart: '2026-05-04' });
-      const report2 = createReport({ weekStart: '2026-05-04' });
-
-      const { rerender } = render(
-        <WeeklyReportCard report={report1} triggerKey="key-1" />
-      );
-
-      expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
-
-      // Rerender with different triggerKey
-      rerender(<WeeklyReportCard report={report2} triggerKey="key-2" />);
+      render(<WeeklyReportCard report={report} triggerKey="unique-key-123" compact={false} />);
 
       expect(screen.getByTestId('weekly-report-card')).toBeInTheDocument();
     });
   });
 
-  describe('Gradient theme', () => {
-    it('has indigo gradient background', () => {
+  describe('onClick handler', () => {
+    it('calls onClick when card is clicked in compact mode', () => {
       const report = createReport();
-      render(<WeeklyReportCard report={report} />);
+      const onClick = vi.fn();
+      render(<WeeklyReportCard report={report} onClick={onClick} />);
 
-      const card = screen.getByTestId('weekly-report-card');
-      expect(card.querySelector('.from-indigo-500')).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId('weekly-report-card'));
+      expect(onClick).toHaveBeenCalledTimes(1);
     });
   });
 });

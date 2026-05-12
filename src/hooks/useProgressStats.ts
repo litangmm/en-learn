@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { storage } from '@/services/storage';
 import { LEVEL_THRESHOLDS, type XPProfile, type PracticeMode, type ModeAccuracy, type DailyTrend, type WeeklyReport } from '@/data/types';
+import { dictionaries } from '@/data/dictionaries';
 
 export interface ProgressStats {
   xp: XPProfile;
@@ -297,4 +298,136 @@ export function getWeeklyStats(weekStart: Date): WeeklyReport {
     comparison,
     generatedAt: Date.now(),
   };
+}
+
+/**
+ * Get this week's report data.
+ * Convenience wrapper around getWeeklyStats.
+ */
+export function getThisWeekReport(): WeeklyReport {
+  const thisWeekStart = getWeekStart(new Date());
+  return getWeeklyStats(thisWeekStart);
+}
+
+/**
+ * Dictionary progress data for a single dictionary.
+ */
+export interface DictionaryProgress {
+  dictionaryId: string;
+  dictionaryName: string;
+  totalSentences: number;
+  practicedSentences: number;
+  correctCount: number;
+  accuracy: number;
+  progress: number; // 0-100 percentage
+}
+
+/**
+ * Get progress data for all dictionaries.
+ * Aggregates practice data from session history and badge progress.
+ */
+export function getDictionaryProgress(): DictionaryProgress[] {
+  const history = storage.getHistory();
+
+  // Get dictionary IDs from history
+  const dictStats: Record<string, { practiced: Set<string>; correct: Set<string> }> = {};
+  history.forEach(entry => {
+    if (!dictStats[entry.dictionaryId]) {
+      dictStats[entry.dictionaryId] = { practiced: new Set(), correct: new Set() };
+    }
+    // Note: session history doesn't track individual sentence IDs,
+    // so we approximate by counting sessions
+    dictStats[entry.dictionaryId].practiced.add(entry.id);
+    if (entry.correctCount > 0) {
+      dictStats[entry.dictionaryId].correct.add(entry.id);
+    }
+  });
+
+  // Build progress data for each dictionary
+  return dictionaries.map(dict => {
+    const stats = dictStats[dict.id] || { practiced: new Set(), correct: new Set() };
+    const practicedCount = stats.practiced.size;
+    const correctCount = stats.correct.size;
+    const totalSentences = dict.sentenceCount;
+
+    // Calculate progress as percentage of dictionary explored
+    const progress = totalSentences > 0
+      ? Math.min(100, Math.round((practicedCount / totalSentences) * 100))
+      : 0;
+
+    // Calculate accuracy based on correct/total ratio
+    const accuracy = practicedCount > 0
+      ? Math.round((correctCount / practicedCount) * 100)
+      : 0;
+
+    return {
+      dictionaryId: dict.id,
+      dictionaryName: dict.name,
+      totalSentences,
+      practicedSentences: practicedCount,
+      correctCount,
+      accuracy,
+      progress,
+    };
+  });
+}
+
+/**
+ * Review streak calendar data for a single day.
+ */
+export interface CalendarDay {
+  date: string;
+  dayOfMonth: number;
+  dayOfWeek: number; // 0=Sunday, 6=Saturday
+  hasActivity: boolean;
+  xpEarned: number;
+  questionsAnswered: number;
+}
+
+/**
+ * Get review streak calendar data for the past N weeks.
+ * Returns array of calendar days with activity data.
+ */
+export function getReviewStreak(weeks: number = 12): CalendarDay[] {
+  const history = storage.getHistory();
+  const result: CalendarDay[] = [];
+
+  const today = new Date();
+  // Start from the beginning of the current week (Sunday)
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - (weeks * 7) - startDate.getDay());
+
+  // Build activity map from history
+  const activityMap: Record<string, { xp: number; questions: number }> = {};
+  history.forEach(entry => {
+    const dateStr = new Date(entry.timestamp).toISOString().split('T')[0];
+    if (!activityMap[dateStr]) {
+      activityMap[dateStr] = { xp: 0, questions: 0 };
+    }
+    activityMap[dateStr].xp += entry.score;
+    activityMap[dateStr].questions += entry.totalQuestions;
+  });
+
+  // Generate calendar days
+  const endDate = new Date(today);
+  endDate.setDate(endDate.getDate() + (6 - today.getDay())); // End at this Saturday
+
+  const current = new Date(startDate);
+  while (current <= endDate) {
+    const dateStr = current.toISOString().split('T')[0];
+    const activity = activityMap[dateStr] || { xp: 0, questions: 0 };
+
+    result.push({
+      date: dateStr,
+      dayOfMonth: current.getDate(),
+      dayOfWeek: current.getDay(),
+      hasActivity: activity.questions > 0,
+      xpEarned: activity.xp,
+      questionsAnswered: activity.questions,
+    });
+
+    current.setDate(current.getDate() + 1);
+  }
+
+  return result;
 }

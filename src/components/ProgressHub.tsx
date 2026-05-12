@@ -2,7 +2,10 @@ import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart } from 'lu
 import { MilestoneCard } from './MilestoneCard';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
-import { useProgressStats } from '@/hooks/useProgressStats';
+import { WeeklyReportCard } from './WeeklyReportCard';
+import { DictionaryProgressOverview } from './DictionaryProgressOverview';
+import { ReviewStreakCalendar } from './ReviewStreakCalendar';
+import { useProgressStats, getThisWeekReport, getDictionaryProgress, getReviewStreak } from '@/hooks/useProgressStats';
 import type { View } from './routing';
 
 export interface ProgressHubProps {
@@ -11,6 +14,11 @@ export interface ProgressHubProps {
 
 export function ProgressHub({ onNavigate }: ProgressHubProps) {
   const stats = useProgressStats();
+
+  // Get data for new visualization cards
+  const weeklyReport = getThisWeekReport();
+  const dictionaryProgress = getDictionaryProgress();
+  const reviewStreak = getReviewStreak(12);
 
   return (
     <div className="max-w-2xl mx-auto p-4 pb-20 md:pb-4" data-testid="progress-hub">
@@ -107,6 +115,24 @@ export function ProgressHub({ onNavigate }: ProgressHubProps) {
           <div className="flex justify-center">
             <ProgressTrend height={160} />
           </div>
+        </div>
+      </div>
+
+      {/* New Visualization Cards */}
+      <div className="space-y-4 mb-4">
+        {/* Weekly Report Card */}
+        <WeeklyReportCard report={weeklyReport} />
+
+        {/* Two-column layout for Dictionary Progress and Review Streak */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Dictionary Progress Overview */}
+          <DictionaryProgressOverview
+            progress={dictionaryProgress}
+            onDictionaryClick={() => onNavigate('dictionary-browser')}
+          />
+
+          {/* Review Streak Calendar */}
+          <ReviewStreakCalendar calendar={reviewStreak} weeks={8} />
         </div>
       </div>
 

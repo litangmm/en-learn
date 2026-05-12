@@ -1,56 +1,74 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  TrendingUp,
-  TrendingDown,
-  Minus,
-  Star,
-  Target,
-  Flame,
-  Calendar,
-  Award,
-  Share2,
-} from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, BarChart3, Share2, Calendar, Star, Target, Flame, Award } from 'lucide-react';
 import { ShareDialog } from './ShareDialog';
 import type { WeeklyReport } from '@/data/types';
 
-// Gradient theme for weekly report
+/**
+ * Props for the WeeklyReportCard component.
+ */
+export interface WeeklyReportCardProps {
+  /** Weekly report data with current and previous week stats */
+  report: WeeklyReport;
+  /** Optional trigger key to force re-mount for animation replay */
+  triggerKey?: string;
+  /** Optional click handler (for dashboard mode) */
+  onClick?: () => void;
+  /** Optional callback for dismiss button (modal mode) */
+  onDismiss?: () => void;
+  /** Whether to use compact dashboard mode (default) or full modal mode */
+  compact?: boolean;
+}
+
+// Gradient theme for modal mode
 const REPORT_THEME = {
   gradient: 'from-indigo-500 to-purple-600',
-  accentColor: 'indigo',
 };
 
-// Icon components
-function TrendIcon({ change }: { change: number }) {
+/**
+ * Change indicator showing up/down/neutral trend.
+ */
+function ChangeIndicator({ change, showText = true }: { change: number; showText?: boolean }) {
   if (change > 0) {
-    return <TrendingUp className="text-emerald-500" size={16} />;
-  } else if (change < 0) {
-    return <TrendingDown className="text-red-500" size={16} />;
+    return (
+      <span className="inline-flex items-center text-green-600 text-xs font-medium ml-1">
+        <TrendingUp className="w-3 h-3 mr-0.5" />
+        {showText ? `+${change}%` : `+${change}`}
+      </span>
+    );
   }
-  return <Minus className="text-slate-400" size={16} />;
+  if (change < 0) {
+    return (
+      <span className="inline-flex items-center text-red-500 text-xs font-medium ml-1">
+        <TrendingDown className="w-3 h-3 mr-0.5" />
+        {showText ? `${change}%` : `${change}`}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center text-slate-400 text-xs font-medium ml-1">
+      <Minus className="w-3 h-3 mr-0.5" />
+      {showText ? '持平' : '0'}
+    </span>
+  );
 }
 
-function formatChange(change: number): string {
-  if (change > 0) return `+${change}%`;
-  if (change < 0) return `${change}%`;
-  return '持平';
-}
-
-function getChangeColor(change: number): string {
-  if (change > 0) return 'text-emerald-600';
-  if (change < 0) return 'text-red-600';
-  return 'text-slate-500';
-}
-
-interface StatCardProps {
+/**
+ * Stat card for modal mode.
+ */
+function StatCard({
+  label,
+  value,
+  icon,
+  trend,
+  color,
+}: {
   label: string;
   value: string | number;
   icon: React.ReactNode;
   trend?: number;
   color: string;
-}
-
-function StatCard({ label, value, icon, trend, color }: StatCardProps) {
+}) {
   return (
     <div className="flex items-center gap-3 p-3 bg-white/80 rounded-xl">
       <div className={`flex items-center justify-center w-10 h-10 rounded-lg bg-${color}-100`}>
@@ -61,37 +79,147 @@ function StatCard({ label, value, icon, trend, color }: StatCardProps) {
         <p className="text-xs text-slate-500">{label}</p>
       </div>
       {trend !== undefined && (
-        <div className={`flex items-center gap-1 ${getChangeColor(trend)}`}>
-          <TrendIcon change={trend} />
-          <span className="text-sm font-medium">{formatChange(trend)}</span>
-        </div>
+        <ChangeIndicator change={trend} />
       )}
     </div>
   );
 }
 
-interface WeeklyReportCardProps {
-  /** The weekly report data to display */
+/**
+ * Compact Dashboard Card component.
+ */
+function CompactCard({
+  report,
+  onClick,
+}: {
   report: WeeklyReport;
-  /** Optional trigger key to force re-mount for animation replay */
-  triggerKey?: string;
-  /** Callback when user dismisses the card */
-  onDismiss?: () => void;
+  onClick?: () => void;
+}) {
+  const comparison = report.comparison || { xpChange: 0, questionsChange: 0, accuracyChange: 0 };
+
+  // Format week range
+  const formatWeekRange = () => {
+    const start = new Date(report.weekStart);
+    const end = new Date(report.weekEnd);
+    const startMonth = start.getMonth() + 1;
+    const startDay = start.getDate();
+    const endMonth = end.getMonth() + 1;
+    const endDay = end.getDate();
+    return `${startMonth}/${startDay} - ${endMonth}/${endDay}`;
+  };
+
+  // Calculate bar heights for comparison
+  const maxXP = Math.max(report.xpEarned, 100);
+  const prevXP = comparison.xpChange > 0
+    ? Math.round(report.xpEarned / (1 + comparison.xpChange / 100))
+    : report.xpEarned;
+  const currentBarHeight = Math.max(4, (report.xpEarned / maxXP) * 40);
+  const prevBarHeight = Math.max(4, (prevXP / maxXP) * 40);
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={!onClick}
+      className={`
+        w-full bg-white rounded-xl border border-slate-200 p-4 text-left
+        transition-all duration-200
+        ${onClick ? 'hover:shadow-md hover:border-blue-200 cursor-pointer' : 'cursor-default'}
+      `}
+      data-testid="weekly-report-card"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+            <BarChart3 className="w-4 h-4 text-blue-500" />
+          </div>
+          <h3 className="text-sm font-medium text-slate-700">本周学习报告</h3>
+        </div>
+        <span className="text-xs text-slate-400">{formatWeekRange()}</span>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="flex flex-col">
+          <span className="text-xs text-slate-500 mb-1">获得经验</span>
+          <div className="flex items-baseline">
+            <span className="text-xl font-bold text-slate-800">{report.xpEarned}</span>
+            <span className="text-xs text-slate-400 ml-1">XP</span>
+            <ChangeIndicator change={comparison.xpChange} />
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <span className="text-xs text-slate-500 mb-1">完成题目</span>
+          <div className="flex items-baseline">
+            <span className="text-xl font-bold text-slate-800">{report.questionsAnswered}</span>
+            <span className="text-xs text-slate-400 ml-1">题</span>
+            <ChangeIndicator change={comparison.questionsChange} />
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <span className="text-xs text-slate-500 mb-1">正确率</span>
+          <div className="flex items-baseline">
+            <span className="text-xl font-bold text-slate-800">{report.accuracy}</span>
+            <span className="text-xs text-slate-400 ml-1">%</span>
+            <ChangeIndicator change={comparison.accuracyChange} />
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <span className="text-xs text-slate-500 mb-1">学习天数</span>
+          <div className="flex items-baseline">
+            <span className="text-xl font-bold text-slate-800">{report.learningDays}</span>
+            <span className="text-xs text-slate-400 ml-1">天</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Mini Bar Chart Comparison */}
+      <div className="flex items-end justify-center gap-6 h-12 mb-3">
+        <div className="flex flex-col items-center">
+          <span className="text-xs text-slate-400 mb-1">上周</span>
+          <div className="w-8 bg-slate-100 rounded-t-sm flex items-end" style={{ height: `${prevBarHeight}px` }}>
+            <div className="w-full bg-slate-300 rounded-t-sm" style={{ height: '100%' }} />
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="text-xs text-slate-600 font-medium mb-1">本周</span>
+          <div className="w-8 flex items-end" style={{ height: `${currentBarHeight}px` }}>
+            <div className="w-full bg-blue-500 rounded-t-sm" />
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+        <span className="text-xs text-slate-400">
+          完成 {report.sessionsCompleted} 次练习
+        </span>
+        <span className="text-xs text-slate-400">
+          答对 {report.correctAnswers} 题
+        </span>
+      </div>
+    </button>
+  );
 }
 
 /**
- * Weekly Report Card component.
- * Displays learning progress for the past week with comparisons to the previous week.
- * Uses a template design similar to AchievementMomentCard with gradient theme.
+ * Full Modal Card component (original design).
  */
-export function WeeklyReportCard({
+function ModalCard({
   report,
   triggerKey,
   onDismiss,
-}: WeeklyReportCardProps) {
+}: {
+  report: WeeklyReport;
+  triggerKey?: string;
+  onDismiss?: () => void;
+}) {
   const [showDialog, setShowDialog] = useState(false);
 
-  // Format week range for display
+  // Format week range
   const formatWeekRange = () => {
     const start = new Date(report.weekStart);
     const end = new Date(report.weekEnd);
@@ -104,33 +232,22 @@ export function WeeklyReportCard({
 
   // Get headline based on activity
   const getHeadline = () => {
-    if (report.learningDays >= 7) {
-      return '本周学习全覆盖！';
-    } else if (report.learningDays >= 5) {
-      return '学习习惯养成中';
-    } else if (report.learningDays >= 3) {
-      return '本周学习辛苦了';
-    } else if (report.questionsAnswered >= 20) {
-      return '本周收获满满';
-    } else if (report.questionsAnswered > 0) {
-      return '本周迈出了第一步';
-    }
+    if (report.learningDays >= 7) return '本周学习全覆盖！';
+    if (report.learningDays >= 5) return '学习习惯养成中';
+    if (report.learningDays >= 3) return '本周学习辛苦了';
+    if (report.questionsAnswered >= 20) return '本周收获满满';
+    if (report.questionsAnswered > 0) return '本周迈出了第一步';
     return '本周学习小结';
   };
 
-  // Get subtitle based on comparison
+  // Get subtitle
   const getSubtitle = () => {
     if (report.comparison) {
       const { xpChange, questionsChange } = report.comparison;
-      if (xpChange > 0 && questionsChange > 0) {
-        return '比上周表现更好，继续保持！';
-      } else if (xpChange > 0) {
-        return '本周学习效率提升了';
-      } else if (questionsChange > 0) {
-        return '本周答题量增加了';
-      } else if (xpChange < 0 && questionsChange < 0) {
-        return '比上周略有下滑，下周加油';
-      }
+      if (xpChange > 0 && questionsChange > 0) return '比上周表现更好，继续保持！';
+      if (xpChange > 0) return '本周学习效率提升了';
+      if (questionsChange > 0) return '本周答题量增加了';
+      if (xpChange < 0 && questionsChange < 0) return '比上周略有下滑，下周加油';
     }
     return '坚持学习，积少成多';
   };
@@ -147,38 +264,29 @@ export function WeeklyReportCard({
           className="w-full max-w-md mx-auto"
           data-testid="weekly-report-card"
         >
-          <div
-            className={`relative bg-gradient-to-br ${REPORT_THEME.gradient} rounded-2xl shadow-xl overflow-hidden`}
-          >
-            {/* Header with gradient background */}
+          <div className={`relative bg-gradient-to-br ${REPORT_THEME.gradient} rounded-2xl shadow-xl overflow-hidden`}>
+            {/* Header */}
             <div className="px-5 py-6 text-white">
               <div className="flex items-center justify-between mb-4">
-                {/* Icon */}
                 <div className="flex items-center justify-center w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl">
                   <Calendar size={32} className="text-white" />
                 </div>
-                {/* Week range badge */}
                 <div className="px-3 py-1 bg-white/20 rounded-full text-sm">
                   {formatWeekRange()}
                 </div>
               </div>
 
-              {/* Headline */}
               <h2 className="text-xl font-bold mb-2 drop-shadow-sm">
                 {getHeadline()}
               </h2>
-
-              {/* Subtitle */}
               <p className="text-white/90 text-sm leading-relaxed">
                 {getSubtitle()}
               </p>
             </div>
 
-            {/* Content area with stats */}
+            {/* Content */}
             <div className="bg-white px-5 py-5 space-y-3">
-              {/* Main stats grid */}
               <div className="grid grid-cols-2 gap-3">
-                {/* XP Earned */}
                 <StatCard
                   label="获得 XP"
                   value={report.xpEarned}
@@ -186,8 +294,6 @@ export function WeeklyReportCard({
                   trend={report.comparison?.xpChange}
                   color="amber"
                 />
-
-                {/* Questions Answered */}
                 <StatCard
                   label="答题数"
                   value={report.questionsAnswered}
@@ -197,9 +303,7 @@ export function WeeklyReportCard({
                 />
               </div>
 
-              {/* Secondary stats */}
               <div className="grid grid-cols-2 gap-3">
-                {/* Accuracy */}
                 <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100">
                     <Target size={20} className="text-slate-500" />
@@ -209,8 +313,6 @@ export function WeeklyReportCard({
                     <p className="text-xs text-slate-500">正确率</p>
                   </div>
                 </div>
-
-                {/* Best Streak / Correct */}
                 <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
                   <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100">
                     <Flame size={20} className="text-orange-500" />
@@ -222,23 +324,17 @@ export function WeeklyReportCard({
                 </div>
               </div>
 
-              {/* Learning days and sessions */}
               <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
                 <div className="flex items-center gap-2">
                   <Calendar size={16} className="text-slate-500" />
-                  <span className="text-sm text-slate-600">
-                    学习 {report.learningDays} 天
-                  </span>
+                  <span className="text-sm text-slate-600">学习 {report.learningDays} 天</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Award size={16} className="text-slate-500" />
-                  <span className="text-sm text-slate-600">
-                    完成 {report.sessionsCompleted} 次练习
-                  </span>
+                  <span className="text-sm text-slate-600">完成 {report.sessionsCompleted} 次练习</span>
                 </div>
               </div>
 
-              {/* Action buttons */}
               <div className="flex gap-2 mt-4">
                 <button
                   type="button"
@@ -265,7 +361,6 @@ export function WeeklyReportCard({
         </motion.div>
       </AnimatePresence>
 
-      {/* Share dialog */}
       <ShareDialog
         open={showDialog}
         onOpenChange={setShowDialog}
@@ -274,6 +369,23 @@ export function WeeklyReportCard({
       />
     </>
   );
+}
+
+/**
+ * Weekly Report Card component.
+ * Supports both compact dashboard mode and full modal mode.
+ */
+export function WeeklyReportCard({
+  report,
+  triggerKey,
+  onClick,
+  onDismiss,
+  compact = true,
+}: WeeklyReportCardProps) {
+  if (compact) {
+    return <CompactCard report={report} onClick={onClick} />;
+  }
+  return <ModalCard report={report} triggerKey={triggerKey} onDismiss={onDismiss} />;
 }
 
 export default WeeklyReportCard;

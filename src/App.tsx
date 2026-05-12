@@ -1201,6 +1201,7 @@ function App() {
           report={weeklyReport}
           triggerKey={String(weeklyReportTrigger.key)}
           onDismiss={handleDismissWeeklyReport}
+          compact={false}
         />
       )}
 

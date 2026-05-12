@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ProgressHub } from '../ProgressHub';
+import type { DictionaryProgress } from '@/hooks/useProgressStats';
 
 // Mock useProgressStats hook
 const mockUseProgressStats = vi.hoisted(() => vi.fn(() => ({
@@ -25,9 +26,57 @@ vi.mock('../ProgressTrend', () => ({
   ProgressTrend: vi.fn(() => <div data-testid="progress-trend">Trend Chart</div>),
 }));
 
-vi.mock('@/hooks/useProgressStats', () => ({
-  useProgressStats: mockUseProgressStats,
+// Mock WeeklyReportCard component
+vi.mock('../WeeklyReportCard', () => ({
+  WeeklyReportCard: vi.fn(({ report }) => (
+    <div data-testid="weekly-report-card">Weekly Report: {report.xpEarned} XP</div>
+  )),
 }));
+
+// Mock DictionaryProgressOverview component
+vi.mock('../DictionaryProgressOverview', () => ({
+  DictionaryProgressOverview: vi.fn(({ progress }) => (
+    <div data-testid="dictionary-progress-overview">
+      {progress.map((p: DictionaryProgress) => <span key={p.dictionaryId}>{p.dictionaryName}</span>)}
+    </div>
+  )),
+}));
+
+// Mock ReviewStreakCalendar component
+vi.mock('../ReviewStreakCalendar', () => ({
+  ReviewStreakCalendar: vi.fn(({ calendar }) => (
+    <div data-testid="review-streak-calendar">Calendar with {calendar.length} days</div>
+  )),
+}));
+
+vi.mock('@/hooks/useProgressStats', async () => {
+  const actual = await vi.importActual('@/hooks/useProgressStats');
+  return {
+    ...actual,
+    useProgressStats: mockUseProgressStats,
+    getThisWeekReport: vi.fn(() => ({
+      weekStart: '2026-05-04',
+      weekEnd: '2026-05-10',
+      xpEarned: 500,
+      questionsAnswered: 50,
+      correctAnswers: 40,
+      bestStreak: 40,
+      learningDays: 5,
+      sessionsCompleted: 3,
+      accuracy: 80,
+      comparison: { xpChange: 25, questionsChange: 15, accuracyChange: 5 },
+      generatedAt: Date.now(),
+    })),
+    getDictionaryProgress: vi.fn(() => [
+      { dictionaryId: 'junior', dictionaryName: '初中词汇', totalSentences: 1600, practicedSentences: 100, correctCount: 80, accuracy: 80, progress: 6 },
+      { dictionaryId: 'senior', dictionaryName: '高中词汇', totalSentences: 2000, practicedSentences: 50, correctCount: 40, accuracy: 80, progress: 3 },
+    ]),
+    getReviewStreak: vi.fn(() => [
+      { date: '2026-05-01', dayOfMonth: 1, dayOfWeek: 5, hasActivity: true, xpEarned: 50, questionsAnswered: 10 },
+      { date: '2026-05-02', dayOfMonth: 2, dayOfWeek: 6, hasActivity: false, xpEarned: 0, questionsAnswered: 0 },
+    ]),
+  };
+});
 
 describe('ProgressHub', () => {
   beforeEach(() => {

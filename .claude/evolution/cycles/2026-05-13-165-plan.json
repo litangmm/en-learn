@@ -1,0 +1,47 @@
+{
+  "selectedEpic": {
+    "id": "epic-050",
+    "title": "质量基础设施升级与 E2E 稳定性修复"
+  },
+  "currentEpic": {
+    "id": "epic-050",
+    "title": "质量基础设施升级与 E2E 稳定性修复",
+    "description": "1833 单元测试维持历史最高水位，但 E2E 测试仍有 1 skipped + 1 flaky（pre-existing 空数据测试）。QA 长期关注的测试基础设施需要系统性升级：E2E 稳定化、并行执行、视觉回归测试、性能回归测试，确保从单元测试到端到端测试的全链路质量保障。",
+    "iterations": [
+      {"id": "iter-001", "title": "E2E 测试稳定化修复", "scope": "frontend-only", "status": "in_progress"},
+      {"id": "iter-002", "title": "Playwright 并行执行配置", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-003", "title": "视觉回归测试引入", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-004", "title": "测试覆盖率目标 gate", "scope": "frontend-only", "status": "pending"},
+      {"id": "iter-005", "title": "性能回归自动检测", "scope": "frontend-only", "status": "pending"}
+    ],
+    "currentIterationIndex": 0
+  },
+  "plan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "E2E 测试稳定化修复",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: Add data-testid attributes to MoreMenu component for stable E2E locators",
+      "Step 2: Add data-testid attributes to NavigationContext/MobileNav for stable navigation locators",
+      "Step 3: Stabilize complete-flow.spec.ts MoreMenu navigation tests with data-testid selectors",
+      "Step 4: Stabilize data-management.spec.ts navigation tests with data-testid selectors",
+      "Step 5: Fix practice.spec.ts navigation with proper baseURL handling and waiting",
+      "Step 6: Add page.waitForLoadState('networkidle') and content verification to all navigation steps",
+      "Step 7: Update unit test mocks for App.tsx to include new data-testid attributes",
+      "Step 8: Run E2E tests and verify all 3 spec files pass consistently",
+      "Step 9: Run full test suite to verify 1833 unit tests remain unaffected",
+      "Step 10: Run build and lint to verify no regressions"
+    ],
+    "filesToModify": [
+      "src/components/layout/MoreMenu.tsx",
+      "src/components/layout/NavigationContext.tsx",
+      "src/components/MobileNav.tsx",
+      "e2e/complete-flow.spec.ts",
+      "e2e/data-management.spec.ts",
+      "e2e/practice.spec.ts"
+    ],
+    "filesToCreate": [],
+    "dependencies": [],
+    "testStrategy": "E2E: 验证 complete-flow.spec.ts (10 tests)、data-management.spec.ts (8 tests)、practice.spec.ts (3 tests) 全部通过。Unit: 验证 1833 单元测试零回归。Build: 验证 TypeScript 编译和 Vite 构建通过。"
+  }
+}

@@ -93,6 +93,22 @@ vi.mock('@/hooks/useXP', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useFlowState', () => ({
+  useFlowState: vi.fn(() => ({
+    flowState: 'normal',
+    fatigueSignals: [
+      { type: 'accuracy', trend: 'stable', description: '正确率保持稳定', severity: 0.2 },
+      { type: 'consecutive_errors', trend: 'stable', description: '答题状态良好，无连续错误', severity: 0 },
+      { type: 'speed', trend: 'stable', description: '答题节奏稳定', severity: 0.1 },
+    ],
+    recordCorrect: vi.fn(),
+    recordWrong: vi.fn(),
+    reset: vi.fn(),
+    consecutiveErrors: 0,
+    recentAccuracy: 0,
+  })),
+}));
+
 vi.mock('@/hooks/useDailyChallenges', () => ({
   useDailyChallenges: vi.fn(() => ({
     state: {

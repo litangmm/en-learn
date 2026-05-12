@@ -4,6 +4,7 @@ import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles, Zap, Users } f
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
+import { useFlowState } from '@/hooks/useFlowState';
 import { PracticeCard } from '@/components/PracticeCard';
 import { ProgressBar } from '@/components/ProgressBar';
 import { ResultModal } from '@/components/ResultModal';
@@ -25,6 +26,8 @@ import { useReviewStreak } from '@/hooks/useReviewStreak';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
+import { FlowStateBanner } from '@/components/FlowStateBanner';
+import { SessionTimer } from '@/components/SessionTimer';
 import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusModeOverlay';
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
@@ -159,6 +162,13 @@ function App() {
   const previousLevelRef = useRef(profile.currentLevel);
   // Track total correct answers for XP milestone detection
   const totalCorrectRef = useRef(0);
+  // Track session start time for flow state and Pomodoro timer
+  const sessionStartTimeRef = useRef<number>(Date.now());
+
+  // Flow state tracking
+  const { flowState, fatigueSignals, recordCorrect, recordWrong, reset: resetFlowState } = useFlowState();
+  const flowStateRef = useRef(flowState);
+  useEffect(() => { flowStateRef.current = flowState; }, [flowState]);
 
   // Initialize inputs when sentence changes (guard: skip if showResult=true to prevent state race)
   useEffect(() => {
@@ -167,13 +177,19 @@ function App() {
     }
   }, [currentSentence?.id, currentSentence, state.isComplete, state.showResult, initializeInputs]);
 
-  // Auto-play audio on new sentence
+  // Auto-play audio on new sentence (adaptive delay based on flow state)
   useEffect(() => {
     if (currentSentence && !state.showResult && !state.isComplete) {
-      const delay = practiceMode === 'dictation' ? 300 : practiceMode === 'multiple-choice' ? 500 : practiceMode === 'sentence-reorder' ? 500 : 800;
+      let baseDelay = practiceMode === 'dictation' ? 300 : practiceMode === 'multiple-choice' ? 500 : practiceMode === 'sentence-reorder' ? 500 : 800;
+      // Adaptive delay based on flow state
+      if (flowStateRef.current === 'fatigued') {
+        baseDelay += 400; // More time to see the sentence when fatigued
+      } else if (flowStateRef.current === 'focused') {
+        baseDelay = Math.max(200, baseDelay - 100); // Faster pace when focused
+      }
       const timer = setTimeout(() => {
         speak(currentSentence.english);
-      }, delay);
+      }, baseDelay);
       return () => clearTimeout(timer);
     }
   }, [currentSentence?.id, currentSentence, state.showResult, state.isComplete, practiceMode, speak]);
@@ -270,6 +286,9 @@ function App() {
       if (!awardedXPRef.current.has(sentenceId)) {
         awardedXPRef.current.add(sentenceId);
         recordCorrectAnswer();
+        // Record for flow state tracking
+        const answerTimeMs = Date.now() - sessionStartTimeRef.current;
+        recordCorrect(answerTimeMs);
         const baseXP = practiceMode === 'multiple-choice' ? 8 : practiceMode === 'sentence-reorder' ? 12 : 10;
         const firstTry = state.attempts === 1;
         const { finalXP, multiplier, leveledUp, newLevel } = addXP(baseXP, firstTry);
@@ -336,6 +355,8 @@ function App() {
   useEffect(() => {
     if (state.showResult && !state.isCorrect) {
       recordWrongAnswer();
+      // Record for flow state tracking
+      recordWrong();
       trackActivity('answer');
       trackActivity('streak', 0);
       badgesRef.current.trackProgress('wrong');
@@ -458,6 +479,8 @@ function App() {
     setIsReviewMode(false);
     awardedXPRef.current.clear();
     resetStreak();
+    resetFlowState();
+    sessionStartTimeRef.current = Date.now();
   };
 
   // Check for active session on mount
@@ -703,6 +726,7 @@ function App() {
               <div className="flex items-center gap-3 flex-shrink-0">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} />
                 <StreakFeedback streak={streak} />
+                <SessionTimer sessionStartMs={sessionStartTimeRef.current} />
                 <Button
                   variant="ghost"
                   size="sm"
@@ -1090,6 +1114,7 @@ function App() {
                   </Button>
                 </div>
               )}
+              <FlowStateBanner flowState={flowState} fatigueSignals={fatigueSignals} />
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
               <AnimatePresence mode="sync">
                 {currentSentence && (

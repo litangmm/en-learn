@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-131",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-030 iter-002 TEST 通过。1409 测试零回归（1 skipped），build 3.48s，commit bbf722c 已推送。"
+    },
+    {
       "id": "2026-05-12-130",
       "mode": "deploy",
       "stage": "DEPLOY",
@@ -87,13 +94,18 @@
       "summary": "Brainstorm 完成。9 个 Epic 提案，收敛为 5 个候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。三个 high priority Epic 形成'心流-动机-个性化'三维体系。"
     }
   ],
-  "status": "COMPLETE",
-  "commit": "d6dce83",
-  "cycleCount": 129,
-  "nextMode": "none",
+  "status": "DEPLOY",
+  "commit": "bbf722c",
+  "cycleCount": 130,
+  "nextMode": "deploy",
   "failedAttempts": 0,
   "currentCycle": {
-    "id": "2026-05-12-128",
+    "id": "2026-05-12-131",
+    "mode": "test",
+    "stage": "DEPLOY",
+    "startedAt": "2026-05-12T13:30:00.000Z",
+    "completedAt": "2026-05-12T13:35:00.000Z"
+  },
     "mode": "test",
     "stage": "COMMIT",
     "startedAt": "2026-05-12T13:07:00.000Z",
@@ -210,7 +222,10 @@
         "id": "iter-002",
         "title": "专注度自适应调整",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
+        "completedAt": "2026-05-12T13:30:00.000Z",
+        "version": "v0.55.0",
+        "commit": "bbf722c",
         "description": "基于疲劳检测信号，动态调整练习节奏：疲劳时降低题目难度或延长提示展示时间；状态好时适度加速；配合番茄工作法理念注入休息提醒。"
       },
       {
@@ -228,7 +243,7 @@
         "description": "检测到疲劳后提供正向引导：休息提醒 + 趣味性内容过渡 + 短休息游戏化（深呼吸计时/伸展动画），而非强制中断，保护学习积极性。"
       }
     ],
-    "currentIterationIndex": 1
+    "currentIterationIndex": 2
   },
   "plan": {
     "iterationId": "iter-001",

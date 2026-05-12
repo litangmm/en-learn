@@ -666,4 +666,375 @@ describe('useDictionaryIndex', () => {
     expect(stats!.totalCount).toBeGreaterThan(0);
     expect(stats!.byLevel.easy).toBe(1);
   });
+
+  // -------------------------------------------------------------------------
+  // switchDictionary Tests
+  // -------------------------------------------------------------------------
+
+  it('switchDictionary switches to previously loaded dictionary without reloading', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    // Load CET4
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    // Load CET6
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+
+    expect(result.current.currentId).toBe('cet6');
+
+    // Switch back to CET4 using switchDictionary
+    act(() => {
+      result.current.switchDictionary('cet4');
+    });
+
+    expect(result.current.currentId).toBe('cet4');
+    expect(result.current.getById('c1')).toBe('CET4 sentence');
+    // Should NOT have called loadDictionary again
+    expect(vi.mocked(loadDictionary)).toHaveBeenCalledTimes(2);
+  });
+
+  it('switchDictionary does nothing if dictionary is not loaded', async () => {
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    // Try to switch to unloaded dictionary
+    act(() => {
+      result.current.switchDictionary('cet6');
+    });
+
+    // Should remain on cet4
+    expect(result.current.currentId).toBe('cet4');
+    expect(vi.mocked(loadDictionary)).toHaveBeenCalledTimes(1);
+  });
+
+  it('switchDictionary preserves isIndexed state', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+    expect(result.current.isIndexed).toBe(true);
+
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+    expect(result.current.isIndexed).toBe(true);
+
+    // Switch back - should remain indexed
+    act(() => {
+      result.current.switchDictionary('cet4');
+    });
+
+    expect(result.current.isIndexed).toBe(true);
+  });
+
+  // -------------------------------------------------------------------------
+  // getLoadedDictionaries Tests
+  // -------------------------------------------------------------------------
+
+  it('getLoadedDictionaries returns empty array initially', () => {
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    expect(result.current.getLoadedDictionaries()).toEqual([]);
+  });
+
+  it('getLoadedDictionaries returns loaded dictionary IDs', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toContain('cet4');
+    expect(result.current.getLoadedDictionaries()).toHaveLength(1);
+
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toContain('cet4');
+    expect(result.current.getLoadedDictionaries()).toContain('cet6');
+    expect(result.current.getLoadedDictionaries()).toHaveLength(2);
+  });
+
+  it('getLoadedDictionaries does not include unloaded dictionaries', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toHaveLength(2);
+
+    // Unload CET4
+    act(() => {
+      result.current.unloadDictionary('cet4');
+    });
+
+    expect(result.current.getLoadedDictionaries()).not.toContain('cet4');
+    expect(result.current.getLoadedDictionaries()).toContain('cet6');
+    expect(result.current.getLoadedDictionaries()).toHaveLength(1);
+  });
+
+  it('getLoadedDictionaries returns empty after clearAll', async () => {
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toHaveLength(1);
+
+    act(() => {
+      result.current.clearAll();
+    });
+
+    expect(result.current.getLoadedDictionaries()).toEqual([]);
+  });
+
+  // -------------------------------------------------------------------------
+  // unloadDictionary Tests
+  // -------------------------------------------------------------------------
+
+  it('unloadDictionary removes dictionary from memory', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+
+    vi.mocked(loadDictionary).mockResolvedValue(cet4Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toContain('cet4');
+
+    act(() => {
+      result.current.unloadDictionary('cet4');
+    });
+
+    expect(result.current.getLoadedDictionaries()).not.toContain('cet4');
+  });
+
+  it('unloadDictionary switches currentId if unloading current dictionary', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+
+    expect(result.current.currentId).toBe('cet6');
+
+    // Unload the current dictionary (cet6)
+    act(() => {
+      result.current.unloadDictionary('cet6');
+    });
+
+    // Should switch to the first remaining dictionary (cet4)
+    expect(result.current.currentId).toBe('cet4');
+    expect(result.current.isIndexed).toBe(true);
+  });
+
+  it('unloadDictionary sets currentId to null when unloading only dictionary', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+
+    vi.mocked(loadDictionary).mockResolvedValue(cet4Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    expect(result.current.currentId).toBe('cet4');
+
+    act(() => {
+      result.current.unloadDictionary('cet4');
+    });
+
+    expect(result.current.currentId).toBeNull();
+    expect(result.current.isIndexed).toBe(false);
+  });
+
+  it('unloadDictionary does nothing for non-loaded dictionary', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+
+    vi.mocked(loadDictionary).mockResolvedValue(cet4Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    // Try to unload non-loaded dictionary
+    act(() => {
+      result.current.unloadDictionary('cet6');
+    });
+
+    // Should not affect current state
+    expect(result.current.currentId).toBe('cet4');
+    expect(result.current.getLoadedDictionaries()).toHaveLength(1);
+  });
+
+  it('can reload unloaded dictionary', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    act(() => {
+      result.current.unloadDictionary('cet4');
+    });
+
+    expect(result.current.currentId).toBeNull();
+
+    // Reload the dictionary
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+
+    expect(result.current.currentId).toBe('cet4');
+    expect(result.current.isIndexed).toBe(true);
+    expect(result.current.getById('c1')).toBe('CET4 sentence');
+  });
+
+  // -------------------------------------------------------------------------
+  // Integration Tests for New Methods
+  // -------------------------------------------------------------------------
+
+  it('switchDictionary and unloadDictionary work together', async () => {
+    const cet4Sentences = [
+      { id: 'c1', english: 'CET4 sentence', chinese: 'cet4句子', blanks: [], level: 'easy' },
+    ];
+    const cet6Sentences = [
+      { id: 'c2', english: 'CET6 sentence', chinese: 'cet6句子', blanks: [], level: 'medium' },
+    ];
+    const ieltsSentences = [
+      { id: 'i1', english: 'IELTS sentence', chinese: 'ielts句子', blanks: [], level: 'hard' },
+    ];
+
+    vi.mocked(loadDictionary)
+      .mockResolvedValueOnce(cet4Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(cet6Sentences as unknown as typeof mockSentences)
+      .mockResolvedValueOnce(ieltsSentences as unknown as typeof mockSentences);
+
+    const { result } = renderHook(() => useDictionaryIndex());
+
+    // Load all three dictionaries
+    await act(async () => {
+      await result.current.loadDictionary('cet4');
+    });
+    await act(async () => {
+      await result.current.loadDictionary('cet6');
+    });
+    await act(async () => {
+      await result.current.loadDictionary('ielts');
+    });
+
+    expect(result.current.getLoadedDictionaries()).toHaveLength(3);
+    expect(result.current.currentId).toBe('ielts');
+
+    // Switch to CET4
+    act(() => {
+      result.current.switchDictionary('cet4');
+    });
+    expect(result.current.currentId).toBe('cet4');
+
+    // Unload CET6
+    act(() => {
+      result.current.unloadDictionary('cet6');
+    });
+    expect(result.current.getLoadedDictionaries()).toHaveLength(2);
+    expect(result.current.getLoadedDictionaries()).not.toContain('cet6');
+
+    // Switch back to IELTS
+    act(() => {
+      result.current.switchDictionary('ielts');
+    });
+    expect(result.current.currentId).toBe('ielts');
+  });
 });

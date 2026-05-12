@@ -62,6 +62,22 @@ export interface UseDictionaryIndexReturn {
    */
   loadDictionary: (id: string) => Promise<void>;
   /**
+   * Switch to a previously loaded dictionary without reloading.
+   * If the dictionary is not loaded, does nothing.
+   * @param id - The dictionary ID to switch to
+   */
+  switchDictionary: (id: string) => void;
+  /**
+   * Get list of all currently loaded dictionary IDs.
+   * @returns Array of dictionary IDs that have been loaded
+   */
+  getLoadedDictionaries: () => string[];
+  /**
+   * Unload a specific dictionary from memory, removing its index.
+   * @param id - The dictionary ID to unload
+   */
+  unloadDictionary: (id: string) => void;
+  /**
    * Clear all cached dictionaries and indices.
    */
   clearAll: () => void;
@@ -176,6 +192,59 @@ export function useDictionaryIndex(): UseDictionaryIndexReturn {
     });
   }, []);
 
+  /**
+   * Switch to a previously loaded dictionary without reloading.
+   * If the dictionary is not loaded, does nothing.
+   */
+  const switchDictionary = useCallback((id: string): void => {
+    setState((prev) => {
+      // Only switch if the dictionary is already loaded
+      if (!prev.indices.has(id)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        currentId: id,
+        isIndexed: true,
+      };
+    });
+  }, []);
+
+  /**
+   * Get list of all currently loaded dictionary IDs.
+   */
+  const getLoadedDictionaries = useCallback((): string[] => {
+    return Array.from(state.indices.keys());
+  }, [state.indices]);
+
+  /**
+   * Unload a specific dictionary from memory, removing its index.
+   */
+  const unloadDictionary = useCallback((id: string): void => {
+    setState((prev) => {
+      const newIndices = new Map(prev.indices);
+      newIndices.delete(id);
+
+      // If unloading the current dictionary, reset state
+      if (prev.currentId === id) {
+        // Set currentId to first remaining index, or null if none
+        const remainingIds = Array.from(newIndices.keys());
+        const newCurrentId = remainingIds.length > 0 ? remainingIds[0] : null;
+        return {
+          ...prev,
+          indices: newIndices,
+          currentId: newCurrentId,
+          isIndexed: newCurrentId !== null,
+        };
+      }
+
+      return {
+        ...prev,
+        indices: newIndices,
+      };
+    });
+  }, []);
+
   // Lookup methods - delegate to current index
   const getById = useCallback((id: string): string | undefined => {
     return getCurrentIndex()?.getById(id);
@@ -212,6 +281,9 @@ export function useDictionaryIndex(): UseDictionaryIndexReturn {
 
     // Dictionary management
     loadDictionary,
+    switchDictionary,
+    getLoadedDictionaries,
+    unloadDictionary,
     clearAll,
   };
 }

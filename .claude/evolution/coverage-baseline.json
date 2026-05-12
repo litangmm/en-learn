@@ -1,0 +1,136 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-05-13T12:00:00.000Z",
+  "createdBy": "epic-050 iter-004",
+  "description": "Initial test coverage baseline - established before coverage gate enforcement",
+  "vitestVersion": "4.1.5",
+  "coverageV8Version": "4.1.6",
+  "thresholds": {
+    "lines": 70,
+    "functions": 70,
+    "branches": 60,
+    "statements": 70
+  },
+  "overall": {
+    "lines": 81.89,
+    "statements": 81.94,
+    "functions": 84.88,
+    "branches": 75.13,
+    "totalStatements": 5039,
+    "coveredStatements": 4129,
+    "totalBranches": 3145,
+    "coveredBranches": 2363,
+    "totalFunctions": 1290,
+    "coveredFunctions": 1095,
+    "totalLines": 4766,
+    "coveredLines": 3903
+  },
+  "byDirectory": {
+    "src": {
+      "lines": 68.93,
+      "statements": 68.93,
+      "functions": 62.03,
+      "branches": 68.77,
+      "note": "App.tsx has uncovered lines: 1267-1268, 1317 (event handlers for edge cases)"
+    },
+    "src/components": {
+      "lines": 82.44,
+      "statements": 82.45,
+      "functions": 83.29,
+      "branches": 77.36
+    },
+    "src/components/practice/modes": {
+      "lines": 87.5,
+      "statements": 87.5,
+      "functions": 86.84,
+      "branches": 84.66
+    },
+    "src/components/routing": {
+      "lines": 60,
+      "statements": 60,
+      "functions": 28.57,
+      "branches": 52.38
+    },
+    "src/components/ui": {
+      "lines": 68.18,
+      "statements": 68.18,
+      "functions": 62.5,
+      "branches": 78.12
+    },
+    "src/data": {
+      "lines": 97.41,
+      "statements": 97.51,
+      "functions": 100,
+      "branches": 86.81
+    },
+    "src/hooks": {
+      "lines": 89.86,
+      "statements": 89.72,
+      "functions": 92.13,
+      "branches": 79.62
+    },
+    "src/services": {
+      "lines": 69.27,
+      "statements": 68.44,
+      "functions": 88.05,
+      "branches": 63.82
+    },
+    "src/utils": {
+      "lines": 95.23,
+      "statements": 95.83,
+      "functions": 100,
+      "branches": 90.9
+    }
+  },
+  "lowCoverageFiles": [
+    {
+      "file": "ErrorScreen.tsx",
+      "lines": 0,
+      "note": "Error boundary - not triggered in tests (expected)"
+    },
+    {
+      "file": "TimeSlotQualityCard.tsx",
+      "lines": 0,
+      "note": "Time-of-day analysis card - not tested yet"
+    },
+    {
+      "file": "PeakHoursBadge.tsx",
+      "lines": 0,
+      "note": "Badge component - not tested yet"
+    },
+    {
+      "file": "PersonalityCard.tsx",
+      "lines": 0,
+      "note": "Learning style card - not tested yet"
+    },
+    {
+      "file": "FatiguePanel.tsx",
+      "lines": 28.57,
+      "note": "Fatigue panel - partially tested"
+    },
+    {
+      "file": "useNavigation.ts",
+      "lines": 0,
+      "note": "Navigation hook - 0% coverage (stub/minimal implementation)"
+    },
+    {
+      "file": "ViewRouter.tsx",
+      "lines": 70.58,
+      "note": "View router - partially tested"
+    }
+  ],
+  "filesAboveThreshold": [
+    "src/data (97.41% lines)",
+    "src/utils (95.23% lines)",
+    "src/hooks (89.86% lines)",
+    "src/components/practice/modes (87.5% lines)",
+    "src/components (82.44% lines)"
+  ],
+  "testSummary": {
+    "passed": 1833,
+    "failed": 0,
+    "skipped": 1,
+    "total": 1834
+  },
+  "coverageDuration": "28.88s"
+}

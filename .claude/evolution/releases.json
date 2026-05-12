@@ -2,6 +2,70 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.71.0",
+      "tag": "v0.71.0",
+      "commit": "583fd21",
+      "date": "2026-05-12T19:43:38.575Z",
+      "iterationId": "iter-003",
+      "title": "视觉回归测试引入",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-5762nq14c-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.70.0",
+      "tag": "v0.70.0",
+      "commit": "eaacd71",
+      "date": "2026-05-12T19:15:13.906Z",
+      "iterationId": "iter-002",
+      "title": "Playwright 并行执行配置",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-cxwfat4cu-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.69.0",
+      "tag": "v0.69.0",
+      "commit": "28e3d28",
+      "date": "2026-05-12T18:04:02.219Z",
+      "iterationId": "iter-001",
+      "title": "E2E 测试稳定化修复",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-qyqedszs9-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.68.0",
+      "tag": "v0.68.0",
+      "commit": "c425e8c",
+      "date": "2026-05-12T17:23:23.577Z",
+      "iterationId": "iter-005",
+      "title": "数据迁移脚本与向后兼容",
+      "features": [
+        "V1→V2 storage migration script with auto-migration on app load",
+        "clearSessionWithIndex() + getIndexStats() storage helpers",
+        "useIndexStats hook for index statistics monitoring",
+        "DictionaryBrowser index stats panel integration",
+        "1833 tests zero regression, build 3.66s"
+      ],
+      "deployUrl": "https://en-learn-gy0g6vyr3-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.67.0",
+      "tag": "v0.67.0",
+      "commit": "c25f8f2",
+      "date": "2026-05-12T16:56:51.677Z",
+      "iterationId": "iter-004",
+      "title": "PersonalWord 独立索引",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-iromv7a43-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.66.0",
       "tag": "v0.66.0",
       "commit": "b792462",

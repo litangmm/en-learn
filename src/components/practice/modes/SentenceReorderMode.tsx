@@ -59,7 +59,10 @@ export function SentenceReorderMode({
       return (
         <div className="space-y-4 p-6 bg-amber-50 rounded-xl border border-amber-200 text-center">
           <p className="text-amber-700 font-medium text-base">
-            此题目为释义型句子，不适合连词成句练习
+            此题目为释义型句子（单词释义题），不适合连词成句练习
+          </p>
+          <p className="text-amber-600 text-sm">
+            点击下方按钮直接跳过，换下一题
           </p>
           {onSkip && (
             <button

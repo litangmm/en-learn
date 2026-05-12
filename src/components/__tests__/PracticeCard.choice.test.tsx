@@ -522,7 +522,7 @@ describe('PracticeCard multiple-choice', () => {
       );
 
       // Should show warning instead of word-reorder UI
-      expect(screen.getByText('此题目为释义型句子，不适合连词成句练习')).toBeInTheDocument();
+      expect(screen.getByText('此题目为释义型句子（单词释义题），不适合连词成句练习')).toBeInTheDocument();
     });
 
     it('shows word pool for normal sentences in sentence-reorder mode', () => {
@@ -562,7 +562,7 @@ describe('PracticeCard multiple-choice', () => {
       );
 
       // Should NOT show warning
-      expect(screen.queryByText('此题目为释义型句子，不适合连词成句练习')).not.toBeInTheDocument();
+      expect(screen.queryByText('此题目为释义型句子（单词释义题），不适合连词成句练习')).not.toBeInTheDocument();
       // Should show word pool
       expect(screen.getByText('The')).toBeInTheDocument();
       expect(screen.getByText('early')).toBeInTheDocument();

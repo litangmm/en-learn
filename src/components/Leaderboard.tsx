@@ -116,22 +116,22 @@ export function Leaderboard({
 
         {/* Data Scope Indicator */}
         <div className="mb-4 ml-8">
-          <p className="text-xs text-slate-400">
-            数据范围：
-            <span className={timeFilter === 'today' ? 'text-blue-600 font-medium' : ''}>
+          <div className="flex items-center gap-2 text-xs text-slate-400 flex-wrap">
+            <span className="font-medium text-slate-500">数据范围：</span>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${timeFilter === 'today' ? 'bg-blue-100 text-blue-700 font-semibold' : 'bg-slate-100 text-slate-500'}`}>
               今日
             </span>
-            {' · '}
-            <span className={timeFilter === 'week' ? 'text-blue-600 font-medium' : ''}>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${timeFilter === 'week' ? 'bg-blue-100 text-blue-700 font-semibold' : 'bg-slate-100 text-slate-500'}`}>
               本周
             </span>
-            {' · '}
-            <span className={timeFilter === 'all' ? 'text-blue-600 font-medium' : ''}>
+            <span className={`px-2 py-0.5 rounded-full text-xs ${timeFilter === 'all' ? 'bg-blue-100 text-blue-700 font-semibold' : 'bg-slate-100 text-slate-500'}`}>
               全部
             </span>
-            <span className="ml-2 text-slate-300">|</span>
-            <span className="ml-2 text-slate-400">本地练习记录</span>
-          </p>
+            <span className="text-slate-300">|</span>
+            <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+              本地数据
+            </span>
+          </div>
         </div>
 
         {/* Category Tabs */}

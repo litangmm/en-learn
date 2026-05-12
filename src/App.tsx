@@ -28,7 +28,7 @@ import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
 import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusModeOverlay';
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
-import { AchievementMomentCard } from '@/components/AchievementMomentCard';
+import { AchievementToast } from '@/components/AchievementToast';
 import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { useWeeklyReport } from '@/hooks/useWeeklyReport';
@@ -372,16 +372,7 @@ function App() {
     }
   }, [sharePrompt]);
 
-  // Auto-dismiss achievement moment card after 3 seconds
-  useEffect(() => {
-    if (achievementMomentTrigger) {
-      const timer = setTimeout(() => {
-        setAchievementMomentTrigger(null);
-        acknowledgeMoment();
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [achievementMomentTrigger, acknowledgeMoment]);
+  // Achievement moment dismissal is now handled by AchievementToast component (auto-dismiss after 3s)
 
   // Trigger weekly report after achievement moment (if should show)
   useEffect(() => {
@@ -771,7 +762,7 @@ function App() {
             )}
 
             {/* Desktop nav section - hidden on mobile */}
-            <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            <div className="hidden md:flex items-center gap-2 flex-shrink-0 overflow-x-auto no-scrollbar">
               {view === 'practice' && (
                 <>
                   <DictionarySelector
@@ -779,7 +770,7 @@ function App() {
                     onChange={handleDictionaryChange}
                     disabled={state.isComplete}
                   />
-                  <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500">
+                  <Button variant="ghost" size="sm" onClick={handleRestart} className="text-slate-500 shrink-0">
                     重置
                   </Button>
                 </>
@@ -1100,10 +1091,10 @@ function App() {
                 </div>
               )}
               <ProgressBar progress={progress} current={currentQuestion} total={totalQuestions} />
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="sync">
                 {currentSentence && (
                   <PracticeCard
-                    key={`practice-${state.currentIndex}`}
+                    key={currentSentence.id}
                     sentence={currentSentence}
                     inputs={state.currentInputs}
                     showResult={state.showResult}
@@ -1190,9 +1181,13 @@ function App() {
       <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
       <Toaster richColors position="top-center" />
       {achievementMomentTrigger && achievementMomentTrigger.moment && (
-        <AchievementMomentCard
+        <AchievementToast
           moment={achievementMomentTrigger.moment}
-          triggerKey={String(achievementMomentTrigger.key)}
+          triggerKey={achievementMomentTrigger.key}
+          onDismiss={() => {
+            setAchievementMomentTrigger(null);
+            acknowledgeMoment();
+          }}
         />
       )}
 

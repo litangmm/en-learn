@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { toast } from 'sonner';
 import type { Sentence, PracticeMode, SentenceToken, ChoiceOption, HintLevel } from '@/data/types';
+import { isDefinitionSentence } from '@/data/types';
 import { FillInBlanksMode } from '@/components/practice/modes/FillInBlanksMode';
 import { DictationMode } from '@/components/practice/modes/DictationMode';
 import { MultipleChoiceMode } from '@/components/practice/modes/MultipleChoiceMode';
@@ -18,26 +19,23 @@ function getExplanation(sentence: Sentence, isMultipleChoiceMode: boolean, isSen
   const targetWord = sentence.blanks[0]?.word ?? '';
   const chinese = sentence.chinese;
   const english = sentence.english;
+  const isDefinition = isDefinitionSentence(sentence);
 
   // For multiple-choice: show why this specific sentence is the right answer
   if (isMultipleChoiceMode) {
-    const isDefinition = sentence.blanks.length === 1;
-
     if (isDefinition) {
-      // Definition sentence: explain the word meaning clearly
-      return `正确答案是 "${targetWord}"，因为它在句子中表达的含义是"${chinese}"。这个词是题目要求掌握的词汇。`;
+      // Definition sentence: explain why this word is the correct vocabulary choice
+      return `正确答案是 "${targetWord}"。在 "${english}" 中，这个词表达了"${chinese}"的含义。选这个词是因为它准确对应了要掌握的核心词汇，其他选项虽然可能意思相近但语义上有差异。`;
     }
 
-    // Normal sentence: explain the context and why this sentence is correct
-    // Analyze what makes this sentence unique or correct
+    // Normal sentence: explain why this sentence is the unique correct choice
+    // Analyze what makes this sentence different from other options
     const keyWord = extractKeyWord(sentence);
-    return `正确答案是"${keyWord}"开头的句子。这个句子 "${english.substring(0, 50)}${english.length > 50 ? '...' : ''}" 表达的意思是"${chinese}"，与题目要求相符。其他选项可能意思相近但有细微差别，需要仔细区分。`;
+    return `正确答案是含"${keyWord}"的句子。"${english.substring(0, 50)}${english.length > 50 ? '...' : ''}" 这句话表达了"${chinese}"的意思。其他选项的句子结构或用词与原句不同，是干扰项。`;
   }
 
   // For sentence-reorder: explain the sentence meaning and structure
   if (isSentenceReorderMode) {
-    const isDefinition = sentence.blanks.length === 1;
-
     if (isDefinition) {
       return `正确答案是 "${targetWord}"，表示"${chinese}"。这是一个释义型句子，需要理解单词含义才能正确排列。`;
     }
@@ -48,12 +46,11 @@ function getExplanation(sentence: Sentence, isMultipleChoiceMode: boolean, isSen
   }
 
   // Default: explain the blank word in context
-  const isDefinition = sentence.blanks.length === 1;
   if (isDefinition) {
-    return `这里应该填 "${targetWord}"，表示"${chinese}"。这个词常用于描述这种情况，在实际语境中要准确使用。`;
+    return `这里应该填 "${targetWord}"。"${english}" 整体表达"${chinese}"，这个词是题目要求掌握的核心词汇。`;
   }
-  // For fill-in-blanks/dictation: explain the target word with context
-  return `这里应该填 "${targetWord}"，因为从句子 "${english.substring(0, 40)}${english.length > 40 ? '...' : ''}" 可以看出"${chinese}"这个含义。`;
+  // For fill-in-blanks/dictation: explain why this specific word fits the context
+  return `这里应该填 "${targetWord}"。从句子 "${english.substring(0, 40)}${english.length > 40 ? '...' : ''}" 的语境来看，空格处需要表达"${chinese}"的意思，"${targetWord}"是最准确的选择。`;
 }
 
 /**
@@ -351,7 +348,7 @@ export function PracticeCard({
           {renderModeContent()}
 
           {/* Result Feedback */}
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="sync">
             {showResult && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}

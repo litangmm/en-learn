@@ -732,7 +732,7 @@ function App() {
               <div className="flex items-center gap-3 flex-shrink-0">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} />
                 <StreakFeedback streak={streak} />
-                <SessionTimer sessionStartMs={sessionStartTimeForTimer.current} />
+                <SessionTimer sessionStartMs={sessionStartTimeForTimer} />
                 <Button
                   variant="ghost"
                   size="sm"

@@ -1,0 +1,323 @@
+{
+  "version": "1.0",
+  "pending": [],
+  "history": [
+    {
+      "id": "2026-05-12-123",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-029 iter-005 学习数据可视化报告完成。v0.53.0 部署成功，1381 测试零回归，历史最高水位。epic-029 全部 5 个迭代正式收官，版本范围 v0.50.0-v0.53.0。"
+    },
+    {
+      "id": "2026-05-12-120",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-029 iter-004 成就徽章墙导出测试通过。1346 测试零回归，1 skipped，lint 1 warning，build 3.77s。"
+    },
+    {
+      "id": "2026-05-12-119",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + 全面测试。"
+    },
+    {
+      "id": "2026-05-12-121",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-029 iter-005 学习数据可视化实现完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + useProgressStats扩展 + ProgressHub集成 + 全面测试。1381 测试零回归，历史最高水位。"
+    },
+    {
+      "id": "2026-05-12-123",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-029 iter-005 学习数据可视化完成。e15caf9 已确认，1380 测试零回归（1 skipped），状态已更新为 DEPLOY。"
+    },
+    {
+      "id": "2026-05-12-123",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-005 学习数据可视化部署成功。v0.53.0 部署到 Vercel，git tag v0.53.0 已推送。URL: https://en-learn-q24jywzrz-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-125",
+      "mode": "tech-review",
+      "stage": "TECH_REVIEW",
+      "status": "completed",
+      "summary": "Tech review 扫描完成。Lint: 1 pre-existing warning (NavigationContext react-refresh), TypeScript: 0 errors, Build: 3.77s。代码健康度良好，无高优先级技术债务。硬编码值已规范（DAY_MS 常量提取，LEVEL_THRESHOLDS 集中定义）。"
+    },
+    {
+      "id": "2026-05-12-126",
+      "mode": "brainstorm",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "Brainstorm 完成。9 个 Epic 提案，收敛为 5 个候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。三个 high priority Epic 形成'心流-动机-个性化'三维体系。"
+    }
+  ],
+  "status": "PLAN",
+  "commit": "e15caf9",
+  "cycleCount": 126,
+  "nextMode": "plan",
+  "failedAttempts": 0,
+  "currentCycle": {
+    "id": "2026-05-12-126",
+    "mode": "brainstorm",
+    "stage": "BRAINSTORM",
+    "startedAt": "2026-05-12T11:30:23.440Z",
+    "completedAt": "2026-05-12T11:32:15.000Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-12-125",
+    "mode": "tech-review",
+    "stage": "TECH_REVIEW"
+  },
+  "brainstormResults": [
+    {
+      "id": "epic-030",
+      "title": "学习心流深度优化与抗疲劳设计",
+      "description": "基于用户答题行为数据，实时检测学习疲劳状态，动态调整练习难度和节奏，让用户始终处于'最近发展区'，维持最佳学习心流。核心创新：疲劳感知 + 难度自适应 + 效率时段分析。",
+      "proposedBy": "PM-UX",
+      "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP", "QA"],
+      "concerns": "疲劳检测算法需要足够的 session 数据积累才有意义，对新用户效果有限",
+      "priority": "high",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习节奏感知与疲劳检测", "scope": "frontend-only"},
+        {"title": "iter-2: 专注度自适应调整", "scope": "frontend-only"},
+        {"title": "iter-3: 学习时段质量分析", "scope": "frontend-only"},
+        {"title": "iter-4: 疲劳恢复激励机制", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030b",
+      "title": "学习动机可视化与目标设定系统",
+      "description": "将用户的学习数据转化为清晰的目标进度感知，通过对比激励（与上周相比）而非绝对值激励用户持续学习。核心创新：学习目标卡 + 效率趋势预测 + 里程碑庆祝仪式。",
+      "proposedBy": "UX",
+      "supportedBy": ["PM-Growth", "PM-UX", "PM-Lean", "EXP"],
+      "concerns": "目标设定需要用户主动参与，可能增加上手门槛",
+      "priority": "high",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习目标卡设计", "scope": "frontend-only"},
+        {"title": "iter-2: 学习效率趋势预测", "scope": "frontend-only"},
+        {"title": "iter-3: 对比激励机制", "scope": "frontend-only"},
+        {"title": "iter-4: 学习里程碑庆祝仪式", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030c",
+      "title": "深度个性化学习路径引擎",
+      "description": "将 epic-028 的静态间隔重复升级为动态校准，基于用户实际遗忘速度而非固定间隔安排复习。同时根据用户实时状态动态推荐练习模式。核心创新：遗忘曲线实时校准 + 动态模式推荐。",
+      "proposedBy": "EXP",
+      "supportedBy": ["PM-UX", "UX", "PM-Growth", "PM-Lean", "ARCH"],
+      "concerns": "动态校准算法需要跨时间维度的数据积累，对新用户价值有限；需避免过度个性化导致用户体验碎片化",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习状态实时检测", "scope": "frontend-only"},
+        {"title": "iter-2: 动态练习推荐", "scope": "frontend-only"},
+        {"title": "iter-3: 遗忘曲线动态校准", "scope": "frontend-only"},
+        {"title": "iter-4: 个性化学习报告", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030d",
+      "title": "用户留存与召回机制深化",
+      "description": "基于间隔重复到期时间和学习 streak，设计召回机制和 streak 保护机制，确保用户持续回访。核心创新：复习提醒时机优化 + streak 保护罩 + 成就缺失推荐。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": ["PM-Lean", "PM-Eco", "UX"],
+      "concerns": "召回机制需要用户授权通知，纯前端无法实现真正的推送；streak 保护可能降低 streak 的稀缺感",
+      "priority": "medium",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 复习提醒推送机制", "scope": "frontend-only"},
+        {"title": "iter-2: 学习连续 streak 保护机制", "scope": "frontend-only"},
+        {"title": "iter-3: 成就缺失分析", "scope": "frontend-only"},
+        {"title": "iter-4: 个性化学习目标设定", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030e",
+      "title": "质量保障体系自动化",
+      "description": "修复 playwright E2E 测试的 flaky 状态，建立测试覆盖率基线，将质量门禁真正集成到 CI pipeline。核心创新：E2E 稳定化 + 覆盖率监控 + 视觉回归测试。",
+      "proposedBy": "QA",
+      "supportedBy": ["ARCH", "PM-Mon"],
+      "concerns": "iter-4 视觉回归测试需要引入新依赖，增加构建体积；E2E 测试在 CI 环境中可能不稳定",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-1: Playwright E2E 测试稳定化", "scope": "frontend-only"},
+        {"title": "iter-2: 测试覆盖率基线", "scope": "frontend-only"},
+        {"title": "iter-3: 自动化回归测试套件", "scope": "frontend-only"},
+        {"title": "iter-4: 视觉回归测试", "scope": "frontend-only"}
+      ]
+    }
+  ],
+  "currentEpic": null,
+  "techReviewBaseline": {
+    "lintWarnings": 1,
+    "typeErrors": 0,
+    "unusedImports": 0,
+    "anyTypeUsage": 0,
+    "longFunctions": 0,
+    "complexityIssues": 0,
+    "deadCode": 0,
+    "scanDate": "2026-05-12T03:30:00.000Z",
+    "note": "仅 1 个 pre-existing react-refresh warning，代码健康度良好"
+  },
+  "epicHistory": [
+    {
+      "id": "epic-029",
+      "title": "学习成就社交展示与留存闭环",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.50.0-v0.53.0",
+      "createdAt": "2026-05-12T03:20:00.000Z",
+      "completedAt": "2026-05-12T12:15:00.000Z",
+      "proposedBy": "PM-Growth",
+      "supportedBy": ["PM-Lean", "UX"]
+    },
+    {
+      "id": "epic-028",
+      "title": "智能学习路径引擎",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.45.0-v0.49.0",
+      "completedAt": "2026-05-12T11:20:00.000Z"
+    },
+    {
+      "id": "epic-027",
+      "title": "沉浸式多模态练习模式",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.43.0-v0.44.0",
+      "completedAt": "2026-05-11T15:35:00.000Z"
+    },
+    {
+      "id": "epic-018",
+      "title": "学习路径追踪与成就系统整合",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.39.0-v0.42.0",
+      "completedAt": "2026-05-11T08:01:00.000Z"
+    },
+    {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.38.0",
+      "completedAt": "2026-05-11T12:50:00.000Z"
+    },
+    {
+      "id": "epic-014",
+      "title": "主练习链路稳定性打磨",
+      "status": "completed",
+      "iterationsCount": 6,
+      "completedIterations": 6,
+      "versionRange": "v0.37.0",
+      "completedAt": "2026-05-11T13:15:00.000Z"
+    },
+    {
+      "id": "epic-009",
+      "title": "个人词典管理与数据主权",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.31.0-v0.36.0",
+      "completedAt": "2026-05-11T04:30:00.000Z"
+    },
+    {
+      "id": "epic-005",
+      "title": "学习成果社交裂变与分享卡片 MVP",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.27.0-v0.30.0",
+      "completedAt": "2026-05-11T02:15:00.000Z"
+    },
+    {
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.23.0-v0.25.0",
+      "completedAt": "2026-05-10T19:42:00.000Z"
+    },
+    {
+      "id": "epic-004",
+      "title": "体验优化与响应式适配",
+      "status": "completed",
+      "iterationsCount": 10,
+      "completedIterations": 10,
+      "versionRange": "v0.14.0-v0.26.0",
+      "completedAt": "2026-05-10T15:00:00.000Z"
+    }
+  ],
+  "testResults": {
+    "unitTests": {
+      "passed": 1380,
+      "failed": 0,
+      "skipped": 1,
+      "total": 1381,
+      "duration": "30.84s"
+    },
+    "e2eTests": {
+      "passed": 1,
+      "failed": 1,
+      "flaky": true,
+      "flakyReason": "pre-existing 空数据测试，与本次迭代无关"
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "note": "pre-existing react-refresh warning"
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.77s (tsc + vite)"
+    }
+  },
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "implementationStatus": "IDLE — epic-029 全部 5 个迭代完成，v0.53.0 已部署。Brainstorm 完成，5 个 Epic 候选已产出，等待用户选择下一 Epic。",
+  "directives": {
+    "version": "1.0",
+    "pending": [],
+    "history": [
+      {
+        "id": "dir-20260512125-01",
+        "type": "tech-review",
+        "target": "baseline",
+        "action": "【Tech Review 完成】代码健康度扫描完成",
+        "reason": "循环末尾 tech-review 阶段",
+        "createdAt": "2026-05-12T11:30:00.000Z",
+        "executedAt": "2026-05-12T11:30:00.000Z",
+        "executionNote": "Lint 1 warning (pre-existing), TypeScript 0 errors, Build 3.77s 通过。代码健康度良好，无高优先级技术债务。"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "url": "https://en-learn-q24jywzrz-litangmms-projects.vercel.app",
+    "version": "v0.53.0",
+    "commit": "e15caf9",
+    "iterationId": "iter-005",
+    "iterationTitle": "学习数据可视化",
+    "deployedAt": "2026-05-12T03:06:51.000Z"
+  },
+  "pendingDeployment": false,
+  "lastRun": "2026-05-12T11:32:15.000Z"
+}

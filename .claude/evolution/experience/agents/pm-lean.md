@@ -7,7 +7,14 @@
 
 ## 历史提案
 
-### 2026-05-10 (cycle-2026-05-10-20)
+### 2026-05-12 (cycle-2026-05-12-152) — epic-043 iter-002 完成
+- **相关 Epic**: epic-043 iter-002「按需加载与懒加载策略」—— 作为支持者
+- **结果**: epic-043 iter-002 **完成并测试通过**，1747/1748 测试通过（历史最高水位）
+- **完成内容**: useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成 + dictionaryCache 缓存机制
+- **当前状态**: **连续未被选中计数保持清零**（epic-043 支持者）
+- **观察**: iter-002 完美体现 MVP 思维——多词典按需加载避免了一次性加载所有词典导致的内存占用和加载延迟。dictionaryCache 缓存机制确保已加载词典无需重复索引重建。重复加载跳过逻辑（`if (dictionaryCache.has(id)) return`）确保无重复计算开销。零新增依赖、零构建体积增长。epic-043 完成度 2/5，剩余 iter-003~005 继续支持。**epic-043 完成后，PM-Lean 可基于词典索引数据提出「个人词库效率分析」方案**
+
+### 2026-05-12 (cycle-2026-05-12-151)
 - **相关 Epic**: epic-003「游戏化学习动力系统」—— 作为支持者参与
 - **结果**: epic-003 iter-004「成就徽章系统」完成，404/404 测试通过，v0.16.0
 - **完成内容**: 零新增依赖、零构建体积增长；新增 3 个源文件（useBadges.ts, BadgePanel.tsx, BadgeUnlockToast.tsx）+ 3 个测试文件；修改 4 个源文件（types.ts, storage.ts, App.tsx, MobileNav.tsx）；10 个现有测试文件 mock 更新；12 枚徽章阈值简洁可解释，覆盖从首次答题到完成 7 日挑战的完整成长路径

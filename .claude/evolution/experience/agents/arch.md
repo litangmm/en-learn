@@ -7,7 +7,14 @@
 
 ## 历史提案
 
-### 2026-05-12 (cycle-2026-05-12-146)
+### 2026-05-12 (cycle-2026-05-12-152) — epic-043 iter-002 完成
+- **相关 Epic**: epic-043「词典数据架构升级与查询性能优化」—— **提案者**
+- **结果**: epic-043 iter-002 **完成并部署**，v0.65.0，1747/1748 测试通过（历史最高水位）
+- **完成内容**: useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成 + dictionaryCache 缓存机制
+- **当前状态**: **连续未被选中计数保持清零**（epic-043 提案者）
+- **观察**: iter-002 零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。dictionaryCache 缓存机制避免重复索引重建，重复加载跳过逻辑确保已加载词典无需重复计算。epic-043 完成度 2/5，剩余 iter-003（搜索性能优化）、iter-004（PersonalWord 独立索引）、iter-005（数据迁移脚本）继续推进。**ARCH 的 epic-022 多次提案终于在 epic-043 完整落地，是项目最成功的提案之一**
+
+### 2026-05-12 (cycle-2026-05-12-151)
 - **提案 Epic**: epic-043「词典数据架构升级与查询性能优化」
 - **结果**: **被选中并完成 iter-001**
 - **完成内容**: DictionaryIndex 类型定义 + useDictionaryIndex Hook（惰性初始化/O(1) 查询）+ 索引构建工具 + 全面测试

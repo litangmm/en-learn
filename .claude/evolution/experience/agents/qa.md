@@ -7,8 +7,16 @@
 
 ## 历史提案
 
+### 2026-05-12 (cycle-2026-05-12-152) — epic-043 iter-002 完成
+- **相关质量门禁**: 单元测试回归、Hook API 多词典管理测试、组件集成测试、构建稳定性
+- **本次验证**: epic-043 iter-002「按需加载与懒加载策略」质量门禁验证
+  - useDictionaryIndex 多词典管理测试：loadDictionary 首次加载索引、switchDictionary 词典切换索引重建、unloadDictionary 卸载、clearAll 清除全部、重复加载跳过
+  - DictionaryBrowser 索引预加载测试：词典切换时预加载新词典索引、预加载进度反馈、预加载完成回调
+  - dictionaryCache 缓存机制测试：已缓存词典跳过索引重建、缓存一致性验证
+  - 全量回归：**1747/1748 单元测试通过**（1 skipped，历史最高水位），lint 4 warnings（pre-existing），build 3.59s success
+- **备注**: 1747 测试零回归，约 33 个新增测试（useDictionaryIndex 多词典管理 ~20 + DictionaryBrowser 索引加载 ~13）。多词典按需加载的异步测试覆盖了 loading 状态边界。dictionaryCache 缓存机制的边界覆盖良好——重复加载跳过逻辑已通过测试验证。**epic-043 剩余 3 个迭代（iter-003~005），继续关注测试覆盖完整性**
 
-### 2026-05-12 (cycle-2026-05-12-120) — epic-029 iter-004 完成 (1346 tests, 历史最高水位)
+### 2026-05-12 (cycle-2026-05-12-151) — epic-029 iter-004 完成 (1346 tests, 历史最高水位)
 - **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
 - **本次验证**: epic-029 iter-004「成就徽章墙导出」质量门禁验证
   - useBadgeExport 测试：generateBadgeImage 调用、DOM 引用获取、canvas 生成、PNG blob 导出、文件名时间戳

@@ -2,6 +2,19 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.65.0",
+      "tag": "v0.65.0",
+      "commit": "f458b48",
+      "date": "2026-05-12T15:00:23.118Z",
+      "iterationId": "iter-002",
+      "title": "词典按需加载与多词典管理",
+      "features": [
+        "Update pm-ux agent experience",
+        "Add cycle-142 history record (epic-043 iter-001/iter-002 reports)"
+      ],
+      "deployUrl": "https://en-learn-b47j2n1ry-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.63.0",
       "tag": "v0.63.0",
       "commit": "8b38b57",

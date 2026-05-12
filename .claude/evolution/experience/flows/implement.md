@@ -6,6 +6,28 @@
 ## 常见问题
 （由进化引擎自动总结）
 
+### 2026-05-12 (cycle-2026-05-12-152)
+- **迭代**: epic-043 iter-002「按需加载与懒加载策略」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - useDictionaryIndex 多词典管理 API 扩展（loadDictionary/switchDictionary/unloadDictionary/clearAll）
+  - DictionaryBrowser 索引预加载集成（切换词典时预加载新词典索引）
+  - dictionaryCache 缓存机制（已加载词典无需重复索引重建）
+  - 重复加载跳过逻辑（`if (dictionaryCache.has(id)) return`，避免重复构建索引）
+- **重构**: 无（零新增组件，仅 Hook 扩展）
+- **观察**: epic-043 iter-002 完成（2/5），1747 测试历史最高水位。从 iter-001（词典索引结构重构，1714 测试）到 iter-002（按需加载与懒加载策略，1747 测试），测试水位持续提升。dictionaryCache 全局缓存确保所有 useDictionaryIndex 实例共享同一份索引数据，避免重复计算。**epic-043 完成度 2/5，剩余 iter-003（搜索性能优化）、iter-004（PersonalWord 独立索引）、iter-005（数据迁移脚本）继续推进**
+
+### 2026-05-12 (cycle-2026-05-12-146)
+- **迭代**: epic-043 iter-002「按需加载与懒加载策略」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - useDictionaryIndex 多词典管理 API 扩展（loadDictionary/switchDictionary/unloadDictionary/clearAll）
+  - DictionaryBrowser 索引预加载集成（切换词典时预加载新词典索引）
+  - dictionaryCache 缓存机制（已加载词典无需重复索引重建）
+  - 重复加载跳过逻辑（避免重复构建索引）
+- **重构**: 无（零新增组件，仅 Hook 扩展）
+- **观察**: epic-043 iter-002 完成（2/5），1747 测试历史最高水位。从 iter-001（词典索引结构重构，1714 测试）到 iter-002（按需加载与懒加载策略，1747 测试），测试水位持续提升。epic-043 完成度 2/5，剩余 iter-003（搜索性能优化）、iter-004（PersonalWord 独立索引）、iter-005（数据迁移脚本）继续推进。**ARCH 的 epic-022 多次提案终于在 epic-043 完整落地，是项目最成功的提案之一**
+
 ### 2026-05-12 (cycle-2026-05-12-146)
 - **迭代**: epic-043 iter-001「词典索引结构重构」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，零构建体积增长

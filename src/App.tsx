@@ -23,6 +23,7 @@ import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { useWeaknessStats } from '@/hooks/useWeaknessStats';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { useReviewStreak } from '@/hooks/useReviewStreak';
+import { useRecallReminder } from '@/hooks/useRecallReminder';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
@@ -32,6 +33,7 @@ import { FocusModeOverlay, type FocusSessionStats } from '@/components/FocusMode
 import { FocusSessionSummary } from '@/components/FocusSessionSummary';
 import { SharePromptToast } from '@/components/SharePromptToast';
 import { AchievementToast } from '@/components/AchievementToast';
+import { RecallReminderToast } from '@/components/RecallReminderToast';
 import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { useWeeklyReport } from '@/hooks/useWeeklyReport';
@@ -156,6 +158,7 @@ function App() {
   const { dueCount } = useSpacedRepetition();
   const { data: streakData } = useReviewStreak();
   const currentStreak = streakData.currentStreak;
+  const { status: recallStatus, dueCount: recallDueCount, dismiss: dismissRecall } = useRecallReminder();
   const { hintLevel, shouldShowHint } = useHintLevel();
 
   // Track previous level for detecting level-ups (initialized after profile is available)
@@ -1205,6 +1208,14 @@ function App() {
       />
       <SharePromptToast prompt={sharePrompt} onDismiss={() => setSharePrompt(null)} />
       <Toaster richColors position="top-center" />
+
+      <RecallReminderToast
+        status={recallStatus}
+        dueCount={recallDueCount}
+        onStartReview={() => handleNavigate('review')}
+        onDismiss={dismissRecall}
+      />
+
       {achievementMomentTrigger && achievementMomentTrigger.moment && (
         <AchievementToast
           moment={achievementMomentTrigger.moment}

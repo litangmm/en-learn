@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useReviewStreak } from './useReviewStreak';
 import { useSpacedRepetition } from './useSpacedRepetition';
 import { storage } from '@/services/storage';
@@ -44,13 +44,19 @@ export function useRecallReminder(): RecallReminderState {
     }
   });
 
-  /**
-   * Compute whether reminder is still in cooldown period
-   */
-  const canShow = useMemo(() => {
-    if (lastDismissed === null) return true;
-    const now = Date.now();
-    return now - lastDismissed > FOUR_HOURS_MS;
+  // Track canShow state with useEffect to avoid render-phase Date.now() call
+  const [canShow, setCanShow] = useState(() => {
+    try {
+      const savedDismissed = storage.getRecallReminderDismissed();
+      return savedDismissed === null || Date.now() - savedDismissed > FOUR_HOURS_MS;
+    } catch {
+      return true;
+    }
+  });
+
+  // Update canShow when lastDismissed changes
+  useEffect(() => {
+    setCanShow(lastDismissed === null || Date.now() - lastDismissed > FOUR_HOURS_MS);
   }, [lastDismissed]);
 
   /**

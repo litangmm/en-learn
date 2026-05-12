@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, act, within } from '@testing-library/react';
 import App from '../../App';
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 const { mockHasOnboardingComplete, mockSetOnboardingComplete } = vi.hoisted(() => ({
   mockHasOnboardingComplete: vi.fn(),
   mockSetOnboardingComplete: vi.fn(),

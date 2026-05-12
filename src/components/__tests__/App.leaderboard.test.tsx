@@ -14,6 +14,13 @@ const mockTrackProgress = vi.fn();
 const mockCheckBadges = vi.fn(() => []);
 const mockGetLeaderboardEntries = vi.fn(() => []);
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 let mockShowResult = false;
 let mockIsCorrect = false;
 let mockAttempts = 0;

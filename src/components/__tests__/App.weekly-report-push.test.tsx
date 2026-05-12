@@ -20,6 +20,13 @@ vi.mock('@/components/WeeklyReportCard', () => ({
 }));
 
 // Mock hooks to prevent actual implementations
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/useDailyChallenges', () => ({
   useDailyChallenges: vi.fn(() => ({
     state: { challenges: [], date: '' },
@@ -163,6 +170,7 @@ vi.mock('@/services/storage', () => ({
   storage: {
     getMistakeCount: vi.fn(() => 0),
     getHistoryCount: vi.fn(() => 0),
+    getHistory: vi.fn(() => []),
     getReviewQueueCount: vi.fn(() => 0),
     clearSession: vi.fn(),
     hasOnboardingComplete: vi.fn(() => true),
@@ -171,6 +179,8 @@ vi.mock('@/services/storage', () => ({
     getStoredDictionaryId: vi.fn(() => null),
     loadSession: vi.fn(() => null),
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
+    updateXPProfile: vi.fn(),
+    addXP: vi.fn(),
     getWeeklyReportConfig: vi.fn(() => ({ enabled: true, lastShownWeekStart: null, dismissed: false, dismissedAt: null })),
     getReviewStats: vi.fn(() => ({ stats: { date: new Date().toISOString().split('T')[0], reviewedCount: 0, completedReviewIds: [] } })),
     getBadges: vi.fn(() => ({ unlocked: [], progress: { totalAnswered: 0, totalCorrect: 0, totalSessions: 0, maxStreakEver: 0, perfectSessions: 0, totalReviews: 0, totalChallengesCompleted: 0 } })),
@@ -179,6 +189,22 @@ vi.mock('@/services/storage', () => ({
     saveGoals: vi.fn(),
     generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
     getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
+    getMistakes: vi.fn(() => []),
+    addMistake: vi.fn(),
+    addHistory: vi.fn(),
+    exportAllData: vi.fn(() => ({ version: 1, exportedAt: '', data: { session: null, mistakes: [], history: [] } })),
+    importAllData: vi.fn(() => ({ success: true, importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0 }, message: '' })),
+    scheduleNextReview: vi.fn(),
+    getInviteMetrics: vi.fn(() => null),
+    updateInviteMetrics: vi.fn(),
+    generateInviteCode: vi.fn(() => 'TESTCODE1'),
+    initInviteMetrics: vi.fn(() => ({ inviteCode: 'TESTCODE1', invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: Date.now(), lastSharedAt: null })),
+    getInviteConfig: vi.fn(() => ({ rewardXPPerInvite: 50, maxInvitesAllowed: 0 })),
+    getRecallReminderDismissed: vi.fn(() => null),
+    setRecallReminderDismissed: vi.fn(),
   },
   StorageService: {},
 }));

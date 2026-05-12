@@ -4,6 +4,13 @@ import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import App from '../../App';
 import type { AchievementMoment } from '@/data/types';
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 // Use vi.hoisted to properly hoist ALL mocks before vi.mock calls
 const { mockInitializeInputs, mockSetInput, mockCheckAnswer, mockNextSentence, mockRetry, mockReset,
         mockSpeak, mockTrackProgress, mockCheckBadges, mockAcknowledgeMoment, mockSetCurrentMoment,

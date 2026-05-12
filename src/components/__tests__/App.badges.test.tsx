@@ -18,6 +18,13 @@ let mockIsCorrect = false;
 let mockAttempts = 0;
 let mockUnlockedCount = 0;
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
     state: {

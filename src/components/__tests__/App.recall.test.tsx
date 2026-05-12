@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import App from '../../App';
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 // --- Mock useRecallReminder ---
 let mockRecallStatus: 'idle' | 'due-soon' | 'due-now' | 'streak-at-risk' = 'idle';
 let mockRecallDueCount = 0;

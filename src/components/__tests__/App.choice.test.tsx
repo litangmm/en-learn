@@ -19,6 +19,13 @@ const mockOptions: ChoiceOption[] = [
   { id: '4', text: 'Better late than never.' },
 ];
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
     state: {

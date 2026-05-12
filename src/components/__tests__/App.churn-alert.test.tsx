@@ -1,29 +1,36 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import App from '../../App';
+import type { ChurnSignal } from '@/data/types';
 
-const mockInitializeInputs = vi.fn();
-const mockSetInput = vi.fn();
-const mockCheckAnswer = vi.fn();
-const mockNextSentence = vi.fn();
-const mockRetry = vi.fn();
-const mockReset = vi.fn();
-const mockAddXP = vi.fn(() => ({ finalXP: 15, multiplier: 1.5, streak: 3 }));
-const mockRecordCorrectAnswer = vi.fn();
-const mockRecordWrongAnswer = vi.fn();
-const mockResetStreak = vi.fn();
+// Use vi.hoisted to create reactive mock state
+const { mockInitializeInputs, mockSetInput, mockCheckAnswer, mockNextSentence,
+        mockRetry, mockReset, mockAddXP, mockSpeak, mockTrackActivity } = vi.hoisted(() => ({
+  mockInitializeInputs: vi.fn(),
+  mockSetInput: vi.fn(),
+  mockCheckAnswer: vi.fn(),
+  mockNextSentence: vi.fn(),
+  mockRetry: vi.fn(),
+  mockReset: vi.fn(),
+  mockAddXP: vi.fn(() => ({ finalXP: 15, multiplier: 1.0, streak: 0 })),
+  mockSpeak: vi.fn(),
+  mockTrackActivity: vi.fn(),
+}));
 
-const mockTrackActivity = vi.fn();
+// Mutable state for useChurnSignals mock - wrapped in object for mutability
+const churnSignalsState = {
+  riskLevel: 'low' as 'low' | 'medium' | 'high' | 'critical',
+  topRiskFactors: [] as ChurnSignal[],
+};
 
 let mockShowResult = false;
 let mockIsCorrect = false;
 let mockAttempts = 0;
-let mockStreak = 0;
 
 vi.mock('@/hooks/useChurnSignals', () => ({
   useChurnSignals: vi.fn(() => ({
-    riskLevel: 'low',
-    topRiskFactors: [],
+    riskLevel: churnSignalsState.riskLevel,
+    topRiskFactors: churnSignalsState.topRiskFactors,
   })),
 }));
 
@@ -70,7 +77,7 @@ vi.mock('@/hooks/usePractice', () => ({
 
 vi.mock('@/hooks/useSpeech', () => ({
   useSpeech: vi.fn(() => ({
-    speak: vi.fn(),
+    speak: mockSpeak,
     isSpeaking: false,
     playbackRate: 1.0,
     setPlaybackRate: vi.fn(),
@@ -94,11 +101,11 @@ vi.mock('@/hooks/useXP', () => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
     addXP: mockAddXP,
     resetXPProfile: vi.fn(),
-    streak: mockStreak,
+    streak: 0,
     maxStreakReached: 0,
-    recordCorrectAnswer: mockRecordCorrectAnswer,
-    recordWrongAnswer: mockRecordWrongAnswer,
-    resetStreak: mockResetStreak,
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    resetStreak: vi.fn(),
   })),
 }));
 
@@ -133,6 +140,16 @@ vi.mock('@/hooks/useBadges', () => ({
     getBadgeProgressPercent: vi.fn(() => 0),
     resetBadges: vi.fn(),
     BADGE_DEFINITIONS: [],
+  })),
+}));
+
+vi.mock('@/hooks/useRecallReminder', () => ({
+  useRecallReminder: vi.fn(() => ({
+    status: 'idle' as const,
+    dueCount: 0,
+    lastDismissed: null,
+    dismiss: vi.fn(),
+    canShow: true,
   })),
 }));
 
@@ -184,92 +201,111 @@ vi.mock('@/data/loader', () => ({
   loadDictionary: vi.fn(() => Promise.resolve([])),
 }));
 
-describe('App streak integration', () => {
+// Mock framer-motion globally - use function mock to pass through all props including data-testid
+vi.mock('framer-motion', () => {
+  const React = require('react');
+  return {
+    motion: {
+      div: React.forwardRef(({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }, ref) => (
+        <div ref={ref} {...props}>{children}</div>
+      )),
+      button: React.forwardRef(({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }, ref) => (
+        <button ref={ref} {...props}>{children}</button>
+      )),
+    },
+    AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
+  };
+});
+
+describe('App ChurnAlertBanner integration', () => {
   beforeEach(() => {
     cleanup();
     vi.clearAllMocks();
     mockShowResult = false;
     mockIsCorrect = false;
     mockAttempts = 0;
-    mockStreak = 0;
+    // Reset to default low risk
+    churnSignalsState.riskLevel = 'low';
+    churnSignalsState.topRiskFactors = [];
+    // Clear localStorage for dismissal tests
+    localStorage.removeItem('en-learn-churn-banner-dismissed');
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  it('streak badge appears in header when streak >= 2', () => {
-    mockStreak = 3;
+  describe('shows banner for high risk level', () => {
+    it('shows banner when riskLevel is high', async () => {
+      churnSignalsState.riskLevel = 'high';
+      churnSignalsState.topRiskFactors = [
+        { type: 'inactive_days', value: 3, severity: 0.7, description: '3天未学习' },
+      ];
 
-    render(<App />);
+      render(<App />);
 
-    expect(screen.getByTestId('streak-feedback')).toBeInTheDocument();
-    expect(screen.getByText('3')).toBeInTheDocument();
-  });
+      await waitFor(() => {
+        expect(screen.getByTestId('churn-alert-banner')).toBeInTheDocument();
+      });
+    });
 
-  it('streak badge does not appear when streak < 2', () => {
-    mockStreak = 0;
+    it('shows banner when riskLevel is critical', async () => {
+      churnSignalsState.riskLevel = 'critical';
+      churnSignalsState.topRiskFactors = [
+        { type: 'inactive_days', value: 7, severity: 0.9, description: '7天未学习' },
+      ];
 
-    render(<App />);
+      render(<App />);
 
-    expect(screen.queryByTestId('streak-feedback')).not.toBeInTheDocument();
-  });
-
-  it('calls recordCorrectAnswer on correct answer', () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockRecordCorrectAnswer).toHaveBeenCalledTimes(1);
-  });
-
-  it('calls recordWrongAnswer on wrong answer', () => {
-    mockShowResult = true;
-    mockIsCorrect = false;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockRecordWrongAnswer).toHaveBeenCalledTimes(1);
-  });
-
-  it('calls addXP with multiplier and triggers XP popup', async () => {
-    mockShowResult = true;
-    mockIsCorrect = true;
-    mockAttempts = 1;
-
-    const { rerender } = render(<App />);
-    rerender(<App />);
-
-    expect(mockAddXP).toHaveBeenCalledWith(10, true);
-
-    // XP popup should appear after requestAnimationFrame
-    await waitFor(() => {
-      expect(screen.getByTestId('xp-gain-popup')).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByTestId('churn-alert-banner')).toBeInTheDocument();
+      });
     });
   });
 
-  it('reset button calls resetStreak', () => {
-    render(<App />);
+  describe('hides banner when dismissed or low risk', () => {
+    it('hides banner when riskLevel is low', () => {
+      churnSignalsState.riskLevel = 'low';
+      churnSignalsState.topRiskFactors = [];
 
-    const resetButton = screen.getByText('重置');
-    fireEvent.click(resetButton);
+      render(<App />);
 
-    expect(mockResetStreak).toHaveBeenCalledTimes(1);
-  });
+      expect(screen.queryByTestId('churn-alert-banner')).not.toBeInTheDocument();
+    });
 
-  it('focus mode shows streak badge', () => {
-    mockStreak = 5;
+    it('hides banner when riskLevel is medium', () => {
+      churnSignalsState.riskLevel = 'medium';
+      churnSignalsState.topRiskFactors = [
+        { type: 'inactive_days', value: 2, severity: 0.4, description: '2天未学习' },
+      ];
 
-    render(<App />);
+      render(<App />);
 
-    // Enter focus mode
-    fireEvent.click(screen.getByText('专注模式'));
+      expect(screen.queryByTestId('churn-alert-banner')).not.toBeInTheDocument();
+    });
 
-    expect(screen.getByTestId('streak-feedback')).toBeInTheDocument();
+    it('banner can be dismissed and hides after click', async () => {
+      churnSignalsState.riskLevel = 'high';
+      churnSignalsState.topRiskFactors = [
+        { type: 'inactive_days', value: 3, severity: 0.7, description: '3天未学习' },
+      ];
+
+      const { rerender } = render(<App />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('churn-alert-banner')).toBeInTheDocument();
+      });
+
+      // Find and click the dismiss button (X icon)
+      const dismissButton = screen.getByRole('button', { name: '关闭' });
+      fireEvent.click(dismissButton);
+
+      // Re-render to pick up localStorage changes (AnimatePresence mock just passes through)
+      rerender(<App />);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('churn-alert-banner')).not.toBeInTheDocument();
+      });
+    });
   });
 });

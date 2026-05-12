@@ -54,6 +54,13 @@ const mockOptions = [
   },
 ];
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
     state: {

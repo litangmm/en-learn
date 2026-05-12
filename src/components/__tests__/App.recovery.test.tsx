@@ -31,6 +31,13 @@ const mockReset = vi.fn();
 const mockAddXP = vi.fn(() => ({ finalXP: 15, multiplier: 1.0, streak: 0 }));
 const mockSpeak = vi.fn();
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
     state: {

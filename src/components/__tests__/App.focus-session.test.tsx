@@ -10,6 +10,13 @@ const mockRetry = vi.fn();
 const mockReset = vi.fn();
 const mockSpeak = vi.fn();
 
+vi.mock('@/hooks/useChurnSignals', () => ({
+  useChurnSignals: vi.fn(() => ({
+    riskLevel: 'low',
+    topRiskFactors: [],
+  })),
+}));
+
 vi.mock('@/hooks/usePractice', () => ({
   usePractice: vi.fn(() => ({
     state: {

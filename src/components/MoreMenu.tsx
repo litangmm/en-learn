@@ -1,4 +1,4 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -24,6 +24,7 @@ interface MoreMenuProps {
   onOpenBadges: () => void;
   onOpenLeaderboard: () => void;
   onOpenWeakness: () => void;
+  onOpenInvite?: () => void;
 }
 
 export function MoreMenu({
@@ -42,6 +43,7 @@ export function MoreMenu({
   onOpenBadges,
   onOpenLeaderboard,
   onOpenWeakness,
+  onOpenInvite,
 }: MoreMenuProps) {
   return (
     <DropdownMenu>
@@ -133,6 +135,14 @@ export function MoreMenu({
           <TrendingUp className="w-4 h-4 text-slate-500" />
           <span>排行</span>
         </DropdownMenuItem>
+
+        {/* 邀请好友 */}
+        {onOpenInvite && (
+          <DropdownMenuItem onClick={onOpenInvite} className="cursor-pointer">
+            <Users className="w-4 h-4 text-slate-500" />
+            <span>邀请好友</span>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

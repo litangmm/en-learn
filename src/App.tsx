@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles, Zap } from 'lucide-react';
+import { Headphones, Eye, X, Trophy, Award, TrendingUp, Sparkles, Zap, Users } from 'lucide-react';
 import { usePractice } from '@/hooks/usePractice';
 import { useSpeech } from '@/hooks/useSpeech';
 import { useXP } from '@/hooks/useXP';
@@ -578,6 +578,14 @@ function App() {
     setView('practice');
   };
 
+  const handleOpenInvite = () => {
+    setView('invite');
+  };
+
+  const handleBackFromInvite = () => {
+    setView('practice');
+  };
+
   const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
@@ -638,6 +646,9 @@ function App() {
         break;
       case 'leaderboard':
         setView('leaderboard');
+        break;
+      case 'invite':
+        setView('invite');
         break;
       case 'dictionary-browser':
         setView('dictionary-browser');
@@ -744,6 +755,15 @@ function App() {
                 >
                   <TrendingUp className="w-4 h-4" />
                 </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleOpenInvite}
+                  className="relative text-slate-500 gap-1 p-1"
+                  data-testid="invite-header-button"
+                >
+                  <Users className="w-4 h-4" />
+                </Button>
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
                 </div>
@@ -780,6 +800,7 @@ function App() {
                 onOpenBadges={handleOpenBadges}
                 onOpenLeaderboard={handleOpenLeaderboard}
                 onOpenWeakness={handleOpenWeakness}
+                onOpenInvite={handleOpenInvite}
               />
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
@@ -1014,6 +1035,7 @@ function App() {
           onLeaderboardCategoryChange={setLeaderboardCategory}
           onLeaderboardTimeFilterChange={setLeaderboardTimeFilter}
           onBackFromLeaderboard={handleBackFromLeaderboard}
+          onBackFromInvite={handleBackFromInvite}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {view === 'practice' && !state.isComplete && (

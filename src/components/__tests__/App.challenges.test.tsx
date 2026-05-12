@@ -199,6 +199,13 @@ vi.mock('@/services/storage', () => ({
     addPersonalWord: vi.fn(),
     removePersonalWord: vi.fn(),
     getPersonalWordCount: vi.fn(() => 0),
+    getBadges: vi.fn(() => ({ unlocked: [], progress: { totalAnswered: 0, totalCorrect: 0, totalSessions: 0, maxStreakEver: 0, perfectSessions: 0, totalReviews: 0, totalChallengesCompleted: 0 } })),
+    getShareMetrics: vi.fn(() => ({ totalShareCount: 0, formatCounts: { text: 0, image: 0 }, typeCounts: {}, lastShareAt: null, firstShareAt: null })),
+    getInviteMetrics: vi.fn(() => ({ inviteCode: null, invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: null, lastSharedAt: null })),
+    updateInviteMetrics: vi.fn(),
+    generateInviteCode: vi.fn(() => 'TESTCODE1'),
+    initInviteMetrics: vi.fn(() => ({ inviteCode: 'TESTCODE1', invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: Date.now(), lastSharedAt: null })),
+    getInviteConfig: vi.fn(() => ({ rewardXPPerInvite: 50, maxInvitesAllowed: 0 })),
   },
 }));
 

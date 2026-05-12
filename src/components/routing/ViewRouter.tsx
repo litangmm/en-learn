@@ -11,6 +11,7 @@ import { ProgressHub } from '@/components/ProgressHub';
 import { LearningProfile } from '@/components/LearningProfile';
 import { WeaknessPanel } from '@/components/WeaknessPanel';
 import { LearningEfficiencyPanel } from '@/components/LearningEfficiencyPanel';
+import { InviteFriendsPanel } from '@/components/InviteFriendsPanel';
 
 export type View =
   | 'practice'
@@ -25,7 +26,8 @@ export type View =
   | 'challenges'
   | 'badges'
   | 'leaderboard'
-  | 'dictionary-browser';
+  | 'dictionary-browser'
+  | 'invite';
 
 export interface ViewRouterProps {
   view: View;
@@ -64,6 +66,7 @@ export interface ViewRouterProps {
   onLeaderboardCategoryChange: (category: LeaderboardCategory) => void;
   onLeaderboardTimeFilterChange: (filter: LeaderboardTimeFilter) => void;
   onBackFromLeaderboard: () => void;
+  onBackFromInvite?: () => void;
 }
 
 export function ViewRouter(props: ViewRouterProps) {
@@ -93,6 +96,7 @@ export function ViewRouter(props: ViewRouterProps) {
     onLeaderboardCategoryChange,
     onLeaderboardTimeFilterChange,
     onBackFromLeaderboard,
+    onBackFromInvite = () => {},
   } = props;
 
   switch (view) {
@@ -167,6 +171,9 @@ export function ViewRouter(props: ViewRouterProps) {
 
     case 'dictionary-browser':
       return <DictionaryBrowser onBack={onBackFromDataManager} />;
+
+    case 'invite':
+      return <InviteFriendsPanel onBack={onBackFromInvite} />;
 
     case 'practice':
     default:

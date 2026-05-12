@@ -1,6 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig } from '@/data/types';
-import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig } from '@/data/types';
+import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
 export interface StorageSchemaV1 {
@@ -34,7 +34,11 @@ const HINT_CONFIG_KEY = 'hint_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
 const DAILY_REVIEW_STATS_KEY = 'en-learn-daily-review-stats';
 const WEEKLY_REPORT_CONFIG_KEY = 'en-learn-weekly-report-config';
+const INVITE_METRICS_KEY = 'en-learn-invite-metrics';
+const INVITE_CONFIG_KEY = 'en-learn-invite-config';
 const MAX_HISTORY_ENTRIES = 100;
+const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const INVITE_CODE_LENGTH = 8;
 
 function isValidV1Session(data: unknown): data is StorageSchemaV1 {
   if (typeof data !== 'object' || data === null) {
@@ -367,6 +371,58 @@ function isValidWeeklyReportConfig(data: unknown): data is WeeklyReportConfig {
   }
 
   if (obj.dismissedAt !== null && typeof obj.dismissedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidInviteMetrics(data: unknown): data is InviteMetrics {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (obj.inviteCode !== null && typeof obj.inviteCode !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.invitesSent !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.invitesAccepted !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.rewardsEarned !== 'number') {
+    return false;
+  }
+
+  if (obj.createdAt !== null && typeof obj.createdAt !== 'number') {
+    return false;
+  }
+
+  if (obj.lastSharedAt !== null && typeof obj.lastSharedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidInviteConfig(data: unknown): data is InviteConfig {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.rewardXPPerInvite !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.maxInvitesAllowed !== 'number') {
     return false;
   }
 
@@ -811,6 +867,70 @@ function saveWeeklyReportConfig(config: WeeklyReportConfig): void {
     localStorage.setItem(WEEKLY_REPORT_CONFIG_KEY, JSON.stringify(config));
   } catch (error) {
     console.warn('[StorageService] Failed to save weekly report config:', error);
+  }
+}
+
+function loadInviteMetrics(): InviteMetrics | null {
+  const raw = localStorage.getItem(INVITE_METRICS_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted invite metrics data, clearing');
+    localStorage.removeItem(INVITE_METRICS_KEY);
+    return null;
+  }
+
+  if (!isValidInviteMetrics(parsed)) {
+    console.warn('[StorageService] Invalid invite metrics schema, clearing');
+    localStorage.removeItem(INVITE_METRICS_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveInviteMetrics(metrics: InviteMetrics): void {
+  try {
+    localStorage.setItem(INVITE_METRICS_KEY, JSON.stringify(metrics));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save invite metrics:', error);
+  }
+}
+
+function loadInviteConfig(): InviteConfig | null {
+  const raw = localStorage.getItem(INVITE_CONFIG_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted invite config data, clearing');
+    localStorage.removeItem(INVITE_CONFIG_KEY);
+    return null;
+  }
+
+  if (!isValidInviteConfig(parsed)) {
+    console.warn('[StorageService] Invalid invite config schema, clearing');
+    localStorage.removeItem(INVITE_CONFIG_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveInviteConfig(config: InviteConfig): void {
+  try {
+    localStorage.setItem(INVITE_CONFIG_KEY, JSON.stringify(config));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save invite config:', error);
   }
 }
 
@@ -1450,6 +1570,61 @@ export const StorageService = {
     config.dismissed = false;
     config.dismissedAt = null;
     this.saveWeeklyReportConfig(config);
+  },
+
+  // Invite Metrics CRUD
+  getInviteMetrics(): InviteMetrics {
+    const metrics = loadInviteMetrics();
+    return metrics ?? { ...DEFAULT_INVITE_METRICS };
+  },
+
+  updateInviteMetrics(updater: (prev: InviteMetrics) => Partial<InviteMetrics>): InviteMetrics {
+    const current = this.getInviteMetrics();
+    const updates = updater(current);
+    const updated: InviteMetrics = { ...current, ...updates };
+    saveInviteMetrics(updated);
+    return updated;
+  },
+
+  generateInviteCode(): string {
+    let code = '';
+    if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+      const randomValues = new Uint32Array(INVITE_CODE_LENGTH);
+      crypto.getRandomValues(randomValues);
+      for (let i = 0; i < INVITE_CODE_LENGTH; i++) {
+        code += INVITE_CODE_CHARS[randomValues[i] % INVITE_CODE_CHARS.length];
+      }
+    } else {
+      // Fallback to Math.random
+      for (let i = 0; i < INVITE_CODE_LENGTH; i++) {
+        code += INVITE_CODE_CHARS[Math.floor(Math.random() * INVITE_CODE_CHARS.length)];
+      }
+    }
+    return code;
+  },
+
+  initInviteMetrics(): InviteMetrics {
+    const existing = loadInviteMetrics();
+    if (existing && existing.inviteCode) {
+      return existing;
+    }
+    const newCode = this.generateInviteCode();
+    const metrics: InviteMetrics = {
+      ...DEFAULT_INVITE_METRICS,
+      inviteCode: newCode,
+      createdAt: Date.now(),
+    };
+    saveInviteMetrics(metrics);
+    return metrics;
+  },
+
+  getInviteConfig(): InviteConfig {
+    const config = loadInviteConfig();
+    return config ?? { ...DEFAULT_INVITE_CONFIG };
+  },
+
+  setInviteConfig(config: InviteConfig): void {
+    saveInviteConfig(config);
   },
 
   exportAllData(): ExportData {

@@ -557,3 +557,52 @@ export const DEFAULT_WEEKLY_REPORT_CONFIG: WeeklyReportConfig = {
   dismissed: false,
   dismissedAt: null,
 };
+
+/**
+ * Invite metrics for tracking invite code usage and rewards.
+ * Used by the invite friends feature (epic-029).
+ */
+export interface InviteMetrics {
+  /** The user's invite code (8-character alphanumeric, uppercase) */
+  inviteCode: string | null;
+  /** Number of invite codes shared/sent */
+  invitesSent: number;
+  /** Number of invites that were accepted by friends */
+  invitesAccepted: number;
+  /** Total XP rewards earned from accepted invites */
+  rewardsEarned: number;
+  /** Timestamp when the invite code was first created */
+  createdAt: number | null;
+  /** Timestamp of the most recent share */
+  lastSharedAt: number | null;
+}
+
+/**
+ * Default invite metrics values.
+ */
+export const DEFAULT_INVITE_METRICS: InviteMetrics = {
+  inviteCode: null,
+  invitesSent: 0,
+  invitesAccepted: 0,
+  rewardsEarned: 0,
+  createdAt: null,
+  lastSharedAt: null,
+};
+
+/**
+ * Configuration for invite code generation settings.
+ */
+export interface InviteConfig {
+  /** XP reward amount per accepted invite */
+  rewardXPPerInvite: number;
+  /** Maximum number of invites a user can send (0 = unlimited) */
+  maxInvitesAllowed: number;
+}
+
+/**
+ * Default invite config values.
+ */
+export const DEFAULT_INVITE_CONFIG: InviteConfig = {
+  rewardXPPerInvite: 50,
+  maxInvitesAllowed: 0,
+};

@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.66.0",
+      "tag": "v0.66.0",
+      "commit": "b792462",
+      "date": "2026-05-12T16:08:11.658Z",
+      "iterationId": "iter-003",
+      "title": "搜索性能优化（debounce + 索引查询）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-ht5kl9szk-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.65.0",
       "tag": "v0.65.0",
       "commit": "f458b48",

@@ -7,6 +7,16 @@
 
 ## 历史提案
 
+### 2026-05-13 (cycle-2026-05-13-156) — epic-043 iter-003 REPORT 完成 (1806 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、搜索性能验证、索引查询边界测试、构建稳定性
+- **本次验证**: epic-043 iter-003 REPORT 阶段归档
+  - searchByQuery O(1) 查询集成测试（16 tests）：空查询/前缀查询/多词查询/Unicode 兼容
+  - search-performance.benchmark.test.ts（16 tests）：验证 O(1) 查询性能，防止性能回归
+  - 搜索防抖机制测试：300ms debounce 减少无效查询
+  - 全量回归：**1806/1807 单元测试通过**（1 skipped，历史最高水位），lint 4 warnings（pre-existing），build 3.60s success
+- **当前状态**: **连续未被选中计数保持清零**（epic-043 质量门禁）
+- **观察**: 1806 测试零回归，epic-043 完成度 3/5。**epic-043 剩余 iter-004（PersonalWord 独立索引）、iter-005（数据迁移脚本），继续关注测试覆盖完整性**
+
 ### 2026-05-13 (cycle-2026-05-13-155) — epic-043 iter-003 完成 (1806 tests, 历史最高水位)
 - **相关质量门禁**: 单元测试回归、搜索性能验证、索引查询边界测试、构建稳定性
 - **本次验证**: epic-043 iter-003「搜索性能优化（debounce + 索引查询）」质量门禁验证

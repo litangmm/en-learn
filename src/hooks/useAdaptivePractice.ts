@@ -1,6 +1,7 @@
 import type { Sentence, ChoiceOption, AdaptiveConfig } from '@/data/types';
 import { isDefinitionSentence } from '@/data/types';
 import { storage } from '@/services/storage';
+import { personalWordToSentence } from '@/data/personalWordIndex';
 
 /**
  * Hook providing adaptive distractor selection for multiple-choice practice.
@@ -54,6 +55,7 @@ export function useAdaptivePractice() {
 
 /**
  * Get random distractors (baseline strategy).
+ * Uses personal word sentences as additional distractor pool.
  */
 function getRandomDistractors(correctAnswerId: string, allSentences: Sentence[]): ChoiceOption[] {
   const correctSentence = allSentences.find((s) => s.id === correctAnswerId);
@@ -61,8 +63,18 @@ function getRandomDistractors(correctAnswerId: string, allSentences: Sentence[])
     return [];
   }
 
+  // Get personal word sentences as additional distractor pool
+  const personalWords = storage.getPersonalWords();
+  const personalWordSentences: Sentence[] = personalWords
+    .filter((pw) => pw.word)
+    .slice(0, 20) // Limit to 20 for performance
+    .map((pw, i) => personalWordToSentence(pw, `pw-distractor-${i}`));
+
+  // Combine dictionary sentences and personal word sentences
+  const combinedPool = [...allSentences, ...personalWordSentences];
+
   // Get all non-correct candidates and filter out too-similar ones
-  const rawDistractors = allSentences.filter((s) => s.id !== correctAnswerId);
+  const rawDistractors = combinedPool.filter((s) => s.id !== correctAnswerId);
   const filteredDistractors = filterSimilarDistractors(correctSentence, rawDistractors);
 
   // Prefer filtered (if we have enough), otherwise fall back to raw

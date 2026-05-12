@@ -850,3 +850,47 @@ export interface DictionaryIndex {
    */
   getIndexedIds(): string[];
 }
+
+// ============================================================================
+// PersonalWord Index Types (epic-043 iter-004)
+// ============================================================================
+
+/**
+ * A single indexed entry for a personal word.
+ * Contains the word itself and its associated personal word data.
+ */
+export interface PersonalWordIndexEntry {
+  /** The personal word data */
+  personalWord: PersonalWord;
+  /** Words extracted from the example sentence (lowercase, deduplicated) */
+  exampleSentenceWords: string[];
+}
+
+/**
+ * Personal word index for O(1) lookup of personal words by word or prefix.
+ * Indexes both the word itself and words from example sentences.
+ */
+export interface PersonalWordIndex {
+  /** Map of lowercase word -> PersonalWordIndexEntry */
+  byWord: Map<string, PersonalWordIndexEntry>;
+  /** Get all personal words as Sentence format (for practice mode) */
+  getAllAsSentences(): Sentence[];
+  /**
+   * Check if a word exists in the index.
+   * @param word - The word to check (case-insensitive)
+   * @returns true if the word exists
+   */
+  hasWord(word: string): boolean;
+  /**
+   * Get a personal word entry by exact word match.
+   * @param word - The word to search (case-insensitive)
+   * @returns The entry if found, undefined otherwise
+   */
+  getByWord(word: string): PersonalWordIndexEntry | undefined;
+  /**
+   * Get personal word entries by prefix match.
+   * @param prefix - The prefix to search (case-insensitive)
+   * @returns Array of entries matching the prefix
+   */
+  getByPrefix(prefix: string): PersonalWordIndexEntry[];
+}

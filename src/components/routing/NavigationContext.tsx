@@ -1,4 +1,4 @@
-import { createContext, useContext, useCallback, type ReactNode } from 'react';
+import { createContext, useCallback, type ReactNode } from 'react';
 import type { View } from './ViewRouter';
 
 export type { View } from './ViewRouter';
@@ -9,6 +9,7 @@ export interface NavigationContextValue {
 }
 
 const NavigationContext = createContext<NavigationContextValue | null>(null);
+export { NavigationContext };
 
 export interface NavigationProviderProps {
   view: View;
@@ -26,13 +27,4 @@ export function NavigationProvider({ view, onNavigate, children }: NavigationPro
       {children}
     </NavigationContext.Provider>
   );
-}
-
-// Hook in same file - acceptable for context consumers
-export function useNavigation(): NavigationContextValue {
-  const context = useContext(NavigationContext);
-  if (!context) {
-    throw new Error('useNavigation must be used within a NavigationProvider');
-  }
-  return context;
 }

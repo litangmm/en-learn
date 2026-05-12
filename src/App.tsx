@@ -370,7 +370,7 @@ function App() {
         }
       }
     }
-  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel, profile.totalXP, checkLevelUp, checkStreakMilestone, checkXPMilestone, checkBadgeUnlock, trackProgressRef]);
+  }, [state.showResult, state.isCorrect, currentSentence, state.attempts, practiceMode, addXP, recordCorrectAnswer, trackActivity, streak, profile.currentLevel, profile.totalXP, checkLevelUp, checkStreakMilestone, checkXPMilestone, checkBadgeUnlock, trackProgressRef, recordCorrect]);
 
   // Reset streak on wrong answer
   useEffect(() => {
@@ -386,7 +386,7 @@ function App() {
       // Goal progress tracking (epic-037 iter-002)
       trackProgressRef.current('streak', 0);
     }
-  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity, profile.currentLevel, trackProgressRef]);
+  }, [state.showResult, state.isCorrect, recordWrongAnswer, trackActivity, profile.currentLevel, trackProgressRef, recordWrong]);
   // Session completion badge tracking
   useEffect(() => {
     if (state.isComplete) {

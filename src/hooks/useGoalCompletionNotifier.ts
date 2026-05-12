@@ -27,10 +27,10 @@ export function useGoalCompletionNotifier() {
       previousCompletedRef.current[goal.id] = goal.completed;
     }
     if (newCompletion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCompletedGoal(newCompletion);
       setTriggerKey(Date.now());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.goals]);
 
   const dismiss = () => {

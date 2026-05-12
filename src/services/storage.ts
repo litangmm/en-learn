@@ -1,5 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState } from '@/data/types';
+import { MILESTONE_DEFINITIONS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
@@ -38,6 +39,7 @@ const WEEKLY_REPORT_CONFIG_KEY = 'en-learn-weekly-report-config';
 const INVITE_METRICS_KEY = 'en-learn-invite-metrics';
 const INVITE_CONFIG_KEY = 'en-learn-invite-config';
 const GOALS_KEY = 'en-learn-goals';
+const MILESTONES_KEY = 'en-learn-milestones';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -382,6 +384,50 @@ function isValidGoalState(data: unknown): data is GoalState {
   }
 
   if (!obj.goals.every(isValidGoal)) {
+    return false;
+  }
+
+  if (typeof obj.updatedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Milestone System Validators (epic-037)
+// ---------------------------------------------------------------------------
+
+function isValidMilestone(data: unknown): data is Milestone {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.id !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.unlockedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidMilestoneState(data: unknown): data is MilestoneState {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (!Array.isArray(obj.unlockedMilestones)) {
+    return false;
+  }
+
+  if (!obj.unlockedMilestones.every(isValidMilestone)) {
     return false;
   }
 
@@ -1037,6 +1083,38 @@ function saveGoals(state: GoalState): void {
     localStorage.setItem(GOALS_KEY, JSON.stringify(state));
   } catch (error) {
     console.warn('[StorageService] Failed to save goals:', error);
+  }
+}
+
+function loadMilestones(): MilestoneState | null {
+  const raw = localStorage.getItem(MILESTONES_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted milestones data, clearing');
+    localStorage.removeItem(MILESTONES_KEY);
+    return null;
+  }
+
+  if (!isValidMilestoneState(parsed)) {
+    console.warn('[StorageService] Invalid milestone state schema, clearing');
+    localStorage.removeItem(MILESTONES_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveMilestones(state: MilestoneState): void {
+  try {
+    localStorage.setItem(MILESTONES_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save milestones:', error);
   }
 }
 
@@ -1769,6 +1847,62 @@ export const StorageService = {
     };
     saveGoals(state);
     return state;
+  },
+
+  // Milestones CRUD (epic-037)
+  getMilestones(): MilestoneState {
+    const state = loadMilestones();
+    if (state === null) {
+      return { unlockedMilestones: [], updatedAt: Date.now() };
+    }
+    return state;
+  },
+
+  saveMilestones(state: MilestoneState): void {
+    saveMilestones(state); // Call module-level function (line 1113)
+  },
+
+  awardMilestone(milestoneId: string): Milestone | null {
+    // Find the milestone definition
+    const definition = MILESTONE_DEFINITIONS.find((m) => m.id === milestoneId);
+    if (!definition) {
+      console.warn(`[StorageService] Milestone definition not found: ${milestoneId}`);
+      return null;
+    }
+
+    // Load current state
+    const state = this.getMilestones();
+
+    // Check if already unlocked (idempotent)
+    const alreadyUnlocked = state.unlockedMilestones.some((m) => m.id === milestoneId);
+    if (alreadyUnlocked) {
+      return null;
+    }
+
+    // Create the unlocked milestone entry
+    const milestone: Milestone = {
+      id: milestoneId,
+      unlockedAt: Date.now(),
+    };
+
+    // Award XP reward first (before saving to ensure consistency)
+    if (definition.xpReward > 0) {
+      try {
+        this.addXP(definition.xpReward);
+      } catch (error) {
+        console.warn(`[StorageService] Failed to award XP for milestone ${milestoneId}:`, error);
+        // Continue anyway - milestone unlock should still be recorded
+      }
+    }
+
+    // Add to state and save
+    const updatedState: MilestoneState = {
+      unlockedMilestones: [...state.unlockedMilestones, milestone],
+      updatedAt: Date.now(),
+    };
+    this.saveMilestones(updatedState);
+
+    return milestone;
   },
 
   exportAllData(): ExportData {

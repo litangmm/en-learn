@@ -1,4 +1,4 @@
-import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart, Target as GoalIcon } from 'lucide-react';
+import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart, Target as GoalIcon, Award } from 'lucide-react';
 import { MilestoneCard } from './MilestoneCard';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
@@ -7,7 +7,10 @@ import { DictionaryProgressOverview } from './DictionaryProgressOverview';
 import { ReviewStreakCalendar } from './ReviewStreakCalendar';
 import { LearningTimeInsights } from './LearningTimeInsights';
 import { GoalProgressCard } from './GoalProgressCard';
+import { LongTermMilestoneCard } from './LongTermMilestoneCard';
+import { MilestonePath } from './MilestonePath';
 import { useProgressStats, getThisWeekReport, getDictionaryProgress, getReviewStreak } from '@/hooks/useProgressStats';
+import { useMilestones } from '@/hooks/useMilestones';
 import type { View } from './routing';
 import type { Goal } from '@/data/types';
 
@@ -19,6 +22,13 @@ export interface ProgressHubProps {
 
 export function ProgressHub({ onNavigate, goals }: ProgressHubProps) {
   const stats = useProgressStats();
+  const {
+    unlockedMilestones,
+    totalLearningDays,
+    nextMilestone,
+    milestoneProgress,
+    milestoneDefinitions,
+  } = useMilestones();
 
   // Get data for new visualization cards
   const weeklyReport = getThisWeekReport();
@@ -141,6 +151,30 @@ export function ProgressHub({ onNavigate, goals }: ProgressHubProps) {
           value={stats.totalXP}
           subtitle="经验值"
         />
+      </div>
+
+      {/* Long Term Milestone Card (epic-037 iter-003) */}
+      <div className="mb-4">
+        <LongTermMilestoneCard
+          totalLearningDays={totalLearningDays}
+          unlockedMilestones={unlockedMilestones}
+          nextMilestone={nextMilestone}
+          milestoneProgress={milestoneProgress}
+        />
+      </div>
+
+      {/* Milestone Path Section (epic-037 iter-003) */}
+      <div className="mb-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Award className="w-4 h-4 text-indigo-500" />
+          <h2 className="text-sm font-medium text-slate-700">成就之路</h2>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <MilestonePath
+            milestoneDefinitions={milestoneDefinitions}
+            unlockedMilestones={unlockedMilestones}
+          />
+        </div>
       </div>
 
       {/* Charts Section */}

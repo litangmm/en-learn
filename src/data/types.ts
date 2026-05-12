@@ -679,3 +679,108 @@ export const WEEKLY_QUESTION_PRESETS = [30, 50, 100] as const;
 
 /** Preset values for weekly XP goals */
 export const WEEKLY_XP_PRESETS = [300, 500, 800] as const;
+
+// ============================================================================
+// Milestone System Types (epic-037)
+// ============================================================================
+
+/**
+ * Definition of a learning milestone.
+ * Milestones are based on cumulative learning days (totalReviewDays).
+ */
+export interface MilestoneDefinition {
+  /** Unique identifier for this milestone */
+  id: string;
+  /** Chinese title */
+  title: string;
+  /** English title */
+  titleEn: string;
+  /** Emoji icon for display */
+  icon: string;
+  /** XP reward when this milestone is unlocked */
+  xpReward: number;
+  /** Required learning days to unlock */
+  requiredDays: number;
+}
+
+/**
+ * Constant milestone definitions based on cumulative learning days.
+ */
+export const MILESTONE_DEFINITIONS: MilestoneDefinition[] = [
+  {
+    id: '7-days',
+    title: '初露锋芒',
+    titleEn: 'First Week',
+    icon: '☀️',
+    xpReward: 20,
+    requiredDays: 7,
+  },
+  {
+    id: '14-days',
+    title: '坚持不懈',
+    titleEn: 'Two Weeks',
+    icon: '🌟',
+    xpReward: 50,
+    requiredDays: 14,
+  },
+  {
+    id: '30-days',
+    title: '月度学习者',
+    titleEn: 'One Month',
+    icon: '🌙',
+    xpReward: 100,
+    requiredDays: 30,
+  },
+  {
+    id: '60-days',
+    title: '双月成就',
+    titleEn: 'Two Months',
+    icon: '⭐',
+    xpReward: 200,
+    requiredDays: 60,
+  },
+  {
+    id: '90-days',
+    title: '季度达人',
+    titleEn: 'Three Months',
+    icon: '🌈',
+    xpReward: 300,
+    requiredDays: 90,
+  },
+  {
+    id: '180-days',
+    title: '半年坚持',
+    titleEn: 'Half Year',
+    icon: '🎯',
+    xpReward: 500,
+    requiredDays: 180,
+  },
+  {
+    id: '365-days',
+    title: '年度学习者',
+    titleEn: 'One Year',
+    icon: '🏆',
+    xpReward: 1000,
+    requiredDays: 365,
+  },
+];
+
+/**
+ * An unlocked milestone entry.
+ */
+export interface Milestone {
+  /** Milestone definition ID */
+  id: string;
+  /** Timestamp when this milestone was unlocked (milliseconds) */
+  unlockedAt: number;
+}
+
+/**
+ * State wrapper for milestone tracking.
+ */
+export interface MilestoneState {
+  /** List of unlocked milestones */
+  unlockedMilestones: Milestone[];
+  /** Last update timestamp (milliseconds) */
+  updatedAt: number;
+}

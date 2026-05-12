@@ -147,6 +147,26 @@ describe('SmartReview', () => {
     expect(screen.getByText('已复习 3 次')).toBeInTheDocument();
   });
 
+  it('shows 已掌握 badge when reviewedCount >= 3', async () => {
+    vi.spyOn(storage, 'getReviewQueue').mockReturnValue([
+      createMockMistake({ sentenceId: '1', dictionaryId: 'junior', reviewedCount: 3 }),
+    ]);
+
+    render(
+      <SmartReview onPracticeReview={mockOnPracticeReview} onBack={mockOnBack} />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('The early bird catches the worm.')).toBeInTheDocument();
+    });
+
+    // Priority badge shows '已掌握' for reviewedCount >= 3
+    expect(screen.getByText('已掌握')).toBeInTheDocument();
+    // Verify the badge element
+    const badge = screen.getByText('已掌握').closest('[class*="badge"]') || screen.getByText('已掌握').parentElement;
+    expect(badge).toBeInTheDocument();
+  });
+
   it('shows practice all button when only one dictionary group', async () => {
     vi.spyOn(storage, 'getReviewQueue').mockReturnValue([
       createMockMistake({ sentenceId: '1', dictionaryId: 'junior' }),

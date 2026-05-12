@@ -8,6 +8,34 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-95)
+- **状态**: epic-027 全部 5 个迭代完成，下轮 cycle-95 触发全新 brainstorm
+- **Epic 完成**: epic-027「沉浸式多模态练习模式」（v0.43.0-v0.44.0）
+- **待处理**: cycle-91 产出的剩余 5 个 Epic 提案（epic-020/022/023/024/025），需在 cycle-95 brainstorm 中重新评估优先级
+- **观察**: epic-026/027 均已完成，brainstormResults 中的这两个条目已消费。cycle-95 brainstorm 需要所有 Agent 重新评估剩余提案并产出新 Epic。ARCH 提出的 epic-022「词典数据结构优化」应获重点关注（用户词库越大，查询性能越关键）。
+- **状态**: 本次未进行 brainstorm（epic-014 iter-001 执行中）
+- **原因**: epic-014 仍有 pending iterations（iter-002~006），直接继续执行
+- **产出**: 5 个 Epic 候选（epic-014/016/017/019/021），epic-014「主练习链路稳定性打磨」获最高优先级（PM-UX 提出，dir-1778465917386 指令驱动，4 支持）
+- **Epic 状态更新**: epic-014 iter-001 完成，1/6 迭代完成。epic-009 全部 3 个迭代收官。epic-014 iter-002~006 继续 pending，run.sh 会自动检测并继续 PLAN
+- **观察**: epic-014 的 8 个问题全部来自 dir-1778465917386 指令（用户完整评测反馈），指令驱动 Epic 的模式再次验证。epic-017「应用配置架构重构」积压，应在 epic-014 完成后立即推进
+
+### 2026-05-10 (cycle-2026-05-10-26)
+- **状态**: 全新 brainstorm（epic-003 全部完成后首次）
+- **参与 Agent**: 9 个（PM-Lean, PM-UX, PM-Mon, PM-Growth, PM-Eco, ARCH, UX, QA, EXP）
+- **产出 Epic**: 6 个（epic-004~010，不含 epic-001/002/003 已完成）
+- **选中 Epic**: epic-004「体验优化与响应式适配」（PM-UX 提出，PM-Lean/UX/QA/PM-Growth 支持）
+- **观察**: 核心分歧在于「用户可见的体验修复（epic-004）」vs「技术债务清偿（epic-006）」的优先级权衡。epic-004 以压倒性支持胜出，原因有三：（1）用户指令 dir-user-review-001 明确指定 epic-004 在 epic-003 完成后执行；（2）用户反馈指出移动端基础可用性是「从 demo 升级为日常学习工具的最大瓶颈」；（3）epic-004 的 5 个迭代均为小工作量、独立可测、高用户价值。ARCH 的 epic-006 获 PM-Mon/QA 支持，被评定为次高优先级——共识是 epic-004 完成后必须立即执行 epic-006，否则后续任何 Epic 都将在不可维护的代码基础上叠加复杂度（App.tsx 已接近 300 行条件渲染）。PM-Growth 的 epic-005「社交裂变」因游戏化数据全量就绪而保持 medium。PM-Eco 成功将 epic-007「个人词典管理」从 low 提升为 medium。epic-008 和 epic-010 维持 low。ARCH/PM-Mon/PM-Eco 连续 17 次未被选中的 streak 在本次 brainstorm 中得到关注——epic-006 和 epic-007 的优先级提升是对这些 Agent 长期未选中状态的回应。
+
+### 2026-05-10 (cycle-2026-05-10-28)
+- **状态**: 本次未进行 brainstorm（epic-004 仍有 pending iterations）
+- **原因**: epic-004 仍有 pending iterations（iter-004 智能复习规则可视化、iter-005 首次/恢复弹窗体验打磨），直接继续执行
+- **观察**: epic-004 iter-003「模式语义与题目数据统一（P2）」已完成，3/5 迭代完成。epic-006 架构债务清理的 critical 优先级持续累积——ARCH/PM-Mon/PM-Eco 已连续 20 个 cycle 未被选中，技术债务呈非线性累积，重构窗口正在加速关闭。epic-004 完成后，必须立即启动 epic-006
+
+### 2026-05-09 (cycle-2026-05-09-19)
+- **状态**: 本次未进行 brainstorm（epic-003 仍有 pending iterations）
+- **原因**: epic-003 仍有 pending iterations（iter-004 成就徽章、iter-005 学习排行榜），直接继续执行
+- **观察**: epic-003 iter-003 每日挑战任务面板已完成，仅剩 2 个迭代。ARCH/PM-Mon/PM-Eco 连续 15 个 cycle 未被选中，反思记录已更新。epic-003 完成后 brainstorm 时需重点关注这些 Agent 的策略调整和优先级重新评估
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **状态**: 全新 brainstorm（epic-002 全部完成后首次）
 - **参与 Agent**: 9 个（PM-Lean, PM-UX, PM-Mon, PM-Growth, PM-Eco, ARCH, UX, QA, EXP）
@@ -67,6 +95,11 @@
 - **原因**: epic-002 仍有 pending iterations（iter-003b, iter-004, iter-005），直接继续执行
 - **战略指令影响**: dir-urgent-002 插入的两个紧急迭代（iter-003a 响应式UI + iter-003b 听写重设计）已在 iter-003a 中完成，iter-003b 将在下个 cycle 执行
 - **观察**: 连续 4 个 cycle 沿用 epic-002 的 brainstorm 结果。多个 Agent 连续未被选中（最长 9 次），下次 epic-002 完成后 brainstorm 时需重点关注这些 Agent 的反思记录和策略调整
+
+### 2026-05-09 (cycle-2026-05-09-17)
+- **状态**: 本次未进行 brainstorm（epic-003 仍有 pending iterations）
+- **原因**: epic-003 仍有 pending iterations（iter-003 每日挑战、iter-004 成就徽章、iter-005 学习排行榜），直接继续执行
+- **观察**: epic-003 的 iter-002 连击系统完成，游戏化正向反馈循环已初具雏形。多个 Agent 连续未被选中（最长 14 次），下次 epic-003 完成后 brainstorm 时需重点关注这些 Agent 的反思记录和策略调整
 
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **参与 Agent**: 9 个（PM-Lean, PM-UX, PM-Mon, PM-Growth, PM-Eco, ARCH, UX, QA, EXP）

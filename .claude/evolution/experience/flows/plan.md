@@ -8,6 +8,82 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整执行**
+- **计划步骤**: 10 步全部完成
+  1. FocusModeOverlay 组件设计（计时器+背景+退出按钮）
+  2. FocusSessionSummary 组件设计（统计展示）
+  3. App.tsx 集成（isFocusMode 状态）
+  4. FocusModeOverlay.test.tsx
+  5. FocusSessionSummary.test.tsx
+  6. App.focus-session.test.tsx
+  7. 全量测试验证（938 测试零回归）
+  8. Build + Lint 验证
+  9. 经验沉淀更新
+  10. Deploy + State 更新
+- **实际修改文件**: 与计划一致
+  - 修改: src/App.tsx
+  - 新增: src/components/FocusModeOverlay.tsx, src/components/FocusSessionSummary.tsx, src/components/__tests__/FocusModeOverlay.test.tsx, src/components/__tests__/FocusSessionSummary.test.tsx, src/components/__tests__/App.focus-session.test.tsx
+- **观察**: epic-027 全部 5 个迭代收官。专注模式全屏覆盖作为「视图状态扩展」而非「路由变更」，状态管理集中在 App.tsx。FocusSessionStats 与 useXP/usePractice 状态自然对接，零新增存储层。cycle-95 将触发全新 brainstorm，选下一 Epic。
+- **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整执行**
+- **计划步骤**: 8 个步骤全部完成
+  1. useProgressStats Hook 新增 getModeAccuracy() 和 getDailyXP(7)
+  2. AbilityRadar.tsx — SVG 五边形雷达图，4轴（填空/选择/排序/听写）
+  3. ProgressTrend.tsx — SVG 折线图，7天趋势，XP/题数切换
+  4. ProgressHub.tsx 集成 AbilityRadar + ProgressTrend
+  5. AbilityRadar.test.tsx
+  6. ProgressTrend.test.tsx
+  7. useProgressStats.modeStats.test.ts
+  8. 全量测试验证（876 测试零回归）
+- **实际修改文件**:
+  - 修改: src/hooks/useProgressStats.ts, src/components/ProgressHub.tsx, src/data/types.ts
+  - 新增: src/components/AbilityRadar.tsx, src/components/ProgressTrend.tsx, src/components/__tests__/AbilityRadar.test.tsx, src/components/__tests__/ProgressTrend.test.tsx, src/hooks/__tests__/useProgressStats.modeStats.test.ts
+- **观察**: 零新增依赖，纯 SVG 实现。AbilityRadar 和 ProgressTrend 无图表库引入。876 测试是项目历史最高水位。epic-018 剩余 iter-003（成就系统/学习档案）pending
+
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整执行**
+- **计划步骤**: 9 个 P0 bug 修复步骤全部完成
+  1. Bug 1: AnimatePresence mode="wait" 移除
+  2. Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef
+  3. Bug 3: MoreMenu mobile fixed positioning
+  4. Bug 4: DictionaryBrowser grid-cols 自适应
+  5. Bug 5: 听写模式提示文案澄清
+  6. Bug 6: useAdaptivePractice 相似题过滤
+  7. Bug 7: SentenceReorderMode 释义句跳过按钮
+  8. Bug 8: PracticeCard getExplanation 重写
+  9. NavigationContext._currentValue 改标准 useContext
+- **实际修改文件**: 与计划一致
+  - 修改: src/hooks/usePractice.ts, src/components/practice/PracticeCard.tsx, src/components/layout/MoreMenu.tsx, src/components/dictionary/DictionaryBrowser.tsx, src/components/App.tsx, src/hooks/useAdaptivePractice.ts, src/components/practice/SentenceReorderMode.tsx, src/components/layout/NavigationContext.tsx
+  - 新增: scripts/evolution/tech-review-prompt.md
+  - 重构: src/components/layout/shareTriggers.ts
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复。9 个步骤覆盖了从状态管理修复 → UI 布局修复 → 体验文案澄清 → 导航重构的完整链路。零新增依赖、零构建体积增长。epic-014 iter-002~006 继续 pending
+
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **完整执行**
+- **计划步骤**: 8 步全部完成，涵盖数据文件检查、isDefinitionSentence 辅助函数、ChoiceOption 接口、options 中文文本扩展、displayText 逻辑、sentence-reorder 释义句警告、测试用例更新、全量验证
+- **实际修改文件**: 与计划高度一致
+  - 修改: src/data/types.ts, src/hooks/usePractice.ts, src/components/PracticeCard.tsx
+  - 更新测试: src/hooks/__tests__/usePractice.choice.test.ts, src/components/__tests__/PracticeCard.choice.test.tsx
+- **观察**: 计划清晰可执行，8 步覆盖了从辅助函数添加 → options 生成扩展 → displayText 逻辑 → 边界处理 → 测试覆盖 → 全量验证的完整链路。isDefinitionSentence 的「引号检测」边界清晰，ChoiceOption 接口规范化了选项类型。全量 459 测试零回归
+
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整执行**
+- **计划步骤**: 8 步全部完成，涵盖类型定义（LeaderboardCategory/LeaderboardTimeFilter/LeaderboardEntry）、useLeaderboard Hook（纯函数派生排名/三分类计算/三时间筛选/同分并列）、Leaderboard 组件（分类 Tabs/时间 pills/Top-3 奖牌/空状态/列表）、App.tsx 集成（leaderboard 视图/三处导航入口）、Hook 测试、组件测试、App 集成测试、现有 mock 更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/App.tsx, src/components/MobileNav.tsx
+  - 创建: src/hooks/useLeaderboard.ts, src/components/Leaderboard.tsx, src/hooks/__tests__/useLeaderboard.test.ts, src/components/__tests__/Leaderboard.test.tsx, src/components/__tests__/App.leaderboard.test.tsx
+  - 更新测试 mock: 11 个现有 App 测试文件
+- **观察**: 计划清晰可执行。排行榜作为「纯派生数据」功能，完全不引入新的数据存储，实现成本极低。LeaderboardCategory 三分类（score/accuracy/speed）覆盖用户最关心的三个维度。时间筛选（today/week/all）满足了不同比较范围的需求。App.tsx 集成涉及 11 个现有测试文件的 mock 更新，但零行为回归
+
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **完整执行**
+- **计划步骤**: 10 步全部完成，涵盖类型定义（ChallengeType/DailyChallenge/DailyChallengeState）、存储服务扩展（DAILY_CHALLENGES_KEY/validators/CRUD/generateDailyChallenges 确定性种子洗牌/export-import）、useDailyChallenges Hook（懒加载/日期滚动/trackActivity/claimReward/未领取计数）、DailyChallengePanel 组件（Trophy 标题/进度条/领取按钮/状态徽章/空状态）、App.tsx 集成（challenges 视图/trackActivity 正误调用/Trophy 导航/徽章）、Hook 测试、组件测试、App 集成测试、现有 mock 更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/services/storage.ts, src/App.tsx
+  - 创建: src/hooks/useDailyChallenges.ts, src/components/DailyChallengePanel.tsx, src/hooks/__tests__/useDailyChallenges.test.ts, src/components/__tests__/DailyChallengePanel.test.tsx, src/components/__tests__/App.challenges.test.tsx
+  - 更新测试 mock: 9 个现有 App 测试文件
+- **观察**: 计划清晰可执行。generateDailyChallenges 的确定性种子洗牌算法（日期哈希 + Fisher-Yates seeded shuffle）确保所有用户同一天看到相同挑战组合，公平性设计避免了刷题套利。挑战池（6 选 3）设计简洁可扩展。App.tsx 集成涉及 9 个现有测试文件的 mock 更新，但零行为回归
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **完整执行**
 - **计划步骤**: 9 步全部完成，涵盖类型定义（XPProfile + LEVEL_THRESHOLDS）、存储服务扩展（XP_PROFILE_KEY、验证器、CRUD、addXP 算法）、useXP Hook（懒加载、addXP、firstTry 奖励、reset）、XPBar 组件（紧凑/全尺寸双模式）、App.tsx 集成（header/focus bar 显示、模式差异化基础 XP、awardedXPRef 防重）、存储层测试、Hook 测试、App 集成测试、全量验证
@@ -92,6 +168,15 @@
   - 修改: src/App.tsx, src/App.css, src/components/PracticeCard.tsx, src/components/MistakeBook.tsx, src/components/HistoryView.tsx, src/components/SmartReview.tsx, src/components/DataManager.tsx, src/components/ResultModal.tsx, vitest.setup.ts
   - 创建: src/components/MobileNav.tsx, src/components/__tests__/MobileNav.test.tsx, src/components/__tests__/App.responsive.test.tsx, .claude/evolution/responsive-design.md
 - **观察**: 计划步骤清晰可执行，13 步覆盖了从设计文档到测试验证的完整响应式改造流程。所有修改均为纯 CSS/Tailwind 工具类调整，无逻辑变更，风险可控
+
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **完整执行**
+- **计划步骤**: 10 步全部完成，涵盖 useXP streak 扩展、StreakFeedback 组件、XPGainPopup 组件、App.tsx 集成、useXP streak 测试、StreakFeedback 测试、XPGainPopup 测试、App.streak 测试、现有测试 mock 更新、全量验证
+- **实际修改文件**: 与计划一致
+  - 修改: src/hooks/useXP.ts, src/App.tsx
+  - 创建: src/components/StreakFeedback.tsx, src/components/XPGainPopup.tsx, src/hooks/__tests__/useXP.streak.test.ts, src/components/__tests__/StreakFeedback.test.tsx, src/components/__tests__/XPGainPopup.test.tsx, src/components/__tests__/App.streak.test.tsx
+  - 更新测试 mock: 7 个现有 App 测试文件
+- **观察**: 计划清晰可执行，连击系统作为 XP 系统的自然扩展，与现有架构无冲突。session-only 的 streak 设计避免了持久化复杂度，framer-motion 动画复用已有依赖。10 步计划覆盖了从 hook 扩展 → 组件创建 → App 集成 → 全量测试的完整链路
 
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」

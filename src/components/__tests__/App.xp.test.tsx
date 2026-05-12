@@ -65,6 +65,18 @@ vi.mock('@/hooks/useSpeech', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useHintLevel', () => ({
+  useHintLevel: vi.fn(() => ({
+    hintLevel: 'medium',
+    config: { level: 'medium', consecutiveCorrect: 0, consecutiveWrong: 0 },
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    setHintLevel: vi.fn(),
+    shouldShowHint: vi.fn(() => true),
+    reset: vi.fn(),
+  })),
+}));
+
 vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
@@ -78,9 +90,62 @@ vi.mock('@/hooks/useXP', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useFlowState', () => ({
+  useFlowState: vi.fn(() => ({
+    flowState: 'normal',
+    fatigueSignals: [
+      { type: 'accuracy', trend: 'stable', description: '正确率保持稳定', severity: 0.2 },
+      { type: 'consecutive_errors', trend: 'stable', description: '答题状态良好，无连续错误', severity: 0 },
+      { type: 'speed', trend: 'stable', description: '答题节奏稳定', severity: 0.1 },
+    ],
+    recordCorrect: vi.fn(),
+    recordWrong: vi.fn(),
+    reset: vi.fn(),
+    consecutiveErrors: 0,
+    recentAccuracy: 0,
+  })),
+}));
+
+vi.mock('@/hooks/useDailyChallenges', () => ({
+  useDailyChallenges: vi.fn(() => ({
+    state: {
+      date: '2026-05-10',
+      challenges: [],
+    },
+    unclaimedCount: 0,
+    trackActivity: vi.fn(),
+    claimReward: vi.fn(),
+    resetDailyChallenges: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useBadges', () => ({
+  useBadges: vi.fn(() => ({
+    unlockedIds: new Set(),
+    unlockedCount: 0,
+    badgeProgress: {
+      totalAnswered: 0,
+      totalCorrect: 0,
+      totalSessions: 0,
+      maxStreakEver: 0,
+      perfectSessions: 0,
+      totalReviews: 0,
+      totalChallengesCompleted: 0,
+    },
+    trackProgress: vi.fn(),
+    checkBadges: vi.fn(() => []),
+    getBadgeProgressPercent: vi.fn(() => 0),
+    resetBadges: vi.fn(),
+    BADGE_DEFINITIONS: [],
+  })),
+}));
+
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),
+    loadSession: vi.fn(() => null),
+    hasOnboardingComplete: vi.fn(() => true),
+    setOnboardingComplete: vi.fn(),
     getMistakeCount: vi.fn(() => 0),
     getHistoryCount: vi.fn(() => 0),
     getReviewQueueCount: vi.fn(() => 0),
@@ -97,6 +162,17 @@ vi.mock('@/services/storage', () => ({
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
+    getBadges: vi.fn(() => ({ unlocked: [], progress: { totalAnswered: 0, totalCorrect: 0, totalSessions: 0, maxStreakEver: 0, perfectSessions: 0, totalReviews: 0, totalChallengesCompleted: 0 } })),
+    getShareMetrics: vi.fn(() => ({ totalShareCount: 0, formatCounts: { text: 0, image: 0 }, typeCounts: {}, lastShareAt: null, firstShareAt: null })),
+    getInviteMetrics: vi.fn(() => ({ inviteCode: null, invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: null, lastSharedAt: null })),
+    updateInviteMetrics: vi.fn(),
+    generateInviteCode: vi.fn(() => 'TESTCODE1'),
+    initInviteMetrics: vi.fn(() => ({ inviteCode: 'TESTCODE1', invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: Date.now(), lastSharedAt: null })),
+    getInviteConfig: vi.fn(() => ({ rewardXPPerInvite: 50, maxInvitesAllowed: 0 })),
   },
 }));
 

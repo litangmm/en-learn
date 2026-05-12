@@ -45,6 +45,8 @@ describe("App keyboard shortcuts", () => {
     localStorage.clear();
     vi.spyOn(storage, "hasActiveSession").mockReturnValue(false);
     vi.spyOn(storage, "loadSession").mockReturnValue(null);
+    vi.spyOn(storage, "hasOnboardingComplete").mockReturnValue(true);
+    vi.spyOn(storage, "setOnboardingComplete").mockImplementation(() => {});
     vi.spyOn(storage, "saveSession").mockImplementation(() => {});
     vi.spyOn(storage, "clearSession").mockImplementation(() => {});
     vi.spyOn(storage, "getMistakeCount").mockReturnValue(0);
@@ -124,11 +126,15 @@ describe("App keyboard shortcuts", () => {
     fireEvent.click(screen.getByText("提交答案"));
 
     await waitFor(() => {
-      expect(screen.getByText("答案不正确")).toBeInTheDocument();
+      expect(screen.getByText("你的答案")).toBeInTheDocument();
+      expect(screen.getByText("正确答案")).toBeInTheDocument();
+      expect(screen.getByText("解析")).toBeInTheDocument();
     });
 
     fireEvent.keyDown(window, { key: "Enter", code: "Enter" });
 
-    expect(screen.getByText("早起的鸟儿有虫吃。")).toBeInTheDocument();
+    // Wrong answer feedback should remain visible; pressing Enter should NOT advance
+    expect(screen.getByText("你的答案")).toBeInTheDocument();
+    expect(screen.getByText("正确答案")).toBeInTheDocument();
   });
 });

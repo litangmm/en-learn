@@ -1,6 +1,5 @@
-import { Headphones, BookOpen, History, Database, Brain } from 'lucide-react';
-
-type View = 'practice' | 'mistake-book' | 'history' | 'data' | 'review';
+import { Headphones, BookOpen, History, Database, Award, TrendingUp, BarChart3, AlertTriangle } from 'lucide-react';
+import type { View } from './routing';
 
 interface MobileNavProps {
   currentView: View;
@@ -8,14 +7,18 @@ interface MobileNavProps {
   mistakeCount?: number;
   historyCount?: number;
   reviewDueCount?: number;
+  weaknessCount?: number;
 }
 
 const NAV_ITEMS: { id: View; label: string; icon: typeof Headphones }[] = [
   { id: 'practice', label: '练习', icon: Headphones },
+  { id: 'progress', label: '进度', icon: BarChart3 },
   { id: 'mistake-book', label: '错题', icon: BookOpen },
   { id: 'history', label: '记录', icon: History },
-  { id: 'review', label: '复习', icon: Brain },
   { id: 'data', label: '数据', icon: Database },
+  { id: 'badges', label: '成就', icon: Award },
+  { id: 'leaderboard', label: '排行', icon: TrendingUp },
+  { id: 'weakness', label: '薄弱', icon: AlertTriangle },
 ];
 
 export function MobileNav({
@@ -24,6 +27,7 @@ export function MobileNav({
   mistakeCount = 0,
   historyCount = 0,
   reviewDueCount = 0,
+  weaknessCount = 0,
 }: MobileNavProps) {
   const getBadge = (id: View) => {
     if (id === 'mistake-book' && mistakeCount > 0) {
@@ -44,6 +48,13 @@ export function MobileNav({
       return (
         <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
           {reviewDueCount > 99 ? '99+' : reviewDueCount}
+        </span>
+      );
+    }
+    if (id === 'weakness' && weaknessCount > 0) {
+      return (
+        <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
+          {weaknessCount > 99 ? '99+' : weaknessCount}
         </span>
       );
     }

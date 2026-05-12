@@ -2,12 +2,23 @@ interface XPBarProps {
   level: number;
   progress: number;
   compact?: boolean;
+  onClick?: () => void;
 }
 
-export function XPBar({ level, progress, compact = false }: XPBarProps) {
+export function XPBar({ level, progress, compact = false, onClick }: XPBarProps) {
+  const isClickable = !!onClick;
+
   if (compact) {
+    const Container = isClickable ? 'button' : 'div';
     return (
-      <div className="flex items-center gap-2">
+      <Container
+        onClick={onClick}
+        className={`
+          flex items-center gap-2
+          ${isClickable ? 'hover:opacity-80 active:opacity-70 cursor-pointer' : ''}
+        `}
+        data-testid="xp-bar-compact"
+      >
         <span className="text-xs font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded">
           Lv.{level}
         </span>
@@ -21,7 +32,7 @@ export function XPBar({ level, progress, compact = false }: XPBarProps) {
             role="progressbar"
           />
         </div>
-      </div>
+      </Container>
     );
   }
 

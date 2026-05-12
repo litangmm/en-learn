@@ -201,8 +201,9 @@ describe('PracticeCard', () => {
       />,
     );
 
-    expect(screen.getByText('答案不正确')).toBeInTheDocument();
-    expect(screen.getByText('请检查你的拼写，或查看上方显示的正确答案。')).toBeInTheDocument();
+    expect(screen.getByText('你的答案')).toBeInTheDocument();
+    expect(screen.getByText('正确答案')).toBeInTheDocument();
+    expect(screen.getByText('解析')).toBeInTheDocument();
     expect(screen.getByText('重新尝试')).toBeInTheDocument();
     expect(screen.getByText('catches')).toBeInTheDocument(); // correct answer shown
   });
@@ -327,6 +328,7 @@ describe('PracticeCard', () => {
         onNext={mockOnNext}
         onRetry={mockOnRetry}
         onSpeak={mockOnSpeak}
+        hintLevel="high"
       />,
     );
 

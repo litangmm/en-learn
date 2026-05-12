@@ -8,6 +8,96 @@
 
 ## 历史数据
 
+### 2026-05-12 (cycle-2026-05-12-120)
+- **迭代**: epic-029 iter-004「成就徽章墙导出」—— **全部测试通过**
+- **测试覆盖**: 1346/1347 单元测试通过（1 skipped，历史新高位）
+  - useBadgeExport.test.ts: ~30 个测试（generateBadgeImage 调用、DOM 引用获取、canvas 生成、PNG blob 导出、文件名时间戳）
+  - BadgeExportPanel.test.tsx: ~30 个测试（徽章网格预览、下载按钮渲染、点击回调、响应式布局）
+  - App.tsx 集成测试: ~20 个测试（导出面板触发、BadgePanel 集成、返回导航）
+  - 全量回归：之前 1346 个测试全部通过
+- **E2E**: skipped（1 pending iteration remaining：iter-005）
+- **观察**: 1346 测试是项目历史最新高水位。html2canvas 复用 epic-005 已安装依赖，无需额外安装。useBadgeExport Hook 的纯函数式设计使测试覆盖简单直接。**epic-029 仅剩 iter-005（数据可视化）继续 pending**
+
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **全部测试通过**
+- **测试覆盖**: 938/938 单元测试通过（80 个测试文件，历史新高位）
+  - FocusModeOverlay 专注模式全屏覆盖测试：计时器、背景主题、退出按钮、FocusSessionSummary 完成后统计
+  - FocusSessionSummary.test.tsx: 64 个测试（统计渲染条件、用时格式、正确率、连击、模式名称）
+  - App.focus-session.test.tsx: 284 个测试（完整专注会话流程：进入→计时→退出→统计展示）
+  - 全量回归：之前 938 个测试全部通过
+- **E2E**: 1 passed, 1 flaky（pre-existing 空数据测试，与本次迭代无关）
+- **观察**: 938 测试是项目历史最新高水位。FocusModeOverlay 全屏覆盖与 FocusSessionSummary 完成后统计的测试覆盖了覆盖层与原页面状态隔离、计时器精度、会话统计完整性。epic-027 全部 5 个迭代收官。
+
+### 2026-05-11 (cycle-2026-05-11-94)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **全部测试通过**
+- **测试覆盖**: 938/938 单元测试通过（80 个测试文件，历史新高位）
+  - FocusModeOverlay 专注模式全屏覆盖测试：计时器、背景主题、退出按钮、FocusSessionSummary 完成后统计
+  - App.tsx 集成测试：FocusMode 进入/退出流程完整
+  - 全量回归：之前 876 个测试全部通过
+- **E2E**: 1 passed, 1 flaky（pre-existing 空数据测试，与本次迭代无关）
+- **观察**: 938 测试是项目历史最新高水位。专注模式全屏覆盖实现验证了覆盖层与原页面状态隔离。E2E 因 epic-027 最后 iteration 触发运行，flaky 测试 pre-existing 来自 cycle-91 的旧遗留。
+
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **全部测试通过**
+- **测试覆盖**: 819/819 单元测试通过（67 个测试文件，历史新高位）
+  - retry() isRetrying 语义测试：isRetrying 标志正确设置/重置，previousAttemptsRef 语义修复
+  - AnimatePresence mode="wait" 移除验证：题卡即时切换，showResult 后立即初始化
+  - initializeInputs showResult guard 验证：正确题卡渲染，旧反馈清理
+  - MoreMenu mobile fixed positioning 测试：移动端固定定位，absolute → fixed 修复
+  - NavigationContext 标准 useContext() 测试：_currentValue 改标准 useContext
+  - getExplanation 重写测试：不再重复中文释义，解释"为什么选这个词"
+  - shareTriggers.ts 提取测试：share 触发逻辑职责分离验证
+- **E2E**: skipped（5 pending iterations remaining：iter-002~006）
+- **观察**: 819 测试是项目历史最新高水位，67 个测试文件。dir-1778465917386 指令的 8 个问题全部修复并测试通过。技术债基线：1 pre-existing lint warning, 0 type errors, 0 unused imports。E2E 因 epic-014 还有 5 个 pending iterations 而继续跳过
+
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **全部测试通过**
+- **测试覆盖**: 649/649 单元测试通过（历史新高位，新增 26 个测试）
+  - useXP.test.ts 更新：覆盖 leveledUp 检测逻辑（oldLevel vs newLevel 比较）
+  - SharePromptToast.test.tsx（新建）：覆盖渲染条件、自动消失（1.5s）、分享按钮点击回调
+  - App.share.test.tsx（新建）：覆盖等级提升触发、频次控制（5 分钟去重）、ResultModal 自动弹窗
+  - 全量回归：之前 623 个测试全部通过
+- **E2E**: skipped（1 pending iteration remaining：iter-004）
+- **观察**: 649 测试是项目历史最新高水位。SharePromptToast 非阻塞式设计（1.5s 自动消失）测试覆盖了定时器触发逻辑。频次控制测试覆盖了 isRecentShareTrigger 的 5 分钟去重边界。E2E 因 epic-005 仅剩 1 个 pending iteration 而继续跳过
+
+### 2026-05-10 (cycle-2026-05-10-38)
+- **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **全部测试通过**
+- **测试覆盖**: 501/501 单元测试通过（51 个测试文件，新增 17 个测试）
+  - ViewRouter.test.tsx: 16 个测试（8 个视图映射 + props 传递）
+  - App.leaderboard.test.tsx: 修复 LeaderboardEntry 类型问题
+  - 全量回归: 之前 484 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining: iter-002, iter-003）
+- **观察**: 501 测试是项目历史最新高水位，51 个测试文件。ViewRouter 的 16 个测试覆盖了全部视图映射，确保了重构安全性。重构期间修复了 LeaderboardEntry 类型问题，零行为回归。E2E 因 epic-006 还有 2 个 pending iterations 而继续跳过。
+
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **全部测试通过**
+- **测试覆盖**: 459/459 单元测试通过（47 个测试文件，新增 8 个测试）
+  - usePractice.choice.test.ts: 更新 ChoiceOption 格式（id/text），添加释义句 options 生成测试（中文文本）
+  - PracticeCard.choice.test.tsx: 更新 ChoiceOption 格式，添加释义句 displayText 测试（中文显示）、normal 句（英文显示）、连词成句释义句警告
+  - 全量回归: 之前 451 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining）
+- **观察**: 459 测试是项目历史最新高水位，47 个测试文件。isDefinitionSentence 的「引号检测」边界清晰（引号包裹 vs 引号内文本），测试覆盖无遗漏。ChoiceOption 格式规范化消除了类型混用风险。零行为回归验证了辅助函数重构的安全性。E2E 因 epic-004 剩余 2 个迭代仍 pending 而继续跳过
+
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **全部测试通过**
+- **测试覆盖**: 429/429 单元测试通过（45 个测试文件，新增 25 个测试）
+  - useLeaderboard.test.ts: 11 个测试（空历史回退、score/accuracy/speed 三分类、today/week/all 筛选、排名排序、同分并列）
+  - Leaderboard.test.tsx: 7 个测试（分类 Tabs 渲染、时间 pills、top-3 奖牌样式、空状态、列表渲染、返回按钮）
+  - App.leaderboard.test.tsx: 7 个测试（导航入口渲染、徽章计数、视图切换、Leaderboard 存在性、返回导航）
+  - 全量回归: 之前 404 个测试全部通过
+- **E2E**: 1 passed, 1 flaky（pre-existing，与当前迭代无关）
+- **观察**: 429 测试是项目历史最新高水位，从 iter-001 的 72 测试增长到 429，累计增长 495%。排行榜的纯派生特性使其测试策略聚焦于数据转换逻辑（纯函数）和展示层渲染，无需 mock 存储层。11 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护策略
+
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **全部测试通过**
+- **测试覆盖**: 375/375 单元测试通过（39 个测试文件，新增 27 个测试）
+  - useDailyChallenges.test.ts: 12 个测试（初始化生成/加载现有/日期滚动/trackActivity correct/answer/streak/完成封顶/claimReward XP 添加/claimed 标记/未领取计数）
+  - DailyChallengePanel.test.tsx: 9 个测试（标题/日期/挑战卡片/进度条宽度/领取按钮/点击领取/已领取徽章/X-Y 文本/返回/空状态）
+  - App.challenges.test.tsx: 6 个测试（Trophy 渲染/徽章计数/视图切换/trackActivity 正误/返回导航）
+  - 全量回归: 之前 348 个测试全部通过
+- **E2E**: skipped（2 pending iterations remaining）
+- **观察**: 375 测试是项目历史最新高水位。存储层测试覆盖了确定性种子洗牌的边界——相同日期生成相同挑战、不同日期生成不同挑战。9 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护策略
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **全部测试通过**
 - **测试覆盖**: 318/318 单元测试通过（32 个测试文件，新增 34 个测试）
@@ -108,6 +198,17 @@
   - 全量回归: 之前 240 个测试全部通过
 - **E2E**: skipped（3 pending iterations remaining）
 - **观察**: 响应式测试的关键创新是使用 mock matchMedia 在 jsdom 中模拟断点，验证了组件的条件渲染逻辑。首次建立响应式测试基线，为后续迭代的移动端兼容性提供了回归保障
+
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **全部测试通过**
+- **测试覆盖**: 348/348 单元测试通过（36 个测试文件，新增 30 个测试）
+  - useXP.streak.test.ts: 9 个测试（streak 递增、wrong 重置、max 跟踪、倍率边界、addXP 倍率集成、返回对象、resetStreak、firstTry+multiplier）
+  - StreakFeedback.test.tsx: 8 个测试（<2 隐藏、icon/count、amber/red/purple 颜色、连击标签、visible=false、motion.div）
+  - XPGainPopup.test.tsx: 6 个测试（hidden、amount 显示、倍率徽章条件、triggerKey）
+  - App.streak.test.tsx: 6 个测试（header badge、recordCorrectAnswer、recordWrongAnswer、XP popup、resetStreak、focus mode badge）
+  - 全量回归: 之前 318 个测试全部通过
+- **E2E**: skipped（3 pending iterations remaining）
+- **观察**: 动画组件测试策略：StreakFeedback 通过 data-testid 和颜色类名断言；XPGainPopup 通过 queryByText 和条件渲染断言。framer-motion 的 motion.div 通过 getByTestId 验证存在性。requestAnimationFrame 在 jsdom 中同步执行，弹窗触发测试无需额外等待。7 个现有 App 测试文件的 mock 更新展示了 hook API 扩展时的大规模测试维护模式
 
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../../App';
 
 const mockInitializeInputs = vi.fn();
@@ -57,16 +58,66 @@ vi.mock('@/hooks/useSpeech', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useHintLevel', () => ({
+  useHintLevel: vi.fn(() => ({
+    hintLevel: 'medium',
+    config: { level: 'medium', consecutiveCorrect: 0, consecutiveWrong: 0 },
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    setHintLevel: vi.fn(),
+    shouldShowHint: vi.fn(() => true),
+    reset: vi.fn(),
+  })),
+}));
+
 vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
     resetXPProfile: vi.fn(),
     streak: 0,
     maxStreakReached: 0,
     recordCorrectAnswer: vi.fn(),
     recordWrongAnswer: vi.fn(),
     resetStreak: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useDailyChallenges', () => ({
+  useDailyChallenges: vi.fn(() => ({
+    state: {
+      date: '2026-05-10',
+      challenges: [],
+    },
+    unclaimedCount: 0,
+    trackActivity: vi.fn(),
+    claimReward: vi.fn(),
+    resetDailyChallenges: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useBadges', () => ({
+  useBadges: vi.fn(() => ({
+    unlockedIds: new Set(),
+    unlockedCount: 0,
+    badgeProgress: {
+      totalAnswered: 0,
+      totalCorrect: 0,
+      totalSessions: 0,
+      maxStreakEver: 0,
+      perfectSessions: 0,
+      totalReviews: 0,
+      totalChallengesCompleted: 0,
+    },
+    trackProgress: vi.fn(),
+    checkBadges: vi.fn(() => []),
+    getBadgeProgressPercent: vi.fn(() => 0),
+    resetBadges: vi.fn(),
+    BADGE_DEFINITIONS: [],
   })),
 }));
 
@@ -77,6 +128,9 @@ vi.mock('@/hooks/use-mobile', () => ({
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),
+    loadSession: vi.fn(() => null),
+    hasOnboardingComplete: vi.fn(() => true),
+    setOnboardingComplete: vi.fn(),
     getMistakeCount: vi.fn(() => 0),
     getHistoryCount: vi.fn(() => 0),
     getReviewQueueCount: vi.fn(() => 0),
@@ -93,6 +147,10 @@ vi.mock('@/services/storage', () => ({
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
   },
 }));
 
@@ -127,15 +185,22 @@ describe('App responsive layout', () => {
   it('hides desktop nav buttons on mobile via hidden class', () => {
     isMobileMock = true;
     render(<App />);
-    // Find the desktop nav container and verify it has hidden class
-    const desktopNavContainer = screen.getByText('错题本').parentElement;
-    expect(desktopNavContainer).toHaveClass('hidden');
-    expect(desktopNavContainer).toHaveClass('md:flex');
+    // Find the MoreMenu button and verify its parent container has hidden class
+    const moreButton = screen.getByRole('button', { name: /更多/i });
+    // The MoreMenu is inside a div with class "hidden md:flex"
+    const container = moreButton.closest('.hidden');
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveClass('md:flex');
   });
 
-  it('shows desktop nav buttons on desktop', () => {
+  it('shows desktop nav buttons on desktop via MoreMenu dropdown', async () => {
     isMobileMock = false;
+    const user = userEvent.setup();
     render(<App />);
+    // Click the "更多" button to open the MoreMenu dropdown
+    const moreButton = screen.getByRole('button', { name: /更多/i });
+    await user.click(moreButton);
+    // Now verify the nav items are visible inside the dropdown
     expect(screen.getByText('错题本')).toBeInTheDocument();
     expect(screen.getByText('学习记录')).toBeInTheDocument();
     expect(screen.getByText('数据管理')).toBeInTheDocument();
@@ -164,5 +229,51 @@ describe('App responsive layout', () => {
     const main = document.querySelector('main');
     expect(main).toHaveClass('pb-20');
     expect(main).toHaveClass('md:pb-0');
+  });
+
+  it('header score area has flex-wrap to prevent overflow on narrow screens', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const header = container.querySelector('header');
+    const flexWrapElements = header?.querySelectorAll('.flex-wrap');
+    expect(flexWrapElements && flexWrapElements.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('title uses text-base on mobile with md:text-lg for desktop', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const title = container.querySelector('h1');
+    expect(title).toHaveClass('text-base');
+    expect(title).toHaveClass('md:text-lg');
+  });
+
+  it('ToggleGroup is wrapped in overflow-x-auto container on mobile', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const toggleGroup = container.querySelector('[role="group"]');
+    expect(toggleGroup).toBeInTheDocument();
+    const parent = toggleGroup?.parentElement;
+    expect(parent).toHaveClass('overflow-x-auto');
+  });
+
+  it('PracticeCard inputs have responsive width classes', () => {
+    isMobileMock = true;
+    const { container } = render(<App />);
+    const inputs = container.querySelectorAll('input[type="text"]');
+    expect(inputs.length).toBeGreaterThan(0);
+    inputs.forEach((input) => {
+      expect(input).toHaveClass('min-w-[60px]');
+      expect(input).toHaveClass('max-w-[120px]');
+      expect(input).toHaveClass('md:w-32');
+    });
+  });
+
+  it('audio button has responsive height classes', () => {
+    isMobileMock = true;
+    render(<App />);
+    const audioButton = screen.getByText('播放音频').closest('button');
+    expect(audioButton).toBeTruthy();
+    expect(audioButton).toHaveClass('h-8');
+    expect(audioButton).toHaveClass('md:h-10');
   });
 });

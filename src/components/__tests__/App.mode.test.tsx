@@ -52,10 +52,26 @@ vi.mock('@/hooks/useSpeech', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useHintLevel', () => ({
+  useHintLevel: vi.fn(() => ({
+    hintLevel: 'medium',
+    config: { level: 'medium', consecutiveCorrect: 0, consecutiveWrong: 0 },
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    setHintLevel: vi.fn(),
+    shouldShowHint: vi.fn(() => true),
+    reset: vi.fn(),
+  })),
+}));
+
 vi.mock('@/hooks/useXP', () => ({
   useXP: vi.fn(() => ({
     profile: { totalXP: 150, currentLevel: 2, levelProgress: 50 },
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
     resetXPProfile: vi.fn(),
     streak: 0,
     maxStreakReached: 0,
@@ -65,9 +81,46 @@ vi.mock('@/hooks/useXP', () => ({
   })),
 }));
 
+vi.mock('@/hooks/useDailyChallenges', () => ({
+  useDailyChallenges: vi.fn(() => ({
+    state: {
+      date: '2026-05-10',
+      challenges: [],
+    },
+    unclaimedCount: 0,
+    trackActivity: vi.fn(),
+    claimReward: vi.fn(),
+    resetDailyChallenges: vi.fn(),
+  })),
+}));
+
+vi.mock('@/hooks/useBadges', () => ({
+  useBadges: vi.fn(() => ({
+    unlockedIds: new Set(),
+    unlockedCount: 0,
+    badgeProgress: {
+      totalAnswered: 0,
+      totalCorrect: 0,
+      totalSessions: 0,
+      maxStreakEver: 0,
+      perfectSessions: 0,
+      totalReviews: 0,
+      totalChallengesCompleted: 0,
+    },
+    trackProgress: vi.fn(),
+    checkBadges: vi.fn(() => []),
+    getBadgeProgressPercent: vi.fn(() => 0),
+    resetBadges: vi.fn(),
+    BADGE_DEFINITIONS: [],
+  })),
+}));
+
 vi.mock('@/services/storage', () => ({
   storage: {
     hasActiveSession: vi.fn(() => false),
+    loadSession: vi.fn(() => null),
+    hasOnboardingComplete: vi.fn(() => true),
+    setOnboardingComplete: vi.fn(),
     getMistakeCount: vi.fn(() => 0),
     getHistoryCount: vi.fn(() => 0),
     getReviewQueueCount: vi.fn(() => 0),
@@ -84,6 +137,10 @@ vi.mock('@/services/storage', () => ({
     getXPProfile: vi.fn(() => ({ totalXP: 0, currentLevel: 1, levelProgress: 0 })),
     updateXPProfile: vi.fn(),
     addXP: vi.fn(),
+    getPersonalWords: vi.fn(() => []),
+    addPersonalWord: vi.fn(),
+    removePersonalWord: vi.fn(),
+    getPersonalWordCount: vi.fn(() => 0),
   },
 }));
 

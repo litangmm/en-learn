@@ -1,8 +1,12 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Sentence } from '@/data/types';
+import type { Sentence, ChoiceOption, PracticeMode } from '@/data/types';
+import { isDefinitionSentence } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
+import { useAdaptivePractice } from '@/hooks/useAdaptivePractice';
+import { useHintLevel } from '@/hooks/useHintLevel';
+import { useQuestionWeighting } from '@/hooks/useQuestionWeighting';
 
 export interface UserAnswer {
   sentenceId: string;
@@ -30,9 +34,18 @@ export interface PracticeState {
   score: number;
   selectedChoiceId?: string | null;
   orderedTokenIds: string[];
+  /** True when user is in retry mode (showResult cleared, waiting for new answer) */
+  isRetrying?: boolean;
 }
 
-export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
+export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?: PracticeMode) {
+  // Adaptive practice hook for smart distractor selection
+  const { getSmartDistractors } = useAdaptivePractice();
+  // Hint level hook for dynamic hint adjustment
+  const { recordCorrectAnswer, recordWrongAnswer, shouldShowHint } = useHintLevel();
+  // Question weighting hook for adaptive sentence selection
+  const { getWeightedSentenceIds, getWeightExplanation } = useQuestionWeighting();
+
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,13 +117,44 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
 
   const shuffledSentences = useMemo(() => {
     if (sentences.length === 0) return [];
+
+    // Start with sentences filtered by sentenceIds if provided
+    let targetSentences = sentences;
     if (sentenceIds && sentenceIds.length > 0) {
       const idSet = new Set(sentenceIds);
       const filtered = sentences.filter((s) => idSet.has(s.id));
-      return filtered.length > 0 ? filtered : sentences.slice(0, 10);
+      // Only use filtered if we have matches, otherwise use all sentences
+      if (filtered.length > 0) {
+        targetSentences = filtered;
+      }
     }
-    const shuffled = [...sentences].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 10);
+
+    // Get all mistakes from storage for weighting
+    const allMistakes = storage.getMistakes();
+    const hasMistakes = allMistakes.length > 0;
+
+    // Get all sentence IDs from target sentences
+    const allSentenceIds = targetSentences.map((s) => s.id);
+
+    // Use weighted shuffle if mistakes exist, otherwise simple shuffle
+    let selectedIds: string[];
+    if (hasMistakes) {
+      // Use weighted selection to prioritize problematic sentences
+      // Pass Date.now() for accurate spaced repetition state evaluation
+      selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10, Date.now());
+    } else {
+      // Fallback to simple shuffle when no mistakes exist
+      const shuffled = [...allSentenceIds].sort(() => Math.random() - 0.5);
+      selectedIds = shuffled.slice(0, 10);
+    }
+
+    // Map IDs back to Sentence objects, maintaining the selected order
+    const idToSentence = new Map(targetSentences.map((s) => [s.id, s]));
+    const result = selectedIds
+      .map((id) => idToSentence.get(id))
+      .filter((s): s is Sentence => s !== undefined);
+
+    return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sentences, sentenceIds, shuffleSeed]);
 
@@ -183,14 +227,33 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 
   // Generate 4 multiple-choice options (correct + 3 distractors)
-  const options = useMemo(() => {
-    if (!currentSentence || sentences.length < 4) return [];
+  // Uses adaptive strategy to prioritize distractors the user has previously confused with
+  // Only applies when mode is 'multiple-choice', otherwise returns empty array
+  const adaptiveDistractors = useMemo<ChoiceOption[]>(() => {
+    if (!currentSentence || sentences.length < 4 || mode !== 'multiple-choice') return [];
+    return getSmartDistractors(currentSentence.id, currentSentence.id, sentences);
+  }, [currentSentence, sentences, mode, getSmartDistractors]);
+
+  // Fallback to random if getSmartDistractors returns less than 4 options
+  const options = useMemo<ChoiceOption[]>(() => {
+    if (adaptiveDistractors.length >= 4) {
+      return adaptiveDistractors;
+    }
+    // Fallback to random distractors
     const distractors = sentences
-      .filter((s) => s.id !== currentSentence.id)
+      .filter((s) => s.id !== currentSentence?.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
-    return [currentSentence, ...distractors].sort(() => Math.random() - 0.5);
-  }, [currentSentence, sentences]);
+    if (!currentSentence || distractors.length < 3) return [];
+    return [currentSentence, ...distractors]
+      .sort(() => Math.random() - 0.5)
+      .map((s) => ({
+        id: s.id,
+        // For definition sentences, use Chinese translation as option text (more readable)
+        // For normal sentences, use full English sentence
+        text: isDefinitionSentence(s) ? s.chinese : s.english,
+      }));
+  }, [currentSentence, sentences, adaptiveDistractors]);
 
   // Generate tokens from current sentence for sentence-reorder mode
   const sentenceTokens = useMemo(() => {
@@ -255,7 +318,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const checkAnswer = useCallback((param?: string | string[]) => {
     if (!currentSentence) return;
 
-    const newAttempts = state.attempts + 1;
+    // After retry, restore previous attempts count instead of incrementing from 0
+    const baseAttempts = previousAttemptsRef.current > 0 ? previousAttemptsRef.current : state.attempts;
+    const newAttempts = baseAttempts + 1;
 
     // Sentence-reorder mode: compare reconstructed sentence
     if (Array.isArray(param)) {
@@ -270,6 +335,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           showResult: true,
           isCorrect: true,
           attempts: newAttempts,
+          isRetrying: false,
           score: prev.score + 10,
           userAnswers: [
             ...prev.userAnswers,
@@ -313,6 +379,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           showResult: true,
           isCorrect: true,
           attempts: newAttempts,
+          isRetrying: false,
           score: prev.score + 10,
           userAnswers: [
             ...prev.userAnswers,
@@ -324,6 +391,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
             },
           ],
         }));
+
+        // Record for hint level adjustment
+        recordCorrectAnswer();
       } else {
         setState((prev) => ({
           ...prev,
@@ -343,6 +413,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
             dictionaryId,
           },
         }));
+
+        // Record for hint level adjustment
+        recordWrongAnswer();
       }
       return;
     }
@@ -361,6 +434,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
         showResult: true,
         isCorrect: true,
         attempts: newAttempts,
+        isRetrying: false,
         score: prev.score + pointsEarned,
         userAnswers: [
           ...prev.userAnswers,
@@ -385,6 +459,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           },
         };
       });
+
+      // Record for hint level adjustment
+      recordCorrectAnswer();
     } else {
       setState((prev) => ({
         ...prev,
@@ -404,8 +481,11 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
           dictionaryId,
         },
       }));
+
+      // Record for hint level adjustment
+      recordWrongAnswer();
     }
-  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens]);
+  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens, recordCorrectAnswer, recordWrongAnswer]);
 
   const nextSentence = useCallback(() => {
     setState((prev) => {
@@ -433,13 +513,23 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     });
   }, [shuffledSentences]);
 
+  // Track previous attempts count before retry to preserve it after retry
+  const previousAttemptsRef = useRef<number>(0);
+
   const retry = useCallback(() => {
+    // Save current attempts count before clearing
+    previousAttemptsRef.current = state.attempts;
     setState((prev) => ({
       ...prev,
       showResult: false,
       isCorrect: false,
+      attempts: 0,
+      currentInputs: new Array(currentSentence?.blanks.length || 1).fill(''),
+      selectedChoiceId: null,
+      orderedTokenIds: [],
+      isRetrying: true,
     }));
-  }, []);
+  }, [currentSentence, state.attempts]);
 
   const reset = useCallback(() => {
     setShuffleSeed((prev) => prev + 1);
@@ -467,6 +557,14 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
   const totalQuestions = shuffledSentences.length;
   const currentQuestion = state.currentIndex + 1;
 
+  // Memoized function to get weight explanation for the current sentence
+  const getCurrentWeightExplanation = useMemo(() => {
+    if (!currentSentence) return null;
+    const allMistakes = storage.getMistakes();
+    const currentTime = Date.now();
+    return getWeightExplanation(currentSentence.id, allMistakes, currentTime);
+  }, [currentSentence, getWeightExplanation]);
+
   return {
     state,
     currentSentence,
@@ -488,5 +586,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[]) {
     selectToken,
     deselectToken,
     resetTokens,
+    shouldShowHint,
+    getCurrentWeightExplanation,
   };
 }

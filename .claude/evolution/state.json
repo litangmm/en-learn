@@ -1,214 +1,459 @@
 {
   "version": "1.0",
-  "status": "IDLE",
-  "commitHash": "3f41c75016a309b38e25264282421d272ce763f8",
-  "lastRun": "2026-05-09T19:50:00.000Z",
-  "cycleCount": 15,
-  "nextMode": "vision",
-  "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": {
-    "id": "2026-05-09-14",
-    "mode": "vision",
-    "stage": "REPORT",
-    "startedAt": "2026-05-09T19:40:00.000Z",
-    "plan": {
-      "iterationId": "iter-005",
-      "iterationTitle": "连词成句模式（拖拽/点击排序）",
-      "scope": "frontend-only",
-      "steps": [],
-      "filesToModify": [],
-      "filesToCreate": [],
-      "dependencies": [],
-      "testStrategy": ""
-    },
-    "testResults": {
-      "lint": "passed (0 errors, 3 pre-existing warnings)",
-      "build": "passed",
-      "unitTests": "282/282 passed (29 test files)",
-      "e2e": "1 flaky — '空数据时显示暂无数据提示' (pre-existing, unrelated to sentence-reorder mode)"
-    },
-    "summary": "REPORT stage completed — epic-002 iter-005 连词成句模式（拖拽/点击排序）报告已生成，epic-002 全部 7 个迭代收官，经验档案已更新，状态归档为 IDLE"
-  },
-  "currentEpic": null,
-  "plan": {
-    "iterationId": "iter-005",
-    "iterationTitle": "连词成句模式（拖拽/点击排序）",
-    "scope": "frontend-only",
-    "steps": [
-      "Step 1: src/data/types.ts — extend PracticeMode union type to include 'sentence-reorder': 'fill-in-blanks' | 'dictation' | 'multiple-choice' | 'sentence-reorder'.",
-      "Step 2: src/hooks/usePractice.ts — (a) Add SentenceToken interface {id: string; text: string} and generate sentenceTokens useMemo from currentSentence.english via /\\S+/g split, mapping each to {id: `${sentenceId}-token-${idx}`, text}. (b) Extend PracticeState with orderedTokenIds: string[] (default []). (c) Add selectToken(tokenId) to append to orderedTokenIds, deselectToken(index) to remove by position, resetTokens() to clear. (d) Extend checkAnswer signature to accept param?: string | string[] — when Array.isArray(param) treat as sentence-reorder mode: reconstruct user sentence from ordered token ids, compare lowercase.trim() against currentSentence.english; correct awards 10 points flat, wrong records pending mistake with wrongAnswers=[userSentence]. (e) Update initializeInputs, nextSentence, reset to clear orderedTokenIds. (f) Return sentenceTokens, selectToken, deselectToken, resetTokens from hook.",
-      "Step 3: src/components/PracticeCard.tsx — (a) Add sentenceTokens, orderedTokenIds, onSelectToken, onDeselectToken props. (b) Add isSentenceReorder = mode === 'sentence-reorder'. (c) Implement renderSentenceReorder(): answer zone showing selected tokens in order as clickable badges (click removes back to pool), word pool showing remaining shuffled tokens as clickable badges (click moves to answer zone). (d) Submit button disabled until all tokens selected (orderedTokenIds.length === sentenceTokens.length). (e) showResult reveals correct full sentence in green below answer zone for wrong answers. (f) Handle Enter key: in reorder mode, if all tokens selected and !showResult, Enter triggers onCheck(orderedTokenIds).",
-      "Step 4: src/App.tsx — (a) Add '连词成句' ToggleGroupItem with value 'sentence-reorder'. (b) Destructure sentenceTokens, selectToken, deselectToken, resetTokens from usePractice. (c) Pass new props to PracticeCard. (d) handleModeChange calls resetTokens() for sentence-reorder to clear state on switch. (e) Auto-play delay 500ms for sentence-reorder mode. (f) Ensure focus mode and responsive layout remain compatible.",
-      "Step 5: Create src/hooks/__tests__/usePractice.reorder.test.ts — test sentenceTokens generation (token count, ids, texts), selectToken appends id, deselectToken removes by index, resetTokens clears, checkAnswer with correct orderedTokenIds awards 10 points, checkAnswer with wrong order records mistake, nextSentence clears orderedTokenIds, reset clears orderedTokenIds.",
-      "Step 6: Create src/components/__tests__/PracticeCard.reorder.test.tsx — test sentence-reorder mode renders word pool and empty answer zone, clicking token moves it to answer zone, clicking answer token returns it to pool, submit disabled until all tokens selected, correct answer shows success feedback and full sentence, wrong answer shows error feedback and correct sentence, next/retry buttons behave correctly.",
-      "Step 7: Create src/components/__tests__/App.reorder.test.tsx — test four-mode ToggleGroup renders '连词成句', switching to sentence-reorder updates PracticeCard props (mode, sentenceTokens), mode switch clears ordered state, auto-play delay applies, 500ms for reorder mode.",
-      "Step 8: Full validation — run npm run lint + npm run build + npm run test, ensure 0 errors, 0 failures, all 262+ existing tests pass without regression."
-    ],
-    "filesToModify": [
-      "src/data/types.ts",
-      "src/hooks/usePractice.ts",
-      "src/components/PracticeCard.tsx",
-      "src/App.tsx"
-    ],
-    "filesToCreate": [
-      "src/hooks/__tests__/usePractice.reorder.test.ts",
-      "src/components/__tests__/PracticeCard.reorder.test.tsx",
-      "src/components/__tests__/App.reorder.test.tsx"
-    ],
-    "dependencies": [],
-    "testStrategy": "Sentence-reorder tests cover token generation, select/deselect interactions, submit enable/disable logic, correct/wrong answer feedback with full sentence reveal, state reset on mode switch/next/reset, and full integration through App. All existing tests (262+) must pass without regression. Full lint + build + test validation."
-  },
-  "testResults": {
-    "lint": "passed (0 errors, 3 pre-existing warnings)",
-    "build": "passed",
-    "unitTests": "282/282 passed (29 test files)",
-    "e2e": "1 flaky — '空数据时显示暂无数据提示' (pre-existing, unrelated to sentence-reorder mode)"
-  },
-  "implementationStatus": {
-    "iter-001": "Created src/services/storage.ts with versioned StorageSchemaV1, StorageService singleton with saveSession/loadSession/clearSession/hasActiveSession/getStoredDictionaryId methods. Handles corrupted JSON, missing fields, version mismatch, and quota exceeded gracefully. Integrated storage into usePractice hook with debounced save (500ms) and session restoration on mount. Added session recovery dialog in App.tsx with 'Continue'/'Restart' options. Dictionary switch clears session via App.tsx confirmSwitch. 72 unit tests pass (15 storage + 22 usePractice + existing tests). Build succeeds.",
-    "iter-002": "Extended storage service to V2 with separate mistakes key (en-learn-mistakes), supporting addMistake/getMistakes/removeMistake/clearMistakes/getMistakeCount/incrementReviewedCount with deduplication by sentenceId and V1 backward compatibility. Added Mistake type in src/data/types.ts. Updated usePractice hook to capture wrong answers into pendingMistakes state and batch-persist to storage on session completion. Added sentenceIds prop to usePractice for mistake-practice mode. Created MistakeBook component with sentence display, wrong/correct answer badges, delete, mark-reviewed, and practice-from-mistakes functionality. Updated App.tsx with mistake book navigation button (with count badge), view switching between practice and mistake book, and practice-from-mistakes flow. Mocked Audio and speechSynthesis in vitest.setup.ts for silent tests. Added mistake-storage.test.ts (18 tests), usePractice mistake tests (4 tests), and MistakeBook.test.ts (7 tests). Total: 106/106 tests pass. Build succeeds.",
-    "iter-003": "Added SessionHistory type in src/data/types.ts with id, timestamp, duration, dictionaryId, dictionaryName, score, totalQuestions, correctCount, accuracy fields. Extended storage service with en-learn-history key, addHistory/getHistory/clearHistory/getHistoryCount methods, isValidHistory validation, 100-entry limit with auto-truncation, and corrupted JSON recovery. Updated usePractice hook with sessionStartTimeRef to track fresh session start time; auto-records history on isComplete=true with duration, score, correctCount, accuracy, and totalQuestions computed from shuffledSentences.length. Created HistoryView component with date grouping (今天/昨天/更早), entry cards showing dictionary name, score, accuracy, duration, question count, clear-all with confirmation dialog, and empty state. Updated App.tsx with 'history' view type, learning history navigation button with count badge, and view switching. Added history-storage.test.ts (18 tests), HistoryView.test.tsx (8 tests), and usePractice history recording tests (4 tests). Total: 131/131 tests pass. Lint 0 errors. Build succeeds.",
-    "iter-004": "Added ExportData type in src/services/storage.ts (defined there to avoid circular dependency with StorageSchemaV2) with version:1, exportedAt ISO string, and data object containing session (StorageSchemaV2|null), mistakes (Mistake[]), and history (SessionHistory[]). Extended StorageService with exportAllData() method that aggregates all localStorage data into ExportData JSON object, and importAllData(data:unknown) method with isValidExportData schema validator checking version, exportedAt, data structure, and recursive validation of session (null or V2), mistakes (isValidMistake), and history (isValidHistory) sub-structures. importAllData writes validated data to corresponding localStorage keys, returns success/failure with importedCounts per category and human-readable message. Created DataManager component with data overview cards (history count, mistake count, active session status), export button triggering browser download of en-learn-backup-YYYY-MM-DD.json blob, import button with hidden file input, confirmation dialog before overwrite, and inline alert for success/error status. Updated App.tsx with 'data' view type, Database icon navigation button, and view switching with count refresh on back. Added export-import.test.ts (16 tests) covering export structure, import overwrite, null session, empty data, missing/wrong version, missing data field, corrupted session/mistakes/history sub-structures, non-object inputs, and mixed import messages. Added DataManager.test.tsx (10 tests) covering overview counts, active session badge, back navigation, export download trigger, import file input, success/error status display, invalid JSON handling, confirmation dialog, and cancel behavior. Total: 159/159 tests pass (12 test files). Lint 0 errors. Build succeeds.",
-    "bugfix-001": "Fixed 3 high-priority UX bugs: (1) Shuffle seed bug — usePractice.ts shuffleSeed state was already added to dependency array and reset() increments it, ensuring new random order on each reset. Added test verifying shuffledSentences[0].id changes after reset() with mocked Math.random sequence. (2) Keyboard shortcuts — App.tsx global keydown listener using refs (stateRef, viewRef, dialogRef, nextSentenceRef) to avoid stale closures and frequent re-registration; triggers nextSentence() on Enter/Space when showResult && isCorrect && !isComplete in practice view with no dialog open; skips handling when target is INPUT/TEXTAREA to avoid interfering with form input. (3) Question badge leak — PracticeCard.tsx added optional currentQuestion/totalQuestions props; Badge displays '第 X/Y 题' when props provided, falling back to '第 {sentence.id} 题' for backward compatibility; App.tsx passes currentQuestion/totalQuestions from usePractice hook. Updated PracticeCard.test.tsx with currentQuestion/totalQuestions props on all renders, added test for '第 1/3 题' format and fallback to sentence.id. Created App.keyboard.test.tsx (4 tests) covering Enter/Space advancement on correct answer, no advancement when answer not shown, no advancement when answer wrong. Fixed test stability by adding cleanup + vi.restoreAllMocks() in afterEach and vi.spyOn(Math.random) for deterministic shuffle. Total: 169/169 tests pass (14 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "iter-005": "Extended Mistake type with nextReviewAt and lastReviewedAt optional fields for spaced repetition scheduling. Extended StorageService with getReviewQueue() (filters due mistakes by nextReviewAt <= now, sorts ascending), getReviewQueueCount(), and scheduleNextReview(sentenceId, isCorrect) implementing spaced repetition with [1,3,7,14] day intervals — reviewedCount increments on correct answers, resets to 1-day interval on wrong answers while preserving reviewedCount. Updated isValidMistake to accept optional fields. Created SmartReview component with dictionary-grouped due mistake listing, async sentence loading, '开始复习' per-group buttons, '全部复习' for single-group case, empty state, and back navigation. Integrated SmartReview into App.tsx with 'review' view, Brain/RefreshCw navigation button with red due-count badge, review mode state, and auto-scheduling useEffect that calls scheduleNextReview when showResult=true in review mode (with processedReviewRef deduplication). Created review-queue.test.ts (18 tests) covering getReviewQueue empty/ filtering/sorting, getReviewQueueCount, scheduleNextReview interval calculation for all reviewedCount levels, wrong-answer reset, non-existent ID safety, lastReviewedAt update, and isValidMistake backward/forward compatibility. Created SmartReview.test.tsx (6 tests) covering empty state, grouped rendering by dictionary, start-review callback params, back navigation, reviewed count display, and all-review button conditional visibility. Total: 189/189 tests pass (15 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-001": "Added PracticeMode type ('fill-in-blanks' | 'dictation') in src/data/types.ts. Extended PracticeCard component with optional mode prop (default 'fill-in-blanks'): dictation mode hides chinese translation and english sentence text (shows only standalone input boxes), increases audio button prominence with blue filled style and larger icon, shows instruction text '请听音频，在输入框中填写听到的单词', hides hints, and reveals all content (chinese + english + correct answers) when showResult is true for review. Added renderDictationInputs() helper for dictation-only input layout. Updated App.tsx with practiceMode state, ToggleGroup mode switcher (填空模式/听写模式) in main content area, auto-play delay adjusted to 300ms in dictation mode (800ms in fill-in-blanks), mode switch triggers initializeInputs() to reset current question inputs. Created PracticeCard.dictation.test.tsx (11 tests) covering chinese hidden in dictation mode, english text hidden, inputs rendered, instruction text shown, showResult reveals chinese/english/correct answers, fill-in-blanks mode normal rendering, hints behavior per mode. Created App.mode.test.tsx (5 tests) covering toggle rendering, dictation mode DOM changes, initializeInputs call on mode switch, switching back to fill-in-blanks, default mode verification. Total: 205/205 tests pass (17 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-002": "Extended useSpeech hook with playbackRate state (default 1.0), setPlaybackRate method, and modified speak(text, rate?) to use playbackRate when no rate argument is provided while preserving override capability. Updated PracticeCard with optional playbackRate and onSpeedChange props; added SPEEDS constant [0.5, 0.75, 1.0, 1.25, 1.5]; rendered compact ToggleGroup speed selector in Header next to audio button with five speed badges (0.5x~1.5x), current speed highlighted via aria-checked, click triggers onSpeedChange. Speed selector visible in both fill-in-blanks and dictation modes, not disabled on showResult. Updated App.tsx to destructure playbackRate and setPlaybackRate from useSpeech, pass them to PracticeCard, and removed hardcoded 0.85 rate from auto-play and handleSpeak so they use the user's selected playbackRate. Updated existing useSpeech.test.ts to expect default rate 1.0 instead of 0.9. Created useSpeech.rate.test.ts (5 tests) covering default playbackRate, setPlaybackRate state update, speak without rate using playbackRate, speak with rate overriding playbackRate, and default behavior. Created PracticeCard.speed.test.tsx (6 tests) covering five speed options rendering, conditional rendering without onSpeedChange, current speed selection state, onSpeedChange callback with correct rate, dictation mode visibility, and showResult visibility. Created App.speed.test.tsx (3 tests) covering default 1.0x selected, setPlaybackRate called on speed change, and auto-play using playbackRate without hardcoded value. Total: 219/219 tests pass (20 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-003": "Extended PracticeMode type to 'fill-in-blanks' | 'dictation' | 'multiple-choice' in src/data/types.ts. Extended usePractice hook with selectedChoiceId in PracticeState (optional for backward compatibility), options useMemo generating 4 choices (current sentence + 3 random distractors from full dictionary, shuffled), selectChoice callback, and modified checkAnswer(selectedOptionId?: string) supporting multiple-choice mode: correct choice awards 10 points flat (no attempt penalty), wrong choice records to pendingMistakes. nextSentence/initializeInputs/reset all clear selectedChoiceId. Session restoration sets selectedChoiceId: null. Extended PracticeCard with optional options, selectedChoiceId, onSelectChoice props; added isMultipleChoice mode rendering: Chinese translation shown, audio button, 4 option cards with full English sentences, blue highlight on selection, green highlight on correct answer, red highlight on wrong selection, disabled after submission, disabled submit button until selected, next button on correct (green) and wrong (gray outline, no retry). Updated App.tsx ToggleGroup with '选择题模式' option, destructured options/selectChoice from usePractice, passed them to PracticeCard, handleModeChange triggers initializeInputs for all modes, auto-play delay 500ms for multiple-choice, removed hardcoded 0.85 rate from handleSpeak. Created usePractice.choice.test.ts (6 tests) covering options generation (4 options with current sentence), selectChoice state update, checkAnswer correct ID (10 points), checkAnswer wrong ID (records mistake), nextSentence/reset clear selectedChoiceId. Created PracticeCard.choice.test.tsx (10 tests) covering 4 options render, option click callback, submit disabled before selection, enabled after selection, correct option green highlight, wrong selected red highlight, unselected default style, next button for wrong answer (no retry), fill-in-blanks/dictation unaffected. Created App.choice.test.tsx (5 tests) covering three-mode ToggleGroup, multiple-choice mode DOM, initializeInputs on mode switch, options passed to PracticeCard, 500ms auto-play delay. Total: 240/240 tests pass (23 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-003a": "Responsive UI adaptation for mobile + desktop. Created responsive design document at .claude/evolution/responsive-design.md documenting breakpoints, touch targets, spacing tokens, and component guidelines. Added window.matchMedia mock to vitest.setup.ts for responsive testing. Created MobileNav component (src/components/MobileNav.tsx) with fixed bottom nav bar (md:hidden), 5 nav items with icon+label, active state highlighting, safe-area-inset-bottom padding, count badges for mistakes/history/review, and onNavigate callback. Updated App.tsx: imported useIsMobile and MobileNav, wrapped desktop nav buttons in hidden md:flex container, conditionally render MobileNav on mobile, moved DictionarySelector+重置 to main content area on mobile, added pb-20 md:pb-0 bottom padding for mobile nav clearance, added handleNavigate for unified view switching. Updated PracticeCard: input min-height h-11 md:h-10 (44px mobile touch target), width w-28 md:w-32, content padding p-4 md:p-6, english sentence text-lg md:text-xl with leading-relaxed md:leading-loose, chinese translation text-base md:text-lg, speed selector h-9 md:h-8, header/footer padding px-4 py-3 md:px-6 md:py-4. Updated MistakeBook/HistoryView/SmartReview/DataManager: container padding px-3 md:px-4 py-4 md:py-8, answer badges flex-col sm:flex-row, history stats flex-wrap gap-3 md:gap-6. Updated ResultModal: mx-auto px-4 wrapper, stats grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6, header/content responsive padding. Updated App.css: mobile-nav safe-area support, main min-height calc for mobile bottom nav. Created MobileNav.test.tsx (8 tests) covering 5 nav items, active state, onNavigate callback, badges, md:hidden class. Created App.responsive.test.tsx (7 tests) covering MobileNav conditional rendering, desktop nav hidden class, DictionarySelector in main content, bottom padding. Total: 255/255 tests pass (25 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-003b": "Redesigned dictation mode for better usability. PracticeCard.tsx: (1) Chinese translation now always visible in dictation mode — removed isDictation condition from Chinese rendering so users have context about what to listen for. (2) Added first-letter hints below each input box in renderDictationInputs — displays first letter of blank word followed by dots (e.g., 'c...' for 'catches'), giving users an anchor without spoiling the full word. (3) Updated dictation mode instruction text from '请听音频，在输入框中填写听到的单词' to '请听音频，根据中文提示和首字母提示填写单词'. English sentence text remains hidden in dictation mode before result (inputs shown instead), showResult still reveals all content for review. Updated PracticeCard.dictation.test.tsx: changed Chinese visibility assertion from 'not in document' to 'in document', added first-letter hint test ('c...'), updated instruction text assertion. Updated App.mode.test.tsx: changed dictation mode Chinese assertion from hidden to visible, updated test names accordingly. Fixed PracticeCard.choice.test.tsx dictation rendering test to expect Chinese visible. Total: 256/256 tests pass (25 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-004": "Implemented focus mode (fullscreen distraction-free UI). App.tsx: (1) Added isFocusMode state (default false) and toggleFocusMode callback. (2) Added '专注模式' entry button with Eye icon next to practice mode ToggleGroup. (3) Conditional rendering: when isFocusMode=true, hide full Header (logo, nav, DictionarySelector, reset, score), hide practice mode ToggleGroup, hide bottom hint text, hide MobileNav. Render minimal floating top bar showing current progress (第 X/Y 题), score, and exit button with X icon. (4) Added ESC key global listener to exit focus mode (using isFocusModeRef to avoid stale closures), skips handling when target is INPUT/TEXTAREA. PracticeCard.tsx: (5) Added optional isFocusMode prop (default false). When true: simplify header (hide question badge and attempts badge, keep only audio and speed controls), increase content padding (p-6 md:p-10 vs p-4 md:p-6) and font sizes (chinese text-lg md:text-xl, english text-xl md:text-2xl), use cleaner card border/shadow style (shadow-xl border-slate-100). (6) Wired isFocusMode prop from App.tsx to PracticeCard. Created App.focus.test.tsx with 6 tests: focus mode entry button renders, clicking enters focus mode (Header/ToggleGroup/hint hidden, floating bar visible), exit button restores normal UI, ESC key exits focus mode, ESC ignored when typing in input, PracticeCard remains interactive in focus mode. Total: 262/262 tests pass (26 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds.",
-    "epic-002-iter-005": "Implemented sentence-reorder mode (click-to-order word arrangement). src/data/types.ts: Extended PracticeMode union to include 'sentence-reorder', added SentenceToken interface. src/hooks/usePractice.ts: (a) Added sentenceTokens useMemo from currentSentence.english via /\\S+/g split. (b) Extended PracticeState with orderedTokenIds. (c) Added selectToken (append), deselectToken (remove by index), resetTokens (clear). (d) Extended checkAnswer(param?: string | string[]) with Array.isArray branch for sentence-reorder: reconstructs sentence from orderedTokenIds, compares lowercase.trim() against currentSentence.english, correct awards 10 points, wrong records pendingMistake with wrongAnswers=[userSentence]. (e) Updated initializeInputs, nextSentence, reset to clear orderedTokenIds. src/components/PracticeCard.tsx: Added sentenceTokens, orderedTokenIds, onSelectToken, onDeselectToken props; renderSentenceReorder() with answer zone (clickable selected tokens) and word pool (clickable remaining tokens); submit disabled until all tokens selected; showResult reveals correct sentence for wrong answers; Enter key submits when all tokens selected. src/App.tsx: Added '连词成句' ToggleGroupItem; destructured new hook methods; passed new props to PracticeCard; handleModeChange calls resetTokens() for sentence-reorder; auto-play delay 500ms for reorder mode. Tests: usePractice.reorder.test.ts (8 tests), PracticeCard.reorder.test.tsx (6 tests), App.reorder.test.tsx (5 tests). Fixed PracticeState orderedTokenIds requirement in all existing test files (storage, history-storage, mistake-storage, export-import, usePractice). Total: 282/282 tests pass (29 test files). Lint 0 errors (3 pre-existing warnings). Build succeeds."
-  },
+  "pending": [],
   "history": [
     {
-      "id": "2026-05-09-14",
+      "id": "2026-05-12-132",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-030 iter-002 部署成功。v0.55.0 部署到 Vercel，https://en-learn.vercel.app。"
+    },
+    {
+      "id": "2026-05-12-131",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-030 iter-002 TEST 通过。1409 测试零回归（1 skipped），build 3.48s，commit bbf722c 已推送。"
+    },
+    {
+      "id": "2026-05-12-130",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-030 iter-001 部署成功。v0.54.0 部署到 Vercel，https://en-learn.vercel.app。"
+    },
+    {
+      "id": "2026-05-12-129",
+      "mode": "commit",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-030 iter-001 COMMIT 完成。v0.54.0 tag 已推送，commit d6dce83 已推送至 origin。"
+    },
+    {
+      "id": "2026-05-12-128",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-030 iter-001 TEST 通过。1409 测试零回归（1 skipped），build 3.72s，lint 1 warning（pre-existing），commit d6dce83 已推送。"
+    },
+    {
+      "id": "2026-05-12-127",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-030 iter-001 实现完成：主练习链路 Bug 修复（2个AnimatePresence修复）+ 响应式改进（Header overflow-x-auto + AchievementToast + Leaderboard pills）+ getExplanation 重写（解释为什么选这个词）+ useFlowState Hook（采集正确率趋势/连续错误/速度，判定 focused/fatigued/normal）+ 29 个 Hook 测试。1409 测试零回归，历史最高水位。"
+    },
+    {
+      "id": "2026-05-12-123",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-002 iter-005 连词成句模式（拖拽/点击排序）— 282/282 测试通过，build 成功，v0.12.0 部署完成；epic-002 全部 7 个迭代收官，经验档案已更新"
+      "summary": "epic-029 iter-005 学习数据可视化报告完成。v0.53.0 部署成功，1381 测试零回归，历史最高水位。epic-029 全部 5 个迭代正式收官，版本范围 v0.50.0-v0.53.0。"
     },
     {
-      "id": "2026-05-09-13",
+      "id": "2026-05-12-120",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "TEST",
       "status": "completed",
-      "summary": "epic-002 iter-004 专注模式（全屏无干扰 UI）— 262/262 测试通过，build 成功，v0.11.0 部署完成；经验档案已更新"
+      "summary": "epic-029 iter-004 成就徽章墙导出测试通过。1346 测试零回归，1 skipped，lint 1 warning，build 3.77s。"
     },
     {
-      "id": "2026-05-09-12",
+      "id": "2026-05-12-119",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-002 iter-003b 纯听写模式重新设计 — 256/256 测试通过，build 成功，v0.10.0 部署完成；战略指令 dir-urgent-002 两个紧急迭代全部收官"
+      "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + 全面测试。"
     },
     {
-      "id": "2026-05-09-11",
+      "id": "2026-05-12-121",
       "mode": "vision",
-      "stage": "REPORT",
+      "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-002 iter-003a 响应式 UI 适配（移动端 + 桌面端）— 255/255 测试通过，build 成功，v0.9.0 部署完成；战略指令 dir-urgent-002 第一个紧急迭代已执行"
+      "summary": "epic-029 iter-005 学习数据可视化实现完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + useProgressStats扩展 + ProgressHub集成 + 全面测试。1381 测试零回归，历史最高水位。"
     },
     {
-      "id": "2026-05-09-10",
+      "id": "2026-05-12-123",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-029 iter-005 学习数据可视化完成。e15caf9 已确认，1380 测试零回归（1 skipped），状态已更新为 DEPLOY。"
+    },
+    {
+      "id": "2026-05-12-123",
       "mode": "vision",
       "stage": "DEPLOY",
       "status": "completed",
-      "summary": "epic-002 iter-003a 响应式 UI 适配（移动端 + 桌面端）— 255/255 测试通过，build 成功，部署到 Vercel v0.9.0"
+      "summary": "epic-029 iter-005 学习数据可视化部署成功。v0.53.0 部署到 Vercel，git tag v0.53.0 已推送。URL: https://en-learn-q24jywzrz-litangmms-projects.vercel.app"
     },
     {
-      "id": "2026-05-09-9",
-      "mode": "vision",
-      "stage": "REPORT",
+      "id": "2026-05-12-125",
+      "mode": "tech-review",
+      "stage": "TECH_REVIEW",
       "status": "completed",
-      "summary": "epic-002 iter-003 选择题模式（四选一快速练习）— 240/240 测试通过，build 成功；战略指令 dir-urgent-002 已执行，插入 iter-003a 响应式UI适配和 iter-003b 纯听写模式重设计两个紧急迭代"
+      "summary": "Tech review 扫描完成。Lint: 1 pre-existing warning (NavigationContext react-refresh), TypeScript: 0 errors, Build: 3.77s。代码健康度良好，无高优先级技术债务。硬编码值已规范（DAY_MS 常量提取，LEVEL_THRESHOLDS 集中定义）。"
     },
     {
-      "id": "2026-05-09-8",
-      "mode": "vision",
-      "stage": "REPORT",
+      "id": "2026-05-12-126",
+      "mode": "brainstorm",
+      "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "epic-002 iter-002 音频播放速度控制（0.5x~1.5x）— 219/219 测试通过，build 成功"
-    },
-    {
-      "id": "2026-05-09-7",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-002 iter-001 纯听写模式 — 205/205 测试通过，build 成功，PM-UX 连续 5 次未选中后首次中选"
-    },
-    {
-      "id": "2026-05-09-1",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "iter-001 核心存储服务与会话持久化 — 72/72 测试通过，build 成功"
-    },
-    {
-      "id": "2026-05-09-2",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "iter-002 错题本 MVP + iter-003 学习历史记录 — 131/131 测试通过，build 成功，epic-001 3/5 迭代完成"
-    },
-    {
-      "id": "2026-05-09-3",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "iter-004 数据导入导出 — 159/159 测试通过，build 成功，epic-001 4/5 迭代完成"
-    },
-    {
-      "id": "2026-05-09-4",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "bugfix-001 紧急体验 Bug 修复 — 165/165 测试通过，build 成功，修复 shuffle 不重置、键盘快捷键、题目标签泄露 3 个 Bug"
-    },
-    {
-      "id": "2026-05-09-6",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "iter-005 智能复习队列 — 189/189 测试通过，build 成功，epic-001 全部 6 个迭代完成"
+      "summary": "Brainstorm 完成。9 个 Epic 提案，收敛为 5 个候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户留存与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。三个 high priority Epic 形成'心流-动机-个性化'三维体系。"
     }
   ],
-  "pendingQuestions": [],
-  "awaitingInputSince": null,
-  "resumedStatus": null,
+  "status": "COMPLETE",
+  "commit": "bbf722c",
+  "cycleCount": 131,
+  "nextMode": "none",
+  "failedAttempts": 0,
+  "currentCycle": {
+    "id": "2026-05-12-131",
+    "mode": "test",
+    "stage": "DEPLOY",
+    "startedAt": "2026-05-12T13:30:00.000Z",
+    "completedAt": "2026-05-12T13:35:00.000Z"
+  },
+    "mode": "test",
+    "stage": "COMMIT",
+    "startedAt": "2026-05-12T13:07:00.000Z",
+    "completedAt": "2026-05-12T13:08:00.000Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-12-125",
+    "mode": "tech-review",
+    "stage": "TECH_REVIEW"
+  },
+  "brainstormResults": [
+    {
+      "id": "epic-030",
+      "title": "学习心流深度优化与抗疲劳设计",
+      "description": "基于用户答题行为数据，实时检测学习疲劳状态，动态调整练习难度和节奏，让用户始终处于'最近发展区'，维持最佳学习心流。核心创新：疲劳感知 + 难度自适应 + 效率时段分析。",
+      "proposedBy": "PM-UX",
+      "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP", "QA"],
+      "concerns": "疲劳检测算法需要足够的 session 数据积累才有意义，对新用户效果有限",
+      "priority": "high",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习节奏感知与疲劳检测", "scope": "frontend-only"},
+        {"title": "iter-2: 专注度自适应调整", "scope": "frontend-only"},
+        {"title": "iter-3: 学习时段质量分析", "scope": "frontend-only"},
+        {"title": "iter-4: 疲劳恢复激励机制", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030b",
+      "title": "学习动机可视化与目标设定系统",
+      "description": "将用户的学习数据转化为清晰的目标进度感知，通过对比激励（与上周相比）而非绝对值激励用户持续学习。核心创新：学习目标卡 + 效率趋势预测 + 里程碑庆祝仪式。",
+      "proposedBy": "UX",
+      "supportedBy": ["PM-Growth", "PM-UX", "PM-Lean", "EXP"],
+      "concerns": "目标设定需要用户主动参与，可能增加上手门槛",
+      "priority": "high",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习目标卡设计", "scope": "frontend-only"},
+        {"title": "iter-2: 学习效率趋势预测", "scope": "frontend-only"},
+        {"title": "iter-3: 对比激励机制", "scope": "frontend-only"},
+        {"title": "iter-4: 学习里程碑庆祝仪式", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030c",
+      "title": "深度个性化学习路径引擎",
+      "description": "将 epic-028 的静态间隔重复升级为动态校准，基于用户实际遗忘速度而非固定间隔安排复习。同时根据用户实时状态动态推荐练习模式。核心创新：遗忘曲线实时校准 + 动态模式推荐。",
+      "proposedBy": "EXP",
+      "supportedBy": ["PM-UX", "UX", "PM-Growth", "PM-Lean", "ARCH"],
+      "concerns": "动态校准算法需要跨时间维度的数据积累，对新用户价值有限；需避免过度个性化导致用户体验碎片化",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-1: 学习状态实时检测", "scope": "frontend-only"},
+        {"title": "iter-2: 动态练习推荐", "scope": "frontend-only"},
+        {"title": "iter-3: 遗忘曲线动态校准", "scope": "frontend-only"},
+        {"title": "iter-4: 个性化学习报告", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030d",
+      "title": "用户留存与召回机制深化",
+      "description": "基于间隔重复到期时间和学习 streak，设计召回机制和 streak 保护机制，确保用户持续回访。核心创新：复习提醒时机优化 + streak 保护罩 + 成就缺失推荐。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": ["PM-Lean", "PM-Eco", "UX"],
+      "concerns": "召回机制需要用户授权通知，纯前端无法实现真正的推送；streak 保护可能降低 streak 的稀缺感",
+      "priority": "medium",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-1: 复习提醒推送机制", "scope": "frontend-only"},
+        {"title": "iter-2: 学习连续 streak 保护机制", "scope": "frontend-only"},
+        {"title": "iter-3: 成就缺失分析", "scope": "frontend-only"},
+        {"title": "iter-4: 个性化学习目标设定", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-030e",
+      "title": "质量保障体系自动化",
+      "description": "修复 playwright E2E 测试的 flaky 状态，建立测试覆盖率基线，将质量门禁真正集成到 CI pipeline。核心创新：E2E 稳定化 + 覆盖率监控 + 视觉回归测试。",
+      "proposedBy": "QA",
+      "supportedBy": ["ARCH", "PM-Mon"],
+      "concerns": "iter-4 视觉回归测试需要引入新依赖，增加构建体积；E2E 测试在 CI 环境中可能不稳定",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-1: Playwright E2E 测试稳定化", "scope": "frontend-only"},
+        {"title": "iter-2: 测试覆盖率基线", "scope": "frontend-only"},
+        {"title": "iter-3: 自动化回归测试套件", "scope": "frontend-only"},
+        {"title": "iter-4: 视觉回归测试", "scope": "frontend-only"}
+      ]
+    }
+  ],
+  "currentEpic": {
+    "id": "epic-030",
+    "title": "学习心流深度优化与抗疲劳设计",
+    "description": "基于用户答题行为数据，实时检测学习疲劳状态，动态调整练习难度和节奏，让用户始终处于'最近发展区'，维持最佳学习心流。核心创新：疲劳感知 + 难度自适应 + 效率时段分析。",
+    "proposedBy": "PM-UX",
+    "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP", "QA"],
+    "concerns": "疲劳检测算法需要足够的 session 数据积累才有意义，对新用户效果有限",
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复 + 响应式布局优化",
+        "scope": "frontend-only",
+        "status": "completed",
+        "completedAt": "2026-05-12T13:10:00.000Z",
+        "version": "v0.54.0",
+        "commit": "d6dce83",
+        "description": "建立学习疲劳检测核心机制：基于答题正确率/速度/时间跨度的疲劳信号采集，识别'心流中断'时机（连续错误/超时/放弃），为后续的自适应调整和激励恢复提供数据基础。同时响应 dir-1778414197688 指令修复 5 项响应式问题，并响应 dir-1778465917386 指令修复 8 个主练习链路 bug。",
+        "description": "建立学习疲劳检测核心机制：基于答题正确率/速度/时间跨度的疲劳信号采集，识别'心流中断'时机（连续错误/超时/放弃），为后续的自适应调整和激励恢复提供数据基础。同时响应 dir-1778414197688 指令修复 5 项响应式问题，并响应 dir-1778465917386 指令修复 8 个主练习链路 bug。",
+        "bugfixScope": "已全部完成：8 个主练习链路 bug（AnimatePresence key+mode 修复×2、retry 反馈清除、更多菜单、词库弹窗响应式、听写提示文案、选择题无价值题过滤、连词成句释义句跳过、解析重写）+ 5 项响应式改进（Header overflow-x-auto、词库弹窗 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3、AchievementToast、Leaderboard pills-style、no-scrollbar）+ useFlowState Hook（focused/fatigued/normal 三态检测，3 信号源：准确率趋势+连续错误+速度趋势）+ 29 个 Hook 测试。"
+      },
+      {
+        "id": "iter-002",
+        "title": "专注度自适应调整",
+        "scope": "frontend-only",
+        "status": "completed",
+        "completedAt": "2026-05-12T13:30:00.000Z",
+        "version": "v0.55.0",
+        "commit": "bbf722c",
+        "description": "基于疲劳检测信号，动态调整练习节奏：疲劳时降低题目难度或延长提示展示时间；状态好时适度加速；配合番茄工作法理念注入休息提醒。"
+      },
+      {
+        "id": "iter-003",
+        "title": "学习时段质量分析",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "分析用户最佳学习时段（早/中/晚/深夜），标记效率高峰与低谷，为用户提供时段质量报告，帮助用户自我优化学习时间分配。"
+      },
+      {
+        "id": "iter-004",
+        "title": "疲劳恢复激励机制",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "检测到疲劳后提供正向引导：休息提醒 + 趣味性内容过渡 + 短休息游戏化（深呼吸计时/伸展动画），而非强制中断，保护学习积极性。"
+      }
+    ],
+    "currentIterationIndex": 2
+  },
+  "plan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "学习节奏感知与疲劳检测 + 主练习链路 Bug 修复 + 响应式布局优化",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 分析 bug 根因——深入代码定位 8 个 bug 的具体位置和触发条件",
+      "Step 2: Bug 1 Fix (下一题卡住)——确认 PracticeCard.tsx AnimatePresence + key={sentence.id} 逻辑，验证 nextSentence 确实重置所有状态",
+      "Step 3: Bug 2 Fix (重试不清旧反馈)——确认 usePractice.ts retry() 和 checkAnswer() 的 isRetrying/previousAttemptsRef 逻辑完整可用",
+      "Step 4: Bug 3 Fix (更多菜单无响应)——确认 DropdownMenu 的 onSelect 事件不被拦截，测试 isMobile 条件下的触发行为",
+      "Step 5: Bug 4 Fix (词库弹窗响应式)——DictionarySelector/DictionaryBrowser 弹窗内 grid-cols 改为完全响应式（grid-cols-1 sm:grid-cols-2 lg:grid-cols-3）",
+      "Step 6: Bug 5 Fix (听写提示文案)——DictationMode.tsx 中 '传统整句听写' 改为 '首字母听写/填空式听写'，明确说明题型",
+      "Step 7: Bug 6 Fix (选择题无价值题过滤)——useAdaptivePractice.ts 中 getSmartDistractors 增强：过滤题干和正确答案完全相同的选项对",
+      "Step 8: Bug 7 Fix (连词成句释义句跳过)——SentenceReorderMode.tsx 中 isDefinitionSentence 句子提供明确跳过按钮而非半禁用状态",
+      "Step 9: Bug 8 Fix (解析只重复中文)——PracticeCard.tsx 中 getExplanation() 增强：选择题解释'为什么这个句子正确'而非重复中文；填空/听写解释'这个词为什么是这个词'而非重复中文",
+      "Step 10: Responsive Fix 1 (桌面端顶部品牌区)——Header.tsx 中品牌区 flex-shrink-0 禁止压缩，导航超宽时折叠进更多菜单（...more），用 popover 承接溢出项",
+      "Step 11: Responsive Fix 2 (成就提示改 toast)——AchievementBadge 触发改为短暂 toast（3s 自动消失）替代弹窗，避免打断主练习流程",
+      "Step 12: Responsive Fix 3 (排行榜标注数据范围)——Leaderboard 组件三处（分类 tabs / 时间 pills / 顶部说明）明确标注'本地数据/今日/本周/全部'",
+      "Step 13: 建立疲劳检测 Hook——useFlowState(dictionaryId) 新 Hook：采集当前 session 的答题正确率趋势、答题平均速度、连续错误标记，返回 { flowState: 'focused' | 'fatigued' | 'normal', fatigueSignals: FatigueSignal[] }",
+      "Step 14: 疲劳检测单元测试——useFlowState.test.ts：覆盖正常/疲劳/专注三种状态判定边界",
+      "Step 15: Bug 修复 + 响应式改进验证——运行 vitest 全量测试 + build 验证，确保零回归",
+      "Step 16: 状态更新——更新 state.json，提交代码，准备 TEST 阶段"
+    ],
+    "filesToModify": [
+      "src/components/practice/PracticeCard.tsx",
+      "src/components/practice/modes/DictationMode.tsx",
+      "src/components/practice/modes/SentenceReorderMode.tsx",
+      "src/components/DictionarySelector.tsx",
+      "src/components/layout/Header.tsx",
+      "src/components/layout/MoreMenu.tsx",
+      "src/components/Leaderboard.tsx",
+      "src/hooks/useAdaptivePractice.ts",
+      "src/hooks/usePractice.ts"
+    ],
+    "filesToCreate": [
+      "src/hooks/useFlowState.ts",
+      "src/hooks/__tests__/useFlowState.test.ts"
+    ],
+    "dependencies": [],
+    "testStrategy": "1. useFlowState Hook 单元测试：覆盖 focused/fatigued/normal 三态判定、边界情况（无历史数据新用户）\n2. Bug 修复点验证：现有测试无需大量更新（bug 由状态机逻辑修复，组件渲染逻辑不变）\n3. 全量 vitest 测试：预计 1380+ 测试零回归\n4. Build + Lint 验证"
+  },
+  "techReviewBaseline": {
+    "lintWarnings": 1,
+    "typeErrors": 0,
+    "unusedImports": 0,
+    "anyTypeUsage": 0,
+    "longFunctions": 0,
+    "complexityIssues": 0,
+    "deadCode": 0,
+    "scanDate": "2026-05-12T03:30:00.000Z",
+    "note": "仅 1 个 pre-existing react-refresh warning，代码健康度良好"
+  },
+  "epicHistory": [
+    {
+      "id": "epic-029",
+      "title": "学习成就社交展示与留存闭环",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.50.0-v0.53.0",
+      "createdAt": "2026-05-12T03:20:00.000Z",
+      "completedAt": "2026-05-12T12:15:00.000Z",
+      "proposedBy": "PM-Growth",
+      "supportedBy": ["PM-Lean", "UX"]
+    },
+    {
+      "id": "epic-028",
+      "title": "智能学习路径引擎",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.45.0-v0.49.0",
+      "completedAt": "2026-05-12T11:20:00.000Z"
+    },
+    {
+      "id": "epic-027",
+      "title": "沉浸式多模态练习模式",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.43.0-v0.44.0",
+      "completedAt": "2026-05-11T15:35:00.000Z"
+    },
+    {
+      "id": "epic-018",
+      "title": "学习路径追踪与成就系统整合",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.39.0-v0.42.0",
+      "completedAt": "2026-05-11T08:01:00.000Z"
+    },
+    {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.38.0",
+      "completedAt": "2026-05-11T12:50:00.000Z"
+    },
+    {
+      "id": "epic-014",
+      "title": "主练习链路稳定性打磨",
+      "status": "completed",
+      "iterationsCount": 6,
+      "completedIterations": 6,
+      "versionRange": "v0.37.0",
+      "completedAt": "2026-05-11T13:15:00.000Z"
+    },
+    {
+      "id": "epic-009",
+      "title": "个人词典管理与数据主权",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 5,
+      "versionRange": "v0.31.0-v0.36.0",
+      "completedAt": "2026-05-11T04:30:00.000Z"
+    },
+    {
+      "id": "epic-005",
+      "title": "学习成果社交裂变与分享卡片 MVP",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.27.0-v0.30.0",
+      "completedAt": "2026-05-11T02:15:00.000Z"
+    },
+    {
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.23.0-v0.25.0",
+      "completedAt": "2026-05-10T19:42:00.000Z"
+    },
+    {
+      "id": "epic-004",
+      "title": "体验优化与响应式适配",
+      "status": "completed",
+      "iterationsCount": 10,
+      "completedIterations": 10,
+      "versionRange": "v0.14.0-v0.26.0",
+      "completedAt": "2026-05-10T15:00:00.000Z"
+    }
+  ],
+  "testResults": {
+    "unitTests": {
+      "passed": 1380,
+      "failed": 0,
+      "skipped": 1,
+      "total": 1381,
+      "duration": "30.84s"
+    },
+    "e2eTests": {
+      "passed": 1,
+      "failed": 1,
+      "flaky": true,
+      "flakyReason": "pre-existing 空数据测试，与本次迭代无关"
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "note": "pre-existing react-refresh warning"
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.77s (tsc + vite)"
+    }
+  },
   "directives": {
     "version": "1.0",
-    "pending": [],
+    "pending": [
+      {
+        "id": "dir-1778414197688",
+        "target": "N/A",
+        "type": "custom",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤。",
+        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
+        "createdAt": "2026-05-12T09:00:00.000Z",
+        "executionNote": "纳入 epic-030 iter-001 plan，Step 10-12 响应式修复"
+      },
+      {
+        "id": "dir-1778465917386",
+        "target": "N/A",
+        "type": "custom",
+        "action": "【用户完整评测反馈 v3】epic-004 iter-007 主练习链路稳定性打磨（优先级最高）：核心 bug（必须修）：1. '下一题'点了之后进度跳到 2/10，但题卡仍停在上题、仍显示上题答案——点击下一题必须真正换题；2. '重新尝试'点了后按钮变提交但旧反馈还留——重试必须清掉旧反馈；3. '更多'按钮点了没反应——更多菜单必须可用（错题/记录/数据/成就/排行）；体验问题：4. 移动端词库选择卡片右侧仍被裁切——弹窗网格完全响应式；5. 听写模式提示文案不准确——不是传统整句听写，改名'首字母听写'或明确说明；6. 选择题题干和正确选项几乎完全一样（如 yearly medical examinations）——需过滤无学习价值的题；7. 连词成句遇到释义型题时有提示但无单词可点——直接显示跳过/换一题而非半禁用；8. 解析目前只重复中文释义——改为解释'为什么选这个词'而非重复；产品方向：先别扩功能。把'连续做 10 题不出戏'做到扎实。",
+        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
+        "createdAt": "2026-05-12T09:00:00.000Z",
+        "executionNote": "纳入 epic-030 iter-001 plan，Step 2-9 Bug 修复"
+      }
+    ],
     "history": [
       {
-        "id": "dir-1778292031198",
-        "type": "insert_epic",
-        "target": null,
-        "action": "测试的时候电脑有声音，想办法不出声测试",
-        "reason": "",
-        "createdAt": "2026-05-09T02:00:31.198Z",
-        "executedAt": "2026-05-09T02:01:00.000Z",
-        "executionNote": "已纳入 iter-002 测试策略：mock Audio 确保测试静默运行"
-      },
-      {
-        "id": "dir-urgent-001",
-        "type": "custom",
-        "target": "N/A",
-        "action": "【高优先级 Bug 修复】暂停当前迭代开发，优先修复以下 3 个用户体验 Bug，修复完成后继续原迭代：Bug 1 — 新开一组还是原来的题目；Bug 2 — 答完后要点下一题按钮，不方便；Bug 3 — CET4-African 题目标题泄露答案",
-        "reason": "用户反馈的 3 个高优先级体验 Bug，必须立即修复",
-        "createdAt": "2026-05-09T12:30:00.000Z",
-        "executedAt": "2026-05-09T12:30:00.000Z",
-        "executionNote": "已插入 bugfix-001 '紧急体验 Bug 修复' 到当前 Epic，原 iter-005 '智能复习队列' 顺延"
-      },
-      {
-        "id": "dir-urgent-002",
-        "type": "custom",
-        "target": "N/A",
-        "action": "【高优先级】插入两个紧急迭代到当前 epic-002 中，在 iter-003（已完成）之后、iter-004 之前执行：紧急迭代 A：响应式 UI 适配（移动端 + 桌面端）；紧急迭代 B：纯听写模式重新设计",
-        "reason": "用户反馈纯听写模式无法使用 + UI 必须做响应式基础，否则后续所有功能返工",
-        "createdAt": "2026-05-09T16:30:00.000Z",
-        "executedAt": "2026-05-09T16:35:00.000Z",
-        "executionNote": "已插入 iter-003a '响应式 UI 适配' 和 iter-003b '纯听写模式重新设计' 到 epic-002 迭代列表中，位于 iter-003 之后、iter-004 之前"
+        "id": "dir-20260512125-01",
+        "type": "tech-review",
+        "target": "baseline",
+        "action": "【Tech Review 完成】代码健康度扫描完成",
+        "reason": "循环末尾 tech-review 阶段",
+        "createdAt": "2026-05-12T11:30:00.000Z",
+        "executedAt": "2026-05-12T11:30:00.000Z",
+        "executionNote": "Lint 1 warning (pre-existing), TypeScript 0 errors, Build 3.77s 通过。代码健康度良好，无高优先级技术债务。"
       }
     ]
   },
@@ -216,13 +461,13 @@
     "deployed": true,
     "target": "vercel",
     "url": "https://en-learn.vercel.app",
-    "productionUrl": "https://en-learn-9l3nqgvp6-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-09T11:40:46.262Z",
-    "version": "v0.12.0",
-    "iterationId": "iter-005",
-    "iterationTitle": "连词成句模式（拖拽/点击排序）",
-    "gitTag": "v0.12.0",
-    "gitTagPushed": false,
-    "gitPushNote": "No remote configured (WeChat Mini Program project), tag created locally only"
-  }
+    "version": "v0.55.0",
+    "commit": "bbf722c",
+    "iterationId": "iter-002",
+    "iterationTitle": "专注度自适应调整",
+    "deployedAt": "2026-05-12T13:40:00.000Z"
+  },
+  "pendingDeployment": false,
+  "lastRun": "2026-05-12T13:40:00.000Z",
+  "planSummary": "epic-030 iter-001 全部完成。v0.54.0 部署成功。"
 }

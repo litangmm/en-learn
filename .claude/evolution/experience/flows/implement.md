@@ -8,6 +8,177 @@
 
 ## 历史数据
 
+### 2026-05-12 (cycle-2026-05-12-120)
+- **迭代**: epic-029 iter-004「成就徽章墙导出」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖（复用 html2canvas），零构建体积增长
+- **关键决策**:
+  - BadgeExportPanel 组件提供网格预览所有徽章（解锁+锁定）
+  - useBadgeExport Hook 使用 html2canvas 的 html2canvas() 方法将 DOM 转为 canvas
+  - canvas.toBlob() 导出为 PNG 文件，通过 URL.createObjectURL + anchor click 实现下载
+  - 文件名格式 `badges-{timestamp}.png`
+  - BadgePanel 添加导出触发按钮（Download 图标），集成到 Trophy 入口
+- **重构**: 无
+- **观察**: html2canvas 复用 epic-005 已安装依赖，零新增依赖。BadgeExportPanel 作为纯展示组件，useBadgeExport Hook 提供纯函数式导出逻辑，无副作用。1346 测试是项目历史最高水位。**epic-029 仅剩 iter-005（数据可视化）待实施**
+
+### 2026-05-12 (cycle-2026-05-12-103)
+- **迭代**: epic-028 iter-003「每日复习计划与提醒系统」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - DailyReviewStats 类型定义（streakDays/lastReviewDate/reviewedToday/reviewedTodayCount/reviewedTodayAt）
+  - useReviewStreak Hook 提供复习连续天数管理、复习完成追踪
+  - DailyReviewPlan 组件展示每日复习计划（到期数量/预计时长/完成进度）
+  - Header 集成：复习到期数指示器
+  - storage.ts 新增 DAILY_REVIEW_STATS_KEY 和 getReviewStats/updateReviewStats 方法
+- **重构**: 无
+- **观察**: epic-028 iter-003 零新增依赖、零构建体积增长。1052 测试历史最高水位，零新增 lint 警告。epic-028 已完成 3/5 迭代（间隔重复调度引擎→薄弱点识别→每日复习计划），剩余 iter-004（学习效率数据面板）、iter-005（自适应出题权重算法优化）
+
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长，纯 SVG/CSS 实现
+- **关键决策**:
+  - FocusModeOverlay 使用 fixed inset-0 全屏绝对定位，z-50 确保覆盖所有内容，背景主题 dimmed overlay
+  - sessionTimer 通过 useEffect + setInterval 追踪专注时长，cleanup on unmount
+  - FocusSessionSummary 作为纯展示组件，props 驱动统计渲染，与 useXP/usePractice 状态自然对接
+  - FocusModeOverlay 动画使用 framer-motion opacity 过渡，FocusSessionSummary 使用 scale 弹入
+  - 模式切换时 initializeInputs() 重置输入，避免跨模式状态残留
+- **重构**: 无
+- **观察**: epic-027 全部 5 个迭代收官。专注模式全屏覆盖实现了「进入沉浸→计时追踪→完成统计」的完整闭环。938 测试历史新高位，零新增 lint 警告。
+- **迭代**: epic-018 iter-002「能力雷达图与进度趋势」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，纯 SVG 实现，零构建体积增长
+- **关键决策**:
+  - AbilityRadar 使用纯 SVG 多边形绘制雷达图，4轴（填空/选择/排序/听写），桌面/移动端自适应尺寸
+  - ProgressTrend 使用纯 SVG path 绘制折线图，支持 XP/题数切换，7天趋势数据
+  - useProgressStats 新增 getModeAccuracy() 从历史记录计算各模式正确率，getDailyXP(7) 计算每日XP变化
+  - AbilityRadar 使用 getModeAccuracy 数据渲染菱形/五边形填充区域，无数据时显示占位文字
+  - ProgressTrend 使用 getDailyXP 数据渲染折线图，支持 touch 交互显示每日详情
+  - AbilityRadar 和 ProgressTrend 无图表库依赖，完全手写 SVG，降低构建体积
+- **观察**: 零新增依赖，纯 SVG 实现。876 测试是项目历史最高水位。epic-018 iter-001+iter-002 完整交付里程碑导航/能力雷达/进度趋势，iter-003（成就系统/学习档案）继续推进。
+
+### 2026-05-11 (cycle-2026-05-11-83)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整实现**
+- **实现质量**: 高 — 8 个 P0 bug 全部修复，零新增依赖，零构建体积增长
+- **关键决策**:
+  - Bug 1: AnimatePresence mode="wait" 移除，实现题卡即时切换
+  - Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef 语义正确化
+  - Bug 3: MoreMenu mobile fixed positioning（absolute → fixed）
+  - Bug 4: DictionaryBrowser grid-cols 自适应网格（grid-cols-1 sm:grid-cols-2）
+  - Bug 5: 听写模式提示文案澄清（明确说明首字母听写）
+  - Bug 6: useAdaptivePractice getSentenceOptions 相似题过滤
+  - Bug 7: SentenceReorderMode 释义句跳过按钮
+  - Bug 8: PracticeCard.tsx getExplanation 重写，解释"为什么选这个词"
+  - 额外: NavigationContext._currentValue 改标准 useContext
+- **重构**: shareTriggers.ts 提取（提升组件职责单一化）
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复并测试通过。819 测试历史新高位，零新增 lint 警告。epic-014 iter-002~006 继续 pending
+
+### 2026-05-11 (cycle-2026-05-11-82)
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **完整实现**
+- **实现质量**: 高 — 8 个 P0 bug 全部修复，零新增依赖，零构建体积增长
+- **关键决策**:
+  - Bug 1: AnimatePresence mode="wait" 移除，实现题卡即时切换
+  - Bug 2: retry() isRetrying 语义修复 + previousAttemptsRef 语义正确化
+  - Bug 3: MoreMenu mobile fixed positioning（absolute → fixed）
+  - Bug 4: DictionaryBrowser grid-cols 自适应网格（grid-cols-1 sm:grid-cols-2）
+  - Bug 5: 听写模式提示文案澄清（明确说明首字母听写）
+  - Bug 6: useAdaptivePractice getSentenceOptions 相似题过滤
+  - Bug 7: SentenceReorderMode 释义句跳过按钮
+  - Bug 8: PracticeCard.tsx getExplanation 重写，解释"为什么选这个词"
+  - 额外: NavigationContext._currentValue 改标准 useContext
+- **重构**: shareTriggers.ts 提取（提升组件职责单一化）
+- **观察**: dir-1778465917386 指令的 8 个问题全部修复并测试通过。819 测试历史新高位，零新增 lint 警告。epic-014 iter-002~006 继续 pending
+
+### 2026-05-11 (cycle-2026-05-11-80)
+- **迭代**: epic-009 iter-003「个人生词标记」—— **完整实现**
+- **实现质量**: 高 — 功能逻辑清晰，UI 交互完善，测试覆盖充分
+- **关键决策**:
+  - toggleWordMark 方法实现标记/取消标记切换，markedAt 字段记录标记时间便于排序
+  - DictionaryBrowser 添加星标按钮 UI，点击切换标记状态并显示 toast 反馈
+  - DataManager 添加「我的生词」Tab，getMarkedWords 按当前词典筛选生词列表
+  - PersonalWord 类型标记 marked/markedAt 为可选字段，保持与旧数据向后兼容
+- **观察**: 零新增依赖，零架构变更。epic-009 全部 3 个迭代收官（词典浏览→搜索筛选→生词标记），809 测试是项目历史最高水位。个人数据主权理念完整落地。
+
+### 2026-05-11 (cycle-2026-05-11-76)
+- **迭代**: epic-010 iter-003「自适应出题权重」—— **完整实现**
+- **实现质量**: 高 — 算法设计轻量，向后兼容完善
+- **关键决策**:
+  - useQuestionWeighting hook 提供 getSentenceWeight(id) 和 getWeightedSentenceIds(ids) 两个核心函数
+  - getSentenceWeight 使用错题次数（more mistakes = higher weight）和错误率（higher error rate = higher weight）双维度计算权重
+  - getWeightedSentenceIds 使用加权随机洗牌：高权重句子更频繁出现在靠前位置
+  - 向后兼容：若无错题历史，回退到均匀随机洗牌，确保新用户零感知降级
+  - 集成到 usePractice.ts：替换简单的 shuffle 为 weighted shuffle，优先出薄弱词
+- **观察**: 零新增依赖，零新增组件，零构建体积增长。epic-010 全部 3 个迭代收官（智能干扰项 v0.34.0、动态提示级别 v0.34.1、自适应出题权重 v0.35.0），804 测试是项目历史最高水位。自适应学习三件套（干扰项/提示级别/出题权重）完整交付，纯前端无外部依赖
+
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **完整实现**
+- **实现质量**: 高 — 零 bug，零 lint 错误，649 测试全通过
+- **关键决策**:
+  - useXP.addXP 返回 `{ profile, oldLevel, newLevel, leveledUp }` 用于等级变化检测，通过返回对象扩展而非新方法保持向后兼容
+  - SharePromptToast 非阻塞式设计（1.5s setTimeout 自动消失）确保不打断学习心流，使用 triggerKey 强制 re-mount 实现动画重播
+  - 频次控制 isRecentShareTrigger(type, id) 使用 useRef<string[]> recentShareTriggers 记录最近触发，5 分钟内同类型不重复弹窗
+  - BadgeUnlockToast 添加 onShare prop，用户可从徽章解锁 Toast 直接触发分享
+  - ResultModal 当天首次自动弹窗 ShareDialog，非首次则仅显示分享按钮
+- **观察**: 零新增依赖，零架构变更。SharePromptToast 的非阻塞式设计验证了 PM-UX 的心流保护建议。iter-004 数据追踪不涉及 UI 变更，可快速推进。epic-005 即将收官（仅剩 iter-004）
+
+### 2026-05-11 (cycle-2026-05-11-56)
+- **迭代**: epic-005 iter-002「多格式导出（图片/文本）」—— **完整实现**
+- **实现质量**: 高 — 零 bug，零 lint 错误，623 测试全通过
+- **关键决策**:
+  - html2canvas 包安装用于将 React 组件渲染为 canvas 并导出为 PNG
+  - useShareExport hook 提供 generateShareText/downloadImage/copyText 三个核心函数
+  - generateShareText 生成格式化的文本分享内容（包含等级/XP/连击/正确率/成就等）
+  - downloadImage 使用 html2canvas 将 ShareCard DOM 元素转为 canvas，然后导出为 PNG Blob
+  - copyText 使用 Clipboard API 复制到剪贴板，fallback 到 selectAll + execCommand
+  - ShareDialog 中 handleGenerateImage 和 handleCopyText 替换为实际实现，添加下载/复制成功反馈
+  - 修复 as any 类型转换位置 lint 错误
+- **观察**: 零新增架构，零构建体积问题。html2canvas 会增加约 50KB gzip 构建体积（PM-Mon 关注点），但仍在可接受范围。iter-003 需要设计分享触发时机，避免打断学习心流
+
+### 2026-05-10 (cycle-2026-05-10-38)
+- **迭代**: epic-006 iter-001「视图路由抽象 + P0/P1 Bug 修复」—— **完整实现**
+- **实现质量**: 高 — 架构设计清晰，解耦效果显著
+- **关键决策**:
+  - ViewRouter.tsx 使用 `view → component` 映射表设计，视图与组件完全解耦，新增视图只需在映射表中添加条目
+  - NavigationContext.tsx 提供 `view`/`setView`/`isFocusMode`/`toggleFocusMode` 状态，通过 Provider 模式共享
+  - App.tsx 重构移除 ~135 行嵌套三元运算符，使用 `<ViewRouter>` 和 `<NavigationProvider>` 包装，代码行数减少约 40%
+  - routing/index.ts 提供 barrel exports，便于后续扩展和维护
+  - P0（切换词典清除进度）和 P1（输入框高度）问题已在重构期间验证并修复
+- **观察**: 零新增依赖，零构建体积增长。ViewRouter 的映射表设计为后续 iter-002（PracticeCard 策略模式）和新功能接入提供了清晰的结构。16 个 ViewRouter 测试确保了重构安全性，501/501 测试全部通过。
+
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **完整实现**
+- **实现质量**: 高 — 数据识别逻辑清晰，UI 差异化处理得当
+- **关键决策**:
+  - `isDefinitionSentence(sentence)` 使用正则表达式 `/"(.*?)"/` 检测 blanks[0].word 是否被引号包裹，边界清晰且可解释
+  - `ChoiceOption` 接口 `{ id, text }` 规范化了选择题选项类型，避免使用混合格式
+  - options 生成时释义句使用 `sentence.chinese` 作为选项文本，避免显示陌生英文句子，降低认知负荷
+  - `displayText` 逻辑在 PracticeCard 中统一处理释义题（中文）和 normal 题（英文）的显示差异
+  - sentence-reorder 模式对释义句显示警告而非错误，提供安全的边界处理
+- **观察**: 零新增依赖，零新增组件，零构建体积增长。isDefinitionSentence 的引号检测是轻量级数据识别，无需额外训练或复杂算法。ChoiceOption 接口规范化提升了类型安全性。8 个源文件的变更范围极小，全量 459 测试零回归
+
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **完整实现**
+- **实现质量**: 高 — 数据模型简洁（纯派生），算法边界清晰，集成无冲突
+- **关键决策**:
+  - LeaderboardEntry 接口包含 rank/player/score/detail/metric，足够表达完整排名信息，无需额外冗余字段
+  - getLeaderboardEntries 纯函数从历史记录 SessionHistory 派生，零新增存储，零数据持久化风险
+  - 三分类计算逻辑分离：score 按 totalScore 排序、accuracy 按正确率排序、speed 按 pointsPerMinute 排序，每类独立计算避免交叉污染
+  - 时间筛选通过日期比较实现：today 比较日期字符串、week 比较时间戳差值 ≤7 天、all 不做筛选，逻辑简洁可解释
+  - 同分并列处理通过排序后遍历分配排名，相同分数共享同一排名，符合常规排行榜语义
+  - Leaderboard 组件 category tabs 使用 framer-motion layoutId 实现流畅切换指示器动画，复用已有依赖
+  - App.tsx 集成中，leaderboard 视图与现有 8 个视图并列，通过条件渲染自然切换
+- **观察**: 零新增依赖，零构建体积增长。排行榜作为纯派生功能，与现有 session/mistakes/history/xpProfile/dailyChallenges/badgeProgress 完全解耦，无数据冲突风险。11 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护成本
+
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **完整实现**
+- **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突
+- **关键决策**:
+  - ChallengeType 联合类型设计为 `'correct' | 'answer' | 'streak'`，与现有学习行为自然对齐，无需用户学习新交互模式
+  - DailyChallenge 接口包含 id/title/description/type/target/current/completed/claimed/rewardXP，足够表达完整挑战状态，无需额外冗余字段
+  - generateDailyChallenges 使用确定性种子洗牌：日期字符串哈希作为种子，Fisher-Yates seeded shuffle 从 6 题池选 3 题，确保所有用户同一天看到相同挑战组合
+  - trackActivity 接口设计为 `(type: 'correct' | 'answer' | 'streak', value?: number)`，通用 enough 支持未来自适应挑战（动态调整 target）
+  - claimReward 通过 storage.addXP 直接发放奖励，复用现有 XP 系统，避免重复实现奖励逻辑
+  - DailyChallengePanel 的进度条使用 `(current / target) * 100` 百分比宽度，视觉反馈直观
+  - App.tsx 集成中，trackActivity 在正确/错误答题的 useEffect 中调用，与现有答题逻辑自然融合
+- **观察**: 零新增依赖，零构建体积增长。每日挑战作为全新数据维度，与现有 session/mistakes/history/xpProfile 完全解耦，并行存储在 localStorage 中。9 个现有测试文件的批量 mock 更新展示了 hook API 扩展时的测试维护成本
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **完整实现**
 - **实现质量**: 高 — 数据模型简洁，算法边界清晰，集成无冲突
@@ -123,6 +294,18 @@
   - safe-area-inset-bottom 支持 iPhone X+ 系列安全区
   - vitest.setup.ts 中 mock window.matchMedia 确保响应式测试在 jsdom 环境中可运行
 - **观察**: 响应式改造作为「技术债务前置」的成功案例——在功能迭代前建立跨端基础，避免了后续迭代的返工。所有响应式类名遵循 Tailwind 标准断点，无自定义 CSS media query
+
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **完整实现**
+- **实现质量**: 高 — 状态扩展自然，组件职责清晰
+- **关键决策**:
+  - streak 状态为 session-only（不持久化），重启后重置是合理 UX，避免了 localStorage 写入频率和跨设备同步问题
+  - getStreakMultiplier 使用离散分级而非连续函数，实现简洁且可解释，边界值在 2→3、4→5、9→10 处明确
+  - addXP 返回 { profile, finalXP, multiplier, streak } 对象，调用方可获知实际奖励详情，便于触发弹窗
+  - StreakFeedback 组件通过 streak 阈值条件渲染（≥2 才显示），避免空状态干扰
+  - XPGainPopup 使用 triggerKey 强制 re-mount 实现动画重播，避免 AnimatePresence 的 exit-before-enter 延迟
+  - requestAnimationFrame deferral 在 XP 奖励 useEffect 中触发弹窗，确保 DOM 更新后动画开始
+- **观察**: 零新增依赖（framer-motion 复用已有），零构建体积增长。连击系统与 XP 系统的融合通过 useXP hook 统一暴露，App.tsx 的集成改动最小化。7 个现有测试文件的 mock 更新展示了 hook API 扩展时的向后兼容策略
 
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」

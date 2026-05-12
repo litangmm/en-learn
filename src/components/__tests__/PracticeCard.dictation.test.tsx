@@ -26,6 +26,9 @@ describe('PracticeCard dictation mode', () => {
     onNext: vi.fn(),
     onRetry: vi.fn(),
     onSpeak: vi.fn(),
+    // Hint-related props with defaults
+    hintLevel: 'medium' as const,
+    shouldShowHint: () => false,
   };
 
   it('renders chinese translation in dictation mode before result', () => {
@@ -45,12 +48,12 @@ describe('PracticeCard dictation mode', () => {
   });
 
   it('shows dictation mode instruction text', () => {
-    render(<PracticeCard {...baseProps} mode="dictation" />);
-    expect(screen.getByText('请听音频，根据中文提示和首字母提示填写单词')).toBeInTheDocument();
+    render(<PracticeCard {...baseProps} mode="dictation" hintLevel="high" />);
+    expect(screen.getByText('首字母听写：请听音频，根据中文提示和首字母提示填写单词')).toBeInTheDocument();
   });
 
   it('shows first-letter hint below each input in dictation mode', () => {
-    render(<PracticeCard {...baseProps} mode="dictation" />);
+    render(<PracticeCard {...baseProps} mode="dictation" hintLevel="high" />);
     expect(screen.getByText('c...')).toBeInTheDocument();
   });
 
@@ -97,7 +100,7 @@ describe('PracticeCard dictation mode', () => {
   });
 
   it('renders fill-in-blanks mode with all content visible', () => {
-    render(<PracticeCard {...baseProps} mode="fill-in-blanks" />);
+    render(<PracticeCard {...baseProps} mode="fill-in-blanks" hintLevel="high" />);
     expect(screen.getByText('早起的鸟儿有虫吃。')).toBeInTheDocument();
     expect(screen.getByText(/The early bird/)).toBeInTheDocument();
   });
@@ -105,17 +108,17 @@ describe('PracticeCard dictation mode', () => {
   it('does not show dictation instruction in fill-in-blanks mode', () => {
     render(<PracticeCard {...baseProps} mode="fill-in-blanks" />);
     expect(
-      screen.queryByText('请听音频，根据中文提示和首字母提示填写单词'),
+      screen.queryByText('请听音频，根据中文提示和首字母提示'),
     ).not.toBeInTheDocument();
   });
 
   it('hides hints in dictation mode', () => {
-    render(<PracticeCard {...baseProps} mode="dictation" />);
+    render(<PracticeCard {...baseProps} mode="dictation" hintLevel="none" />);
     expect(screen.queryByText(/空1: 抓住/)).not.toBeInTheDocument();
   });
 
   it('shows hints in fill-in-blanks mode', () => {
-    render(<PracticeCard {...baseProps} mode="fill-in-blanks" />);
+    render(<PracticeCard {...baseProps} mode="fill-in-blanks" hintLevel="high" />);
     expect(screen.getByText(/空1: 抓住/)).toBeInTheDocument();
   });
 });

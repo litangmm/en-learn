@@ -235,10 +235,92 @@ describe('PracticeCard sentence-reorder', () => {
       />,
     );
 
-    expect(screen.getByText('答案不正确')).toBeInTheDocument();
-    expect(screen.getByText('正确答案：')).toBeInTheDocument();
-    expect(screen.getByText('The early bird catches the worm.')).toBeInTheDocument();
+    expect(screen.getAllByText('The early bird catches the worm.').length).toBe(2);
+    expect(screen.getByText('你的答案')).toBeInTheDocument();
+    expect(screen.getByText('正确答案')).toBeInTheDocument();
+    expect(screen.getByText('解析')).toBeInTheDocument();
     expect(screen.getByText('下一题')).toBeInTheDocument();
     expect(screen.queryByText('重新尝试')).not.toBeInTheDocument();
+  });
+
+  it('shows progress text with selected count', () => {
+    render(
+      <PracticeCard
+        sentence={mockSentence}
+        inputs={['']}
+        showResult={false}
+        isCorrect={false}
+        attempts={0}
+        isSpeaking={false}
+        currentQuestion={1}
+        totalQuestions={4}
+        mode="sentence-reorder"
+        sentenceTokens={mockTokens}
+        orderedTokenIds={['1-token-0', '1-token-1']}
+        onSelectToken={mockOnSelectToken}
+        onDeselectToken={mockOnDeselectToken}
+        onInputChange={vi.fn()}
+        onCheck={mockOnCheck}
+        onNext={mockOnNext}
+        onRetry={vi.fn()}
+        onSpeak={mockOnSpeak}
+      />,
+    );
+
+    expect(screen.getByText('已选 2/6 个单词')).toBeInTheDocument();
+  });
+
+  it('shows helper text when not all tokens selected', () => {
+    render(
+      <PracticeCard
+        sentence={mockSentence}
+        inputs={['']}
+        showResult={false}
+        isCorrect={false}
+        attempts={0}
+        isSpeaking={false}
+        currentQuestion={1}
+        totalQuestions={4}
+        mode="sentence-reorder"
+        sentenceTokens={mockTokens}
+        orderedTokenIds={['1-token-0', '1-token-1']}
+        onSelectToken={mockOnSelectToken}
+        onDeselectToken={mockOnDeselectToken}
+        onInputChange={vi.fn()}
+        onCheck={mockOnCheck}
+        onNext={mockOnNext}
+        onRetry={vi.fn()}
+        onSpeak={mockOnSpeak}
+      />,
+    );
+
+    expect(screen.getByText('请先点击下方单词组成完整句子')).toBeInTheDocument();
+  });
+
+  it('hides helper text when all tokens selected', () => {
+    render(
+      <PracticeCard
+        sentence={mockSentence}
+        inputs={['']}
+        showResult={false}
+        isCorrect={false}
+        attempts={0}
+        isSpeaking={false}
+        currentQuestion={1}
+        totalQuestions={4}
+        mode="sentence-reorder"
+        sentenceTokens={mockTokens}
+        orderedTokenIds={mockTokens.map((t) => t.id)}
+        onSelectToken={mockOnSelectToken}
+        onDeselectToken={mockOnDeselectToken}
+        onInputChange={vi.fn()}
+        onCheck={mockOnCheck}
+        onNext={mockOnNext}
+        onRetry={vi.fn()}
+        onSpeak={mockOnSpeak}
+      />,
+    );
+
+    expect(screen.queryByText('请先点击下方单词组成完整句子')).not.toBeInTheDocument();
   });
 });

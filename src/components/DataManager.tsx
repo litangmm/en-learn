@@ -9,6 +9,7 @@ import {
   BookOpen,
   FileCheck,
   AlertCircle,
+  BookMarked,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,9 +24,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { storage } from '@/services/storage';
+import { usePersonalWords } from '@/hooks/usePersonalWords';
+import type { View } from '@/components/routing/ViewRouter';
 
 interface DataManagerProps {
   onBack: () => void;
+  onNavigate?: (view: View) => void;
 }
 
 type ImportStatus =
@@ -33,7 +37,7 @@ type ImportStatus =
   | { type: 'success'; message: string }
   | { type: 'error'; message: string };
 
-export function DataManager({ onBack }: DataManagerProps) {
+export function DataManager({ onBack, onNavigate }: DataManagerProps) {
   const [historyCount] = useState(storage.getHistoryCount());
   const [mistakeCount] = useState(storage.getMistakeCount());
   const [hasActiveSession] = useState(storage.hasActiveSession());
@@ -41,6 +45,7 @@ export function DataManager({ onBack }: DataManagerProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingImportData, setPendingImportData] = useState<unknown | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { getCount } = usePersonalWords();
 
   const handleExport = useCallback(() => {
     const data = storage.exportAllData();
@@ -236,6 +241,39 @@ export function DataManager({ onBack }: DataManagerProps) {
               <Upload className="w-4 h-4" />
               导入数据
             </Button>
+            {onNavigate && (
+              <Button
+                onClick={() => {
+                  // Clear any existing flag so it opens in normal mode
+                  sessionStorage.removeItem('dict-browser-marked-only');
+                  onNavigate('dictionary-browser');
+                }}
+                className="w-full gap-2"
+                variant="outline"
+              >
+                <BookMarked className="w-4 h-4" />
+                我的词库
+              </Button>
+            )}
+            {onNavigate && (
+              <Button
+                onClick={() => {
+                  // Set flag so DictionaryBrowser opens with "只看生词" enabled
+                  sessionStorage.setItem('dict-browser-marked-only', 'true');
+                  onNavigate('dictionary-browser');
+                }}
+                className="w-full gap-2"
+                variant="outline"
+              >
+                <BookMarked className="w-4 h-4" />
+                生词本
+                {getCount() > 0 && (
+                  <Badge variant="secondary" className="ml-auto text-xs">
+                    {getCount()}
+                  </Badge>
+                )}
+              </Button>
+            )}
             <input
               ref={fileInputRef}
               type="file"

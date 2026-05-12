@@ -1,0 +1,442 @@
+{
+  "version": "1.0",
+  "pending": [],
+  "history": [
+    {
+      "id": "2026-05-12-107",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-028 iter-004 收官，v0.48.0。LearningEfficiencyPanel + useLearningEfficiency + ViewRouter/View 完成，1089 测试零回归，零新增依赖。epic-028 完成 4/5 迭代，最后一个迭代 iter-005（自适应出题权重算法优化）进入视野。"
+    },
+    {
+      "id": "2026-05-12-106",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-028 iter-004 学习效率数据面板完成。LearningEfficiencyMetrics(记忆保持率/遗忘曲线拟合/薄弱点攻克进度) + LearningEfficiencyPanel组件(综合评分/3指标卡片/进度条) + ViewRouter/View类型 + LearningProfile导航集成。1089 测试零回归，lint 1 warning，build 3.02s。Commit a4518d7."
+    },
+    {
+      "id": "2026-05-11-88",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-018 iter-002 能力雷达图与进度趋势提交。AbilityRadar SVG 雷达图(4轴)、ProgressTrend 折线图(XP/题数切换)、useProgressStats 新增 getModeAccuracy/getDailyXP。876 测试零回归。Commit f5cd5d9."
+    },
+    {
+      "id": "2026-05-11-89",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-018 iter-003 部署 v0.41.0 完成。AchievementPanel + LearningProfile + BadgePanel 构建成功，Vercel 生产部署完成，git tag v0.41.0 @ 9ead4aa 已推送。"
+    },
+    {
+      "id": "2026-05-11-91",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "9 个 Agent 参与 cycle-91 brainstorm。产出 7 个 Epic 提案（epic-022/023/026/027/020/024/025）。epic-026 学习路径追踪与 epic-027 多模态练习获最高优先级（各 5 支持）。"
+    },
+    {
+      "id": "2026-05-11-94",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-027 iter-005 测试通过。938 单元测试零回归，1 pre-existing lint warning，build 3.32s。E2E 1 passed, 1 flaky（pre-existing 空数据测试，与本次迭代无关）。全部通过。"
+    },
+    {
+      "id": "2026-05-11-94",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-027 iter-005 专注模式全屏覆盖实现完成。FocusModeOverlay（计时器/背景/退出按钮）+ FocusSessionSummary（完成后统计）+ App.tsx 集成。938 测试零回归，lint 1 warning，build 3.21s。Commit c7b8b2f/2802bfd/0d2ccd6/772cef8。epic-027 全部 5 个迭代已完成。"
+    },
+    {
+      "id": "2026-05-11-94",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-027 iter-005 部署 v0.44.0 完成。FocusModeOverlay + FocusSessionSummary + 模式切换状态清理。Vercel 部署成功，git tag v0.44.0 @ fe865e6 已推送。"
+    },
+    {
+      "id": "2026-05-11-94",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-027 全部 5 个迭代收官，v0.43.0-v0.44.0。938 测试历史最高水位，零新增依赖。报告生成、经验归档、状态更新完成。"
+    },
+    {
+      "id": "2026-05-12-96",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-028 iter-001 间隔重复调度引擎提交完成。ReviewResult 类型扩展 + calculateNextReviewInterval 双倍算法(1→2→4→8→16→30) + getDueReviewItems + storage.updateMistakeReviewResult + useSpacedRepetition Hook。990 测试零回归，lint 1 warning，build 3.85s。Commit 289885b + 29d29d8."
+    },
+    {
+      "id": "2026-05-12-96",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-028 iter-001 部署 v0.45.0 完成。间隔重复调度引擎构建成功，Vercel 生产部署完成，git tag v0.45.0 @ 29d29d8 已推送。"
+    },
+    {
+      "id": "2026-05-12-96",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-028 iter-001 收官，v0.45.0。间隔重复调度引擎完成，945 行新增，990 测试零回归。报告生成、经验归档、状态更新完成。"
+    },
+    {
+      "id": "2026-05-12-98",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-028 iter-002 薄弱点智能识别与标记实现完成。WeaknessDefinition 类型 + useWeaknessDetection(4维检测：high-error/low-accuracy/review-neglected/mode-weak) + useWeaknessStats(stats) + WeaknessTag(shadcn Badge) + WeaknessPanel(分组列表/强化训练) + ViewRouter/MoreMenu 集成。1032 测试零回归，lint 1 warning，build 3.26s。"
+    },
+    {
+      "id": "2026-05-12-98",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-028 iter-002 测试通过。1032 单元测试零回归，1 pre-existing lint warning，build 3.01s。E2E 跳过（非最后迭代）。全部通过。"
+    },
+    {
+      "id": "2026-05-12-98",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-028 iter-002 部署 v0.46.0 完成。薄弱点智能识别与标记构建成功，Vercel 生产部署完成，git tag v0.46.0 @ 6d97933 已推送。"
+    },
+    {
+      "id": "2026-05-12-98",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-028 iter-002 收官，v0.46.0。薄弱点智能识别与标记完成，1032 测试零回归。报告生成、经验归档、状态更新完成。"
+    },
+    {
+      "id": "2026-05-12-103",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-028 iter-003 每日复习计划与提醒系统提交完成。代码提交 de5cc5a，state.json 更新提交 7325a4d/0f3e3d0/2e76f60。1052 测试零回归，lint 1 warning，build 3.03s。状态已更新为 DEPLOY，下一阶段 DEPLOY 已完成（见下一条记录）。"
+    },
+    {
+      "id": "2026-05-12-103",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-028 iter-003 每日复习计划与提醒系统部署 v0.47.0 完成。DailyReviewPlan + useReviewStreak + Header 复习指示器。构建 3.33s，Vercel 部署成功，git tag v0.47.0 @ 2e76f60 已推送。1052 测试零回归。"
+    },
+    {
+      "id": "2026-05-12-103",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-028 iter-003 收官，v0.47.0。DailyReviewPlan + useReviewStreak 完成，1052 测试零回归，零新增依赖。epic-028 完成 3/5 迭代。"
+    },
+    {
+      "id": "2026-05-12-106",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-028 iter-004 学习效率数据面板部署 v0.48.0 完成。LearningEfficiencyMetrics + LearningEfficiencyPanel + ViewRouter/View + LearningProfile 导航集成。构建 3.24s，Vercel 部署成功，git tag v0.48.0 @ 33cd246 已推送。1089 测试零回归。"
+    }
+  ],
+  "status": "IMPLEMENT",
+  "commit": "33cd246",
+  "cycleCount": 108,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentCycle": null,
+  "previousCycle": {
+    "id": "2026-05-12-107",
+    "mode": "vision",
+    "stage": "REPORT"
+  },
+  "currentEpic": {
+    "id": "epic-028",
+    "title": "智能学习路径引擎",
+    "description": "基于间隔重复算法和薄弱点分析，构建用户专属的复习节奏和出题策略。每次练习结束后，系统自动评估用户对各知识点的掌握程度，根据遗忘曲线动态调整复习频率，让记忆更持久、学习更高效。",
+    "status": "in_progress",
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "间隔重复调度引擎",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "基于遗忘曲线理论（SM-2 算法变体），实现复习间隔动态计算：正确→间隔加倍 [1→2→4→8→16→30 天]，错误→重置为 1 天。扩展 Mistake 类型，增加 reviewHistory 数组记录每次复习结果。"
+      },
+      {
+        "id": "iter-002",
+        "title": "薄弱点智能识别与标记",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "基于历史答题数据（正确率、错误模式、复习间隔），自动识别用户的薄弱知识点。对错误率超过阈值的词条进行视觉标记，提供「强化训练」入口。"
+      },
+      {
+        "id": "iter-003",
+        "title": "每日复习计划与提醒系统",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "基于间隔重复算法和用户学习偏好，生成每日复习计划。显示今日应复习词条数量和预计时长。提供完成反馈和进度追踪。"
+      },
+      {
+        "id": "iter-004",
+        "title": "学习效率数据面板",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "基于真实复习数据，计算并展示学习效率指标：记忆保持率、遗忘曲线拟合度、薄弱点攻克进度。以简洁图表呈现进步轨迹。"
+      },
+      {
+        "id": "iter-005",
+        "title": "自适应出题权重算法优化",
+        "scope": "frontend-only",
+        "status": "in_progress",
+        "description": "结合间隔重复状态和错误率数据，构建综合出题权重评分。确保新词有适中的曝光率。提供权重算法的可视化说明。"
+      }
+    ],
+    "currentIterationIndex": 4,
+    "completedIterations": 4,
+    "totalIterations": 5
+  },
+  "plan": {
+    "iterationId": "iter-005",
+    "iterationTitle": "自适应出题权重算法优化",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 扩展 useQuestionWeighting 增加新词曝光率和权重可视化方法",
+      "Step 2: 新增 WeightExplanation 组件展示算法逻辑（间隔重复状态 + 错误率 + 新词权重）",
+      "Step 3: 在 useSpacedRepetition 中集成新词权重调整（降低新词曝光率）",
+      "Step 4: 更新 usePractice 调用新权重方法并传递可视化说明",
+      "Step 5: 新增 useQuestionWeighting 测试用例（覆盖新词降权、权重上限、组合场景）",
+      "Step 6: 全量测试验证（1089+ 测试零回归）"
+    ],
+    "filesToModify": [
+      "src/hooks/useQuestionWeighting.ts",
+      "src/hooks/useSpacedRepetition.ts",
+      "src/hooks/usePractice.ts"
+    ],
+    "filesToCreate": [
+      "src/components/WeightExplanation.tsx",
+      "src/hooks/__tests__/useQuestionWeighting.enhanced.test.ts"
+    ],
+    "dependencies": [],
+    "testStrategy": "扩展 useQuestionWeighting 测试覆盖新词降权和权重可视化逻辑，全量回归测试确保无破坏"
+  },
+  "epicHistory": [
+    {
+      "id": "epic-028",
+      "title": "智能学习路径引擎",
+      "status": "in_progress",
+      "iterationsCount": 5,
+      "completedIterations": 4,
+      "versionRange": "v0.45.0-v0.48.0",
+      "completedAt": null
+    },
+    {
+      "id": "epic-027",
+      "title": "沉浸式多模态练习模式",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.43.0-v0.44.0",
+      "completedAt": "2026-05-11T15:35:00.000Z"
+    },
+    {
+      "id": "epic-018",
+      "title": "学习路径追踪与成就系统整合",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.39.0-v0.42.0",
+      "completedAt": "2026-05-11T08:01:00.000Z"
+    },
+    {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.38.0",
+      "completedAt": "2026-05-11T12:50:00.000Z"
+    },
+    {
+      "id": "epic-014",
+      "title": "主练习链路稳定性打磨",
+      "status": "completed",
+      "iterationsCount": 6,
+      "completedIterations": 6,
+      "versionRange": "v0.37.0",
+      "completedAt": "2026-05-11T13:15:00.000Z"
+    },
+    {
+      "id": "epic-009",
+      "title": "个人词典管理与数据主权",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.31.0-v0.36.0",
+      "completedAt": "2026-05-11T04:30:00.000Z"
+    },
+    {
+      "id": "epic-005",
+      "title": "学习成果社交裂变与分享卡片 MVP",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.27.0-v0.30.0",
+      "completedAt": "2026-05-11T02:15:00.000Z"
+    },
+    {
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.23.0-v0.25.0",
+      "completedAt": "2026-05-10T19:42:00.000Z"
+    },
+    {
+      "id": "epic-004",
+      "title": "体验优化与响应式适配",
+      "status": "completed",
+      "iterationsCount": 10,
+      "completedIterations": 10,
+      "versionRange": "v0.14.0-v0.26.0",
+      "completedAt": "2026-05-10T15:00:00.000Z"
+    }
+  ],
+  "brainstormResults": [],
+  "discussionSummary": null,
+  "testResults": null,
+  "techDebtBaseline": {
+    "lintWarnings": 1,
+    "typeErrors": 0,
+    "unusedImports": 0,
+    "anyTypeUsage": 0,
+    "overlyLongFunctions": 0,
+    "complexFunctions": 0,
+    "magicNumbers": 0,
+    "deadCode": 0
+  },
+  "iterationStatus": null,
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "implementationStatus": null,
+  "directives": {
+    "version": "1.0",
+    "pending": [
+      {
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "epic-004",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
+        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
+        "createdAt": "2026-05-10T17:18:00.000Z"
+      },
+      {
+        "id": "dir-1778465917386",
+        "type": "custom",
+        "target": "epic-014",
+        "action": "【用户完整评测反馈 v3】epic-014 主练习链路稳定性打磨",
+        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修复",
+        "createdAt": "2026-05-11T02:00:00.000Z"
+      }
+    ],
+    "history": [
+      {
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "epic-004",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
+        "reason": "用户真实完整评测第二轮反馈",
+        "createdAt": "2026-05-10T17:18:00.000Z",
+        "executedAt": "2026-05-10T19:42:00.000Z",
+        "executionNote": "已在 epic-004 iter-006 中执行"
+      },
+      {
+        "id": "dir-1778465917386",
+        "type": "custom",
+        "target": "epic-014",
+        "action": "【用户完整评测反馈 v3】epic-014 主练习链路稳定性打磨",
+        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug",
+        "createdAt": "2026-05-11T02:00:00.000Z",
+        "executedAt": "2026-05-11T06:15:00.000Z",
+        "executionNote": "已执行 8 个问题修复"
+      },
+      {
+        "id": "dir-1778414197689",
+        "type": "custom",
+        "target": "epic-027",
+        "action": "【用户完整评测反馈 v3 补充】epic-027 iter-001 优先修复 3 个核心 bug",
+        "reason": "用户完整评测补充反馈",
+        "createdAt": "2026-05-11T14:24:21.376Z",
+        "executedAt": "2026-05-11T14:59:00.000Z",
+        "executionNote": "已修复 3 个 bug，920 测试零回归"
+      },
+      {
+        "id": "dir-1778520000000",
+        "type": "custom",
+        "target": "epic-027",
+        "action": "【epic-027 收官】专注模式全屏覆盖 iter-005 完成",
+        "reason": "epic-027 全部 5 个迭代完成，生成报告并更新状态",
+        "createdAt": "2026-05-11T15:35:00.000Z",
+        "executedAt": "2026-05-11T15:35:00.000Z",
+        "executionNote": "已生成报告，归档经验，更新状态"
+      },
+      {
+        "id": "dir-1778612000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-001 收官】间隔重复调度引擎部署 v0.45.0",
+        "reason": "iter-001 间隔重复调度引擎完成，deploy 阶段完成",
+        "createdAt": "2026-05-12T00:36:00.000Z",
+        "executedAt": "2026-05-12T00:36:00.000Z",
+        "executionNote": "部署成功，v0.45.0，Vercel，git tag 已推送"
+      },
+      {
+        "id": "dir-1778620000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-002 收官】薄弱点智能识别与标记完成",
+        "reason": "iter-002 薄弱点检测系统完成，1032 测试零回归",
+        "createdAt": "2026-05-12T01:00:00.000Z",
+        "executedAt": "2026-05-12T01:00:00.000Z",
+        "executionNote": "1032 测试零回归，状态已更新为 TEST"
+      },
+      {
+        "id": "dir-1778630000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-003 收官】每日复习计划与提醒系统完成",
+        "reason": "iter-003 每日复习计划完成，1052 测试零回归",
+        "createdAt": "2026-05-12T03:00:00.000Z",
+        "executedAt": "2026-05-12T03:00:00.000Z",
+        "executionNote": "1052 测试零回归，v0.47.0 已部署"
+      },
+      {
+        "id": "dir-1778640000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-004 收官】学习效率数据面板完成",
+        "reason": "iter-004 学习效率数据面板完成，1089 测试零回归",
+        "createdAt": "2026-05-12T10:20:00.000Z",
+        "executedAt": "2026-05-12T10:20:00.000Z",
+        "executionNote": "1089 测试零回归，v0.48.0 已部署"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "version": "v0.48.0",
+    "commit": "33cd246",
+    "iterationId": "iter-004",
+    "iterationTitle": "学习效率数据面板",
+    "deployedAt": "2026-05-12T10:15:17.147Z",
+    "url": "https://en-learn-7zl63i96v-litangmms-projects.vercel.app"
+  },
+  "pendingDeployment": false,
+  "lastRun": "2026-05-12T10:20:00.000Z"
+}

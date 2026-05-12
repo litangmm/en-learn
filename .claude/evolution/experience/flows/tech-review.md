@@ -8,6 +8,76 @@
 
 ## 历史数据
 
+### 2026-05-11 (cycle-2026-05-11-95)
+- **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **技术审查通过**
+- **技术决策**:
+  - FocusModeOverlay 作为全屏绝对定位覆盖层（fixed inset-0），sessionTimer 追踪专注时长，背景主题 dimmed
+  - FocusSessionSummary 纯展示组件，接收 stats（duration/questionCount/accuracy/score/streak/mode）作为 props
+  - FocusSessionStats 类型与 useXP 返回的 streak/profile 结构保持一致，确保数据流类型安全
+  - FocusModeOverlay 使用 framer-motion 动画进场（opacity 0→1, 300ms），FocusSessionSummary 使用 scale 弹入动画
+  - App.tsx 中 isFocusMode 状态与 toggleFocusMode 回调贯穿整个会话，模式切换时调用 initializeInputs() 重置输入
+- **质量门禁通过**: lint 1 warning (pre-existing), build 3.48s, 938/938 unit tests passed
+- **观察**: epic-027 全部 5 个迭代收官。FocusModeOverlay 零新增依赖、零构建体积增长。会话统计（FocusSessionStats）作为 FocusSessionSummary 的数据载体，与 useXP/usePractice 的状态自然对接，无需额外存储层。epic-027 是纯前端 UI 迭代的完整闭环案例：状态同步修复→模式打磨→体验优化→全屏覆盖。
+- **迭代**: epic-014 iter-001「主练习链路稳定性打磨」—— **技术审查通过**
+- **技术决策**:
+  - AnimatePresence mode="wait" 移除实现题卡即时切换，避免题卡切换延迟导致的「题卡停在上一题」问题
+  - retry() isRetrying 语义修复：showResult 时触发初始化清理，确保重试时旧反馈被清除
+  - previousAttemptsRef 语义正确化：重试后 previousAttempts 加 1，用于判断是否显示重试按钮
+  - MoreMenu mobile fixed positioning：从 absolute 改为 fixed，确保移动端菜单正确定位
+  - DictionaryBrowser grid-cols 自适应：grid-cols-1 sm:grid-cols-2，解决移动端卡片溢出问题
+  - getExplanation 重写：不再重复中文释义，而是解释"为什么选这个词"，体现「解释为什么」而非「重复是什么」的设计原则
+  - NavigationContext._currentValue 改标准 useContext：解决 stale closure 问题
+  - shareTriggers.ts 提取：将 share 触发逻辑从 App.tsx 条件渲染中提取为独立模块
+- **质量门禁通过**: lint 1 warning (pre-existing), 0 type errors, build passed (3.46s), 819/819 unit tests passed
+- **观察**: epic-014 iter-001 零新增依赖、零构建体积增长。8 个状态同步 bug 修复后，主练习链路稳定性显著提升。dir-1778465917386 指令的 8 个问题全部修复。shareTriggers.ts 提取是组件职责单一化的轻量实践。epic-014 iter-002~006 继续 pending
+
+### 2026-05-11 (cycle-2026-05-11-59)
+- **迭代**: epic-005 iter-003「分享触发点与频次控制」—— **技术审查通过**
+- **技术决策**:
+  - useXP.addXP 返回对象扩展 `{ profile, oldLevel, newLevel, leveledUp }`，通过返回新字段而非新方法保持向后兼容，现有调用零变更
+  - SharePromptToast 使用 triggerKey 强制 re-mount 实现动画重播，避免 AnimatePresence 的 exit-before-enter 延迟
+  - 频次控制使用 useRef 存储最近触发记录（type+id + timestamp），避免 useState 频繁更新导致的渲染开销
+  - SharePromptToast 的 1.5s setTimeout 在组件卸载时通过 cleanup 函数清除，避免内存泄漏
+- **质量门禁通过**: lint 0 errors (4 pre-existing warnings), build passed, 649/649 unit tests passed
+- **观察**: epic-005 iter-003 是纯 UI 体验优化迭代，零架构变更、零新增依赖。SharePromptToast 非阻塞式设计验证了 PM-UX 的心流保护建议。epic-005 即将收官（仅剩 iter-004）
+
+### 2026-05-10 (cycle-2026-05-10-28)
+- **迭代**: epic-004 iter-003「模式语义与题目数据统一（P2）」—— **技术审查通过**
+- **技术决策**:
+  - `isDefinitionSentence(sentence)` 使用正则 `/^"(.*)"$/` 检测 blanks[0].word 是否被引号包裹，引号内文本作为释义内容，边界清晰
+  - `ChoiceOption` 接口 `{ id, text }` 规范化了选项类型，useMemo 中 options 生成使用 sentence 作为选项文本（或 chinese for 释义句）
+  - displayText 逻辑在 PracticeCard 中统一处理，释义题显示 sentence.chinese，normal 题显示 sentence.english，零额外状态
+  - sentence-reorder 模式检测到释义句时显示警告而非错误，提供安全的边界处理，无需额外数据转换
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 459/459 unit tests passed
+- **观察**: App.tsx 复杂度继续增加——新增 isDefinitionSentence 辅助函数调用（用于 options 生成）和 displayText 逻辑。PracticeCard 的条件渲染逻辑（4 种练习模式 × showResult × 正误判断 × 反馈类型 × 释义句检测）持续累积。epic-004 仅剩 2 个迭代，完成后 MUST 立即执行 epic-006「前端架构债务清理」
+
+### 2026-05-10 (cycle-2026-05-10-21)
+- **迭代**: epic-003 iter-005「学习排行榜（本地）」—— **技术审查通过**
+- **技术决策**:
+  - LeaderboardCategory 联合类型设计为 `'score' | 'accuracy' | 'speed'`，覆盖用户最关心的三个排名维度
+  - LeaderboardTimeFilter 联合类型设计为 `'today' | 'week' | 'all'`，满足不同时效范围的比较需求
+  - getLeaderboardEntries 纯函数从历史记录派生，零副作用，零数据持久化风险，便于测试和复用
+  - 时间筛选算法简洁：today 比较 YYYY-MM-DD 日期字符串、week 比较时间戳差值 ≤7 天、all 返回全部，无复杂时区处理
+  - 同分并列处理通过排序后遍历分配排名，相同分数共享排名，后续分数跳过中间排名，符合常规排行榜语义
+  - Leaderboard 组件 category tabs 使用 framer-motion layoutId 动画指示器，复用已有依赖，无新增运行时开销
+  - 排行榜数据完全从历史记录派生，不引入新的 localStorage key，避免数据迁移和存储扩容问题
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 429/429 unit tests passed
+- **观察**: App.tsx 的复杂度已达灾难级临界点——现在管理 9 个视图（practice/mistake-book/history/data/review/challenges/badges/leaderboard + focus mode overlay）+ 4 种练习模式 × 专注模式 × 响应式断点 + XP 系统 + 连击动画 + 每日挑战 + 徽章追踪 + 排行榜。条件渲染代码已接近 300 行。ARCH 此前多次提出的「导航配置提取」警告已持续 17 个 cycle 未被响应，技术债务呈灾难级累积。下次 brainstorm 必须将 epic-006「前端架构债务清理」优先级提升为 critical
+
+### 2026-05-09 (cycle-2026-05-09-19)
+- **迭代**: epic-003 iter-003「每日挑战任务面板」—— **技术审查通过**
+- **技术决策**:
+  - ChallengeType 联合类型与现有学习行为自然对齐，无需新增交互模式类型
+  - DailyChallengeState 的 date 字段使用 YYYY-MM-DD 字符串格式，与本地日期判断简单直接，无时区复杂性
+  - generateDailyChallenges 的确定性种子洗牌算法：hashString 生成数字种子，seededShuffle 复用 Fisher-Yates，确保相同日期始终产生相同挑战组合
+  - trackActivity 的通用接口（type + value）为后续「自适应挑战」（动态调整 target）预留扩展点
+  - claimReward 直接调用 storage.addXP，复用现有 XP 系统的等级计算和持久化，避免重复实现
+  - useDailyChallenges hook 的懒加载初始化：空存储自动生成、日期不匹配自动重新生成，无需外部触发重置
+  - DailyChallengePanel 的进度条通过内联 style width 百分比实现，无需额外 CSS 或图表库
+  - exportAllData / importAllData 纳入 dailyChallenges，递归校验复用 isValidDailyChallengeState
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 375/375 unit tests passed
+- **观察**: App.tsx 的复杂度已达临界点——现在管理 7 个视图 + 4 种练习模式 + 专注模式 + 响应式断点 + XP 系统 + 连击动画 + 每日挑战。ARCH 此前多次提出的「导航配置提取」警告已持续 5 个 cycle 未被响应，技术债务呈指数级增长。epic-003 仅剩 2 个迭代，完成后 MUST 优先处理架构债务
+
 ### 2026-05-09 (cycle-2026-05-09-16)
 - **迭代**: epic-003 iter-001「XP 积分与等级系统」—— **技术审查通过**
 - **技术决策**:
@@ -120,6 +190,18 @@
   - window.matchMedia mock 在 vitest.setup.ts 中全局配置，供所有响应式测试复用
 - **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 255/255 unit tests passed
 - **观察**: 响应式改造零逻辑变更、零类型变更，仅涉及 CSS 类名和布局结构调整，风险极低。App.tsx 的视图切换逻辑复杂度未增加（条件渲染通过类名而非新增分支实现）
+
+### 2026-05-09 (cycle-2026-05-09-17)
+- **迭代**: epic-003 iter-002「连击计数与正向反馈动画」—— **技术审查通过**
+- **技术决策**:
+  - streak 为 session-only 状态（不持久化），useXP hook 内部 useState 管理，避免 localStorage 写入频率和跨设备同步问题
+  - getStreakMultiplier 为纯函数（streak → multiplier），无副作用，便于测试和后续调优
+  - addXP 返回完整奖励详情对象 { profile, finalXP, multiplier, streak }，调用方可灵活使用，解耦计算与展示
+  - StreakFeedback 组件 props 极简（streak + visible），无外部依赖，可复用于 header、focus bar 等任意位置
+  - XPGainPopup 使用 triggerKey 强制 re-mount 而非状态更新，确保每次 XP 奖励都播放完整动画
+  - awardedXPRef 和 processedReviewRef 的 proven pattern 继续复用，避免重复奖励和重复调度
+- **质量门禁通过**: lint 0 errors (3 pre-existing warnings), build passed, 348/348 unit tests passed
+- **观察**: App.tsx 复杂度继续累积——新增 xpGainTrigger 状态、两个 useEffect（correct/wrong）、StreakFeedback/XPGainPopup 渲染。当前管理：6 个视图 + 4 种练习模式 + 专注模式 + 响应式断点 + XP 系统 + 连击动画。ARCH 此前多次提出的「导航配置提取」已成为极其紧迫的技术债务，建议在 epic-003 的 iter-003 或 iter-004 中插入
 
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」

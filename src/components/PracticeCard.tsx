@@ -1,11 +1,68 @@
-import { useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, CheckCircle2, XCircle, Lightbulb, ArrowRight, RotateCcw } from 'lucide-react';
+import { Volume2, CheckCircle2, ArrowRight, RotateCcw, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import type { Sentence, PracticeMode, SentenceToken } from '@/data/types';
+import { toast } from 'sonner';
+import type { Sentence, PracticeMode, SentenceToken, ChoiceOption, HintLevel } from '@/data/types';
+import { isDefinitionSentence } from '@/data/types';
+import { FillInBlanksMode } from '@/components/practice/modes/FillInBlanksMode';
+import { DictationMode } from '@/components/practice/modes/DictationMode';
+import { MultipleChoiceMode } from '@/components/practice/modes/MultipleChoiceMode';
+import { SentenceReorderMode } from '@/components/practice/modes/SentenceReorderMode';
+
+/**
+ * Generates an explanation for why the correct answer is correct.
+ * Focuses on explaining the "why" rather than just repeating the translation.
+ */
+function getExplanation(sentence: Sentence, isMultipleChoiceMode: boolean, isSentenceReorderMode: boolean): string {
+  const targetWord = sentence.blanks[0]?.word ?? '';
+  const chinese = sentence.chinese;
+  const english = sentence.english;
+  const isDefinition = isDefinitionSentence(sentence);
+
+  // For multiple-choice: show why this specific sentence is the right answer
+  if (isMultipleChoiceMode) {
+    if (isDefinition) {
+      // Definition sentence: explain why this word is the correct vocabulary choice
+      return `正确答案是 "${targetWord}"。在 "${english}" 中，这个词表达了"${chinese}"的含义。选这个词是因为它准确对应了要掌握的核心词汇，其他选项虽然可能意思相近但语义上有差异。`;
+    }
+
+    // Normal sentence: explain why this sentence is the unique correct choice
+    // Analyze what makes this sentence different from other options
+    const keyWord = extractKeyWord(sentence);
+    return `正确答案是含"${keyWord}"的句子。"${english.substring(0, 50)}${english.length > 50 ? '...' : ''}" 这句话表达了"${chinese}"的意思。其他选项的句子结构或用词与原句不同，是干扰项。`;
+  }
+
+  // For sentence-reorder: explain the sentence meaning and structure
+  if (isSentenceReorderMode) {
+    if (isDefinition) {
+      return `正确答案是 "${targetWord}"，表示"${chinese}"。这是一个释义型句子，需要理解单词含义才能正确排列。`;
+    }
+
+    // Explain the sentence structure and meaning
+    const wordCount = sentence.english.split(/\s+/).length;
+    return `这道题需要将 ${wordCount} 个单词按正确顺序排列。完整句子的意思是"${chinese}"。注意英语句子的语序：主语在前，谓语在后，修饰成分要放在合适的位置。`;
+  }
+
+  // Default: explain the blank word in context
+  if (isDefinition) {
+    return `这里应该填 "${targetWord}"。"${english}" 整体表达"${chinese}"，这个词是题目要求掌握的核心词汇。`;
+  }
+  // For fill-in-blanks/dictation: explain why this specific word fits the context
+  return `这里应该填 "${targetWord}"。从句子 "${english.substring(0, 40)}${english.length > 40 ? '...' : ''}" 的语境来看，空格处需要表达"${chinese}"的意思，"${targetWord}"是最准确的选择。`;
+}
+
+/**
+ * Extract the main content word from a sentence for display.
+ */
+function extractKeyWord(sentence: Sentence): string {
+  const words = sentence.english.split(/\s+/);
+  if (words.length === 0) return '该';
+  // Return first 2-3 words as identifier
+  const preview = words.slice(0, 2).join(' ');
+  return preview.length > 30 ? preview.substring(0, 30) + '...' : preview;
+}
 
 const SPEEDS = [0.5, 0.75, 1.0, 1.25, 1.5] as const;
 
@@ -22,18 +79,26 @@ interface PracticeCardProps {
   isFocusMode?: boolean;
   playbackRate?: number;
   onSpeedChange?: (rate: number) => void;
-  options?: Sentence[];
+  options?: ChoiceOption[];
   selectedChoiceId?: string | null;
   onSelectChoice?: (choiceId: string) => void;
   sentenceTokens?: SentenceToken[];
   orderedTokenIds?: string[];
   onSelectToken?: (tokenId: string) => void;
   onDeselectToken?: (index: number) => void;
+  /** Callback when user skips definition sentence in sentence-reorder */
+  onSkip?: () => void;
   onInputChange: (index: number, value: string) => void;
   onCheck: (param?: string | string[]) => void;
   onNext: () => void;
   onRetry: () => void;
   onSpeak: () => void;
+  hintLevel?: HintLevel;
+  shouldShowHint?: () => boolean;
+  /** Whether this word is already marked as a personal word */
+  isMarked?: boolean;
+  /** Callback when user marks/unmarks this word as a personal word */
+  onMark?: (word: string, translation: string, english: string, chinese: string, sentenceId: string) => void;
 }
 
 export function PracticeCard({
@@ -56,263 +121,140 @@ export function PracticeCard({
   orderedTokenIds = [],
   onSelectToken,
   onDeselectToken,
+  onSkip,
   onInputChange,
   onCheck,
   onNext,
   onRetry,
   onSpeak,
+  hintLevel,
+  shouldShowHint,
+  isMarked = false,
+  onMark,
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
   const isMultipleChoice = mode === 'multiple-choice';
   const isSentenceReorder = mode === 'sentence-reorder';
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Auto-focus first empty input on mount
-  useEffect(() => {
-    const firstEmptyIndex = inputs.findIndex(i => !i);
-    if (firstEmptyIndex >= 0) {
-      inputRefs.current[firstEmptyIndex]?.focus();
-    } else if (inputs.length > 0 && !showResult) {
-      inputRefs.current[inputs.length - 1]?.focus();
+  // Render wrong answer feedback (3-section card)
+  const renderWrongAnswerFeedback = () => {
+    // Determine user's answer based on mode
+    let userAnswerText = '';
+    if (isMultipleChoice) {
+      const selectedOption = options.find((o) => o.id === selectedChoiceId);
+      userAnswerText = selectedOption?.text ?? '(未选择)';
+    } else if (isSentenceReorder) {
+      const selectedTokens = orderedTokenIds
+        .map((id) => sentenceTokens.find((t) => t.id === id))
+        .filter(Boolean) as SentenceToken[];
+      userAnswerText = selectedTokens.map((t) => t.text).join(' ') || '(未排列)';
+    } else {
+      // fill-in-blanks or dictation
+      userAnswerText = inputs.filter(Boolean).join(' / ') || '(未填写)';
     }
-  }, [sentence, showResult]);
 
-  // Handle Enter key
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      if (!showResult) {
-        if (isMultipleChoice && selectedChoiceId) {
-          onCheck(selectedChoiceId);
-        } else if (isSentenceReorder && orderedTokenIds.length === sentenceTokens.length && sentenceTokens.length > 0) {
-          onCheck(orderedTokenIds);
-        } else if (!isMultipleChoice && !isSentenceReorder) {
-          onCheck();
-        }
-      } else if (isCorrect) {
-        onNext();
-      } else if (!isMultipleChoice && !isSentenceReorder) {
-        onRetry();
-      }
-    }
-  }, [showResult, isCorrect, isMultipleChoice, isSentenceReorder, selectedChoiceId, orderedTokenIds, sentenceTokens, onCheck, onNext, onRetry]);
+    // Determine correct answer text
+    const correctAnswerText = isMultipleChoice || isSentenceReorder
+      ? sentence.english
+      : sentence.blanks.map((b) => b.word).join(' / ');
 
-  // Render multiple-choice options
-  const renderChoiceOptions = () => {
     return (
-      <div className="grid grid-cols-1 gap-3">
-        {options.map((option) => {
-          const isSelected = selectedChoiceId === option.id;
-          const isCorrectOption = showResult && option.id === sentence.id;
-          const isWrongSelected = showResult && isSelected && option.id !== sentence.id;
+      <div className="space-y-3">
+        {/* User's answer */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0 }}
+          className="p-4 bg-red-50 rounded-xl border border-red-200"
+        >
+          <p className="text-sm text-red-700 font-medium mb-1">你的答案</p>
+          <p className="text-base text-red-800">{userAnswerText}</p>
+        </motion.div>
 
-          return (
-            <button
-              key={option.id}
-              onClick={() => !showResult && onSelectChoice?.(option.id)}
-              disabled={showResult}
-              className={`
-                w-full p-4 rounded-xl border-2 text-left transition-all duration-200
-                ${isCorrectOption
-                  ? 'border-green-500 bg-green-50 text-green-800'
-                  : isWrongSelected
-                    ? 'border-red-500 bg-red-50 text-red-800'
-                    : isSelected
-                      ? 'border-blue-500 bg-blue-50 text-blue-800'
-                      : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-slate-50'
-                }
-                ${showResult ? 'cursor-default' : 'cursor-pointer'}
-              `}
-            >
-              <p className="text-base font-medium">{option.english}</p>
-            </button>
-          );
-        })}
+        {/* Correct answer */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="p-4 bg-green-50 rounded-xl border border-green-200"
+        >
+          <p className="text-sm text-green-700 font-medium mb-1">正确答案</p>
+          <p className="text-base text-green-800">{correctAnswerText}</p>
+        </motion.div>
+
+        {/* Explanation - Why this answer is correct */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="p-4 bg-blue-50 rounded-xl border border-blue-200"
+        >
+          <p className="text-sm text-blue-700 font-medium mb-1">解析</p>
+          <p className="text-base text-blue-800">{getExplanation(sentence, isMultipleChoice, isSentenceReorder)}</p>
+        </motion.div>
       </div>
     );
   };
 
-  // Render sentence-reorder mode
-  const renderSentenceReorder = () => {
-    const selectedTokens = orderedTokenIds
-      .map((id) => sentenceTokens.find((t) => t.id === id))
-      .filter(Boolean) as SentenceToken[];
+  // Render mode-specific content using strategy components
+  const renderModeContent = () => {
+    // Common props shared across all strategy components
+    const commonProps = {
+      sentence,
+      inputs,
+      showResult,
+      isCorrect,
+      attempts,
+      isSpeaking,
+      isFocusMode,
+      onInputChange,
+      onCheck,
+      onNext,
+      onRetry,
+      onSpeak,
+      hintLevel,
+      shouldShowHint,
+    };
 
-    const remainingTokens = sentenceTokens.filter(
-      (t) => !orderedTokenIds.includes(t.id)
-    );
-
-    return (
-      <div className="space-y-6">
-        {/* Answer zone */}
-        <div className="min-h-[60px] p-4 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
-          <p className="text-xs text-slate-400 mb-2">按正确顺序排列句子：</p>
-          <div className="flex flex-wrap gap-2">
-            {selectedTokens.length === 0 ? (
-              <span className="text-sm text-slate-400">点击下方单词排列句子</span>
-            ) : (
-              selectedTokens.map((token, idx) => (
-                <button
-                  key={token.id}
-                  onClick={() => onDeselectToken?.(idx)}
-                  disabled={showResult}
-                  className={`
-                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                    ${showResult
-                      ? 'bg-slate-100 text-slate-600 cursor-default'
-                      : 'bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer'
-                    }
-                  `}
-                >
-                  {token.text}
-                </button>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Word pool */}
-        {!showResult && remainingTokens.length > 0 && (
-          <div className="flex flex-wrap gap-2 justify-center">
-            {remainingTokens.map((token) => (
-              <button
-                key={token.id}
-                onClick={() => onSelectToken?.(token.id)}
-                className="px-3 py-2 rounded-lg text-sm font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 cursor-pointer"
-              >
-                {token.text}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Correct sentence reveal on wrong answer */}
-        {showResult && !isCorrect && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-4 bg-green-50 rounded-xl border border-green-200"
-          >
-            <p className="text-sm text-green-700 font-medium mb-1">正确答案：</p>
-            <p className="text-base text-green-800">{sentence.english}</p>
-          </motion.div>
-        )}
-      </div>
-    );
-  };
-
-  // Render standalone inputs for dictation mode
-  const renderDictationInputs = () => {
-    return sentence.blanks.map((blank, idx) => {
-      const hasError = showResult && !isCorrect && inputs[idx]?.toLowerCase().trim() !== blank.word.toLowerCase();
-      const hasSuccess = showResult && inputs[idx]?.toLowerCase().trim() === blank.word.toLowerCase();
-
-      return (
-        <span key={`dictation-${idx}`} className="inline-block mx-1">
-          <Input
-            ref={el => { inputRefs.current[idx] = el; }}
-            type="text"
-            value={inputs[idx] || ''}
-            onChange={e => onInputChange(idx, e.target.value)}
-            onKeyDown={e => handleKeyDown(e)}
-            disabled={showResult && isCorrect}
-            placeholder={`${idx + 1}`}
-            className={`
-              inline-block w-28 md:w-32 text-center font-medium
-              h-11 md:h-10
-              transition-all duration-300 border-2
-              ${hasSuccess
-                ? 'border-green-500 bg-green-50 text-green-700'
-                : hasError
-                  ? 'border-red-400 bg-red-50 text-red-700'
-                  : 'border-slate-300 focus:border-blue-500 hover:border-slate-400'
-              }
-            `}
+    switch (mode) {
+      case 'multiple-choice':
+        return (
+          <MultipleChoiceMode
+            {...commonProps}
+            options={options}
+            selectedChoiceId={selectedChoiceId ?? null}
+            onSelectChoice={onSelectChoice ?? (() => {})}
           />
-          {!showResult && (
-            <span className="block text-xs text-slate-400 font-medium mt-1">
-              {blank.word.charAt(0)}...
-            </span>
-          )}
-          {showResult && !isCorrect && (
-            <motion.span
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="block text-xs text-green-600 font-medium mt-1"
-            >
-              {blank.word}
-            </motion.span>
-          )}
-        </span>
-      );
-    });
-  };
+        );
 
-  // Parse English sentence and replace blanks with inputs
-  const renderSentenceWithBlanks = () => {
-    let parts: (string | React.ReactNode)[] = [sentence.english];
-    
-    sentence.blanks.forEach((blank, idx) => {
-      const newParts: (string | React.ReactNode)[] = [];
-      const wordRegex = new RegExp(`\\b${blank.word}\\b`, 'gi');
-      
-      parts.forEach((part) => {
-        if (typeof part !== 'string') {
-          newParts.push(part);
-          return;
-        }
-        
-        const segments = part.split(wordRegex);
-        if (segments.length > 1) {
-          segments.forEach((segment, segIdx) => {
-            newParts.push(segment);
-            if (segIdx < segments.length - 1) {
-              const hasError = showResult && !isCorrect && inputs[idx]?.toLowerCase().trim() !== blank.word.toLowerCase();
-              const hasSuccess = showResult && inputs[idx]?.toLowerCase().trim() === blank.word.toLowerCase();
-              
-              newParts.push(
-                <span key={`blank-${idx}-${segIdx}`} className="inline-block mx-1">
-                  <Input
-                    ref={el => { inputRefs.current[idx] = el; }}
-                    type="text"
-                    value={inputs[idx] || ''}
-                    onChange={e => onInputChange(idx, e.target.value)}
-                    onKeyDown={e => handleKeyDown(e)}
-                    disabled={showResult && isCorrect}
-                    placeholder={`${idx + 1}`}
-                    className={`
-                      inline-block w-28 md:w-32 text-center font-medium
-                      h-11 md:h-10
-                      transition-all duration-300 border-2
-                      ${hasSuccess
-                        ? 'border-green-500 bg-green-50 text-green-700'
-                        : hasError
-                          ? 'border-red-400 bg-red-50 text-red-700'
-                          : 'border-slate-300 focus:border-blue-500 hover:border-slate-400'
-                      }
-                    `}
-                  />
-                  {showResult && !isCorrect && (
-                    <motion.span
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="block text-xs text-green-600 font-medium mt-1"
-                    >
-                      {blank.word}
-                    </motion.span>
-                  )}
-                </span>
-              );
-            }
-          });
-        } else {
-          newParts.push(part);
-        }
-      });
-      
-      parts = newParts;
-    });
-    
-    return parts;
+      case 'sentence-reorder':
+        return (
+          <SentenceReorderMode
+            {...commonProps}
+            sentenceTokens={sentenceTokens}
+            orderedTokenIds={orderedTokenIds}
+            onSelectToken={onSelectToken ?? (() => {})}
+            onDeselectToken={onDeselectToken ?? (() => {})}
+            onSkip={onSkip}
+          />
+        );
+
+      case 'dictation':
+        return (
+          <DictationMode
+            {...commonProps}
+            showHints={true}
+          />
+        );
+
+      case 'fill-in-blanks':
+      default:
+        return (
+          <FillInBlanksMode
+            {...commonProps}
+          />
+        );
+    }
   };
 
   return (
@@ -343,6 +285,27 @@ export function PracticeCard({
             </div>
           )}
           <div className="flex items-center gap-2">
+            {onMark && (
+              <Button
+                variant={isMarked ? 'default' : 'ghost'}
+                size="icon"
+                onClick={() => {
+                  const word = sentence.blanks[0]?.word ?? '';
+                  const translation = sentence.chinese;
+                  const english = sentence.english;
+                  const chinese = sentence.chinese;
+                  const sentenceId = sentence.id;
+                  onMark(word, translation, english, chinese, sentenceId);
+                  if (!isMarked) {
+                    toast.success('已添加到生词本', { duration: 1500 });
+                  }
+                }}
+                className={`h-8 w-8 ${isMarked ? 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700' : 'text-muted-foreground hover:text-yellow-600 hover:bg-yellow-50'}`}
+                title={isMarked ? '已加入生词本' : '加入生词本'}
+              >
+                <Star className={`w-4 h-4 ${isMarked ? 'fill-current' : ''}`} />
+              </Button>
+            )}
             {onSpeedChange && (
               <ToggleGroup
                 type="single"
@@ -368,12 +331,12 @@ export function PracticeCard({
             )}
             <Button
               variant={isDictation && !showResult ? 'default' : 'outline'}
-              size={isDictation && !showResult ? 'default' : 'sm'}
+              size="sm"
               onClick={onSpeak}
               disabled={isSpeaking}
-              className={`gap-2 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
+              className={`gap-2 h-8 md:h-10 ${isDictation && !showResult ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md' : ''}`}
             >
-              <Volume2 className={`${isDictation && !showResult ? 'w-5 h-5' : 'w-4 h-4'} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
+              <Volume2 className={`w-4 h-4 ${isDictation && !showResult ? 'md:w-5 md:h-5' : ''} ${isSpeaking ? 'animate-pulse text-blue-500' : ''}`} />
               {isSpeaking ? '播放中...' : '播放音频'}
             </Button>
           </div>
@@ -381,67 +344,11 @@ export function PracticeCard({
 
         {/* Content */}
         <div className={`${isFocusMode ? 'p-6 md:p-10 space-y-8' : 'p-4 md:p-6 space-y-6'}`}>
-          {/* Chinese Translation */}
-          <div className="text-center">
-            <p className={`text-slate-600 font-medium leading-relaxed ${isFocusMode ? 'text-lg md:text-xl' : 'text-base md:text-lg'}`}>
-              {sentence.chinese}
-            </p>
-          </div>
-
-          {/* Divider */}
-          {(!isDictation || showResult) && !isMultipleChoice && !isSentenceReorder && (
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200"></div>
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-wider">
-                  英文句子
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Dictation mode label */}
-          {isDictation && !showResult && !isMultipleChoice && (
-            <div className="text-center">
-              <p className="text-sm text-slate-400">
-                请听音频，根据中文提示和首字母提示填写单词
-              </p>
-            </div>
-          )}
-
-          {/* English Sentence with Blanks / Dictation Inputs / Multiple Choice Options / Sentence Reorder */}
-          <div className={`${isMultipleChoice || isSentenceReorder ? '' : `text-center leading-relaxed md:leading-loose ${isFocusMode ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} ${isDictation && !showResult ? 'flex flex-wrap justify-center gap-3' : ''}`}`}>
-            {isMultipleChoice
-              ? renderChoiceOptions()
-              : isSentenceReorder
-                ? renderSentenceReorder()
-                : isDictation && !showResult
-                  ? renderDictationInputs()
-                  : renderSentenceWithBlanks()}
-          </div>
-
-          {/* Hints */}
-          {!showResult && !isDictation && !isMultipleChoice && !isSentenceReorder && (
-            <div className="flex flex-wrap gap-2 justify-center">
-              {sentence.blanks.map((blank, idx) => (
-                blank.hint && (
-                  <Badge
-                    key={idx}
-                    variant="outline"
-                    className="text-xs text-slate-500 bg-slate-50"
-                  >
-                    <Lightbulb className="w-3 h-3 mr-1 text-amber-500" />
-                    空{idx + 1}: {blank.hint}
-                  </Badge>
-                )
-              ))}
-            </div>
-          )}
+          {/* Mode-specific content rendered by strategy components */}
+          {renderModeContent()}
 
           {/* Result Feedback */}
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="sync">
             {showResult && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
@@ -460,15 +367,7 @@ export function PracticeCard({
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
-                    <XCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
-                    <div>
-                      <p className="font-medium text-red-800">答案不正确</p>
-                      <p className="text-sm text-red-600">
-                        请检查你的拼写，或查看上方显示的正确答案。
-                      </p>
-                    </div>
-                  </div>
+                  renderWrongAnswerFeedback()
                 )}
               </motion.div>
             )}
@@ -478,25 +377,32 @@ export function PracticeCard({
         {/* Footer / Actions */}
         <div className="px-4 py-3 md:px-6 md:py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
           {!showResult ? (
-            <Button
-              onClick={() => {
-                if (isMultipleChoice) {
-                  onCheck(selectedChoiceId || undefined);
-                } else if (isSentenceReorder) {
-                  onCheck(orderedTokenIds);
-                } else {
-                  onCheck();
+            <div className="w-full space-y-2">
+              {isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length && (
+                <p className="text-xs text-slate-400 text-center">
+                  请先点击下方单词组成完整句子
+                </p>
+              )}
+              <Button
+                onClick={() => {
+                  if (isMultipleChoice) {
+                    onCheck(selectedChoiceId || undefined);
+                  } else if (isSentenceReorder) {
+                    onCheck(orderedTokenIds);
+                  } else {
+                    onCheck();
+                  }
+                }}
+                disabled={
+                  (isMultipleChoice && !selectedChoiceId) ||
+                  (isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length)
                 }
-              }}
-              disabled={
-                (isMultipleChoice && !selectedChoiceId) ||
-                (isSentenceReorder && orderedTokenIds.length !== sentenceTokens.length)
-              }
-              className="w-full gap-2"
-              size="lg"
-            >
-              提交答案
-            </Button>
+                className="w-full gap-2"
+                size="lg"
+              >
+                提交答案
+              </Button>
+            </div>
           ) : isCorrect ? (
             <Button
               onClick={onNext}

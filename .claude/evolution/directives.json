@@ -1,7 +1,73 @@
 {
   "version": "1.0",
-  "pending": [],
+  "pending": [
+    {
+      "id": "dir-1778414197688",
+      "type": "custom",
+      "target": null,
+      "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构：1) 桌面端顶部品牌区不被压缩，导航超宽折叠进更多菜单；2) 移动端弹窗词库卡片改单列/两列自适应禁止溢出；3) 成就提示改短暂 toast 避免抢主流程；4) 排行榜明确标注数据范围（本地/今日/本周/全部）；5) 听写模式独立提示和独立体验。桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤。",
+      "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
+      "createdAt": "2026-05-10T11:56:37.688Z",
+      "executedAt": null,
+      "executionNote": null,
+      "reviewedNote": ""
+    },
+    {
+      "id": "dir-1778465917386",
+      "type": "custom",
+      "target": null,
+      "action": "【用户完整评测反馈 v3】epic-004 iter-007 主练习链路稳定性打磨（优先级最高）：\n\n核心 bug（必须修）：\n1. “下一题”点了之后进度跳到 2/10，但题卡仍停在上题、仍显示上题答案——点击下一题必须真正换题\n2. “重新尝试”点了后按钮变提交但旧反馈还留——重试必须清掉旧反馈\n3. “更多”按钮点了没反应——更多菜单必须可用（错题/记录/数据/成就/排行）\n\n体验问题：\n4. 移动端词库选择卡片右侧仍被裁切——弹窗网格完全响应式\n5. 听写模式提示文案不准确——不是传统整句听写，改名“首字母听写”或明确说明\n6. 选择题题干和正确选项几乎完全一样（如 yearly medical examinations）——需过滤无学习价值的题\n7. 连词成句遇到释义型题时有提示但无单词可点——直接显示跳过/换一题而非半禁用\n8. 解析目前只重复中文释义——改为解释“为什么选这个词”而非重复\n\n产品方向：先别扩功能。把“连续做 10 题不出戏”做到扎实。产品轮廓已有，稳定比功能多更重要。",
+      "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
+      "createdAt": "2026-05-11T10:18:37.397959Z",
+      "executedAt": null,
+      "executionNote": null,
+      "reviewedNote": ""
+    }
+  ],
   "history": [
+    {
+      "id": "eo-1778391382485-0",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】移动端输入框太小，点击困难\n\n复现步骤：\n1. 使用手机浏览器打开\n2. 切换到填空模式\n3. 点击输入框\n\n建议：增加输入框高度，最小 44px\n\n发现次数：2",
+      "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
+      "createdAt": "2026-05-10T05:36:22.485Z",
+      "executedAt": "2026-05-10T10:20:00.000Z",
+      "executionNote": "将在 epic-006 iter-001 中修复：Input.tsx 和 PracticeCard.tsx 输入框统一使用 h-11 md:h-10，确保移动端 ≥ 44px",
+      "reviewedNote": ""
+    },
+    {
+      "id": "eo-1778391382486-1",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】切换词典后练习记录未清除\n\n复现步骤：\n1. 完成几道题\n2. 切换词典\n3. 发现进度还在\n\n建议：切换词典时清空进度\n\n发现次数：1",
+      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
+      "createdAt": "2026-05-10T05:36:22.486Z",
+      "executedAt": "2026-05-10T10:20:00.000Z",
+      "executionNote": "已修复：App.tsx confirmSwitch() 中调用 storage.clearSession()，usePractice 会重新初始化 session",
+      "reviewedNote": ""
+    },
+    {
+      "id": "eo-1778391382486-2",
+      "type": "experience-officer",
+      "target": "N/A",
+      "action": "【体验官反馈】排行榜加载较慢\n\n复现步骤：\n1. 点击排行榜\n2. 等待数秒\n\n建议：考虑添加 loading 状态\n\n发现次数：1",
+      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
+      "createdAt": "2026-05-10T05:36:22.486Z",
+      "executedAt": "2026-05-10T10:20:00.000Z",
+      "executionNote": "将在 epic-006 iter-002 中修复：Leaderboard 组件添加 loading state 和 skeleton 骨架屏",
+      "reviewedNote": ""
+    },
+    {
+      "id": "dir-user-review-001",
+      "type": "custom",
+      "target": null,
+      "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」，将 9 大问题按 P0/P1/P2/P3 优先级拆分为 5 个迭代",
+      "reason": "用户以真实学习者身份完整体验后给出的系统性反馈，是当前产品从 demo 升级为日常学习工具的最大瓶颈",
+      "createdAt": "2026-05-09T19:40:00Z",
+      "executedAt": "2026-05-10T12:02:00.000Z",
+      "executionNote": "已创建 Epic 提案文档：docs/superpowers/specs/2026-05-10-user-review-feedback-spec.md 和 docs/superpowers/plans/2026-05-10-experience-optimization.md。拆分为 iter-001~iter-005，将在 epic-003 iter-005 完成后进入 PLAN 阶段执行"
+    },
     {
       "id": "dir-urgent-001",
       "type": "custom"

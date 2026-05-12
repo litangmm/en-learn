@@ -2,6 +2,505 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.52.0",
+      "tag": "v0.52.0",
+      "commit": "4f5ea4f",
+      "date": "2026-05-12T01:08:40.357Z",
+      "iterationId": "iter-003",
+      "title": "邀请好友一起学",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-eg0abubcn-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.51.0",
+      "tag": "v0.51.0",
+      "commit": "c72a016",
+      "date": "2026-05-11T23:58:33.035Z",
+      "iterationId": "iter-002",
+      "title": "周报推送机制",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-1e2fpm51u-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.50.0",
+      "tag": "v0.50.0",
+      "commit": "4502d42",
+      "date": "2026-05-11T23:09:34.907Z",
+      "iterationId": "iter-001",
+      "title": "成就时刻动态卡片",
+      "features": [
+        "Update agent experience files (arch, exp, qa, ux)",
+        "Add epic-028 release notes to releases.json"
+      ],
+      "deployUrl": "https://en-learn-hfwib5i61-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.49.0",
+      "tag": "v0.49.0",
+      "commit": "e469d0e",
+      "date": "2026-05-11T21:57:32.735Z",
+      "iterationId": "iter-005",
+      "title": "自适应出题权重算法优化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-mwv3tkshm-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.48.0",
+      "tag": "v0.48.0",
+      "commit": "33cd246",
+      "date": "2026-05-11T18:15:17.147Z",
+      "iterationId": "iter-004",
+      "title": "学习效率数据面板",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-7zl63i96v-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.47.0",
+      "tag": "v0.47.0",
+      "commit": "0f3e3d0",
+      "date": "2026-05-11T17:49:38.171Z",
+      "iterationId": "iter-003",
+      "title": "每日复习计划与提醒系统",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-nozjb5en7-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.46.0",
+      "tag": "v0.46.0",
+      "commit": "3356dbf",
+      "date": "2026-05-12T01:05:00.000Z",
+      "iterationId": "iter-002",
+      "title": "薄弱点智能识别与标记",
+      "features": [
+        "WeaknessDefinition 类型定义（4维检测）",
+        "useWeaknessDetection hook（高错误率/低正确率/忽略复习/模式弱点）",
+        "useWeaknessStats hook（统计聚合）",
+        "WeaknessTag 组件（Badge 样式标记）",
+        "WeaknessPanel 组件（分组列表/强化训练入口）",
+        "ViewRouter/MoreMenu 集成薄弱点入口",
+        "1032 测试零回归"
+      ],
+      "deployUrl": "https://en-learn-oqku6bobk-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.45.0",
+      "tag": "v0.45.0",
+      "commit": "29d29d8",
+      "date": "2026-05-11T16:35:46.598Z",
+      "iterationId": "iter-001",
+      "title": "间隔重复调度引擎",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-788xymbqm-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.44.0",
+      "tag": "v0.44.0",
+      "commit": "fe865e6",
+      "date": "2026-05-11T15:32:24.908Z",
+      "iterationId": "iter-005",
+      "title": "专注模式全屏覆盖与模式切换优化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-eaal2cjfo-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.42.0",
+      "tag": "v0.42.0",
+      "commit": "9ead4aa",
+      "date": "2026-05-11T08:01:00.728Z",
+      "iterationId": "iter-004",
+      "title": "徽章系统与数据联动",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-ijx6nsmqn-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.40.0",
+      "tag": "v0.40.0",
+      "commit": "58a93d3",
+      "date": "2026-05-11T07:18:07.078Z",
+      "iterationId": "iter-002",
+      "title": "能力雷达图与进度趋势",
+      "features": [
+        "pm-growth.md: 更新 iter-002 经验档案",
+        "history/2026-05-11-86.md: epic-018 iter-002 完成记录",
+        "releases.json: v0.40.0 里程碑（AbilityRadar+ProgressTrend）"
+      ],
+      "deployUrl": "https://en-learn-gkyr129b6-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.39.0",
+      "tag": "v0.39.0",
+      "commit": "7435d6b",
+      "date": "2026-05-11T05:30:07.357Z",
+      "iterationId": "iter-001",
+      "title": "里程碑导航与进度概览",
+      "features": [
+        "Create useProgressStats hook for XP profile, study days, accuracy, dict count",
+        "Create ProgressHub component with MilestoneCard grid layout",
+        "Add progress view to App.tsx and XPBar onClick navigation",
+        "Add progress entry to MobileNav",
+        "848 tests passing, 70 test files"
+      ],
+      "deployUrl": "https://en-learn-2pfopuz17-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.38.0",
+      "tag": "v0.38.0",
+      "commit": "df78719",
+      "date": "2026-05-11T12:45:00.000Z",
+      "iterationId": "iter-001",
+      "title": "App.tsx 配置提取（第一阶段）",
+      "features": [
+        "提取 getModeHint(), formatElapsedTime() → src/utils/appHelpers.ts",
+        "提取 ONBOARDING_DICTIONARIES, APP_BRAND → src/utils/appConstants.ts",
+        "提取 Navigate utility → src/utils/appNavigation.ts",
+        "App.tsx 从 973 行减少到 ~940 行"
+      ],
+      "deployUrl": "https://en-learn-auauq0fpd-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.37.0",
+      "tag": "v0.37.0",
+      "commit": "6d90463",
+      "date": "2026-05-11T10:30:00.000Z",
+      "iterationId": "iter-001",
+      "title": "主练习链路稳定性打磨",
+      "features": [
+        "retry完整清除反馈+previousAttemptsRef语义修复",
+        "DictionaryBrowser移动端溢出修复",
+        "DictationMode/App听写提示澄清",
+        "useAdaptivePractice相似题过滤",
+        "SentenceReorderMode释义句跳过按钮",
+        "PracticeCard解析内容重写"
+      ],
+      "deployUrl": "https://en-learn-fwj8wc89w-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.36.0",
+      "tag": "v0.36.0",
+      "commit": "fcce1a1",
+      "date": "2026-05-11T02:27:09.558Z",
+      "iterationId": "iter-003",
+      "title": "个人生词标记",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-ein97lkfq-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.35.0",
+      "tag": "v0.35.0",
+      "commit": "cba1eed",
+      "date": "2026-05-10T22:27:05.170Z",
+      "iterationId": "iter-003",
+      "title": "自适应出题权重",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-32876bfxb-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.34.0",
+      "tag": "v0.34.0",
+      "commit": "59a655d",
+      "date": "2026-05-10T21:26:17.998Z",
+      "iterationId": "iter-001",
+      "title": "智能干扰项生成",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-860kzaba1-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.33.0",
+      "tag": "v0.33.0",
+      "commit": "f0bbc76",
+      "date": "2026-05-10T20:24:14.148Z",
+      "iterationId": "iter-003",
+      "title": "个人生词标记",
+      "features": [
+        "添加 toggleMark 方法标记/取消标记生词",
+        "词条卡片添加星形标记按钮",
+        "「只看生词」筛选开关",
+        "生词数量徽章实时显示",
+        "生词本快捷入口",
+        "732 测试全部通过"
+      ],
+      "deployUrl": "https://en-learn-jlk6q9xma-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.32.0",
+      "tag": "v0.32.0",
+      "commit": "cea641a",
+      "date": "2026-05-10T19:49:27.473Z",
+      "iterationId": "iter-002",
+      "title": "词条搜索与筛选",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-kbecjtitu-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.31.0",
+      "tag": "v0.31.0",
+      "commit": "c336aba",
+      "date": "2026-05-10T19:23:05.931Z",
+      "iterationId": "iter-001",
+      "title": "词典浏览器（只读）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-uy3p3aput-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.30.0",
+      "tag": "v0.30.0",
+      "commit": "63383e2",
+      "date": "2026-05-10T18:16:03.222Z",
+      "iterationId": "iter-004",
+      "title": "分享效果数据追踪",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-qd3ojoiq7-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.29.0",
+      "tag": "v0.29.0",
+      "commit": "388840a",
+      "date": "2026-05-10T17:43:19.224Z",
+      "iterationId": "iter-003",
+      "title": "分享触发点与频次控制",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-1rwg8tl4a-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.28.0",
+      "tag": "v0.28.0",
+      "commit": "e8bcc49",
+      "date": "2026-05-10T16:52:14.736Z",
+      "iterationId": "iter-002",
+      "title": "多格式导出（图片/文本）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-f07ynxvdb-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.27.0",
+      "tag": "v0.27.0",
+      "commit": "aed1bff",
+      "date": "2026-05-10T16:11:04.813Z",
+      "iterationId": "iter-001",
+      "title": "分享卡片 UI 与数据聚合",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-l9tcm6go6-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.26.0",
+      "tag": "v0.26.0",
+      "commit": "f82bc38",
+      "date": "2026-05-10T14:39:54.721Z",
+      "iterationId": "iter-006.1",
+      "title": "桌面端顶部导航折叠重构",
+      "features": [
+        "Update arch.md/exp.md/qa.md with latest iteration learnings",
+        "Archive cycle 2026-05-10-46 report",
+        "Update releases.json with v0.25.0"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.25.0",
+      "tag": "v0.25.0",
+      "commit": "7bde648",
+      "date": "2026-05-10T11:59:49.910Z",
+      "iterationId": "iter-003",
+      "title": "构建体积监控基线",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.24.0",
+      "tag": "v0.24.0",
+      "commit": "bcffa44",
+      "date": "2026-05-10T11:39:01.774Z",
+      "iterationId": "epic-006-iter-002",
+      "title": "PracticeCard 策略模式重构 + 排行榜 Loading",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.23.0",
+      "tag": "v0.23.0",
+      "commit": "15ab7fe",
+      "date": "2026-05-10T10:52:00.000Z",
+      "iterationId": "epic-006-iter-001",
+      "title": "视图路由抽象 + P0/P1 Bug 修复",
+      "features": [
+        "创建 ViewRouter.tsx（视图→组件映射）与 NavigationContext.tsx（导航上下文提供者）",
+        "重构 App.tsx：使用 ViewRouter + NavigationProvider 替换嵌套三元表达式视图渲染",
+        "修复 P0 Bug：切换词典时 confirmSwitch 调用 storage.clearSession()",
+        "修复 P1 Bug：Input 组件已有 h-11 md:h-10（移动端 44px，桌面端 40px）",
+        "创建 ViewRouter.test.tsx（16 个测试，覆盖所有 8 个视图映射和属性传递）"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.22.0",
+      "tag": "v0.22.0",
+      "commit": "755c490",
+      "date": "2026-05-10T09:26:42.404Z",
+      "iterationId": "iter-005",
+      "title": "首次/恢复弹窗体验打磨",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.21.0",
+      "tag": "v0.21.0",
+      "commit": "5925e8b",
+      "date": "2026-05-10T04:53:50.312Z",
+      "iterationId": "iter-004",
+      "title": "智能复习规则可视化（P3）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.20.0",
+      "tag": "v0.20.0",
+      "commit": "09cd7cc",
+      "date": "2026-05-10T04:16:01.502Z",
+      "iterationId": "iter-003",
+      "title": "模式语义与题目数据统一（P2）",
+      "features": [
+        "Add isDefinitionSentence() helper to detect quoted definition sentences",
+        "Update multiple-choice options to show Chinese for definition sentences",
+        "Add displaySentence logic for definition sentences in PracticeCard",
+        "Add warning for definition sentences in sentence-reorder mode",
+        "Update PracticeCard.choice.test.tsx with definition sentence tests"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.19.0",
+      "tag": "v0.19.0",
+      "commit": "d8baeb3",
+      "date": "2026-05-10T03:13:40.685Z",
+      "iterationId": "iter-002",
+      "title": "答题反馈与提示文案重构（P1）",
+      "features": [
+        "App.tsx: Added getModeHint(practiceMode) helper with mode-specific hint text (4 modes + focus hide)",
+        "PracticeCard.tsx: Created renderWrongAnswerFeedback() 3-section card (你的答案/正确答案/解析)",
+        "Removed inline correct-answer green spans from inputs",
+        "Enhanced renderChoiceOptions() with CheckCircle2/Circle icons, bg-blue-100 on selected",
+        "Added progress text and helper text in renderSentenceReorder",
+        "Created App.hints.test.tsx (5 tests) and PracticeCard.feedback.test.tsx (7 tests)",
+        "Updated PracticeCard.choice.test.tsx and PracticeCard.reorder.test.tsx with new assertions",
+        "Fixed duplicate element issues in existing tests"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.18.0",
+      "tag": "v0.18.0",
+      "commit": "8d06041",
+      "date": "2026-05-10T00:02:01.775Z",
+      "iterationId": "iter-001",
+      "title": "移动端响应式适配（P0）",
+      "features": [
+        "epic-004 iter-001 移动端响应式适配经验档案更新",
+        "9 个 Agent 经验档案更新",
+        "5 个流程经验档案更新",
+        "发布记录和 history 归档"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.17.0",
+      "tag": "v0.17.0",
+      "commit": "6298e3d",
+      "date": "2026-05-09T22:29:47.720Z",
+      "iterationId": "iter-005",
+      "title": "学习排行榜（本地）",
+      "features": [
+        "Transition from IMPLEMENT to DEPLOY stage",
+        "429/429 tests passing, build verified"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.16.0",
+      "tag": "v0.16.0",
+      "commit": "a276d69",
+      "date": "2026-05-09T20:02:43.841Z",
+      "iterationId": "iter-004",
+      "title": "成就徽章系统",
+      "features": [
+        "Add 'badges' to View union type and MobileNav",
+        "Integrate useBadges hook with trackProgress/checkBadges calls on:",
+        "Add badge unlock toast trigger on new badge unlock",
+        "Add Award icon button in header (desktop + score area)",
+        "Add BadgePanel rendering for badges view",
+        "Add BadgeUnlockToast at app root",
+        "Fix BadgePanel/BadgeUnlockToast to import BadgeDefinition from @/data/types",
+        "Create App.badges.test.tsx with 7 integration tests",
+        "Add useBadges mock to 9 existing App test files"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.15.0",
+      "tag": "v0.15.0",
+      "commit": "5c5e07b",
+      "date": "2026-05-09T16:51:56.246Z",
+      "iterationId": "iter-003",
+      "title": "每日挑战任务面板",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
+      "version": "v0.14.0",
+      "tag": "v0.14.0",
+      "commit": "811c92a",
+      "date": "2026-05-09T13:12:57.594Z",
+      "iterationId": "iter-002",
+      "title": "连击计数与正向反馈动画",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.13.0",
       "tag": "v0.13.0",
       "commit": "27947db",

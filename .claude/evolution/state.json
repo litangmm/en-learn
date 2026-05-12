@@ -10,6 +10,13 @@
       "summary": "Brainstorm 完成。8 个 Epic 候选（epic-036 iter-002~004 / epic-037 / epic-038 / epic-041 / epic-046 / epic-047 / epic-048 / epic-049），epic-037「学习动机可视化与目标设定系统」当选（PM-UX+UX+PM-Growth+PM-Lean+EXP 支持）。epic-036 扩展和 epic-038 E2E 体系列为备选。"
     },
     {
+      "id": "2026-05-12-136",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-037 iter-001 IMPLEMENT 完成。Goal 类型定义 + storage.getGoals/saveGoals/generateDefaultGoals + useGoals hook（惰性初始化/日期感知重置/CRUD/预设目标）+ GoalSettingPanel（每日/每周预设按钮+自定义输入+保存）+ ViewRouter goals 视图 + MoreMenu 学习目标入口 + App.tsx 集成。1495 测试零回归，Build 3.58s。"
+    },
+    {
       "id": "2026-05-12-134",
       "mode": "plan",
       "stage": "REPORT",
@@ -144,7 +151,7 @@
     }
   ],
   "status": "TEST",
-  "commit": "6cef917",
+  "commit": "04d4a81",
   "cycleCount": 135,
   "nextMode": "implement",
   "failedAttempts": 0,
@@ -353,8 +360,8 @@
       "title": "学习动机可视化与目标设定系统",
       "status": "in_progress",
       "iterationsCount": 4,
-      "completedIterations": 0,
-      "pendingIterations": 4,
+      "completedIterations": 1,
+      "pendingIterations": 3,
       "versionRange": "v0.60.0-v0.63.0",
       "createdAt": "2026-05-12T09:45:42.880Z",
       "proposedBy": "PM-UX",
@@ -571,7 +578,7 @@
     "target": "vercel",
     "url": "https://en-learn-e3wghqw63-litangmms-projects.vercel.app",
     "version": "v0.59.0",
-    "commit": "6cef917",
+    "commit": "04d4a81",
     "iterationId": "iter-001",
     "iterationTitle": "复习时机优化提醒",
     "deployedAt": "2026-05-12T09:15:30.000Z"

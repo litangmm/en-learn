@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import type { ReviewStreakData } from '@/data/types';
+import { getTodayDateString, getYesterdayDateString } from '@/utils/dateUtils';
 
 const STREAK_STORAGE_KEY = 'en-learn-review-streak';
 
@@ -16,16 +17,6 @@ const DEFAULT_STREAK_DATA: StoredStreakData = {
   lastReviewDate: null,
   totalReviewDays: 0,
 };
-
-function getTodayDateString(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function getYesterdayDateString(): string {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return yesterday.toISOString().slice(0, 10);
-}
 
 function getDayDifference(dateStr1: string, dateStr2: string): number {
   const date1 = new Date(dateStr1);

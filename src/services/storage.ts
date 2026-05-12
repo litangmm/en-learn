@@ -32,6 +32,7 @@ const PERSONAL_WORDS_KEY = 'en-learn-personal-words';
 const ADAPTIVE_CONFIG_KEY = 'adaptive_config';
 const HINT_CONFIG_KEY = 'hint_config';
 const ONBOARDED_KEY = 'en-learn-onboarded';
+const RECALL_REMINDER_DISMISSED_KEY = 'en-learn-recall-reminder-dismissed';
 const DAILY_REVIEW_STATS_KEY = 'en-learn-daily-review-stats';
 const WEEKLY_REPORT_CONFIG_KEY = 'en-learn-weekly-report-config';
 const INVITE_METRICS_KEY = 'en-learn-invite-metrics';
@@ -1028,6 +1029,17 @@ export const StorageService = {
 
   setOnboardingComplete(): void {
     localStorage.setItem(ONBOARDED_KEY, 'true');
+  },
+
+  getRecallReminderDismissed(): number | null {
+    const raw = localStorage.getItem(RECALL_REMINDER_DISMISSED_KEY);
+    if (raw === null) return null;
+    const parsed = parseInt(raw, 10);
+    return isNaN(parsed) ? null : parsed;
+  },
+
+  setRecallReminderDismissed(timestamp: number): void {
+    localStorage.setItem(RECALL_REMINDER_DISMISSED_KEY, timestamp.toString());
   },
 
   hasActiveSession(): boolean {

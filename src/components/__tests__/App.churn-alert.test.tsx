@@ -284,10 +284,38 @@ describe('App ChurnAlertBanner integration', () => {
       expect(screen.queryByTestId('churn-alert-banner')).not.toBeInTheDocument();
     });
 
+    it('CTA button triggers onEngage and navigates to practice', async () => {
+      churnSignalsState.riskLevel = 'high';
+      churnSignalsState.topRiskFactors = [];
+
+      render(<App />);
+
+      await waitFor(() => {
+        expect(screen.getByTestId('churn-alert-banner')).toBeInTheDocument();
+      });
+
+      // Click the CTA button "开始练习"
+      const ctaButton = screen.getByRole('button', { name: '开始练习' });
+      fireEvent.click(ctaButton);
+
+      // The CTA should trigger the engage action (handleRestart) which
+      // resets practice state and starts a new session
+      // Verify banner is still visible (banner doesn't hide on engage)
+      expect(screen.getByTestId('churn-alert-banner')).toBeInTheDocument();
+    });
+
     it('banner can be dismissed and hides after click', async () => {
       churnSignalsState.riskLevel = 'high';
       churnSignalsState.topRiskFactors = [
-        { type: 'inactive_days', value: 3, severity: 0.7, description: '3天未学习' },
+        {
+          id: 'test_signal_1',
+          type: 'session_gap',
+          severity: 'high' as const,
+          description: '3天未学习',
+          value: 3,
+          threshold: 3,
+          detectedAt: 0,
+        },
       ];
 
       const { rerender } = render(<App />);

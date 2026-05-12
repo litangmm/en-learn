@@ -1180,9 +1180,9 @@ describe('useDictionaryIndex', () => {
       const ieltsSentences = [{ id: 'i1', english: 'IELTS', chinese: '雅思', blanks: [], level: 'hard' }];
 
       vi.mocked(loadDictionary)
-        .mockResolvedValueOnce(cet4Sentences as any)
-        .mockResolvedValueOnce(cet6Sentences as any)
-        .mockResolvedValueOnce(ieltsSentences as any);
+        .mockResolvedValueOnce(cet4Sentences as typeof mockSentences)
+        .mockResolvedValueOnce(cet6Sentences as typeof mockSentences)
+        .mockResolvedValueOnce(ieltsSentences as typeof mockSentences);
 
       const { result } = renderHook(() => useDictionaryIndex());
 
@@ -1227,8 +1227,8 @@ describe('useDictionaryIndex', () => {
       ];
 
       vi.mocked(loadDictionary)
-        .mockResolvedValueOnce(cet4Sentences as any)
-        .mockResolvedValueOnce(cet6Sentences as any);
+        .mockResolvedValueOnce(cet4Sentences as typeof mockSentences)
+        .mockResolvedValueOnce(cet6Sentences as typeof mockSentences);
 
       const { result } = renderHook(() => useDictionaryIndex());
 
@@ -1279,8 +1279,8 @@ describe('useDictionaryIndex', () => {
       ];
 
       vi.mocked(loadDictionary)
-        .mockResolvedValueOnce(cet4Sentences as any)
-        .mockResolvedValueOnce(cet6Sentences as any);
+        .mockResolvedValueOnce(cet4Sentences as typeof mockSentences)
+        .mockResolvedValueOnce(cet6Sentences as typeof mockSentences);
 
       const { result } = renderHook(() => useDictionaryIndex());
 

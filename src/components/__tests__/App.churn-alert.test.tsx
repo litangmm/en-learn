@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import * as React from 'react';
 import App from '../../App';
 import type { ChurnSignal } from '@/data/types';
 
@@ -203,15 +204,18 @@ vi.mock('@/data/loader', () => ({
 
 // Mock framer-motion globally - use function mock to pass through all props including data-testid
 vi.mock('framer-motion', () => {
-  const React = require('react');
   return {
     motion: {
-      div: React.forwardRef(({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }, ref) => (
-        <div ref={ref} {...props}>{children}</div>
-      )),
-      button: React.forwardRef(({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }, ref) => (
-        <button ref={ref} {...props}>{children}</button>
-      )),
+      div: React.forwardRef<HTMLDivElement, { children?: React.ReactNode }>(
+        ({ children, ...props }, ref) => (
+          <div ref={ref} {...props as object}>{children}</div>
+        )
+      ),
+      button: React.forwardRef<HTMLButtonElement, { children?: React.ReactNode }>(
+        ({ children, ...props }, ref) => (
+          <button ref={ref} {...props as object}>{children}</button>
+        )
+      ),
     },
     AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
   };
@@ -239,7 +243,7 @@ describe('App ChurnAlertBanner integration', () => {
     it('shows banner when riskLevel is high', async () => {
       churnSignalsState.riskLevel = 'high';
       churnSignalsState.topRiskFactors = [
-        { type: 'inactive_days', value: 3, severity: 0.7, description: '3天未学习' },
+        { id: 'test_signal_1', type: 'session_gap' as const, severity: 'high' as const, description: '3天未学习', value: 3, threshold: 3, detectedAt: 0 },
       ];
 
       render(<App />);
@@ -252,7 +256,7 @@ describe('App ChurnAlertBanner integration', () => {
     it('shows banner when riskLevel is critical', async () => {
       churnSignalsState.riskLevel = 'critical';
       churnSignalsState.topRiskFactors = [
-        { type: 'inactive_days', value: 7, severity: 0.9, description: '7天未学习' },
+        { id: 'test_signal_2', type: 'session_gap' as const, severity: 'critical' as const, description: '7天未学习', value: 7, threshold: 7, detectedAt: 0 },
       ];
 
       render(<App />);
@@ -276,7 +280,7 @@ describe('App ChurnAlertBanner integration', () => {
     it('hides banner when riskLevel is medium', () => {
       churnSignalsState.riskLevel = 'medium';
       churnSignalsState.topRiskFactors = [
-        { type: 'inactive_days', value: 2, severity: 0.4, description: '2天未学习' },
+        { id: 'test_signal_3', type: 'session_gap' as const, severity: 'medium' as const, description: '2天未学习', value: 2, threshold: 3, detectedAt: 0 },
       ];
 
       render(<App />);

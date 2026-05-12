@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { ChurnAlertBanner } from '../ChurnAlertBanner';
-import type { ChurnSignal, ChurnRiskLevel } from '@/data/types';
+import type { ChurnSignal } from '@/data/types';
 
 // ============================================================================
 // Mock localStorage

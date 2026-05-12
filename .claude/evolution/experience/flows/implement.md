@@ -6,6 +6,18 @@
 ## 常见问题
 （由进化引擎自动总结）
 
+### 2026-05-12 (cycle-2026-05-12-129)
+- **迭代**: epic-030 iter-004「疲劳恢复激励机制」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - useFatigueRecovery Hook 提供疲劳检测和恢复引导
+  - RestReminderModal 弹窗提供呼吸练习和伸展运动入口
+  - BreathingExercise 组件实现 4-7-8 呼吸法可视化
+  - StretchReminder 组件提供桌面/移动端适配的伸展提醒
+  - ProgressHub 集成疲劳恢复建议
+- **重构**: 无
+- **观察**: epic-030 全部 4 个迭代收官（v0.54.0-v0.57.0），1427 测试历史最高水位。从疲劳检测（iter-001 useFlowState）到自适应调整（iter-002 FlowStateBanner）到时段分析（iter-003 TimeSlotQualityCard）到疲劳恢复（iter-004 RestReminderModal），完整的心流优化体系。**进入全新 brainstorm 周期，候选 Epic：epic-030b（学习动机可视化）/epic-030c（深度个性化学习路径）**
+
 ## 历史数据
 
 ### 2026-05-12 (cycle-2026-05-12-120)

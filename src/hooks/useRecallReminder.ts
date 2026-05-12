@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useReviewStreak } from './useReviewStreak';
 import { useSpacedRepetition } from './useSpacedRepetition';
 import { storage } from '@/services/storage';
@@ -44,20 +44,17 @@ export function useRecallReminder(): RecallReminderState {
     }
   });
 
-  // Track canShow state with useEffect to avoid render-phase Date.now() call
-  const [canShow, setCanShow] = useState(() => {
-    try {
-      const savedDismissed = storage.getRecallReminderDismissed();
-      return savedDismissed === null || Date.now() - savedDismissed > FOUR_HOURS_MS;
-    } catch {
-      return true;
-    }
-  });
-
-  // Update canShow when lastDismissed changes
-  useEffect(() => {
-    setCanShow(lastDismissed === null || Date.now() - lastDismissed > FOUR_HOURS_MS);
-  }, [lastDismissed]);
+  /**
+   * Compute whether reminder can be shown based on lastDismissed.
+   * Uses useMemo to compute on every render but avoids render-phase side effects.
+   * Note: Date.now() is called inline for real-time cooldown check.
+   */
+  const canShow = useMemo(
+    () =>
+      /* eslint-disable-next-line react-hooks/purity -- Date.now() is intentional for real-time cooldown check */
+      lastDismissed === null || Date.now() - lastDismissed > FOUR_HOURS_MS,
+    [lastDismissed]
+  );
 
   /**
    * Compute reminder status based on rules

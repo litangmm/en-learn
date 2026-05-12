@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Coffee } from 'lucide-react';
 
 interface SessionTimerProps {
+  /** Computed elapsed time in ms at mount time (not a ref) */
   sessionStartMs: number;
   onBreakSuggestion?: () => void;
 }
@@ -10,7 +11,7 @@ const POMODORO_DURATION_MS = 25 * 60 * 1000; // 25 minutes
 
 /**
  * SessionTimer tracks session duration and suggests breaks at 25 minutes.
- * Uses computed elapsed time from sessionStartMs for accuracy.
+ * Receives computed elapsed time from sessionStartMs for accuracy.
  * Display format: MM:SS
  */
 export function SessionTimer({ sessionStartMs, onBreakSuggestion }: SessionTimerProps) {

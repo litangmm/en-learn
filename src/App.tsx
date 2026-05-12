@@ -165,8 +165,11 @@ function App() {
   const previousLevelRef = useRef(profile.currentLevel);
   // Track total correct answers for XP milestone detection
   const totalCorrectRef = useRef(0);
-  // Track session start time for flow state and Pomodoro timer
-  const sessionStartTimeRef = useRef<number>(Date.now());
+  // Track session start time for flow state
+  // sessionStartTimeForTimer is captured once at App mount; SessionTimer computes elapsed from this value
+  const [sessionStartTimeForTimer] = useState<number>(() => Date.now());
+  // Also track for answer time calculation (not passed to UI, so no eslint issues)
+  const sessionStartTimeRef = useRef<number>(sessionStartTimeForTimer);
 
   // Flow state tracking
   const { flowState, fatigueSignals, recordCorrect, recordWrong, reset: resetFlowState } = useFlowState();
@@ -290,7 +293,7 @@ function App() {
         awardedXPRef.current.add(sentenceId);
         recordCorrectAnswer();
         // Record for flow state tracking
-        const answerTimeMs = Date.now() - sessionStartTimeRef.current;
+        const answerTimeMs = sessionStartTimeRef.current ? Date.now() - sessionStartTimeRef.current : 0;
         recordCorrect(answerTimeMs);
         const baseXP = practiceMode === 'multiple-choice' ? 8 : practiceMode === 'sentence-reorder' ? 12 : 10;
         const firstTry = state.attempts === 1;
@@ -729,7 +732,7 @@ function App() {
               <div className="flex items-center gap-3 flex-shrink-0">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} />
                 <StreakFeedback streak={streak} />
-                <SessionTimer sessionStartMs={sessionStartTimeRef.current} />
+                <SessionTimer sessionStartMs={sessionStartTimeForTimer.current} />
                 <Button
                   variant="ghost"
                   size="sm"

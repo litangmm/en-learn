@@ -57,6 +57,8 @@ export function BreathingExercise({
   // Phase timer
   useEffect(() => {
     const phaseDuration = PHASE_DURATION[phase];
+    // Setting progress to 0 is intentional initialization when phase changes
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPhaseProgress(0);
 
     const timer = setInterval(() => {

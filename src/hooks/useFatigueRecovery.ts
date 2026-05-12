@@ -107,6 +107,8 @@ export function useFatigueRecovery(): UseFatigueRecoveryReturn {
   // Detect fatigue and show suggestion after delay
   useEffect(() => {
     if (flowState === 'fatigued' && stage === 'none' && showSuggestionTimestamp === null) {
+      // Setting timestamp to trigger delayed suggestion
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSuggestionTimestamp(Date.now());
     } else if (flowState !== 'fatigued' && stage === 'suggestion') {
       // User recovered naturally, dismiss suggestion

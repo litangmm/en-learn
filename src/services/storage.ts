@@ -3,6 +3,8 @@ import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallenge
 import { MILESTONE_DEFINITIONS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
+import { clearDictionaryCache, getCachedDictionary } from '@/data/dictionaryCache';
+import { buildDictionaryIndex } from '@/data/dictionaryIndex';
 
 export interface StorageSchemaV1 {
   version: 1;
@@ -1206,6 +1208,17 @@ export const StorageService = {
     localStorage.removeItem(SESSION_KEY);
   },
 
+  /**
+   * Clears session and any index-related cache data.
+   * Ensures clean slate for new session while preserving other user data.
+   */
+  clearSessionWithIndex(): void {
+    // Clear session key
+    localStorage.removeItem(SESSION_KEY);
+    // Clear dictionary cache (index data)
+    clearDictionaryCache();
+  },
+
   hasOnboardingComplete(): boolean {
     return localStorage.getItem(ONBOARDED_KEY) !== null;
   },
@@ -1723,6 +1736,41 @@ export const StorageService = {
 
   getPersonalWordCount(): number {
     return loadPersonalWords().length;
+  },
+
+  /**
+   * Gets index statistics for the current dictionary and personal words.
+   * Returns stats about index sizes, build times, and cache status.
+   */
+  getIndexStats(): { dictionary: { totalCount: number; uniqueWords: number; buildTimeMs: number; }; personalWords: { totalCount: number; indexedAt: number; }; } {
+    // Get current dictionary stats
+    const currentDictId = this.getStoredDictionaryId();
+    let dictStats = { totalCount: 0, uniqueWords: 0, buildTimeMs: 0 };
+
+    if (currentDictId) {
+      const cached = getCachedDictionary(currentDictId);
+      if (cached) {
+        const index = buildDictionaryIndex(cached);
+        const stats = index.getStats();
+        dictStats = {
+          totalCount: stats.totalCount,
+          uniqueWords: stats.uniqueWords,
+          buildTimeMs: stats.buildTimeMs,
+        };
+      }
+    }
+
+    // Get personal words stats
+    const personalWords = loadPersonalWords();
+    const personalWordsStats = {
+      totalCount: personalWords.length,
+      indexedAt: Date.now(), // Index is built on-demand, so use current time
+    };
+
+    return {
+      dictionary: dictStats,
+      personalWords: personalWordsStats,
+    };
   },
 
   getAdaptiveConfig(): AdaptiveConfig {

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useTransition } from 'react';
-import { Search, BookOpen, Star, ArrowLeft, Filter } from 'lucide-react';
+import { Search, BookOpen, Star, ArrowLeft, Filter, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,7 @@ import { dictionaries } from '@/data/dictionaries';
 import { loadDictionary } from '@/data/loader';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { useDictionaryIndex } from '@/hooks/useDictionaryIndex';
+import { useIndexStats } from '@/hooks/useIndexStats';
 import { searchByQuery } from '@/data/dictionaryIndex';
 import type { Sentence } from '@/data/types';
 
@@ -57,6 +58,10 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
 
   // Dictionary index management - preload index for fast lookups
   const { loadDictionary: loadDictionaryIndex, getByWord } = useDictionaryIndex();
+
+  // Index statistics for developer mode
+  const indexStats = useIndexStats();
+  const [showIndexStats, setShowIndexStats] = useState(false);
 
   // Clear sessionStorage flag on mount if present
   useEffect(() => {
@@ -302,13 +307,37 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
         )}
       </div>
 
-      {/* Footer with count */}
+      {/* Footer with count and stats toggle */}
       {!loading && !error && (
-        <div className="px-4 py-3 border-t text-sm text-muted-foreground">
-          共 {filteredSentences.length} 个单词
-          {searchQuery && sentences.length !== filteredSentences.length && (
-            <span>（共 {sentences.length} 个）</span>
-          )}
+        <div className="px-4 py-3 border-t text-sm text-muted-foreground flex items-center justify-between">
+          <div>
+            共 {filteredSentences.length} 个单词
+            {searchQuery && sentences.length !== filteredSentences.length && (
+              <span>（共 {sentences.length} 个）</span>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 text-xs"
+            onClick={() => setShowIndexStats(!showIndexStats)}
+          >
+            <BarChart3 className="h-3 w-3 mr-1" />
+            索引
+          </Button>
+        </div>
+      )}
+
+      {/* Index stats panel (developer mode) */}
+      {showIndexStats && indexStats.isLoaded && (
+        <div className="px-4 py-3 border-t bg-muted/30 text-xs">
+          <div className="font-medium mb-1">索引统计</div>
+          <div className="grid grid-cols-2 gap-2">
+            <div>词典句子: {indexStats.totalCount}</div>
+            <div>唯一年级: {indexStats.uniqueWords}</div>
+            <div>索引耗时: {indexStats.buildTimeMs.toFixed(2)}ms</div>
+            <div>生词数: {indexStats.personalWordCount}</div>
+          </div>
         </div>
       )}
     </div>

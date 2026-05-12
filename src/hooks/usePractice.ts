@@ -1,12 +1,13 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Sentence, ChoiceOption, PracticeMode } from '@/data/types';
-import { isDefinitionSentence } from '@/data/types';
+import { isDefinitionSentence, isPersonalDictionary } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import { useAdaptivePractice } from '@/hooks/useAdaptivePractice';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { useQuestionWeighting } from '@/hooks/useQuestionWeighting';
+import { usePersonalWordIndex } from '@/hooks/usePersonalWordIndex';
 
 export interface UserAnswer {
   sentenceId: string;
@@ -45,6 +46,8 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   const { recordCorrectAnswer, recordWrongAnswer, shouldShowHint } = useHintLevel();
   // Question weighting hook for adaptive sentence selection
   const { getWeightedSentenceIds, getWeightExplanation } = useQuestionWeighting();
+  // Personal word index hook for personal dictionary mode
+  const { getAllAsSentences: getPersonalSentences } = usePersonalWordIndex();
 
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,6 +55,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   const [pendingMistakes, setPendingMistakes] = useState<Record<string, SessionMistake>>({});
   const sessionStartTimeRef = useRef<number | null>(null);
   const [shuffleSeed, setShuffleSeed] = useState(0);
+
+  // Track if we're in personal dictionary mode
+  const isPersonalMode = isPersonalDictionary(dictionaryId);
 
   const [state, setState] = useState<PracticeState>({
     currentIndex: 0,
@@ -70,6 +76,16 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
   useEffect(() => {
     setIsLoading(true);
     setError(null);
+
+    // Handle personal dictionary mode
+    if (isPersonalMode) {
+      const personalSentences = getPersonalSentences();
+      setSentences(personalSentences);
+      setIsLoading(false);
+      return;
+    }
+
+    // Normal dictionary loading
     loadDictionary(dictionaryId)
       .then((data) => {
         setSentences(data);
@@ -79,11 +95,32 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
         setError(err instanceof Error ? err.message : '加载失败');
         setIsLoading(false);
       });
-  }, [dictionaryId]);
+  }, [dictionaryId, isPersonalMode, getPersonalSentences]);
 
   // Reset state when sentences load
   useEffect(() => {
     if (sentences.length > 0) {
+      // In personal dictionary mode, don't restore from session storage
+      // because personal dictionary practice sessions are managed separately
+      if (isPersonalMode) {
+        setState({
+          currentIndex: 0,
+          userAnswers: [],
+          currentInputs: new Array(sentences[0].blanks.length).fill(''),
+          showResult: false,
+          isCorrect: false,
+          attempts: 0,
+          isComplete: false,
+          score: 0,
+          selectedChoiceId: null,
+          orderedTokenIds: [],
+        });
+        sessionStartTimeRef.current = Date.now();
+        setPendingMistakes({});
+        return;
+      }
+
+      // Normal dictionary: restore from session storage if available
       const persisted = storage.loadSession();
       if (persisted && persisted.dictionaryId === dictionaryId && !persisted.session.isComplete) {
         const restoredIndex = persisted.session.currentIndex;
@@ -113,10 +150,17 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
       }
       setPendingMistakes({});
     }
-  }, [sentences, dictionaryId]);
+  }, [sentences, dictionaryId, isPersonalMode]);
 
   const shuffledSentences = useMemo(() => {
     if (sentences.length === 0) return [];
+
+    // Personal dictionary mode: use all sentences directly (no weighting)
+    if (isPersonalMode) {
+      // Shuffle and limit to 10 for personal practice
+      const shuffled = [...sentences].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 10);
+    }
 
     // Start with sentences filtered by sentenceIds if provided
     let targetSentences = sentences;
@@ -156,7 +200,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
     return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sentences, sentenceIds, shuffleSeed]);
+  }, [sentences, sentenceIds, shuffleSeed, isPersonalMode]);
 
   // Debounced save session
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

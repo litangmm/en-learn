@@ -785,6 +785,38 @@ export interface MilestoneState {
   updatedAt: number;
 }
 
+// ============================================================================
+// Personal Dictionary Types (epic-055 iter-001)
+// ============================================================================
+
+/**
+ * Special dictionary ID for personal word library practice.
+ * Used to distinguish personal dictionary mode from regular dictionary modes.
+ */
+export const PERSONAL_DICTIONARY_ID = 'personal';
+
+/**
+ * Check if a dictionary ID represents the personal dictionary.
+ */
+export function isPersonalDictionary(dictionaryId: string): boolean {
+  return dictionaryId === PERSONAL_DICTIONARY_ID;
+}
+
+/**
+ * Personal dictionary state for tracking practice sessions.
+ * Stores the list of active personal word IDs being practiced.
+ */
+export interface PersonalDictionary {
+  /** Array of personal word IDs for current practice session */
+  activeSentenceIds: string[];
+  /** Last practice timestamp */
+  lastPracticedAt: number | null;
+}
+
+// ============================================================================
+// Dictionary Index Types (epic-043)
+// ============================================================================
+
 /**
  * Represents a single indexed dictionary entry.
  * Contains the sentence ID and positions of the indexed word within that sentence.

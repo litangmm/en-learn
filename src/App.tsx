@@ -9,6 +9,7 @@ import { PracticeCard } from '@/components/PracticeCard';
 import { ProgressBar } from '@/components/ProgressBar';
 import { ResultModal } from '@/components/ResultModal';
 import { DictionarySelector } from '@/components/DictionarySelector';
+import { PersonalPracticePanel } from '@/components/PersonalPracticePanel';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { ErrorScreen } from '@/components/ErrorScreen';
 import { MobileNav } from '@/components/MobileNav';
@@ -93,6 +94,9 @@ function App() {
   const [sharePrompt, setSharePrompt] = useState<SharePrompt | null>(null); // State for share prompt trigger - setSharePrompt called in useEffect, value consumed in Task 4
   const [achievementMomentTrigger, setAchievementMomentTrigger] = useState<{ moment: AchievementMoment | null; key: number } | null>(null);
   const [weeklyReportTrigger, setWeeklyReportTrigger] = useState<{ key: number } | null>(null);
+
+  // Personal dictionary mode state
+  const [isPersonalMode, setIsPersonalMode] = useState(false);
 
   // Initialize weekly report hook
   const { report: weeklyReport, shouldShow: showWeeklyReport, dismiss: dismissWeeklyReport, markShown: markWeeklyReportShown } = useWeeklyReport();
@@ -632,6 +636,13 @@ function App() {
     setView('practice');
   };
 
+  const handleStartPersonalPractice = () => {
+    setIsPersonalMode(true);
+    setDictionaryId('personal');
+    setPracticeSentenceIds(undefined);
+    setView('practice');
+  };
+
   const handleBackFromInvite = () => {
     setView('practice');
   };
@@ -818,6 +829,10 @@ function App() {
                 <div className="text-right">
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
                 </div>
+                {/* Personal Practice Panel - shown when not in personal mode */}
+                {!isPersonalMode && view === 'practice' && (
+                  <PersonalPracticePanel onStartPractice={handleStartPersonalPractice} />
+                )}
               </div>
             )}
 

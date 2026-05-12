@@ -94,6 +94,11 @@ describe('usePractice multiple-choice', () => {
     localStorage.clear();
     // Default mock for most tests
     vi.mocked(loadDictionary).mockResolvedValue(mockSentences);
+    // Mock getPersonalWords to return empty array (no personal words)
+    vi.spyOn(storage, 'getPersonalWords').mockReturnValue([]);
+    // Mock getMistakes and getAdaptiveConfig for useAdaptivePractice
+    vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
+    vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({ strategy: 'random', historyWeight: 0.5 });
   });
 
   afterEach(() => {
@@ -229,8 +234,9 @@ describe('usePractice multiple-choice', () => {
   });
 
   it('should show Chinese text as option text for definition sentences', async () => {
-    // Mock definition sentences
-    vi.mocked(loadDictionary).mockResolvedValueOnce(mockDefinitionSentences);
+    // Reset the mock and set it to return definition sentences
+    vi.mocked(loadDictionary).mockReset();
+    vi.mocked(loadDictionary).mockResolvedValue(mockDefinitionSentences);
 
     const { result } = renderHook(() => usePractice('test'));
 
@@ -246,16 +252,21 @@ describe('usePractice multiple-choice', () => {
     expect(definitionOption).toBeDefined();
     // Should contain Chinese characters
     expect(definitionOption?.text).toMatch(/[一-鿿]/);
+
+    // Reset back to default mock for other tests
+    vi.mocked(loadDictionary).mockReset();
+    vi.mocked(loadDictionary).mockResolvedValue(mockSentences);
   });
 
   it('should correctly identify definition sentences vs normal sentences', async () => {
-    // Mock with mixed sentences (normal + definition)
+    // Reset the mock and set it to return mixed sentences
+    vi.mocked(loadDictionary).mockReset();
     // Ensure we have at least 2 normal and 2 definition sentences for 4 options
     const mixedSentences = [
       ...mockSentences.slice(0, 2), // 2 normal sentences
       ...mockDefinitionSentences.slice(0, 4), // 4 definition sentences (more than needed)
     ];
-    vi.mocked(loadDictionary).mockResolvedValueOnce(mixedSentences);
+    vi.mocked(loadDictionary).mockResolvedValue(mixedSentences);
 
     const { result } = renderHook(() => usePractice('test'));
 
@@ -273,6 +284,10 @@ describe('usePractice multiple-choice', () => {
     // At least one option should be in English (normal sentence)
     const hasEnglishOption = optionTexts.some((text) => !/[一-鿿]/.test(text) && text.includes(' '));
     expect(hasEnglishOption).toBe(true);
+
+    // Reset back to default mock for other tests
+    vi.mocked(loadDictionary).mockReset();
+    vi.mocked(loadDictionary).mockResolvedValue(mockSentences);
   });
 
 });

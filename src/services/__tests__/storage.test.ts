@@ -191,4 +191,68 @@ describe('StorageService', () => {
       expect(storage).toBe(StorageService);
     });
   });
+
+  describe('PersonalDictionary CRUD', () => {
+    const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
+
+    it('getPersonalDictionary returns null when no data', () => {
+      localStorage.removeItem(PERSONAL_DICTIONARY_KEY);
+      expect(StorageService.getPersonalDictionary()).toBeNull();
+    });
+
+    it('savePersonalDictionary stores data', () => {
+      const pd = { activeSentenceIds: ['pw-0', 'pw-1'], lastPracticedAt: Date.now() };
+      StorageService.savePersonalDictionary(pd);
+
+      const raw = localStorage.getItem(PERSONAL_DICTIONARY_KEY);
+      expect(raw).not.toBeNull();
+      const parsed = JSON.parse(raw!);
+      expect(parsed.activeSentenceIds).toEqual(['pw-0', 'pw-1']);
+    });
+
+    it('getPersonalDictionary returns stored data', () => {
+      const pd = { activeSentenceIds: ['pw-0'], lastPracticedAt: 1234567890 };
+      localStorage.setItem(PERSONAL_DICTIONARY_KEY, JSON.stringify(pd));
+
+      const result = StorageService.getPersonalDictionary();
+      expect(result).not.toBeNull();
+      expect(result!.activeSentenceIds).toEqual(['pw-0']);
+      expect(result!.lastPracticedAt).toBe(1234567890);
+    });
+
+    it('getPersonalDictionary returns null for corrupted data', () => {
+      localStorage.setItem(PERSONAL_DICTIONARY_KEY, 'not valid json');
+      expect(StorageService.getPersonalDictionary()).toBeNull();
+    });
+
+    it('getPersonalDictionary returns null for invalid schema', () => {
+      localStorage.setItem(PERSONAL_DICTIONARY_KEY, JSON.stringify({ wrong: 'schema' }));
+      expect(StorageService.getPersonalDictionary()).toBeNull();
+    });
+
+    it('updatePersonalDictionary updates existing state', () => {
+      const initial = { activeSentenceIds: ['pw-0'], lastPracticedAt: null };
+      localStorage.setItem(PERSONAL_DICTIONARY_KEY, JSON.stringify(initial));
+
+      const updated = StorageService.updatePersonalDictionary((prev) => ({
+        ...prev,
+        lastPracticedAt: Date.now(),
+      }));
+
+      expect(updated.lastPracticedAt).not.toBeNull();
+      expect(updated.activeSentenceIds).toEqual(['pw-0']);
+    });
+
+    it('updatePersonalDictionary creates default when no data', () => {
+      localStorage.removeItem(PERSONAL_DICTIONARY_KEY);
+
+      const updated = StorageService.updatePersonalDictionary((prev) => ({
+        ...prev,
+        activeSentenceIds: ['pw-new'],
+      }));
+
+      expect(updated.activeSentenceIds).toEqual(['pw-new']);
+      expect(updated.lastPracticedAt).toBeNull();
+    });
+  });
 });

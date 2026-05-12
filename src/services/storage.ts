@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary } from '@/data/types';
 import { MILESTONE_DEFINITIONS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
@@ -42,6 +42,7 @@ const INVITE_METRICS_KEY = 'en-learn-invite-metrics';
 const INVITE_CONFIG_KEY = 'en-learn-invite-config';
 const GOALS_KEY = 'en-learn-goals';
 const MILESTONES_KEY = 'en-learn-milestones';
+const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -434,6 +435,34 @@ function isValidMilestoneState(data: unknown): data is MilestoneState {
   }
 
   if (typeof obj.updatedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Personal Dictionary Validators (epic-055 iter-001)
+// ---------------------------------------------------------------------------
+
+function isValidPersonalDictionary(data: unknown): data is PersonalDictionary {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (!Array.isArray(obj.activeSentenceIds)) {
+    return false;
+  }
+
+  // All activeSentenceIds should be strings
+  if (!obj.activeSentenceIds.every((id) => typeof id === 'string')) {
+    return false;
+  }
+
+  // lastPracticedAt is optional; if present, must be number or null
+  if (obj.lastPracticedAt !== undefined && obj.lastPracticedAt !== null && typeof obj.lastPracticedAt !== 'number') {
     return false;
   }
 
@@ -1953,6 +1982,47 @@ export const StorageService = {
     return milestone;
   },
 
+  // Personal Dictionary CRUD (epic-055 iter-001)
+  getPersonalDictionary(): PersonalDictionary | null {
+    const raw = localStorage.getItem(PERSONAL_DICTIONARY_KEY);
+    if (raw === null) {
+      return null;
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.warn('[StorageService] Corrupted personal dictionary data, clearing');
+      localStorage.removeItem(PERSONAL_DICTIONARY_KEY);
+      return null;
+    }
+
+    if (!isValidPersonalDictionary(parsed)) {
+      console.warn('[StorageService] Invalid personal dictionary schema, clearing');
+      localStorage.removeItem(PERSONAL_DICTIONARY_KEY);
+      return null;
+    }
+
+    return parsed;
+  },
+
+  savePersonalDictionary(state: PersonalDictionary): void {
+    try {
+      localStorage.setItem(PERSONAL_DICTIONARY_KEY, JSON.stringify(state));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save personal dictionary:', error);
+    }
+  },
+
+  updatePersonalDictionary(updater: (prev: PersonalDictionary) => Partial<PersonalDictionary>): PersonalDictionary {
+    const current = this.getPersonalDictionary() ?? { activeSentenceIds: [], lastPracticedAt: null };
+    const updates = updater(current);
+    const updated: PersonalDictionary = { ...current, ...updates };
+    this.savePersonalDictionary(updated);
+    return updated;
+  },
+
   exportAllData(): ExportData {
     return {
       version: 1,
@@ -1966,21 +2036,22 @@ export const StorageService = {
         badgeProgress: this.getBadgeProgress(),
         badges: this.getBadges(),
         personalWords: loadPersonalWords(),
+        personalDictionary: this.getPersonalDictionary() ?? undefined,
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number; personalWords: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number; personalWords: number; personalDictionary: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 },
       };
     }
 
-    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges, personalWords } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 };
+    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges, personalWords, personalDictionary } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 };
     const personalWordsToImport = personalWords ?? [];
 
     try {
@@ -2040,6 +2111,12 @@ export const StorageService = {
         localStorage.removeItem(PERSONAL_WORDS_KEY);
       }
 
+      // Import personal dictionary state
+      if (personalDictionary) {
+        this.savePersonalDictionary(personalDictionary);
+        importedCounts.personalDictionary = 1;
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
@@ -2049,6 +2126,7 @@ export const StorageService = {
       if (importedCounts.badgeProgress > 0) parts.push('1 个徽章进度');
       if (importedCounts.badges > 0) parts.push('1 个徽章状态');
       if (importedCounts.personalWords > 0) parts.push(`${importedCounts.personalWords} 个生词`);
+      if (importedCounts.personalDictionary > 0) parts.push('1 个个人词库状态');
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -2059,7 +2137,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 },
       };
     }
   },
@@ -2077,6 +2155,7 @@ export interface ExportData {
     badgeProgress?: BadgeProgress;
     badges?: BadgeState;
     personalWords?: PersonalWord[];
+    personalDictionary?: PersonalDictionary;
   };
 }
 
@@ -2151,6 +2230,11 @@ function isValidExportData(data: unknown): data is ExportData {
     if (!personalWords.every(isValidPersonalWord)) {
       return false;
     }
+  }
+
+  // personalDictionary is optional; if present, must be valid
+  if (dataObj.personalDictionary !== undefined && !isValidPersonalDictionary(dataObj.personalDictionary)) {
+    return false;
   }
 
   return true;

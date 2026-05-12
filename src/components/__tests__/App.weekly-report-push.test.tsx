@@ -178,6 +178,7 @@ vi.mock('@/services/storage', () => ({
     getGoals: vi.fn(() => null),
     saveGoals: vi.fn(),
     generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
+    getPersonalWords: vi.fn(() => []),
   },
   StorageService: {},
 }));

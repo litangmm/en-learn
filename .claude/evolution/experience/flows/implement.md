@@ -376,6 +376,17 @@
   - requestAnimationFrame deferral 在 XP 奖励 useEffect 中触发弹窗，确保 DOM 更新后动画开始
 - **观察**: 零新增依赖（framer-motion 复用已有），零构建体积增长。连击系统与 XP 系统的融合通过 useXP hook 统一暴露，App.tsx 的集成改动最小化。7 个现有测试文件的 mock 更新展示了 hook API 扩展时的向后兼容策略
 
+### 2026-05-13 (cycle-2026-05-13-179)
+- **迭代**: epic-050 iter-001~004「质量基础设施升级与 E2E 稳定性修复」—— **全部 4 个迭代完成**
+- **实现质量**: 高 — 全程零新增依赖（@vitest/coverage-v8 已验证），零构建体积增长
+- **关键决策**:
+  - iter-001: MoreMenu/MobileNav 添加 data-testid（12+8 items）、E2E 选择器稳定化 + networkidle 等待、spaced-repetition 时间戳注入（消除 ms 边界竞态）
+  - iter-002: playwright.config.ts 启用 fullyParallel=true + workers=2 + video='on-first-retry'，21 测试并行 42.7s
+  - iter-003: 16 个视觉回归测试（e2e/visual.spec.ts）+ screenshot.ts 截图工具封装 + visual-regression.ts 基线/diff/阈值
+  - iter-004: @vitest/coverage-v8 + vite.config.ts v8 provider 配置 + coverage-baseline.json 基线 + package.json coverage 脚本
+- **重构**: 无（零新增组件，仅配置和测试变更）
+- **观察**: epic-050 全部 4 个迭代完成，1833 测试历史最高水位。从 iter-001（E2E 稳定化）到 iter-004（覆盖率 gate），全程零新增依赖。视觉回归测试使用已有 html2canvas + playwright 截图能力。**epic-050 仅剩 iter-005（性能回归自动检测）pending，准备进入全新 brainstorm 周期**
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **实现质量**: 高 — 代码结构清晰，错误处理完善

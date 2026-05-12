@@ -235,6 +235,17 @@
 - **E2E**: skipped（3 pending iterations remaining）
 - **观察**: 动画组件测试策略：StreakFeedback 通过 data-testid 和颜色类名断言；XPGainPopup 通过 queryByText 和条件渲染断言。framer-motion 的 motion.div 通过 getByTestId 验证存在性。requestAnimationFrame 在 jsdom 中同步执行，弹窗触发测试无需额外等待。7 个现有 App 测试文件的 mock 更新展示了 hook API 扩展时的大规模测试维护模式
 
+### 2026-05-13 (cycle-2026-05-13-179)
+- **迭代**: epic-050 iter-001~004「质量基础设施升级与 E2E 稳定性修复」—— **全部测试通过**
+- **测试覆盖**: 1833/1834 单元测试通过（历史最高水位，零回归）
+  - iter-001: MoreMenu/MobileNav data-testid 测试（12+8 items）+ E2E 稳定化选择器测试 + spaced-repetition 时间戳注入测试
+  - iter-002: 21 个 E2E 测试并行执行（10+8+3，42.7s），fullyParallel=true + workers=2 验证
+  - iter-003: 16 个视觉回归测试（45.2s）：桌面/移动端首页、练习卡片、词典浏览器、更多菜单、排行榜、XP/进度、App Shell
+  - iter-004: 覆盖率 baseline 验证（statements 81.94%, lines 81.89%, functions 84.88%, branches 75.13%），所有阈值超标
+  - 全量回归：之前 1833 个测试全部通过（1 skipped）
+- **E2E**: 16/16 视觉测试通过
+- **观察**: epic-050 全部 4 个迭代完成，1833 测试历史最高水位。从 iter-001（1714 测试）到 iter-004（1833 测试），增长 119 个测试，全程零回归。**epic-050 仅剩 iter-005（性能回归自动检测）pending，准备进入全新 brainstorm 周期**
+
 ### 2026-05-09 (cycle-2026-05-09-1)
 - **迭代**: iter-001「核心存储服务与会话持久化」
 - **测试覆盖**: 72/72 单元测试通过

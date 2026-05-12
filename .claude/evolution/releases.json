@@ -2,6 +2,22 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.72.0",
+      "tag": "v0.72.0",
+      "commit": "b1e16ae",
+      "date": "2026-05-12T20:18:38.092Z",
+      "iterationId": "iter-004",
+      "title": "测试覆盖率目标 gate",
+      "features": [
+        "@vitest/coverage-v8 安装与 v8 配置",
+        "vite.config.ts coverage 配置（lines/functions 70%, branches 60%, statements 70%）",
+        "package.json test:coverage/test:coverage:ci 脚本",
+        ".claude/evolution/coverage-baseline.json 基线建立",
+        "初始覆盖率: statements 81.94%, lines 81.89%, functions 84.88%, branches 75.13%"
+      ],
+      "deployUrl": "https://en-learn.vercel.app"
+    },
+    {
       "version": "v0.71.0",
       "tag": "v0.71.0",
       "commit": "583fd21",

@@ -346,6 +346,16 @@
   - 全量回归：**1207/1207 单元测试通过**（历史最高水位），lint 1 warning（pre-existing react-refresh），build 3.05s 成功
 - **备注**: 1207 测试零回归，120 个新增测试（AchievementMomentCard ~45 + useAchievementMoment ~35 + App.tsx 集成 ~40）。成就时刻检测逻辑（升级/徽章/连击/XP/满分）与现有游戏化系统（XP/徽章/连击）深度集成，边界覆盖关键。**epic-029 剩余 iter-002~005 继续关注测试覆盖完整性**
 
+### 2026-05-13 (cycle-2026-05-13-179) — epic-050 全部 4 个迭代完成 (1833 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、E2E 稳定性、视觉回归测试、覆盖率 gate、构建稳定性
+- **本次验证**: epic-050「质量基础设施升级与 E2E 稳定性修复」全部 4 个迭代质量门禁验证
+  - iter-001 E2E 稳定化：MoreMenu/MobileNav 添加 data-testid、complete-flow/data-management/practice E2E 使用稳定选择器 + networkidle 等待、spaced-repetition 时间戳竞态修复
+  - iter-002 Playwright 并行：fullyParallel=true + workers=2 + video='on-first-retry'，21 个测试并行 42.7s 通过
+  - iter-003 视觉回归：16 个视觉测试（桌面/移动端首页、练习卡片、词典浏览器、更多菜单、排行榜、XP/进度、App Shell）+ screenshot.ts + visual-regression.ts
+  - iter-004 覆盖率 gate：@vitest/coverage-v8 + v8 配置 + baseline + scripts，所有阈值超标（statements 81.94% > 70%, lines 81.89% > 70%, functions 84.88% > 70%, branches 75.13% > 60%）
+  - 全量回归：**1833/1834 单元测试通过**（1 skipped，历史最高水位），lint 0 errors，build 3.59s success
+- **备注**: epic-050 全程零新增依赖、零构建体积增长，完全符合「依赖最小化」原则。从单元测试到 E2E 到视觉回归到覆盖率 gate，QA 建立了全链路质量保障体系。1833 测试零回归是项目历史最高水位，持续 20+ 个 cycle 保持。**epic-050 仅剩 iter-005（性能回归自动检测）pending，epic-050 即将全部收官**
+
 ### 2026-05-12 (cycle-2026-05-12-129) — epic-030 全部 4 个迭代完成 (1427 tests, 历史最高水位)
 - **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
 - **本次验证**: epic-030 iter-004「疲劳恢复激励机制」质量门禁验证

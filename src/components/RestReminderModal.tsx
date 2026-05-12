@@ -11,7 +11,7 @@ interface RestReminderModalProps {
   recommendedOption: RecoveryOption;
   fatigueSignalsText: string;
   currentOption: RecoveryOption | null;
-  onSelectOption: (option: RecoveryOption) => void;
+  onSelectOption: (_option: RecoveryOption) => void;
   onSkip: () => void;
   onComplete: () => void;
 }

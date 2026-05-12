@@ -27,7 +27,7 @@ export interface UseHintLevelReturn {
   /** Record a wrong answer - may trigger level adjustment */
   recordWrongAnswer: () => void;
   /** Manually override hint level (e.g., user explicitly toggles hints) */
-  setHintLevel: (level: HintLevel) => void;
+  setHintLevel: (_level: HintLevel) => void;
   /** Check if hints should be shown based on current level and probability */
   shouldShowHint: () => boolean;
   /** Reset consecutive counts and config (e.g., at session start) */

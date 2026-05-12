@@ -38,11 +38,11 @@ export interface PracticeCardBaseProps {
   /** Audio playback speed */
   playbackRate?: number;
   /** Callback when playback speed changes */
-  onSpeedChange?: (rate: number) => void;
+  onSpeedChange?: (_rate: number) => void;
   /** Callback when input value changes */
-  onInputChange: (index: number, value: string) => void;
+  onInputChange: (_index: number, _value: string) => void;
   /** Callback when answer is checked/submitted */
-  onCheck: (param?: string | string[]) => void;
+  onCheck: (_param?: string | string[]) => void;
   /** Callback to proceed to next question */
   onNext: () => void;
   /** Callback to retry the current question */
@@ -63,10 +63,10 @@ export type InputRefCallback = RefCallback<HTMLInputElement | null>;
 /**
  * Handler callback types for consistent signatures
  */
-export type InputChangeHandler = (index: number, value: string) => void;
-export type CheckHandler = (param?: string | string[]) => void;
-export type SpeedChangeHandler = (rate: number) => void;
-export type KeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => void;
+export type InputChangeHandler = (_index: number, _value: string) => void;
+export type CheckHandler = (_param?: string | string[]) => void;
+export type SpeedChangeHandler = (_rate: number) => void;
+export type KeyDownHandler = (_e: KeyboardEvent<HTMLInputElement>) => void;
 
 // ============================================================================
 // Fill-in-Blanks Mode Strategy
@@ -119,7 +119,7 @@ export interface MultipleChoiceModeProps {
   /** ID of the currently selected choice */
   selectedChoiceId: string | null;
   /** Callback when a choice is selected */
-  onSelectChoice: (choiceId: string) => void;
+  onSelectChoice: (_choiceId: string) => void;
 }
 
 /**
@@ -141,9 +141,9 @@ export interface SentenceReorderModeProps {
   /** Currently ordered token IDs (user's arrangement) */
   orderedTokenIds: string[];
   /** Callback when a token is selected from the pool */
-  onSelectToken: (tokenId: string) => void;
+  onSelectToken: (_tokenId: string) => void;
   /** Callback when a token is deselected (removed from arrangement) */
-  onDeselectToken: (index: number) => void;
+  onDeselectToken: (_index: number) => void;
   /** Callback when user skips this definition sentence */
   onSkip?: () => void;
 }
@@ -179,32 +179,32 @@ export interface PracticeCardModeStrategy {
    * Determines if the current state allows submission.
    * Used to enable/disable the submit button.
    */
-  canSubmit?: (props: PracticeCardBaseProps & Record<string, unknown>) => boolean;
+  canSubmit?: (_props: PracticeCardBaseProps & Record<string, unknown>) => boolean;
   /**
    * Renders the mode-specific content area.
    * This replaces the input/input area in the PracticeCard.
    */
-  render: (props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode;
+  render: (_props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode;
   /**
    * Optional: Render mode-specific hints (shown below the content).
    * Return null to use default hints rendering.
    */
-  renderHints?: (props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode | null;
+  renderHints?: (_props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode | null;
   /**
    * Optional: Render mode-specific feedback content.
    * Return null to use default feedback rendering.
    */
-  renderFeedback?: (props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode | null;
+  renderFeedback?: (_props: PracticeCardBaseProps & Record<string, unknown>) => ReactNode | null;
   /**
    * Optional: Get the user's answer as a displayable string.
    * Used for showing "your answer" in feedback.
    */
-  getUserAnswer?: (props: PracticeCardBaseProps & Record<string, unknown>) => string;
+  getUserAnswer?: (_props: PracticeCardBaseProps & Record<string, unknown>) => string;
   /**
    * Optional: Get the correct answer as a displayable string.
    * Used for showing "correct answer" in feedback.
    */
-  getCorrectAnswer?: (props: PracticeCardBaseProps & Record<string, unknown>) => string;
+  getCorrectAnswer?: (_props: PracticeCardBaseProps & Record<string, unknown>) => string;
   /**
    * Optional: Check if the strategy supports Enter key submission.
    * Return false to disable Enter key handling.
@@ -243,8 +243,8 @@ export type StrategyRenderProps<T extends PracticeMode> =
 export type ModeHandlers<T extends PracticeMode> = {
   'fill-in-blanks': { inputChange: InputChangeHandler };
   'dictation': { inputChange: InputChangeHandler };
-  'multiple-choice': { selectChoice: (choiceId: string) => void };
-  'sentence-reorder': { selectToken: (tokenId: string) => void; deselectToken: (index: number) => void };
+  'multiple-choice': { selectChoice: (_choiceId: string) => void };
+  'sentence-reorder': { selectToken: (_tokenId: string) => void; deselectToken: (_index: number) => void };
 }[T];
 
 /**
@@ -257,5 +257,5 @@ export interface PracticeCardStrategyContext {
   /** All available strategies */
   strategies: PracticeCardModeStrategy[];
   /** Switch to a different strategy */
-  setStrategy: (mode: PracticeMode) => void;
+  setStrategy: (_mode: PracticeMode) => void;
 }

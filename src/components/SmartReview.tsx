@@ -18,7 +18,7 @@ import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 
 interface SmartReviewProps {
-  onPracticeReview: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeReview: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBack: () => void;
 }
 

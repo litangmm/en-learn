@@ -78,18 +78,18 @@ interface PracticeCardProps {
   mode?: PracticeMode;
   isFocusMode?: boolean;
   playbackRate?: number;
-  onSpeedChange?: (rate: number) => void;
+  onSpeedChange?: (_rate: number) => void;
   options?: ChoiceOption[];
   selectedChoiceId?: string | null;
-  onSelectChoice?: (choiceId: string) => void;
+  onSelectChoice?: (_choiceId: string) => void;
   sentenceTokens?: SentenceToken[];
   orderedTokenIds?: string[];
-  onSelectToken?: (tokenId: string) => void;
-  onDeselectToken?: (index: number) => void;
+  onSelectToken?: (_tokenId: string) => void;
+  onDeselectToken?: (_index: number) => void;
   /** Callback when user skips definition sentence in sentence-reorder */
   onSkip?: () => void;
-  onInputChange: (index: number, value: string) => void;
-  onCheck: (param?: string | string[]) => void;
+  onInputChange: (_index: number, _value: string) => void;
+  onCheck: (_param?: string | string[]) => void;
   onNext: () => void;
   onRetry: () => void;
   onSpeak: () => void;
@@ -98,7 +98,7 @@ interface PracticeCardProps {
   /** Whether this word is already marked as a personal word */
   isMarked?: boolean;
   /** Callback when user marks/unmarks this word as a personal word */
-  onMark?: (word: string, translation: string, english: string, chinese: string, sentenceId: string) => void;
+  onMark?: (_word: string, _translation: string, _english: string, _chinese: string, _sentenceId: string) => void;
 }
 
 export function PracticeCard({

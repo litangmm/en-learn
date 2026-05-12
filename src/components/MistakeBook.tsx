@@ -18,7 +18,7 @@ import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 
 interface MistakeBookProps {
-  onPracticeMistakes: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeMistakes: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBack: () => void;
 }
 

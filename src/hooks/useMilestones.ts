@@ -38,7 +38,7 @@ export interface UseMilestonesReturn {
   /** Check and unlock milestones based on current totalLearningDays */
   checkAndUnlockMilestones: () => Milestone[];
   /** Manually award a specific milestone */
-  awardMilestone: (milestoneId: string) => Milestone | null;
+  awardMilestone: (_milestoneId: string) => Milestone | null;
 }
 
 /**

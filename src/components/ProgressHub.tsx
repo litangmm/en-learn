@@ -15,7 +15,7 @@ import type { View } from './routing';
 import type { Goal } from '@/data/types';
 
 export interface ProgressHubProps {
-  onNavigate: (view: View) => void;
+  onNavigate: (_view: View) => void;
   /** Goals for progress display (optional, for integration) */
   goals?: Goal[];
 }

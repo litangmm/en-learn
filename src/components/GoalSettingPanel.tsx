@@ -12,8 +12,8 @@ import {
 } from '@/data/types';
 
 interface GoalSettingPanelProps {
-  goals: Goal[];
-  onSave: (goals: Goal[]) => void;
+  goals?: Goal[];
+  onSave: (_goals: Goal[]) => void;
   onBack: () => void;
 }
 
@@ -53,7 +53,7 @@ const WEEKLY_XP_OPTIONS = WEEKLY_XP_PRESETS.map((v) => ({
 interface PresetSelectorProps {
   options: { value: number; label: string }[];
   selected: number;
-  onChange: (value: number) => void;
+  onChange: (_value: number) => void;
   disabled?: boolean;
 }
 
@@ -88,7 +88,7 @@ interface GoalRowProps {
   type: GoalType;
   period: GoalPeriod;
   currentTarget: number;
-  onTargetChange: (newTarget: number) => void;
+  onTargetChange: (_newTarget: number) => void;
   presets: { value: number; label: string }[];
   isCompleted: boolean;
 }
@@ -182,7 +182,7 @@ function GoalRow({
 
 export function GoalSettingPanel({ goals, onSave, onBack }: GoalSettingPanelProps) {
   // Local editable state initialized from props
-  const [editedGoals, setEditedGoals] = useState<Goal[]>(() => [...goals]);
+  const [editedGoals, setEditedGoals] = useState<Goal[]>(() => [...(goals || [])]);
 
   const handleTargetChange = useCallback((goalId: string, newTarget: number) => {
     setEditedGoals((prev) =>

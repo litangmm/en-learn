@@ -5,15 +5,17 @@ import { storage } from '@/services/storage';
  * Navigate to a different view with appropriate state updates.
  */
 export function navigateTo(
-  view: View,
+  _view: View,
   setters: {
-    setView: (view: View) => void;
-    setMistakeCount: (count: number) => void;
-    setHistoryCount: (count: number) => void;
-    setReviewDueCount: (count: number) => void;
-    setIsReviewMode?: (value: boolean) => void;
+    setView: (_view: View) => void;
+    setMistakeCount: (_count: number) => void;
+    setHistoryCount: (_count: number) => void;
+    setReviewDueCount: (_count: number) => void;
+    setIsReviewMode?: (_value: boolean) => void;
   }
 ) {
+  // Use _view to avoid ESLint unused variable warning
+  const view = _view;
   switch (view) {
     case 'practice':
       setters.setView('practice');
@@ -47,9 +49,9 @@ export function navigateTo(
  * Update stat counts after navigation.
  */
 export function refreshStatCounts(setters: {
-  setMistakeCount: (count: number) => void;
-  setHistoryCount: (count: number) => void;
-  setReviewDueCount: (count: number) => void;
+  setMistakeCount: (_count: number) => void;
+  setHistoryCount: (_count: number) => void;
+  setReviewDueCount: (_count: number) => void;
 }) {
   setters.setMistakeCount(storage.getMistakeCount());
   setters.setHistoryCount(storage.getHistoryCount());

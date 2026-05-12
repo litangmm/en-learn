@@ -18,7 +18,7 @@ export interface ProgressTrendProps {
   /** Height of the chart. Defaults to 160. */
   height?: number;
   /** Callback when a day is clicked. */
-  onDayClick?: (date: string) => void;
+  onDayClick?: (_date: string) => void;
 }
 
 /**

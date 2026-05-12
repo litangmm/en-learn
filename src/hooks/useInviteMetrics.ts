@@ -16,7 +16,7 @@ export interface UseInviteMetricsReturn {
   /** Share the invite code (generates new code if needed, updates lastSharedAt) */
   shareInviteCode: () => Promise<string>;
   /** Claim an invite from a friend */
-  claimInvite: (friendCode: string) => Promise<{ success: boolean; message: string; rewardXP?: number }>;
+  claimInvite: (_friendCode: string) => Promise<{ success: boolean; message: string; rewardXP?: number }>;
 }
 
 /**

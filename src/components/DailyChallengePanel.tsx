@@ -6,7 +6,7 @@ import type { DailyChallenge } from '@/data/types';
 
 interface DailyChallengePanelProps {
   challenges: DailyChallenge[];
-  onClaim: (id: string) => void;
+  onClaim: (_id: string) => void;
   onBack: () => void;
 }
 

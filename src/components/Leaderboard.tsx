@@ -9,11 +9,11 @@ import type {
 
 interface LeaderboardProps {
   entries: LeaderboardEntry[];
-  category: LeaderboardCategory;
-  timeFilter: LeaderboardTimeFilter;
+  category?: LeaderboardCategory;
+  timeFilter?: LeaderboardTimeFilter;
   loading?: boolean;
-  onCategoryChange: (category: LeaderboardCategory) => void;
-  onTimeFilterChange: (filter: LeaderboardTimeFilter) => void;
+  onCategoryChange: (_category: LeaderboardCategory) => void;
+  onTimeFilterChange: (_filter: LeaderboardTimeFilter) => void;
   onBack: () => void;
 }
 
@@ -227,7 +227,7 @@ export function Leaderboard({
           <div className="space-y-3">
           {entries.map((entry, idx) => {
             const style = getRankStyle(entry.rank);
-            const valueLabel = CATEGORY_CONFIG[category].label.replace('榜', '');
+            const valueLabel = category ? CATEGORY_CONFIG[category].label.replace('榜', '') : '';
 
             return (
               <motion.div
@@ -263,7 +263,7 @@ export function Leaderboard({
                 {/* Score Value */}
                 <div className="text-right shrink-0">
                   <p className="text-base font-bold text-slate-800">
-                    {formatValue(entry, category)}
+                    {category && formatValue(entry, category)}
                   </p>
                 </div>
               </motion.div>

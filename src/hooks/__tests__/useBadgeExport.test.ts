@@ -3,10 +3,11 @@ import { renderHook, act } from '@testing-library/react';
 import { useBadgeExport, generateBadgeImage, downloadBadgeBlob } from '../useBadgeExport';
 
 // Mock html2canvas - must be at top level
+ 
 vi.mock('html2canvas', () => ({
   default: vi.fn().mockResolvedValue({
-    toBlob: vi.fn((callback: (blob: Blob | null) => void) => {
-      callback(new Blob(['test-image-data'], { type: 'image/png' }));
+    toBlob: vi.fn((_callback: (_blob: Blob | null) => void) => {
+      _callback(new Blob(['test-image-data'], { type: 'image/png' }));
     }),
   }),
 }));
@@ -68,8 +69,8 @@ describe('generateBadgeImage', () => {
     const html2canvas = await import('html2canvas');
     const originalMock = html2canvas.default as ReturnType<typeof vi.fn>;
     originalMock.mockResolvedValue({
-      toBlob: vi.fn((callback: (blob: Blob | null) => void) => {
-        callback(new Blob(['valid-image'], { type: 'image/png' }));
+      toBlob: vi.fn((_callback: (_blob: Blob | null) => void) => {
+        _callback(new Blob(['valid-image'], { type: 'image/png' }));
       }),
     });
 
@@ -87,7 +88,7 @@ describe('generateBadgeImage', () => {
     const html2canvas = await import('html2canvas');
     const originalMock = html2canvas.default as ReturnType<typeof vi.fn>;
     originalMock.mockResolvedValue({
-      toBlob: vi.fn((callback: (blob: Blob | null) => void) => {
+      toBlob: vi.fn((callback: (_blob: Blob | null) => void) => {
         callback(null);
       }),
     });

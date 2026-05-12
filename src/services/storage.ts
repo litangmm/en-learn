@@ -1632,7 +1632,7 @@ export const StorageService = {
     }
   },
 
-  updateBadgeProgress(updater: (prev: BadgeProgress) => Partial<BadgeProgress>): BadgeProgress {
+  updateBadgeProgress(updater: (_prev: BadgeProgress) => Partial<BadgeProgress>): BadgeProgress {
     const current = this.getBadgeProgress();
     const updates = updater(current);
     const updated: BadgeProgress = { ...current, ...updates };
@@ -1729,7 +1729,7 @@ export const StorageService = {
     }
   },
 
-  updateShareMetrics(updater: (prev: ShareMetrics) => Partial<ShareMetrics>): ShareMetrics {
+  updateShareMetrics(updater: (_prev: ShareMetrics) => Partial<ShareMetrics>): ShareMetrics {
     const current = this.getShareMetrics();
     const updates = updater(current);
     const updated: ShareMetrics = { ...current, ...updates };
@@ -1850,7 +1850,7 @@ export const StorageService = {
     return metrics ?? { ...DEFAULT_INVITE_METRICS };
   },
 
-  updateInviteMetrics(updater: (prev: InviteMetrics) => Partial<InviteMetrics>): InviteMetrics {
+  updateInviteMetrics(updater: (_prev: InviteMetrics) => Partial<InviteMetrics>): InviteMetrics {
     const current = this.getInviteMetrics();
     const updates = updater(current);
     const updated: InviteMetrics = { ...current, ...updates };
@@ -2015,7 +2015,7 @@ export const StorageService = {
     }
   },
 
-  updatePersonalDictionary(updater: (prev: PersonalDictionary) => Partial<PersonalDictionary>): PersonalDictionary {
+  updatePersonalDictionary(updater: (_prev: PersonalDictionary) => Partial<PersonalDictionary>): PersonalDictionary {
     const current = this.getPersonalDictionary() ?? { activeSentenceIds: [], lastPracticedAt: null };
     const updates = updater(current);
     const updated: PersonalDictionary = { ...current, ...updates };

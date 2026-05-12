@@ -247,7 +247,6 @@ describe('ViewRouter', () => {
 
     it('returns null for unknown views (default case)', () => {
       const props = createDefaultProps();
-      // @ts-expect-error - testing with invalid view
       const { container } = render(<ViewRouter {...props} view="unknown-view" />);
 
       expect(container.firstChild).toBeNull();

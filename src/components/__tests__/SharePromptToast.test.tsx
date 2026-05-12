@@ -1,3 +1,4 @@
+ 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import { SharePromptToast } from '../SharePromptToast';
@@ -15,7 +16,7 @@ vi.mock('framer-motion', () => ({
 
 // Mock ShareDialog
 vi.mock('@/components/ShareDialog', () => ({
-  ShareDialog: vi.fn(({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
+  ShareDialog: vi.fn(({ open, onOpenChange }) => {
     if (!open) return null;
     return (
       <div data-testid="share-dialog">

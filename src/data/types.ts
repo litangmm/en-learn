@@ -858,19 +858,19 @@ export interface DictionaryIndex {
    * @param id - The sentence ID
    * @returns The sentence text, or undefined if not found
    */
-  getById(id: string): string | undefined;
+  getById(_id: string): string | undefined;
   /**
    * Get sentence IDs containing the given word (case-insensitive).
    * @param word - The word to search for
    * @returns Array of sentence IDs containing the word
    */
-  getByWord(word: string): string[];
+  getByWord(_word: string): string[];
   /**
    * Get all sentence IDs at a given level.
    * @param level - The level to filter by
    * @returns Array of sentence IDs at that level
    */
-  getByLevel(level: string): string[];
+  getByLevel(_level: string): string[];
   /**
    * Get index statistics.
    * @returns IndexStats object with index metrics
@@ -912,19 +912,19 @@ export interface PersonalWordIndex {
    * @param word - The word to check (case-insensitive)
    * @returns true if the word exists
    */
-  hasWord(word: string): boolean;
+  hasWord(_word: string): boolean;
   /**
    * Get a personal word entry by exact word match.
    * @param word - The word to search (case-insensitive)
    * @returns The entry if found, undefined otherwise
    */
-  getByWord(word: string): PersonalWordIndexEntry | undefined;
+  getByWord(_word: string): PersonalWordIndexEntry | undefined;
   /**
    * Get personal word entries by prefix match.
    * @param prefix - The prefix to search (case-insensitive)
    * @returns Array of entries matching the prefix
    */
-  getByPrefix(prefix: string): PersonalWordIndexEntry[];
+  getByPrefix(_prefix: string): PersonalWordIndexEntry[];
 }
 
 // ============================================================================

@@ -37,7 +37,7 @@ export interface UseFatigueRecoveryReturn {
   /** Time remaining in current exercise (seconds) */
   exerciseTimeRemaining: number;
   /** Start a recovery session */
-  startRecovery: (option: RecoveryOption) => void;
+  startRecovery: (_option: RecoveryOption) => void;
   /** Skip recovery and continue */
   skipRecovery: () => void;
   /** Complete the recovery session */

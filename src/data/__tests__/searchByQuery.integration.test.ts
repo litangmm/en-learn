@@ -1,3 +1,4 @@
+ 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { buildDictionaryIndex, searchByQuery } from '../dictionaryIndex';
 import type { Sentence } from '../types';
@@ -44,7 +45,8 @@ describe('searchByQuery integration with dictionary index', () => {
 
   describe('Index lookup integration', () => {
     let sentences: Sentence[];
-    let getByWord: (word: string) => string[];
+     
+    let getByWord: (_word: string) => string[];
 
     beforeEach(() => {
       sentences = [
@@ -79,7 +81,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      getByWord = (word: string) => index.getByWord(word);
+      getByWord = (_word: string) => index.getByWord(_word);
     });
 
     it('uses index for single word lookup', () => {
@@ -124,7 +126,7 @@ describe('searchByQuery integration with dictionary index', () => {
 
       const index = buildDictionaryIndex(sentences);
       // 'xyzzy' not in index, should fall back to scanning
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       const result = searchByQuery('xyzzy', sentences, getByWord);
       // No match in any text field
@@ -143,7 +145,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // 'brown' is in the sentence text
       const result = searchByQuery('brown', sentences, getByWord);
@@ -170,7 +172,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // 'quick' in s1, 'green' in s2 → no intersection
       const result = searchByQuery('quick green', sentences, getByWord);
@@ -182,7 +184,7 @@ describe('searchByQuery integration with dictionary index', () => {
     it('maintains O(1) lookup for single word search on large dataset', () => {
       const sentences = createLargeDataset(1000);
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       const startTime = performance.now();
       const result = searchByQuery('apple', sentences, getByWord);
@@ -196,7 +198,7 @@ describe('searchByQuery integration with dictionary index', () => {
     it('maintains O(1) lookup for multi-token search on large dataset', () => {
       const sentences = createLargeDataset(1000);
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       const startTime = performance.now();
       const result = searchByQuery('the example', sentences, getByWord);
@@ -210,7 +212,7 @@ describe('searchByQuery integration with dictionary index', () => {
     it('index lookup is consistent across multiple calls', () => {
       const sentences = createLargeDataset(100);
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       const results1 = searchByQuery('apple', sentences, getByWord);
       const results2 = searchByQuery('apple', sentences, getByWord);
@@ -224,7 +226,7 @@ describe('searchByQuery integration with dictionary index', () => {
   describe('Edge cases with index', () => {
     it('handles empty index (no sentences)', () => {
       const index = buildDictionaryIndex([]);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       const result = searchByQuery('hello', [], getByWord);
       expect(result).toHaveLength(0);
@@ -242,7 +244,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // 'blanks' is in the english text
       const result = searchByQuery('blanks', sentences, getByWord);
@@ -266,7 +268,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // Each blank word is indexed
       expect(searchByQuery('quick', sentences, getByWord)).toHaveLength(1);
@@ -290,7 +292,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // All case variations should find the sentence
       expect(searchByQuery('hello', sentences, getByWord)).toHaveLength(1);
@@ -310,7 +312,7 @@ describe('searchByQuery integration with dictionary index', () => {
       ];
 
       const index = buildDictionaryIndex(sentences);
-      const getByWord = (word: string) => index.getByWord(word);
+      const getByWord = (_word: string) => index.getByWord(_word);
 
       // Index strips non-alphanumeric for lookup
       const result = searchByQuery("isn't", sentences, getByWord);

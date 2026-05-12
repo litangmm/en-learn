@@ -12,7 +12,7 @@ export interface LongTermMilestoneCardProps {
   /** Progress percentage to next milestone (0-100), -1 if all unlocked */
   milestoneProgress: number;
   /** Callback when clicking an unlocked milestone badge */
-  onMilestoneClick?: (milestone: MilestoneDefinition) => void;
+  onMilestoneClick?: (_milestone: MilestoneDefinition) => void;
   /** Callback when clicking the progress area */
   onProgressClick?: () => void;
 }

@@ -4,16 +4,16 @@ import type { View } from './ViewRouter';
 export type { View } from './ViewRouter';
 
 export interface NavigationContextValue {
-  currentView: View;
-  handleNavigate: (view: View) => void;
+  currentView?: View;
+  handleNavigate: (_view: View) => void;
 }
 
 const NavigationContext = createContext<NavigationContextValue | null>(null);
 export { NavigationContext };
 
 export interface NavigationProviderProps {
-  view: View;
-  onNavigate: (view: View) => void;
+  view?: View;
+  onNavigate: (_view: View) => void;
   children: ReactNode;
 }
 

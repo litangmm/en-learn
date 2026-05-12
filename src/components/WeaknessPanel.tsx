@@ -21,7 +21,7 @@ import { useWeaknessStats } from '@/hooks/useWeaknessStats';
 import { WeaknessTag } from './WeaknessTag';
 
 interface WeaknessPanelProps {
-  onPracticeWeaknesses: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeWeaknesses: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBack: () => void;
   /** If provided, only show weaknesses for this dictionary */
   dictionaryId?: string;

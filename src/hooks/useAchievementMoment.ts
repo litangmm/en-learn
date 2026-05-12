@@ -28,17 +28,17 @@ interface UseAchievementMomentReturn {
   /** Acknowledge and clear the current moment */
   acknowledgeMoment: () => void;
   /** Check for level-up achievement */
-  checkLevelUp: (oldLevel: number, newLevel: number) => AchievementMoment | null;
+  checkLevelUp: (_oldLevel: number, _newLevel: number) => AchievementMoment | null;
   /** Check for badge unlock achievement */
-  checkBadgeUnlock: (badge: BadgeDefinition) => AchievementMoment | null;
+  checkBadgeUnlock: (_badge: BadgeDefinition) => AchievementMoment | null;
   /** Check for streak milestone achievement */
-  checkStreakMilestone: (streak: number) => AchievementMoment | null;
+  checkStreakMilestone: (_streak: number) => AchievementMoment | null;
   /** Check for XP milestone achievement */
-  checkXPMilestone: (totalXP: number, totalCorrect: number, accuracy: number) => AchievementMoment | null;
+  checkXPMilestone: (_totalXP: number, _totalCorrect: number, _accuracy: number) => AchievementMoment | null;
   /** Check for perfect session achievement */
-  checkPerfectSession: (score: number, totalQuestions: number, streak: number) => AchievementMoment | null;
+  checkPerfectSession: (_score: number, _totalQuestions: number, _streak: number) => AchievementMoment | null;
   /** Set current moment (used by App.tsx) */
-  setCurrentMoment: (moment: AchievementMoment | null) => void;
+  setCurrentMoment: (_moment: AchievementMoment | null) => void;
 }
 
 /**
@@ -89,10 +89,10 @@ export function useAchievementMoment(): UseAchievementMomentReturn {
    * Check for level-up achievement
    */
   const checkLevelUp = useCallback((
-    oldLevel: number,
+    _oldLevel: number,
     newLevel: number
   ): AchievementMoment | null => {
-    if (newLevel <= oldLevel) return null;
+    if (newLevel <= _oldLevel) return null;
 
     const momentId = `levelup-${newLevel}`;
     if (isMomentShown(momentId)) return null;

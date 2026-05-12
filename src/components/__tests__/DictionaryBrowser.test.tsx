@@ -745,7 +745,7 @@ describe('DictionaryBrowser', () => {
   describe('Loading state', () => {
     it('shows loading indicator while fetching', async () => {
       // Set up a delayed mock
-      let resolveLoad: (value: Sentence[]) => void;
+      let resolveLoad: (_value: Sentence[]) => void;
       loadDictionaryMock.mockImplementationOnce(
         () =>
           new Promise(resolve => {

@@ -3,7 +3,7 @@ import type { View } from './routing';
 
 interface MobileNavProps {
   currentView: View;
-  onNavigate: (view: View) => void;
+  onNavigate: (_view: View) => void;
   mistakeCount?: number;
   historyCount?: number;
   reviewDueCount?: number;

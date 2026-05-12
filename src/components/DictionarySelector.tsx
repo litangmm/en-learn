@@ -11,8 +11,8 @@ import { PERSONAL_DICTIONARY_ID } from '@/data/types';
 import { storage } from '@/services/storage';
 
 interface DictionarySelectorProps {
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange: (_value: string) => void;
   disabled?: boolean;
 }
 

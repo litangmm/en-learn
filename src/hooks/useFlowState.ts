@@ -56,9 +56,9 @@ export interface UseFlowStateReturn {
   /** List of active fatigue signals with descriptions */
   fatigueSignals: FatigueSignal[];
   /** Record a correct answer (optionally with answer time) */
-  recordCorrect: (answerTimeMs?: number) => void;
+  recordCorrect: (_answerTimeMs?: number) => void;
   /** Record a wrong answer (optionally with answer time) */
-  recordWrong: (answerTimeMs?: number) => void;
+  recordWrong: (_answerTimeMs?: number) => void;
   /** Reset all flow state (call at session start) */
   reset: () => void;
   /** Current consecutive error count */

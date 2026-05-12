@@ -6,7 +6,7 @@ import { useBadges } from '@/hooks/useBadges';
 import type { View } from './routing';
 
 interface LearningProfileProps {
-  onNavigate: (view: View) => void;
+  onNavigate: (_view: View) => void;
   onBack: () => void;
 }
 

@@ -45,7 +45,7 @@ describe('BadgePanel', () => {
     vi.clearAllMocks();
   });
 
-  function renderBadgePanel(props?: { unlockedIds?: Set<string>; getProgress?: (id: string) => number }) {
+  function renderBadgePanel(props?: { unlockedIds?: Set<string>; getProgress?: (_id: string) => number }) {
     const unlockedIds = props?.unlockedIds ?? new Set<string>();
     const getProgress = props?.getProgress ?? (() => 0);
     return render(<BadgePanel unlockedIds={unlockedIds} getProgress={getProgress} onBack={mockOnBack} />);
@@ -85,7 +85,7 @@ describe('BadgePanel', () => {
   });
 
   it('progress bar width matches getProgress return value', () => {
-    renderBadgePanel({ getProgress: (id: string) => (id === 'correct-10' ? 65 : 0) });
+    renderBadgePanel({ getProgress: (_id: string) => (_id === 'correct-10' ? 65 : 0) });
 
     const progressBar = screen.getByTestId('progress-bar-correct-10');
     expect(progressBar).toHaveStyle('width: 65%');

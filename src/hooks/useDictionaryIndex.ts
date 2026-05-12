@@ -29,19 +29,19 @@ export interface UseDictionaryIndexReturn {
    * @param id - The sentence ID
    * @returns The sentence text, or undefined if not found
    */
-  getById: (id: string) => string | undefined;
+  getById: (_id: string) => string | undefined;
   /**
    * Get sentence IDs containing the given word (case-insensitive) from current index.
    * @param word - The word to search for
    * @returns Array of sentence IDs containing the word
    */
-  getByWord: (word: string) => string[];
+  getByWord: (_word: string) => string[];
   /**
    * Get all sentence IDs at a given level from current index.
    * @param level - The level to filter by
    * @returns Array of sentence IDs at that level
    */
-  getByLevel: (level: string) => string[];
+  getByLevel: (_level: string) => string[];
   /**
    * Get statistics about the current index.
    * @returns IndexStats object with index metrics
@@ -60,13 +60,13 @@ export interface UseDictionaryIndexReturn {
    * @param id - The dictionary ID to load
    * @returns Promise that resolves when dictionary is loaded and indexed
    */
-  loadDictionary: (id: string) => Promise<void>;
+  loadDictionary: (_id: string) => Promise<void>;
   /**
    * Switch to a previously loaded dictionary without reloading.
    * If the dictionary is not loaded, does nothing.
    * @param id - The dictionary ID to switch to
    */
-  switchDictionary: (id: string) => void;
+  switchDictionary: (_id: string) => void;
   /**
    * Get list of all currently loaded dictionary IDs.
    * @returns Array of dictionary IDs that have been loaded
@@ -76,7 +76,7 @@ export interface UseDictionaryIndexReturn {
    * Unload a specific dictionary from memory, removing its index.
    * @param id - The dictionary ID to unload
    */
-  unloadDictionary: (id: string) => void;
+  unloadDictionary: (_id: string) => void;
   /**
    * Clear all cached dictionaries and indices.
    */

@@ -34,7 +34,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
 interface BadgePanelProps {
   unlockedIds: Set<string>;
   unlockedAtMap?: Map<string, number>; // badge id -> unlocked timestamp
-  getProgress: (id: string) => number;
+  getProgress: (_id: string) => number;
   onBack: () => void;
 }
 

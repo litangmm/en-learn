@@ -8,7 +8,7 @@ export interface DictionaryProgressOverviewProps {
   /** Array of dictionary progress data */
   progress: DictionaryProgress[];
   /** Optional click handler for viewing dictionary details */
-  onDictionaryClick?: (dictionaryId: string) => void;
+  onDictionaryClick?: (_dictionaryId: string) => void;
 }
 
 /**
@@ -19,7 +19,7 @@ function DictionaryProgressItem({
   onClick,
 }: {
   progress: DictionaryProgress;
-  onClick?: (id: string) => void;
+  onClick?: (_id: string) => void;
 }) {
   const isStarted = progress.practicedSentences > 0;
   const isCompleted = progress.progress >= 100;

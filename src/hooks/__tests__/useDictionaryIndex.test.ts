@@ -120,8 +120,9 @@ describe('useDictionaryIndex', () => {
     expect(vi.mocked(loadDictionary)).toHaveBeenCalledWith('cet6');
   });
 
+   
   it('loadDictionary sets loading state while fetching', async () => {
-    let resolveLoad: (value: typeof mockSentences) => void;
+    let resolveLoad: (_value: typeof mockSentences) => void;
     vi.mocked(loadDictionary).mockImplementation(
       () => new Promise((resolve) => {
         resolveLoad = resolve;
@@ -579,7 +580,7 @@ describe('useDictionaryIndex', () => {
   });
 
   it('loadDictionary resets loading state on error', async () => {
-    let rejectLoad: (error: Error) => void;
+    let rejectLoad: (_error: Error) => void;
     vi.mocked(loadDictionary).mockImplementation(
       () => new Promise((_, reject) => {
         rejectLoad = reject;

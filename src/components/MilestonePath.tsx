@@ -8,7 +8,7 @@ export interface MilestonePathProps {
   /** List of unlocked milestones */
   unlockedMilestones: Milestone[];
   /** Callback when clicking a milestone node */
-  onMilestoneClick?: (milestone: MilestoneDefinition) => void;
+  onMilestoneClick?: (_milestone: MilestoneDefinition) => void;
 }
 
 /**

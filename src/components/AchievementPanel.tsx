@@ -53,7 +53,7 @@ function getConditionLabel(conditionType: string, conditionValue: number): strin
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 function getConditionTips(conditionType: string, _conditionValue: number): string[] {
   switch (conditionType) {
     case 'total_answered':

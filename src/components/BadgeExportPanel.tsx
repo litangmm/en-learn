@@ -34,7 +34,7 @@ interface BadgeExportPanelProps {
   onClose: () => void;
   badges: BadgeDefinition[];
   unlockedIds: Set<string>;
-  onExport: (ref: HTMLElement | null) => void;
+  onExport: (_ref: HTMLElement | null) => void;
   isExporting: boolean;
 }
 

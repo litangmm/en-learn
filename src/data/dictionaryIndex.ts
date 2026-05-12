@@ -237,17 +237,18 @@ function isEnglishToken(token: string): boolean {
  * @param getByWord - Function to get sentence IDs containing a word (from index)
  * @returns Array of Sentence objects matching ALL tokens in the query
  */
+ 
 export function searchByQuery(
   query: string,
   sentences: Sentence[],
-  getByWord: (word: string) => string[]
+  getByWord: (_word: string) => string[]
 ): Sentence[] {
-  const trimmed = query.trim();
-  if (!trimmed) {
+  const _trimmed = query.trim();
+  if (!_trimmed) {
     return sentences;
   }
 
-  const tokens = trimmed.split(/\s+/).filter(t => t.length > 0);
+  const tokens = _trimmed.split(/\s+/).filter(t => t.length > 0);
   if (tokens.length === 0) {
     return sentences;
   }
@@ -334,6 +335,6 @@ export function searchByQuery(
  * @param index - The dictionary index to search in
  * @returns Array of sentence IDs containing the word
  */
-export function getSentenceIdsByWord(word: string, index: DictionaryIndex): string[] {
-  return index.getByWord(word);
+export function getSentenceIdsByWord(_word: string, index: DictionaryIndex): string[] {
+  return index.getByWord(_word);
 }

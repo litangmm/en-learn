@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 interface FocusModeOverlayProps {
   isOpen: boolean;
   onClose: () => void;
-  onComplete: (stats: FocusSessionStats) => void;
+  onComplete: (_stats: FocusSessionStats) => void;
   practiceComponent: React.ReactNode;
   totalQuestions: number;
   currentQuestion?: number;

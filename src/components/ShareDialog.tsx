@@ -19,9 +19,11 @@ import { ShareCard } from './ShareCard';
  */
 export interface ShareDialogProps {
   /** Whether the dialog is open */
-  open: boolean;
+  /* eslint-disable no-unused-vars */
+  open?: boolean;
   /** Handler for dialog open state changes */
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
+  /* eslint-enable no-unused-vars */
   /** Optional session result data to display */
   sessionResult?: SessionResult;
   /** Trigger type for share tracking */
@@ -32,12 +34,7 @@ export interface ShareDialogProps {
  * Dialog component that wraps ShareCard with share action buttons.
  * Allows users to view their session summary and share it.
  */
-export function ShareDialog({
-  open,
-  onOpenChange,
-  sessionResult,
-  triggerType = 'result-modal',
-}: ShareDialogProps) {
+export function ShareDialog({ open, onOpenChange, sessionResult, triggerType = 'result-modal' }: ShareDialogProps) {
   // Aggregate data from various hooks for the share card
   const shareCardData = useShareCardData(sessionResult);
 

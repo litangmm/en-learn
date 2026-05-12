@@ -1,4 +1,10 @@
-import type { LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter, DailyChallenge, Goal } from '@/data/types';
+import type {
+  Goal,
+  DailyChallenge,
+  LeaderboardEntry,
+  LeaderboardCategory,
+  LeaderboardTimeFilter,
+} from '@/data/types';
 import { MistakeBook } from '@/components/MistakeBook';
 import { HistoryView } from '@/components/HistoryView';
 import { DataManager } from '@/components/DataManager';
@@ -32,46 +38,46 @@ export type View =
   | 'goals';
 
 export interface ViewRouterProps {
-  view: View;
+  view: unknown;
   // ProgressHub
-  onNavigate: (view: View) => void;
+  onNavigate: (_view: View) => void;
   // LearningProfile
   onBackFromProfile?: () => void;
   // MistakeBook
-  onPracticeMistakes: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeMistakes: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBackFromMistakeBook: () => void;
   // HistoryView
   onBackFromHistory: () => void;
   // DataManager
   onBackFromDataManager: () => void;
-  onNavigateDataManager: (view: View) => void;
+  onNavigateDataManager: (_view: View) => void;
   // SmartReview
-  onPracticeReview: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeReview: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBackFromSmartReview: () => void;
   // WeaknessPanel
-  onPracticeWeaknesses: (sentenceIds: string[], dictionaryId: string) => void;
+  onPracticeWeaknesses: (_sentenceIds: string[], _dictionaryId: string) => void;
   onBackFromWeakness: () => void;
   // LearningEfficiencyPanel
   onBackFromEfficiency?: () => void;
   // DailyChallengePanel
   challenges: DailyChallenge[];
-  onClaimReward: (id: string) => void;
+  onClaimReward: (_id: string) => void;
   onBackFromChallenges: () => void;
   // BadgePanel
   unlockedBadgeIds: Set<string>;
-  getBadgeProgress: (id: string) => number;
+  getBadgeProgress: (_id: string) => number;
   onBackFromBadges: () => void;
   // Leaderboard
   leaderboardEntries: LeaderboardEntry[];
   leaderboardCategory: LeaderboardCategory;
   leaderboardTimeFilter: LeaderboardTimeFilter;
-  onLeaderboardCategoryChange: (category: LeaderboardCategory) => void;
-  onLeaderboardTimeFilterChange: (filter: LeaderboardTimeFilter) => void;
+  onLeaderboardCategoryChange: (_category: LeaderboardCategory) => void;
+  onLeaderboardTimeFilterChange: (_filter: LeaderboardTimeFilter) => void;
   onBackFromLeaderboard: () => void;
   onBackFromInvite?: () => void;
   // GoalSettingPanel
-  goals: Goal[];
-  onSaveGoals: (goals: Goal[]) => void;
+  goals?: Goal[];
+  onSaveGoals: (_goals: Goal[]) => void;
   onBackFromGoals: () => void;
 }
 

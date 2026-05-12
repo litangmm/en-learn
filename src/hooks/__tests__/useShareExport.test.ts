@@ -1,3 +1,4 @@
+ 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useShareExport, generateShareText, copyToClipboard, downloadBlob } from '../useShareExport';
@@ -360,10 +361,10 @@ describe('useShareExport', () => {
 
       expect(downloadResult).toBe(false);
 
-      // Restore the mock - eslint-disable for test mock compatibility
+      // Restore the mock
       originalMock.mockResolvedValue({
-        toBlob: vi.fn((_cb: (blob: Blob | null) => void) => {
-          void _cb; // Explicitly unused
+        toBlob: vi.fn((_cb: (_: Blob | null) => void) => {
+          void _cb;
         }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -373,8 +374,8 @@ describe('useShareExport', () => {
       const html2canvas = await import('html2canvas');
       const originalMock = vi.mocked(html2canvas.default);
       originalMock.mockResolvedValue({
-        toBlob: vi.fn((cb: (blob: Blob | null) => void) => {
-          cb(null);
+        toBlob: vi.fn((_cb: (_: Blob | null) => void) => {
+          _cb(null);
         }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -390,10 +391,10 @@ describe('useShareExport', () => {
 
       expect(downloadResult).toBe(false);
 
-      // Restore the mock - eslint-disable for test mock compatibility
+      // Restore the mock
       originalMock.mockResolvedValue({
-        toBlob: vi.fn((_cb: (blob: Blob | null) => void) => {
-          void _cb; // Explicitly unused
+        toBlob: vi.fn((_cb: (_: Blob | null) => void) => {
+          void _cb;
         }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);

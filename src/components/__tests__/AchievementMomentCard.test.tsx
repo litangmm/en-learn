@@ -1,3 +1,4 @@
+ 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { AchievementMomentCard } from '../AchievementMomentCard';
@@ -5,11 +6,7 @@ import type { AchievementMoment } from '@/data/types';
 
 // Mock ShareDialog component
 vi.mock('../ShareDialog', () => ({
-  ShareDialog: vi.fn(({ open, onOpenChange, triggerType }: {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    triggerType?: string;
-  }) => (
+  ShareDialog: vi.fn(({ open, onOpenChange, triggerType }) => (
     open ? (
       <div data-testid="share-dialog" data-trigger-type={triggerType}>
         <button data-testid="dialog-close" onClick={() => onOpenChange(false)}>

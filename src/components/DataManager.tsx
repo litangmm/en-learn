@@ -29,7 +29,7 @@ import type { View } from '@/components/routing/ViewRouter';
 
 interface DataManagerProps {
   onBack: () => void;
-  onNavigate?: (view: View) => void;
+  onNavigate?: (_view: View) => void;
 }
 
 type ImportStatus =

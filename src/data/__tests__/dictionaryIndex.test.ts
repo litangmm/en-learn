@@ -1,3 +1,4 @@
+ 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { splitIntoWords, buildDictionaryIndex, getSentenceIdsByWord, searchByQuery } from '../dictionaryIndex';
 import type { Sentence } from '../types';
@@ -469,7 +470,8 @@ describe('dictionaryIndex', () => {
   describe('searchByQuery', () => {
     let sentences: Sentence[];
     let index: ReturnType<typeof buildDictionaryIndex>;
-    let getByWord: (word: string) => string[];
+     
+    let getByWord: (_word: string) => string[];
 
     beforeEach(() => {
       sentences = [
@@ -503,16 +505,16 @@ describe('dictionaryIndex', () => {
         },
       ];
       index = buildDictionaryIndex(sentences);
-      getByWord = (word: string) => index.getByWord(word);
+      getByWord = (_word: string) => index.getByWord(_word);
     });
 
     it('returns all sentences for empty query', () => {
-      const result = searchByQuery('', sentences, getByWord);
+      const result = searchByQuery('', sentences, (word) => index.getByWord(word));
       expect(result).toHaveLength(4);
     });
 
     it('returns all sentences for whitespace-only query', () => {
-      const result = searchByQuery('   ', sentences, getByWord);
+      const result = searchByQuery('   ', sentences, (word) => index.getByWord(word));
       expect(result).toHaveLength(4);
     });
 

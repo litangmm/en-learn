@@ -926,3 +926,68 @@ export interface PersonalWordIndex {
    */
   getByPrefix(prefix: string): PersonalWordIndexEntry[];
 }
+
+// ============================================================================
+// Churn Signal Types (epic-058)
+// ============================================================================
+
+/**
+ * Types of churn signals that indicate user disengagement.
+ * Each signal type tracks a specific pattern of declining engagement.
+ */
+export type SignalType =
+  | 'goal_slack'       // User is behind on daily/weekly goals
+  | 'accuracy_drop'    // Accuracy trending downward over recent sessions
+  | 'streak_broken'    // Review streak was broken or about to break
+  | 'review_backlog'   // Too many overdue items in spaced repetition queue
+  | 'session_gap';     // Too long since last practice session
+
+/**
+ * Severity level for a churn signal.
+ * Determines how urgently the system should respond.
+ */
+export type SignalSeverity = 'medium' | 'high' | 'critical';
+
+/**
+ * Risk level for user churn based on aggregated signals.
+ * Used to determine intervention urgency.
+ */
+export type ChurnRiskLevel = 'low' | 'medium' | 'high' | 'critical';
+
+/**
+ * A single churn signal detected for a user.
+ * Contains metadata about the signal type, severity, and context.
+ */
+export interface ChurnSignal {
+  /** Unique identifier for this signal instance */
+  id: string;
+  /** The type of signal detected */
+  type: SignalType;
+  /** Severity level of the signal */
+  severity: SignalSeverity;
+  /** Human-readable description of the signal */
+  description: string;
+  /** Numerical value for context (e.g., days since session, overdue count) */
+  value: number;
+  /** Threshold that triggered this signal */
+  threshold: number;
+  /** Timestamp when this signal was generated */
+  detectedAt: number;
+}
+
+/**
+ * Aggregated churn assessment for a user.
+ * Combines all detected signals into an overall risk level and recommendation.
+ */
+export interface ChurnAssessment {
+  /** Overall churn risk level */
+  riskLevel: ChurnRiskLevel;
+  /** All signals detected for this assessment */
+  signals: ChurnSignal[];
+  /** Top 2 risk factors for display (sorted by severity) */
+  topRiskFactors: ChurnSignal[];
+  /** Timestamp when this assessment was generated */
+  assessedAt: number;
+  /** Recommendation action based on risk level */
+  recommendedAction?: string;
+}

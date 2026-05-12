@@ -41,6 +41,8 @@ import { useGoalCompletionNotifier } from '@/hooks/useGoalCompletionNotifier';
 import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { useWeeklyReport } from '@/hooks/useWeeklyReport';
+import { useChurnSignals } from '@/hooks/useChurnSignals';
+import { ChurnAlertBanner } from '@/components/ChurnAlertBanner';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -167,8 +169,18 @@ function App() {
   const currentStreak = streakData.currentStreak;
   const { status: recallStatus, dueCount: recallDueCount, dismiss: dismissRecall } = useRecallReminder();
   const { hintLevel, shouldShowHint } = useHintLevel();
-  const { state: goalsState, updateGoals, trackProgressRef, dailyGoals } = useGoals();
+  const { state: goalsState, updateGoals, trackProgressRef, dailyGoals, weeklyGoals } = useGoals();
   const { completedGoal, triggerKey: goalTriggerKey, dismiss: dismissGoalCompletion } = useGoalCompletionNotifier();
+
+  // Initialize useChurnSignals hook
+  const { riskLevel: churnRiskLevel, topRiskFactors: churnTopRiskFactors } = useChurnSignals({
+    history: storage.getHistory(),
+    overdueCount: storage.getReviewQueueCount(),
+    dailyGoalProgress: dailyGoals.map(g => ({ current: g.current, target: g.target })),
+    weeklyGoalProgress: weeklyGoals.map(g => ({ current: g.current, target: g.target })),
+    lastReviewDate: streakData.lastReviewDate,
+    currentStreak: streakData.currentStreak,
+  });
 
   // Helper: get daily questions goal progress for XPBar
   const dailyQuestionsGoal = dailyGoals.find(g => g.type === 'questions');
@@ -754,6 +766,14 @@ function App() {
     <div className="min-h-screen bg-slate-50">
       {/* Header - hidden in focus mode */}
       {!(isFocusMode && view === 'practice' && !state.isComplete) && (
+      <>
+        {/* Churn Alert Banner */}
+        <ChurnAlertBanner
+          riskLevel={churnRiskLevel}
+          topRiskFactors={churnTopRiskFactors}
+          onDismiss={() => {}}
+          onEngage={handleRestart}
+        />
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Brand area - prevent compression with min-w-0 and flex-shrink-0 */}
@@ -899,6 +919,7 @@ function App() {
           </div>
         </div>
       </header>
+      </>
       )}
 
       {/* Focus Mode Floating Bar */}

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { DictionaryIndex, IndexStats, Sentence } from '@/data/types';
 import { buildDictionaryIndex } from '@/data/dictionaryIndex';
-import { getCachedDictionary, clearDictionaryCache } from '@/data/dictionaryCache';
+import { getCachedDictionary, clearDictionaryCache, removeDictionaryFromCache } from '@/data/dictionaryCache';
 import { loadDictionary as loadDictionaryData } from '@/data/loader';
 
 interface DictionaryIndexState {
@@ -218,9 +218,13 @@ export function useDictionaryIndex(): UseDictionaryIndexReturn {
   }, [state.indices]);
 
   /**
-   * Unload a specific dictionary from memory, removing its index.
+   * Unload a specific dictionary from memory, removing its index and cache entry.
+   * This ensures cache/index consistency when unloading.
    */
   const unloadDictionary = useCallback((id: string): void => {
+    // Also remove from cache to ensure consistency
+    removeDictionaryFromCache(id);
+
     setState((prev) => {
       const newIndices = new Map(prev.indices);
       newIndices.delete(id);

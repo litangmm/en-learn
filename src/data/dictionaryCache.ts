@@ -84,6 +84,14 @@ export function prefetchDictionary(id: string): void {
 }
 
 /**
+ * Removes a specific dictionary from the cache.
+ * Used when unloading a dictionary to ensure cache/index consistency.
+ */
+export function removeDictionaryFromCache(id: string): void {
+  cache.delete(id);
+}
+
+/**
  * Clears all entries from the dictionary cache.
  */
 export function clearDictionaryCache(): void {

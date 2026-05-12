@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { getCachedDictionary, prefetchDictionary, clearDictionaryCache } from '../dictionaryCache';
+import { getCachedDictionary, prefetchDictionary, clearDictionaryCache, removeDictionaryFromCache } from '../dictionaryCache';
 import { loadDictionary } from '../loader';
 
 // Mock all dictionary modules with fake data
@@ -254,6 +254,72 @@ describe('dictionaryCache', () => {
       // The promise rejects but it's fire-and-forget, so we just verify no sync throw
       expect(() => prefetchDictionary('unknown')).not.toThrow();
       // Note: the fire-and-forget promise will reject, which we accept as expected behavior
+    });
+  });
+
+  describe('removeDictionaryFromCache', () => {
+    it('removes a specific dictionary from cache', async () => {
+      await loadDictionary('junior');
+      await loadDictionary('cet4');
+      await flushMicrotasks();
+
+      expect(getCachedDictionary('junior')).toBeDefined();
+
+      removeDictionaryFromCache('junior');
+
+      expect(getCachedDictionary('junior')).toBeUndefined();
+      expect(getCachedDictionary('cet4')).toBeDefined(); // Other entries remain
+    });
+
+    it('is idempotent - removing non-existent entry does not throw', () => {
+      expect(() => removeDictionaryFromCache('nonexistent')).not.toThrow();
+    });
+
+    it('allows reloading after removal', async () => {
+      await loadDictionary('junior');
+      await flushMicrotasks();
+
+      expect(getCachedDictionary('junior')).toBeDefined();
+
+      removeDictionaryFromCache('junior');
+
+      expect(getCachedDictionary('junior')).toBeUndefined();
+
+      // Can reload after removal
+      await loadDictionary('junior');
+      await flushMicrotasks();
+
+      expect(getCachedDictionary('junior')).toBeDefined();
+    });
+
+    it('clears entry and allows subsequent reload', async () => {
+      // Load 5 to fill cache
+      await loadDictionary('junior');
+      await flushMicrotasks();
+      await loadDictionary('senior');
+      await flushMicrotasks();
+      await loadDictionary('cet4');
+      await flushMicrotasks();
+      await loadDictionary('cet6');
+      await flushMicrotasks();
+      await loadDictionary('ielts');
+      await flushMicrotasks();
+
+      // Cache is now full (junior is LRU)
+      expect(getCachedDictionary('junior')).toBeDefined();
+
+      // Remove junior (LRU)
+      removeDictionaryFromCache('junior');
+
+      // junior should be removed
+      expect(getCachedDictionary('junior')).toBeUndefined();
+
+      // Load a 6th dictionary - junior is gone so it shouldn't be evicted
+      await loadDictionary('toefl');
+      await flushMicrotasks();
+
+      // toefl should be in cache
+      expect(getCachedDictionary('toefl')).toBeDefined();
     });
   });
 });

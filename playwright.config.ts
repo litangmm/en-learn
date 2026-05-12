@@ -23,6 +23,9 @@ export default defineConfig({
   },
   // 60s per test overall timeout
   timeout: 60000,
+  // Visual regression testing configuration
+  screenshotDir: './e2e/baselines',
+  diffDir: './e2e/diffs',
   projects: [
     {
       name: 'chromium',

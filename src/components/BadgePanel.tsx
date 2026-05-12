@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import {
   Award,
   ChevronLeft,
+  Download,
   Footprints,
   CheckCircle2,
   Flame,
@@ -15,7 +16,9 @@ import {
 } from 'lucide-react';
 import { BADGE_DEFINITIONS } from '@/services/storage';
 import { AchievementPanel } from './AchievementPanel';
+import { BadgeExportPanel } from './BadgeExportPanel';
 import type { BadgeDefinition } from '@/data/types';
+import { useBadgeExport } from '@/hooks/useBadgeExport';
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Footprints,
@@ -60,6 +63,8 @@ function BadgeIcon({ name, className }: { name: string; className?: string }) {
 
 export function BadgePanel({ unlockedIds, unlockedAtMap = new Map(), getProgress, onBack }: BadgePanelProps) {
   const [selectedBadge, setSelectedBadge] = useState<BadgeDefinition | null>(null);
+  const [isExportPanelOpen, setIsExportPanelOpen] = useState(false);
+  const { exportAsImage, isExporting } = useBadgeExport();
 
   const grouped = useMemo(() => {
     const map = new Map<string, BadgeDefinition[]>();
@@ -74,6 +79,14 @@ export function BadgePanel({ unlockedIds, unlockedAtMap = new Map(), getProgress
   const categories = Array.from(grouped.keys());
   const total = BADGE_DEFINITIONS.length;
   const unlocked = unlockedIds.size;
+
+  const handleExport = async (ref: HTMLElement | null) => {
+    if (!ref) return;
+    const success = await exportAsImage(ref);
+    if (success) {
+      setIsExportPanelOpen(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -94,9 +107,17 @@ export function BadgePanel({ unlockedIds, unlockedAtMap = new Map(), getProgress
             <Award className="text-amber-500" size={28} />
           </div>
           <h1 className="text-xl md:text-2xl font-bold text-slate-800">成就徽章</h1>
-          <span className="ml-auto inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-700">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-700">
             {unlocked}/{total}
           </span>
+          <button
+            onClick={() => setIsExportPanelOpen(true)}
+            className="ml-auto flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+            data-testid="export-badge-button"
+          >
+            <Download size={16} />
+            <span>导出</span>
+          </button>
         </div>
 
         {/* Categories */}
@@ -182,6 +203,16 @@ export function BadgePanel({ unlockedIds, unlockedAtMap = new Map(), getProgress
             onClose={() => setSelectedBadge(null)}
           />
         )}
+
+        {/* Badge Export Panel */}
+        <BadgeExportPanel
+          isOpen={isExportPanelOpen}
+          onClose={() => setIsExportPanelOpen(false)}
+          badges={BADGE_DEFINITIONS}
+          unlockedIds={unlockedIds}
+          onExport={handleExport}
+          isExporting={isExporting}
+        />
       </div>
     </div>
   );

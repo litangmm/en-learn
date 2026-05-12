@@ -70,6 +70,9 @@ Call log:
           - button:
             - img
             - text: 专注模式
+          - button:
+            - img
+            - text: 沉浸专注
         - generic:
           - generic:
             - generic: 进度
@@ -94,16 +97,12 @@ Call log:
             - generic:
               - generic:
                 - generic:
-                  - paragraph: "\"when you want something done get a doer\""
+                  - paragraph: "\"She gave up her children to her ex-husband when she moved to Tahiti\""
                 - generic:
                   - generic:
-                    - generic: 英文句子
+                    - generic: 中文释义
                 - generic:
-                  - text: a person who acts and gets things done; "he's a principal
-                  - generic:
-                    - textbox:
-                      - /placeholder: "1"
-                  - text: in this affair"
+                  - paragraph: "\"She gave up her children to her ex-husband when she moved to Tahiti\""
             - generic:
               - generic:
                 - button: 提交答案

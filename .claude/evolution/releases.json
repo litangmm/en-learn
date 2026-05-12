@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.52.0",
+      "tag": "v0.52.0",
+      "commit": "4f5ea4f",
+      "date": "2026-05-12T01:08:40.357Z",
+      "iterationId": "iter-003",
+      "title": "邀请好友一起学",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-eg0abubcn-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.51.0",
       "tag": "v0.51.0",
       "commit": "c72a016",

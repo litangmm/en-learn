@@ -1,0 +1,589 @@
+{
+  "version": "1.0",
+  "pending": [],
+  "history": [
+    {
+      "id": "2026-05-12-116",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-002 周报推送机制部署成功。v0.51.0 部署到 Vercel，git tag v0.51.0 已推送。URL: https://en-learn-1e2fpm51u-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-115",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-029 iter-002 周报推送机制测试通过。1244 测试零回归，1 skipped（超时测试），lint 1 warning（pre-existing），tsc build 通过。E2E 跳过（3 iterations pending）。"
+    },
+    {
+      "id": "2026-05-12-114",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片报告完成。v0.50.0 部署成功，1207 测试零回归，经验档案已更新，state.json 已备份。"
+    },
+    {
+      "id": "2026-05-12-113",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片部署成功。v0.50.0 部署到 Vercel，git tag v0.50.0 已推送。URL: https://en-learn-hfwib5i61-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-113",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "Cycle-112 brainstorm 完成。9 个 Agent 提案 9 个 Epic（epic-029~037）。Epic-037「智能学习路径深度个性化引擎」以 high 优先级胜出（EXP 提案，PM-UX/UX 支持）。Epic-029「学习成就社交展示」第二优先（PM-Growth 提案，PM-Lean/UX 支持）。Epic-030/032/033 medium 优先级储备。Epic-031/034/035/036 background task。"
+    },
+    {
+      "id": "2026-05-12-113",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
+    }
+  ],
+  "status": "REPORT",
+  "commit": "9d7c63d",
+  "cycleCount": 115,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentCycle": null,
+  "previousCycle": {
+    "id": "2026-05-12-114",
+    "mode": "vision",
+    "stage": "IMPLEMENT"
+  },
+  "currentEpic": {
+    "id": "epic-029",
+    "title": "学习成就社交展示与留存闭环",
+    "description": "让用户的学习成就在社交媒体传播，形成「学习→成就→展示→社交认同→回流」的正向循环。分享卡片已就绪，重点是让分享内容更有吸引力和传播力。",
+    "proposedBy": "PM-Growth",
+    "supportedBy": [
+      "PM-Lean",
+      "UX"
+    ],
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "成就时刻动态卡片",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-002",
+        "title": "周报推送机制",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-003",
+        "title": "邀请好友一起学",
+        "scope": "frontend-only",
+        "status": "pending"
+      },
+      {
+        "id": "iter-004",
+        "title": "成就徽章墙导出",
+        "scope": "frontend-only",
+        "status": "pending"
+      },
+      {
+        "id": "iter-005",
+        "title": "学习数据可视化",
+        "scope": "frontend-only",
+        "status": "pending"
+      }
+    ],
+    "currentIterationIndex": 3
+  },
+  "plan": null,
+  "brainstormResults": [
+    {
+      "id": "epic-029",
+      "title": "学习成就社交展示与留存闭环",
+      "description": "让用户的学习成就在社交媒体传播，形成「学习→成就→展示→社交认同→回流」的正向循环。分享卡片已就绪，重点是让分享内容更有吸引力和传播力。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-Lean",
+        "UX"
+      ],
+      "concerns": "Web Audio API 引入可能增加 bundle size；社交功能需要真实用户系统支撑",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：成就时刻动态卡片",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：周报推送机制",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：邀请好友一起学",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：成就徽章墙导出",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：学习数据可视化",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-030",
+      "title": "学习心流深度优化与疲劳缓解",
+      "description": "长时间练习时用户会出现疲劳感，当前只有「对/错」反馈，缺少过程性鼓励和节奏控制。需要通过即时微成就、渐进提示、节奏音乐等手段延长学习时长。",
+      "proposedBy": "PM-UX",
+      "supportedBy": [
+        "EXP"
+      ],
+      "concerns": "Web Audio API 可能增加 bundle size；节奏音乐可能干扰学习",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：渐进式难度提示",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：练习节奏音乐",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：中途休息提醒",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：微成就即时反馈",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：自适应休息间隔",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-032",
+      "title": "个人学习数据深度挖掘与洞察",
+      "description": "用户对自己学习状态的了解仅限于表面指标（正确率、连击），缺乏对「学习方法是否有效」的深层洞察。通过遗忘曲线可视化、学习风格诊断、词根词缀分析等手段让用户从「学了很多」到「学得有效」。",
+      "proposedBy": "PM-Lean",
+      "supportedBy": [
+        "PM-Eco",
+        "QA"
+      ],
+      "concerns": "词根词缀分析需要词源数据；学习风格诊断算法需要验证",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：遗忘曲线实时可视化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：学习风格诊断",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：薄弱词根词缀分析",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：学习效率趋势预测",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：个性化学习报告",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-033",
+      "title": "个人词库深度管理与数据主权",
+      "description": "用户积累了个人生词，但缺乏系统性的管理和学习方法。epic-009 词典管理已就绪，Epic-033 是自然延伸，支持分类管理、批量导入导出、复习路线图等。",
+      "proposedBy": "PM-Eco",
+      "supportedBy": [
+        "PM-Lean"
+      ],
+      "concerns": "批量导入格式兼容性维护成本；词库路线图需要重新设计导航",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：个人词库分类管理",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：批量导入与同步",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：词库数据导出",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：词库学习路线图",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：复习优先级智能排序",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-037",
+      "title": "智能学习路径深度个性化引擎",
+      "description": "当前自适应权重（epic-028）已实现，但用户对「为什么推荐我做这些题」缺乏理解。通过学习画像可视化、智能推荐解释、自适应难度曲线、跨模式协同学习、长期预测等手段，提供可解释的个性化学习路径。",
+      "proposedBy": "EXP",
+      "supportedBy": [
+        "PM-UX",
+        "UX"
+      ],
+      "concerns": "跨模式协同学习实现复杂度高；学习风格诊断需要更多用户数据验证",
+      "priority": "high",
+      "estimatedEffort": "large",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：学习画像可视化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：智能推荐解释",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：自适应难度曲线",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：跨模式协同学习",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代5：长期学习预测",
+          "scope": "frontend-only"
+        }
+      ]
+    }
+  ],
+  "discussionSummary": "Epic-029「学习成就社交展示与留存闭环」以 high 优先级被选为下一 Epic（PM-Growth 提案，PM-Lean/UX 支持）。Epic-037「智能学习路径深度个性化引擎」为第二优先备选（EXP 提案，PM-UX/UX 支持）。Epic-030、Epic-032、Epic-033 为 medium 优先级储备。Epic-031、Epic-034、Epic-035、Epic-036 维持 background task 定位。Epic-029 的「成就时刻动态卡片」（iter-1）可复用现有分享卡片数据，符合 MVP 原则，无需新数据存储。",
+  "epicHistory": [
+    {
+      "id": "epic-029",
+      "title": "学习成就社交展示与留存闭环",
+      "status": "in_progress",
+      "iterationsCount": 5,
+      "completedIterations": 2,
+      "versionRange": "v0.50.0-v0.51.0",
+      "createdAt": "2026-05-12T03:20:00.000Z",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-Lean",
+        "UX"
+      ]
+    },
+    {
+      "id": "epic-028",
+      "title": "智能学习路径引擎",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.45.0-v0.49.0",
+      "completedAt": "2026-05-12T11:20:00.000Z"
+    },
+    {
+      "id": "epic-027",
+      "title": "沉浸式多模态练习模式",
+      "status": "completed",
+      "iterationsCount": 5,
+      "completedIterations": 5,
+      "versionRange": "v0.43.0-v0.44.0",
+      "completedAt": "2026-05-11T15:35:00.000Z"
+    },
+    {
+      "id": "epic-018",
+      "title": "学习路径追踪与成就系统整合",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.39.0-v0.42.0",
+      "completedAt": "2026-05-11T08:01:00.000Z"
+    },
+    {
+      "id": "epic-017",
+      "title": "应用配置架构重构与稳定性保障",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.38.0",
+      "completedAt": "2026-05-11T12:50:00.000Z"
+    },
+    {
+      "id": "epic-014",
+      "title": "主练习链路稳定性打磨",
+      "status": "completed",
+      "iterationsCount": 6,
+      "completedIterations": 6,
+      "versionRange": "v0.37.0",
+      "completedAt": "2026-05-11T13:15:00.000Z"
+    },
+    {
+      "id": "epic-009",
+      "title": "个人词典管理与数据主权",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.31.0-v0.36.0",
+      "completedAt": "2026-05-11T04:30:00.000Z"
+    },
+    {
+      "id": "epic-005",
+      "title": "学习成果社交裂变与分享卡片 MVP",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.27.0-v0.30.0",
+      "completedAt": "2026-05-11T02:15:00.000Z"
+    },
+    {
+      "id": "epic-006",
+      "title": "前端架构债务清理与性能基线",
+      "status": "completed",
+      "iterationsCount": 3,
+      "completedIterations": 3,
+      "versionRange": "v0.23.0-v0.25.0",
+      "completedAt": "2026-05-10T19:42:00.000Z"
+    },
+    {
+      "id": "epic-004",
+      "title": "体验优化与响应式适配",
+      "status": "completed",
+      "iterationsCount": 10,
+      "completedIterations": 10,
+      "versionRange": "v0.14.0-v0.26.0",
+      "completedAt": "2026-05-10T15:00:00.000Z"
+    }
+  ],
+  "testResults": {
+    "unitTests": {
+      "passed": 1244,
+      "failed": 0,
+      "skipped": 1,
+      "total": 1245,
+      "duration": "19.26s"
+    },
+    "e2eTests": {
+      "skipped": true,
+      "reason": "epic-029 iter-002 completed, 3 iterations remaining (iter-003~005 pending)"
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 1,
+      "note": "pre-existing react-refresh warning"
+    },
+    "build": {
+      "passed": true,
+      "duration": "3.32s (tsc)"
+    }
+  },
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "implementationStatus": "epic-029 iter-002 周报推送机制已提交。commit 9d7c63d，包含：App.tsx trophy入口 + WeeklyReportCard组件 + useWeeklyReport hook + useProgressStats增强 + 全面测试。1244测试零回归，等待DEPLOY。",
+  "directives": {
+    "version": "1.0",
+    "pending": [],
+    "history": [
+      {
+        "id": "dir-1778414197688",
+        "type": "custom",
+        "target": "epic-004",
+        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
+        "reason": "用户真实完整评测第二轮反馈",
+        "createdAt": "2026-05-10T17:18:00.000Z",
+        "executedAt": "2026-05-10T19:42:00.000Z",
+        "executionNote": "已在 epic-004 iter-006 中执行"
+      },
+      {
+        "id": "dir-1778465917386",
+        "type": "custom",
+        "target": "epic-014",
+        "action": "【用户完整评测反馈 v3】epic-014 主练习链路稳定性打磨",
+        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug",
+        "createdAt": "2026-05-11T02:00:00.000Z",
+        "executedAt": "2026-05-11T06:15:00.000Z",
+        "executionNote": "已执行 8 个问题修复"
+      },
+      {
+        "id": "dir-1778414197689",
+        "type": "custom",
+        "target": "epic-027",
+        "action": "【用户完整评测反馈 v3 补充】epic-027 iter-001 优先修复 3 个核心 bug",
+        "reason": "用户完整评测补充反馈",
+        "createdAt": "2026-05-11T14:24:21.376Z",
+        "executedAt": "2026-05-11T14:59:00.000Z",
+        "executionNote": "已修复 3 个 bug，920 测试零回归"
+      },
+      {
+        "id": "dir-1778520000000",
+        "type": "custom",
+        "target": "epic-027",
+        "action": "【epic-027 收官】专注模式全屏覆盖 iter-005 完成",
+        "reason": "epic-027 全部 5 个迭代完成，生成报告并更新状态",
+        "createdAt": "2026-05-11T15:35:00.000Z",
+        "executedAt": "2026-05-11T15:35:00.000Z",
+        "executionNote": "已生成报告，归档经验，更新状态"
+      },
+      {
+        "id": "dir-1778612000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-001 收官】间隔重复调度引擎部署 v0.45.0",
+        "reason": "iter-001 间隔重复调度引擎完成，deploy 阶段完成",
+        "createdAt": "2026-05-12T00:36:00.000Z",
+        "executedAt": "2026-05-12T00:36:00.000Z",
+        "executionNote": "部署成功，v0.45.0，Vercel，git tag 已推送"
+      },
+      {
+        "id": "dir-1778620000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-002 收官】薄弱点智能识别与标记完成",
+        "reason": "iter-002 薄弱点检测系统完成，1032 测试零回归",
+        "createdAt": "2026-05-12T01:00:00.000Z",
+        "executedAt": "2026-05-12T01:00:00.000Z",
+        "executionNote": "1032 测试零回归，状态已更新为 TEST"
+      },
+      {
+        "id": "dir-1778630000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-003 收官】每日复习计划与提醒系统完成",
+        "reason": "iter-003 每日复习计划完成，1052 测试零回归",
+        "createdAt": "2026-05-12T03:00:00.000Z",
+        "executedAt": "2026-05-12T03:00:00.000Z",
+        "executionNote": "1052 测试零回归，v0.47.0 已部署"
+      },
+      {
+        "id": "dir-1778640000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 iter-004 收官】学习效率数据面板完成",
+        "reason": "iter-004 学习效率数据面板完成，1089 测试零回归",
+        "createdAt": "2026-05-12T10:20:00.000Z",
+        "executedAt": "2026-05-12T10:20:00.000Z",
+        "executionNote": "1089 测试零回归，v0.48.0 已部署"
+      },
+      {
+        "id": "dir-1778650000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 收官】自适应出题权重算法优化 iter-005 完成",
+        "reason": "iter-005 自适应出题权重算法优化完成，1118 测试零回归",
+        "createdAt": "2026-05-12T11:00:00.000Z",
+        "executedAt": "2026-05-12T11:05:00.000Z",
+        "executionNote": "1118 测试零回归，v0.49.0 已提交"
+      },
+      {
+        "id": "dir-1778655000000",
+        "type": "custom",
+        "target": "epic-028",
+        "action": "【epic-028 全部 5 个迭代完成】v0.49.0 收官报告",
+        "reason": "epic-028 全部 5 个迭代完成，生成收官报告，更新经验档案",
+        "createdAt": "2026-05-12T11:20:00.000Z",
+        "executedAt": "2026-05-12T11:20:00.000Z",
+        "executionNote": "已生成报告，归档经验，备份 state.json"
+      },
+      {
+        "id": "dir-20260512112-01",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-112 Brainstorm 完成】epic-029 学习成就社交展示与留存闭环，9个Agent提案5个Epic",
+        "reason": "epic-028 全部 5 个迭代完成后触发全新 brainstorm",
+        "createdAt": "2026-05-12T03:20:00.000Z",
+        "executedAt": "2026-05-12T03:20:00.000Z",
+        "executionNote": "Epic-029 high 优先级被选中，Epic-037 第二优先备选"
+      },
+      {
+        "id": "dir-20260512112-02",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-112 Plan 完成】epic-029 拆分为 5 个迭代，iter-001 成就时刻动态卡片 9 步计划已生成",
+        "reason": "PLAN 阶段完成，epic-029 迭代拆分 + iter-001 计划就绪",
+        "createdAt": "2026-05-12T11:22:00.000Z",
+        "executedAt": "2026-05-12T11:22:00.000Z",
+        "executionNote": "epic-029 iter-001 计划 9 步，5 种成就卡片模板 + useAchievementMoment hook"
+      },
+      {
+        "id": "dir-20260512113-01",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-113 Implement 完成】epic-029 iter-001 成就时刻动态卡片实现完成",
+        "reason": "IMPLEMENT 阶段完成，1207 测试零回归",
+        "createdAt": "2026-05-12T07:05:00.000Z",
+        "executedAt": "2026-05-12T07:05:00.000Z",
+        "executionNote": "AchievementMomentCard + useAchievementMoment + App.tsx集成 + 全面测试"
+      },
+      {
+        "id": "dir-20260512113-02",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-113 Deploy 完成】epic-029 iter-001 成就时刻动态卡片部署 v0.50.0",
+        "reason": "DEPLOY 阶段完成，v0.50.0 已部署到 Vercel",
+        "createdAt": "2026-05-12T11:15:00.000Z",
+        "executedAt": "2026-05-12T11:15:00.000Z",
+        "executionNote": "v0.50.0 部署成功，git tag v0.50.0 已推送"
+      },
+      {
+        "id": "dir-20260512114-01",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-114 Report 完成】epic-029 iter-001 成就时刻动态卡片报告生成，经验档案已更新",
+        "reason": "REPORT 阶段完成，生成报告，归档经验，备份 state.json",
+        "createdAt": "2026-05-12T11:30:00.000Z",
+        "executedAt": "2026-05-12T11:30:00.000Z",
+        "executionNote": "报告已生成，经验档案已更新，state.json 已备份"
+      },
+      {
+        "id": "dir-20260512115-01",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-115 Implement 完成】epic-029 iter-002 周报推送机制实现完成",
+        "reason": "IMPLEMENT 阶段完成，1244 测试零回归",
+        "createdAt": "2026-05-12T12:00:00.000Z",
+        "executedAt": "2026-05-12T12:00:00.000Z",
+        "executionNote": "App.tsx trophy 入口触发周报检查 + App.weekly-report-push.test.tsx 集成测试"
+      },
+      {
+        "id": "dir-20260512115-02",
+        "type": "custom",
+        "target": "epic-029",
+        "action": "【Cycle-115 Test 完成】epic-029 iter-002 周报推送机制测试通过",
+        "reason": "TEST 阶段完成，1244 测试零回归",
+        "createdAt": "2026-05-12T12:05:00.000Z",
+        "executedAt": "2026-05-12T12:05:00.000Z",
+        "executionNote": "1244 测试零回归，1 skipped，lint 1 warning，tsc build 通过"
+      }
+    ]
+  },
+  "deployStatus": {
+    "deployed": true,
+    "target": "vercel",
+    "version": "v0.51.0",
+    "commit": "c72a016",
+    "iterationId": "iter-002",
+    "iterationTitle": "周报推送机制",
+    "deployedAt": "2026-05-12T12:15:00.000Z",
+    "url": "https://en-learn-1e2fpm51u-litangmms-projects.vercel.app"
+  },
+  "pendingDeployment": false,
+  "lastRun": "2026-05-12T12:15:00.000Z"
+}

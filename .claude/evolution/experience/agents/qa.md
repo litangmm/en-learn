@@ -8,6 +8,15 @@
 ## 历史提案
 
 
+### 2026-05-12 (cycle-2026-05-12-117) — epic-029 iter-003 完成 (1298 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
+- **本次验证**: epic-029 iter-003「邀请好友一起学」质量门禁验证
+  - useInviteMetrics 测试：邀请码生成唯一性、INVITE_METRICS_KEY 存储、追踪计数、奖励计算
+  - InviteFriendsPanel 测试：邀请码展示、复制按钮、被邀请人输入、口令展示
+  - App.invite 测试：Trophy 入口导航、InviteFriendsPanel 集成、返回导航
+  - 全量回归：**1298/1298 单元测试通过**（历史最高水位），lint 1 warning（pre-existing react-refresh），build 3.16s 成功
+- **备注**: 1298 测试零回归，约 56 个新增测试（useInviteMetrics ~20 + InviteFriendsPanel ~16 + App 集成 ~20）。邀请码唯一性测试覆盖了字母数字 6 位格式。**epic-029 剩余 iter-004（徽章墙导出）、iter-005（数据可视化），继续关注测试覆盖完整性**
+
 ### 2026-05-12 (cycle-2026-05-12-107) — epic-028 iter-004 完成 (1089 tests, 历史最高水位)
 - **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
 - **本次验证**: epic-028 iter-004「学习效率数据面板」质量门禁验证

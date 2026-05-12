@@ -432,14 +432,15 @@ describe('calculateStreakBrokenSignal', () => {
 // ============================================================================
 
 describe('getChurnRiskLevel', () => {
+  // Use static IDs and detectedAt for deterministic tests
   const createSignal = (severity: 'medium' | 'high' | 'critical'): ChurnSignal => ({
-    id: `signal_${severity}_${Date.now()}`,
+    id: `test_signal_${severity}`,
     type: 'session_gap',
     severity,
     description: 'Test signal',
     value: 1,
     threshold: 1,
-    detectedAt: Date.now(),
+    detectedAt: 0,
   });
 
   describe('Low risk', () => {
@@ -519,7 +520,7 @@ describe('getTopRiskFactors', () => {
     description: `Signal ${id}`,
     value: 1,
     threshold: 1,
-    detectedAt: Date.now(),
+    detectedAt: 0,
   });
 
   describe('Sorting by severity', () => {

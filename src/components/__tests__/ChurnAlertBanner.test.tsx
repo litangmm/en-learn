@@ -48,13 +48,13 @@ vi.mock('framer-motion', () => ({
 
 function createMockSignal(type: ChurnSignal['type'], severity: ChurnSignal['severity']): ChurnSignal {
   return {
-    id: `signal_${type}_${Date.now()}`,
+    id: `test_signal_${type}`,
     type,
     severity,
     description: `Test ${type} signal`,
     value: 1,
     threshold: 1,
-    detectedAt: Date.now(),
+    detectedAt: 0,
   };
 }
 

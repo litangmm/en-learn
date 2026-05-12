@@ -16,6 +16,7 @@ import { dictionaries } from '@/data/dictionaries';
 import { loadDictionary } from '@/data/loader';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { useDictionaryIndex } from '@/hooks/useDictionaryIndex';
+import { searchByQuery } from '@/data/dictionaryIndex';
 import type { Sentence } from '@/data/types';
 
 /** Available difficulty levels for filtering */
@@ -55,7 +56,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
   const { isMarked, toggleMark, getCount } = usePersonalWords();
 
   // Dictionary index management - preload index for fast lookups
-  const { loadDictionary: loadDictionaryIndex } = useDictionaryIndex();
+  const { loadDictionary: loadDictionaryIndex, getByWord } = useDictionaryIndex();
 
   // Clear sessionStorage flag on mount if present
   useEffect(() => {
@@ -127,25 +128,33 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
 
   // Filter sentences based on debounced search query, level filter, and marked status (case-insensitive)
   const filteredSentences = useMemo(() => {
-    let result = sentences;
-
-    // Apply level filter
-    if (levelFilter !== 'all') {
-      result = result.filter(sentence => sentence.level === levelFilter);
-    }
-
-    // Apply search filter (uses debounced value for 300ms delay)
+    // Use indexed search when there's a search query (O(1) word lookup via index)
     if (debouncedSearch.trim()) {
-      const query = debouncedSearch.toLowerCase();
-      result = result.filter(sentence => {
-        const word = sentence.blanks[0]?.word.toLowerCase() || '';
-        const english = sentence.english.toLowerCase();
-        const chinese = sentence.chinese.toLowerCase();
-        return word.includes(query) || english.includes(query) || chinese.includes(query);
-      });
+      // searchByQuery uses the dictionary index for English word lookups (O(1) per word)
+      // Falls back to text scan for Chinese queries and edge cases
+      const searchResults = searchByQuery(debouncedSearch, sentences, getByWord);
+
+      // Apply level filter to search results
+      let result = levelFilter !== 'all'
+        ? searchResults.filter(sentence => sentence.level === levelFilter)
+        : searchResults;
+
+      // Apply marked filter
+      if (showMarkedOnly) {
+        result = result.filter(sentence => {
+          const word = sentence.blanks[0]?.word || '';
+          return isMarked(word);
+        });
+      }
+
+      return result;
     }
 
-    // Apply marked filter
+    // No search query: apply level filter first, then marked filter
+    let result = levelFilter !== 'all'
+      ? sentences.filter(sentence => sentence.level === levelFilter)
+      : sentences;
+
     if (showMarkedOnly) {
       result = result.filter(sentence => {
         const word = sentence.blanks[0]?.word || '';
@@ -154,7 +163,7 @@ export function DictionaryBrowser(props: DictionaryBrowserProps) {
     }
 
     return result;
-  }, [sentences, debouncedSearch, levelFilter, showMarkedOnly, isMarked]);
+  }, [sentences, debouncedSearch, levelFilter, showMarkedOnly, isMarked, getByWord]);
 
   return (
     <div className="flex flex-col h-full">

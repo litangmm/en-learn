@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { splitIntoWords, buildDictionaryIndex, getSentenceIdsByWord } from '../dictionaryIndex';
+import { splitIntoWords, buildDictionaryIndex, getSentenceIdsByWord, searchByQuery } from '../dictionaryIndex';
 import type { Sentence } from '../types';
 
 describe('dictionaryIndex', () => {
@@ -463,6 +463,199 @@ describe('dictionaryIndex', () => {
       expect(theIds).toContain('s1');
       expect(theIds).toContain('s3');
       expect(theIds.length).toBe(2);
+    });
+  });
+
+  describe('searchByQuery', () => {
+    let sentences: Sentence[];
+    let index: ReturnType<typeof buildDictionaryIndex>;
+    let getByWord: (word: string) => string[];
+
+    beforeEach(() => {
+      sentences = [
+        {
+          id: 's1',
+          english: 'hello world',
+          chinese: '你好 世界',
+          blanks: [{ word: 'hello' }],
+          level: 'junior',
+        },
+        {
+          id: 's2',
+          english: 'hello there',
+          chinese: '你好 那里',
+          blanks: [{ word: 'there' }],
+          level: 'senior',
+        },
+        {
+          id: 's3',
+          english: 'good morning',
+          chinese: '早上好',
+          blanks: [{ word: 'morning' }],
+          level: 'cet4',
+        },
+        {
+          id: 's4',
+          english: 'the quick brown fox',
+          chinese: '快速的棕色狐狸',
+          blanks: [{ word: 'quick' }],
+          level: 'cet6',
+        },
+      ];
+      index = buildDictionaryIndex(sentences);
+      getByWord = (word: string) => index.getByWord(word);
+    });
+
+    it('returns all sentences for empty query', () => {
+      const result = searchByQuery('', sentences, getByWord);
+      expect(result).toHaveLength(4);
+    });
+
+    it('returns all sentences for whitespace-only query', () => {
+      const result = searchByQuery('   ', sentences, getByWord);
+      expect(result).toHaveLength(4);
+    });
+
+    it('returns sentences matching single token', () => {
+      const result = searchByQuery('hello', sentences, getByWord);
+      expect(result.map(s => s.id)).toContain('s1');
+      expect(result.map(s => s.id)).toContain('s2');
+      expect(result).toHaveLength(2);
+    });
+
+    it('returns sentences matching single token case-insensitive', () => {
+      const result = searchByQuery('HELLO', sentences, getByWord);
+      expect(result).toHaveLength(2);
+    });
+
+    it('returns sentences matching single token from blank word', () => {
+      const result = searchByQuery('morning', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s3');
+    });
+
+    it('returns sentences matching single token from english sentence', () => {
+      const result = searchByQuery('quick', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s4');
+    });
+
+    it('returns sentences matching single Chinese token', () => {
+      const result = searchByQuery('早上好', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s3');
+    });
+
+    it('returns sentences matching single Chinese token in mixed content', () => {
+      const result = searchByQuery('你好', sentences, getByWord);
+      expect(result).toHaveLength(2);
+    });
+
+    it('returns sentences matching multiple tokens with AND logic', () => {
+      // 'hello' is in s1, s2; 'world' is only in s1
+      // Intersection = s1
+      const result = searchByQuery('hello world', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s1');
+    });
+
+    it('returns empty array when no sentence matches all tokens', () => {
+      const result = searchByQuery('hello morning', sentences, getByWord);
+      expect(result).toHaveLength(0);
+    });
+
+    it('returns empty array for non-existent token', () => {
+      const result = searchByQuery('nonexistent', sentences, getByWord);
+      expect(result).toHaveLength(0);
+    });
+
+    it('handles multiple whitespace-separated tokens', () => {
+      // 'quick brown' - s4 has both
+      const result = searchByQuery('quick brown', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s4');
+    });
+
+    it('handles mixed English and Chinese tokens', () => {
+      // 'hello 你好' - s1 has both, s2 also has both ("hello" in english, "你好" in chinese)
+      const result = searchByQuery('hello 你好', sentences, getByWord);
+      expect(result).toHaveLength(2);
+      expect(result.map(s => s.id)).toContain('s1');
+      expect(result.map(s => s.id)).toContain('s2');
+    });
+
+    it('escapes special regex characters in token', () => {
+      // Tokens like "morning." should not cause regex errors
+      // "morning." → stripped to "morning" for index, but exact regex "morning\\." doesn't match "morning"
+      const result = searchByQuery('morning.', sentences, getByWord);
+      expect(result).toHaveLength(0);
+    });
+
+    it('handles token with dots by stripping non-alphanumeric for index', () => {
+      // "v.i.p." → stripped to "vip" for index lookup
+      // Index stores 'v', 'i', 'p' separately, not 'vip' → no index match
+      // Falls back to all sentences, then exact regex "v.i.p." matches "v.i.p." in english
+      const sentencesWithDot: Sentence[] = [
+        {
+          id: 's1',
+          english: 'v.i.p.',
+          chinese: '贵宾',
+          blanks: [{ word: 'v.i.p.' }],
+          level: 'junior',
+        },
+      ];
+      const idx = buildDictionaryIndex(sentencesWithDot);
+      const result = searchByQuery('v.i.p.', sentencesWithDot, (w) => idx.getByWord(w));
+      expect(result).toHaveLength(1);
+    });
+
+    it('handles token with parentheses by stripping for index lookup', () => {
+      // "stop (verb)" → stripped to "stopverb" for index → not in index
+      // Falls back to all sentences, then exact regex "stop \\(verb\\)" matches "stop (verb)"
+      const sentencesWithParens: Sentence[] = [
+        {
+          id: 's1',
+          english: 'stop (verb)',
+          chinese: '停止',
+          blanks: [{ word: 'stop' }],
+          level: 'junior',
+        },
+      ];
+      const idx = buildDictionaryIndex(sentencesWithParens);
+      const result = searchByQuery('stop (verb)', sentencesWithParens, (w) => idx.getByWord(w));
+      expect(result).toHaveLength(1);
+    });
+
+    it('returns correct results for single word match in blank', () => {
+      const result = searchByQuery('there', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s2');
+    });
+
+    it('returns empty array for empty sentence array', () => {
+      const result = searchByQuery('hello', [], getByWord);
+      expect(result).toHaveLength(0);
+    });
+
+    it('searches across all fields for ambiguous tokens', () => {
+      // If token could be in blank, english, or chinese, matches any
+      const result = searchByQuery('the', sentences, getByWord);
+      // s4 has 'the' in english text
+      expect(result.some(s => s.id === 's4')).toBe(true);
+    });
+
+    it('handles many tokens with AND logic', () => {
+      // 'the quick' - only s4 has both
+      const result = searchByQuery('the quick', sentences, getByWord);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe('s4');
+    });
+
+    it('returns empty when English token has no index match and no text match', () => {
+      // 'xyzzy 你好' - 'xyzzy' not in index, falls back to all sentences
+      // then exact regex "xyzzy" doesn't match any sentence text
+      const result = searchByQuery('xyzzy 你好', sentences, getByWord);
+      expect(result).toHaveLength(0); // "xyzzy" not in any sentence field
     });
   });
 });

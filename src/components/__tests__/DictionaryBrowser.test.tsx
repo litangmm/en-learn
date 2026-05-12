@@ -2,12 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DictionaryBrowser } from '../DictionaryBrowser';
 import type { Sentence } from '@/data/types';
+import { useDictionaryIndex } from '@/hooks/useDictionaryIndex';
 
 // Mock useDictionaryIndex hook to prevent it from affecting tests
+// getByWord returns [] by default, which makes searchByQuery fall back to scanning all sentences
 vi.mock('@/hooks/useDictionaryIndex', () => ({
   useDictionaryIndex: vi.fn(() => ({
     loadDictionary: vi.fn().mockResolvedValue(undefined),
     getStats: vi.fn().mockReturnValue(null),
+    getByWord: vi.fn().mockReturnValue([]),
   })),
 }));
 
@@ -820,6 +823,234 @@ describe('DictionaryBrowser', () => {
       await waitFor(() => {
         expect(screen.getByText('加载词典失败')).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('Indexed search path (searchByQuery)', () => {
+    it('calls searchByQuery when searching with debounced input', async () => {
+      // Verify that searching triggers the indexed search path
+      // by checking that results are filtered correctly after debounce
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Type a search query
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'catches' } });
+
+      // Wait for debounce (300ms) + render
+      await waitFor(() => {
+        // Only "catches" should be visible (filtered by search)
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('displays filtered results when index finds subset', async () => {
+      // Override getByWord mock before render
+      const { useDictionaryIndex } = await import('@/hooks/useDictionaryIndex');
+      const mockImpl = vi.mocked(useDictionaryIndex);
+      const getByWordImpl = vi.fn((word: string) => {
+        if (word === 'catches') return ['1'];
+        if (word === 'hello') return ['1', '2'];
+        return [];
+      });
+      mockImpl.mockReturnValueOnce({
+        loadDictionary: vi.fn().mockResolvedValue(undefined),
+        getStats: vi.fn().mockReturnValue(null),
+        getByWord: getByWordImpl,
+        currentId: null,
+        isIndexed: false,
+        isLoading: false,
+        getById: vi.fn(),
+        getByLevel: vi.fn(),
+        getIndexedIds: vi.fn(),
+        switchDictionary: vi.fn(),
+        getLoadedDictionaries: vi.fn(),
+        unloadDictionary: vi.fn(),
+        clearAll: vi.fn(),
+      });
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'catches' } });
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
+
+      expect(screen.getByText(/共 1 个单词/)).toBeInTheDocument();
+    });
+
+    it('combines indexed search with level filter', async () => {
+      const { useDictionaryIndex } = await import('@/hooks/useDictionaryIndex');
+      const mockImpl = vi.mocked(useDictionaryIndex);
+      const getByWordImpl = vi.fn((word: string) => {
+        if (word === 'hello') return ['1', '2'];
+        return [];
+      });
+      mockImpl.mockReturnValueOnce({
+        loadDictionary: vi.fn().mockResolvedValue(undefined),
+        getStats: vi.fn().mockReturnValue(null),
+        getByWord: getByWordImpl,
+        currentId: null,
+        isIndexed: false,
+        isLoading: false,
+        getById: vi.fn(),
+        getByLevel: vi.fn(),
+        getIndexedIds: vi.fn(),
+        switchDictionary: vi.fn(),
+        getLoadedDictionaries: vi.fn(),
+        unloadDictionary: vi.fn(),
+        clearAll: vi.fn(),
+      });
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      // Apply CET-4 filter first
+      const levelTrigger = screen.getByRole('combobox', { name: /难度/i });
+      fireEvent.click(levelTrigger);
+      await waitFor(() => {
+        expect(screen.getByRole('option', { name: 'CET-4' })).toBeInTheDocument();
+      });
+      fireEvent.click(screen.getByRole('option', { name: 'CET-4' }));
+
+      await waitFor(() => {
+        expect(screen.getByText(/共 2 个单词/)).toBeInTheDocument();
+      });
+
+      // Then search - search results are then filtered by level
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'hello' } });
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.getByText('Actions')).toBeInTheDocument();
+      }, { timeout: 1000 });
+    });
+
+    it('applies marked filter after indexed search', async () => {
+      const { useDictionaryIndex } = await import('@/hooks/useDictionaryIndex');
+      const mockImpl = vi.mocked(useDictionaryIndex);
+      const getByWordImpl = vi.fn((word: string) => {
+        if (word === 'hello') return ['1', '2'];
+        return [];
+      });
+      mockImpl.mockReturnValueOnce({
+        loadDictionary: vi.fn().mockResolvedValue(undefined),
+        getStats: vi.fn().mockReturnValue(null),
+        getByWord: getByWordImpl,
+        currentId: null,
+        isIndexed: false,
+        isLoading: false,
+        getById: vi.fn(),
+        getByLevel: vi.fn(),
+        getIndexedIds: vi.fn(),
+        switchDictionary: vi.fn(),
+        getLoadedDictionaries: vi.fn(),
+        unloadDictionary: vi.fn(),
+        clearAll: vi.fn(),
+      });
+
+      // Mark only s1 as personal word
+      const { storage } = await import('@/services/storage');
+      vi.spyOn(storage, 'getPersonalWords').mockReturnValue([
+        {
+          word: 'catches',
+          translation: '抓住',
+          exampleSentence: 'The early bird catches the worm.',
+          exampleSentenceCn: '早起的鸟儿有虫吃。',
+          marked: true,
+          markedAt: Date.now(),
+        },
+      ]);
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'hello' } });
+
+      // Enable marked filter
+      fireEvent.click(screen.getByRole('switch'));
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+        expect(screen.queryByText('Actions')).not.toBeInTheDocument();
+      }, { timeout: 1000 });
+    });
+
+    it('shows empty state when index returns no matches', async () => {
+      // getByWord returns [] by default (from module mock)
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'xyzzy' } });
+
+      await waitFor(() => {
+        expect(screen.getByText('未找到匹配的单词')).toBeInTheDocument();
+        expect(screen.getByText(/共 0 个单词/)).toBeInTheDocument();
+      }, { timeout: 1000 });
+    });
+
+    it('handles multi-token AND search via index', async () => {
+      // Override mock for this test - mock getByWord to return specific IDs
+      const originalMock = vi.mocked(useDictionaryIndex);
+      const getByWordImpl = vi.fn((word: string) => {
+        if (word === 'hello') return ['1', '2'];
+        if (word === 'world') return ['1'];
+        return [];
+      });
+      originalMock.mockImplementation(() => ({
+        loadDictionary: vi.fn().mockResolvedValue(undefined),
+        getByWord: getByWordImpl,
+        currentId: null,
+        isIndexed: false,
+        isLoading: false,
+        getById: vi.fn(),
+        getByLevel: vi.fn(),
+        getStats: vi.fn().mockReturnValue(null),
+        getIndexedIds: vi.fn(),
+        switchDictionary: vi.fn(),
+        getLoadedDictionaries: vi.fn(),
+        unloadDictionary: vi.fn(),
+        clearAll: vi.fn(),
+      }));
+
+      render(<DictionaryBrowser onBack={mockOnBack} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      });
+
+      const searchInput = screen.getByPlaceholderText('搜索单词...');
+      fireEvent.change(searchInput, { target: { value: 'hello world' } });
+
+      // Wait for debounce (300ms) + render
+      await waitFor(() => {
+        expect(screen.getByText('catches')).toBeInTheDocument();
+      }, { timeout: 2000 });
     });
   });
 

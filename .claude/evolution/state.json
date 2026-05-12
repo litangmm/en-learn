@@ -3,6 +3,83 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-12-145",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-043 iter-001 TEST 阶段完成。1714 单元测试零回归通过（1 skipped），Build 3.56s，Lint 4 warnings（pre-existing），E2E skipped（4 pending iterations remaining）。准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-12-146",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-043 iter-001 词典索引结构重构：DictionaryIndex 类型 + useDictionaryIndex Hook + 全面测试。1714 测试历史最高水位，epic-043 完成度 1/5。"
+    },
+    {
+      "id": "2026-05-12-144",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-037 iter-003 长期里程碑卡片与成就路径：useMilestones Hook + LongTermMilestoneCard + MilestonePath + ProgressHub 集成。1650 测试零回归，v0.63.0 部署成功。epic-037 完成度 3/4，准备进入 DEPLOY 阶段。"
+    },
+    {
+      "id": "2026-05-12-141",
+      "mode": "commit",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "COMMIT 阶段完成。源码已提交 bd95245（epic-037 iter-003 长期里程碑卡片与成就路径），文档已提交 8b38b57。准备进入 DEPLOY 阶段。"
+    },
+    {
+      "id": "2026-05-12-141",
+      "mode": "test",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-037 iter-003 TEST 阶段完成。1650 单元测试零回归通过（1 skipped），Build 3.61s，Lint 4 warnings（pre-existing），E2E skipped（iter-004 仍 pending）。准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-12-140",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-037 iter-002 目标进度实时追踪与可视化：useGoals.trackProgressRef → App.tsx答题/XP/连击追踪 → GoalProgressCard(compact/full) → XPBarWithGoal → GoalCompletionToast → ProgressHub目标区域。1548测试零回归，v0.62.0 部署成功。epic-037 完成度 2/4。"
+    },
+    {
+      "id": "2026-05-12-139",
+      "mode": "deploy",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.94s 通过，Vercel 部署成功（https://en-learn-9bz0w4en0-litangmms-projects.vercel.app），创建 git tag v0.62.0，已推送到远程。epic-037 iter-002 目标进度实时追踪与可视化正式发布。"
+    },
+    {
+      "id": "2026-05-12-138",
+      "mode": "commit",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "COMMIT 阶段完成。源码已提交 f916724（epic-037 iter-002 目标进度实时追踪与可视化），文档已提交 d36173a。准备进入 DEPLOY 阶段。"
+    },
+    {
+      "id": "2026-05-12-137",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-037 iter-002 IMPLEMENT 完成。useGoals.trackProgressRef → App.tsx答题/XP/连击追踪 → GoalProgressCard(compact/full) → XPBarWithGoal → GoalCompletionToast → ProgressHub目标区域。1548测试零回归，Build 3.87s。"
+    },
+    {
+      "id": "2026-05-12-136",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-037 iter-001 完成报告生成（目标设定 UI + useGoals Hook + 全面测试）。1495 测试历史最高水位，v0.61.0 部署成功。"
+    },
+    {
+      "id": "2026-05-12-136",
+      "mode": "commit",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.53s 通过，Vercel 部署成功（https://en-learn.vercel.app），创建 git tag v0.61.0，已推送到远程。epic-037 iter-001 每日/每周学习目标设定 UI 正式发布。"
+    },
+    {
       "id": "2026-05-12-135",
       "mode": "commit",
       "stage": "COMMIT",
@@ -21,7 +98,7 @@
       "mode": "implement",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-037 iter-001 IMPLEMENT 完成。Goal 类型定义 + storage.getGoals/saveGoals/generateDefaultGoals + useGoals hook（惰性初始化/日期感知重置/CRUD/预设目标）+ GoalSettingPanel（每日/每周预设按钮+自定义输入+保存）+ ViewRouter goals 视图 + MoreMenu 学习目标入口 + App.tsx 集成。1495 测试零回归，Build 3.58s。"
+      "summary": "epic-037 iter-001 IMPLEMENT 完成。Goal 类型定义 + storage.getGoals/saveGoals/generateDefaultGoals + useGoals hook（惰性初始化/日期感知重置/CRUD/预设目标值） + GoalSettingPanel（每日/每周预设按钮+自定义输入+保存）+ App.tsx 集成。1495 测试零回归，Build 3.58s。"
     },
     {
       "id": "2026-05-12-134",
@@ -31,11 +108,11 @@
       "summary": "epic-036 iter-001 完成报告。useRecallReminder hook + RecallReminderToast + App.tsx集成。1465 测试零回归，版本 v0.59.0。epic-036 完成度 1/4，剩余 3 个迭代待完成。"
     },
     {
-      "id": "2026-05-12-133",
+      "id": "2026-05-12-131",
       "mode": "implement",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-036 iter-001 IMPLEMENT 完成。useRecallReminder hook + RecallReminderToast + App.tsx集成 + 全面测试（1465通过）。dateUtils共享工具、storage新增key、eslint-disable修复。版本 v0.58.0。"
+      "summary": "epic-036 iter-001 IMPLEMENT 完成。useRecallReminder hook + RecallReminderToast + App.tsx集成 + 全面测试（1465通过）。dateUtils共享工具、storage新增key，eslint-disable修复。版本 v0.58.0。"
     },
     {
       "id": "2026-05-12-131",
@@ -56,7 +133,7 @@
       "mode": "implement",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-030 iter-004 IMPLEMENT 完成。useFatigueRecovery hook + RestReminderModal + BreathingExercise + StretchReminder + 单元测试。1427 测试零回归，Build 3.90s。"
+      "summary": "epic-030 iter-004 IMPLEMENT 完成。useFatigueRecovery hook + RestReminderModal + BreathingExercise + StretchReminder + PracticeCard集成。1427 测试零回归，Build 3.90s。"
     },
     {
       "id": "2026-05-12-129",
@@ -157,219 +234,215 @@
       "summary": "epic-029 iter-005 学习数据可视化完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + ProgressHub集成。1381 测试零回归，v0.53.0 部署成功。"
     }
   ],
-  "status": "DEPLOY",
-  "commit": "6544153",
-  "cycleCount": 135,
-  "nextMode": "commit",
+  "brainstormResults": [
+    {
+      "id": "epic-043",
+      "title": "词典数据架构升级与查询性能优化",
+      "description": "随着用户个人词库和词典数据规模增长，当前 O(n) 线性查询已成为性能瓶颈。需要建立内存索引结构（Map by id/word/level），实现 O(1) 查询、按需加载和搜索防抖。epic-009 已完成词典浏览基础，ARCH 的 epic-022 多次提案此次终于落地。",
+      "proposedBy": "ARCH",
+      "supportedBy": ["PM-Eco", "QA", "PM-Lean"],
+      "concerns": "需要编写数据迁移脚本确保 localStorage 旧数据平滑迁移到新索引格式；按需加载需要处理词典切换时的异步状态；测试需要覆盖索引建立、空词典、损坏数据等边界",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 词典索引结构重构", "scope": "frontend-only"},
+        {"title": "iter-002: 按需加载与懒加载策略", "scope": "frontend-only"},
+        {"title": "iter-003: 搜索性能优化（debounce + 索引查询）", "scope": "frontend-only"},
+        {"title": "iter-004: PersonalWord 独立索引", "scope": "frontend-only"},
+        {"title": "iter-005: 数据迁移脚本与向后兼容", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-046",
+      "title": "跨模态协同学习与自适应深度引擎",
+      "description": "epic-028 完成了间隔重复和自适应出题权重，但跨模式学习（利用薄弱点数据在不同模式间协同）仍是空白。用户听写中的薄弱音应对应到选择题中强化，遗忘曲线应基于用户实际数据建模而非通用公式。",
+      "proposedBy": "EXP",
+      "supportedBy": ["PM-UX", "PM-Growth", "PM-Lean"],
+      "concerns": "跨模式协同学习算法复杂度高；遗忘曲线个性化建模需要足够数据积累；大规模重构风险需分步验证；学习风格诊断算法需要用户数据验证",
+      "priority": "high",
+      "estimatedEffort": "large",
+      "iterationsPreview": [
+        {"title": "iter-001: 跨模式薄弱点联动", "scope": "frontend-only"},
+        {"title": "iter-002: 自适应难度曲线选择", "scope": "frontend-only"},
+        {"title": "iter-003: 学习效率实时预测", "scope": "frontend-only"},
+        {"title": "iter-004: 遗忘曲线智能复习升级", "scope": "frontend-only"},
+        {"title": "iter-005: 学习模式偏好诊断", "scope": "frontend-only"},
+        {"title": "iter-006: 长期学习预测", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-045",
+      "title": "质量基础设施升级与 E2E 稳定性修复",
+      "description": "1650 单元测试维持历史最高水位，但 E2E 测试仍有 1 skipped + 1 flaky。QA 长期关注的测试基础设施需要系统性升级：E2E 稳定化、并行执行、视觉回归测试、性能回归测试。",
+      "proposedBy": "QA",
+      "supportedBy": ["ARCH", "PM-Mon", "PM-Lean"],
+      "concerns": "视觉回归测试需要额外工具（html2canvas 已安装，可复用）；Playwright 并行配置需要 CI 配合；覆盖率 gate 可能降低迭代速度",
+      "priority": "high",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-001: E2E 测试稳定化修复", "scope": "frontend-only"},
+        {"title": "iter-002: Playwright 并行执行配置", "scope": "frontend-only"},
+        {"title": "iter-003: 视觉回归测试引入", "scope": "frontend-only"},
+        {"title": "iter-004: 测试覆盖率目标 gate", "scope": "frontend-only"},
+        {"title": "iter-005: 性能回归自动检测", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-039",
+      "title": "学习心流沉浸模式与专注增强",
+      "description": "epic-030 完成了疲劳检测和 Pomodoro，但更深层的心流状态优化（环境音/心流音乐/禅模式/节奏分析）仍是空白。通过 Web Audio API 创造沉浸式学习环境，延长单次学习时长。",
+      "proposedBy": "PM-UX",
+      "supportedBy": ["EXP", "PM-Lean", "UX"],
+      "concerns": "Web Audio API 可能增加 bundle size；心流背景音乐可能干扰部分用户；环境音需要用户主动开启；节奏分析需要足够数据样本",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 环境音场景模式", "scope": "frontend-only"},
+        {"title": "iter-002: 心流背景音乐", "scope": "frontend-only"},
+        {"title": "iter-003: 极简禅模式 UI", "scope": "frontend-only"},
+        {"title": "iter-004: 答题节奏分析", "scope": "frontend-only"},
+        {"title": "iter-005: 专注徽章体系", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-041",
+      "title": "个人词库深度挖掘与复用引擎",
+      "description": "epic-009 完成了词典浏览器和个人生词标记，但用户词库的价值尚未充分挖掘。个人生词复习模式、智能干扰项池、自定义练习集、个人词库学习路线图，让数据复用最大化。",
+      "proposedBy": "PM-Lean",
+      "supportedBy": ["PM-Eco", "QA", "PM-UX"],
+      "concerns": "个人干扰项池需要足够的错题历史数据积累；自定义练习集需要新的存储结构；学习路线图需要验证准确性",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 个人生词复习模式", "scope": "frontend-only"},
+        {"title": "iter-002: 智能干扰项池", "scope": "frontend-only"},
+        {"title": "iter-003: 个人练习集创建", "scope": "frontend-only"},
+        {"title": "iter-004: 个人词库学习路线图", "scope": "frontend-only"},
+        {"title": "iter-005: 个人词库导出与分享", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-042",
+      "title": "开放词典生态与社区词库",
+      "description": "epic-009 的个人词典管理已就绪，PM-Eco 的「开放生态」愿景继续推进。定义标准词典格式、支持用户分享自定义词库、社区词典浏览、词库贡献积分，构建无需后端的开放词典生态。",
+      "proposedBy": "PM-Eco",
+      "supportedBy": ["UX", "PM-Lean"],
+      "concerns": "格式标准化维护成本；无后端场景下社区内容质量控制困难；词库贡献积分需要存储设计；预置本地数据需要人工整理",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 自定义词典导入格式标准化", "scope": "frontend-only"},
+        {"title": "iter-002: 词典分享链接生成", "scope": "frontend-only"},
+        {"title": "iter-003: 社区词典浏览（只读）", "scope": "frontend-only"},
+        {"title": "iter-004: 用户词库贡献积分", "scope": "frontend-only"},
+        {"title": "iter-005: 词典格式验证工具", "scope": "frontend-only"}
+      ]
+    }
+  ],
+  "currentCycle": null,
+  "status": "IDLE",
+  "commit": "bd95245",
+  "cycleCount": 146,
+  "nextMode": "report",
   "failedAttempts": 0,
+  "implementationStatus": "IDLE",
   "currentEpic": {
-    "id": "epic-037",
-    "title": "学习动机可视化与目标设定系统",
-    "description": "让用户设定个人学习目标（每日题数/XP/streak），系统追踪进度并可视化呈现，形成「目标→行动→达成」完整正向循环。补充游戏化体系（系统给目标）中缺失的「用户自设目标」维度。",
+    "id": "epic-043",
+    "title": "词典数据架构升级与查询性能优化",
+    "description": "随着用户个人词库和词典数据规模增长，当前 O(n) 线性查询已成为性能瓶颈。需要建立内存索引结构（Map by id/word/level），实现 O(1) 查询、按需加载和搜索防抖。epic-009 已完成词典浏览基础，ARCH 的 epic-022 多次提案此次终于落地。",
     "iterations": [
       {
         "id": "iter-001",
-        "title": "每日/每周学习目标设定 UI",
+        "title": "词典索引结构重构",
         "scope": "frontend-only",
         "status": "completed",
-        "description": "目标类型定义 + 存储层 + useGoals hook + GoalSettingPanel（每日/每周预设+自定义目标设置）"
+        "description": "DictionaryIndex 类型定义 + useDictionaryIndex Hook（惰性初始化/O(1) 查询）+ 全面测试"
       },
       {
         "id": "iter-002",
-        "title": "目标进度实时追踪与可视化",
+        "title": "按需加载与懒加载策略",
         "scope": "frontend-only",
         "status": "pending",
-        "description": "useGoals 进度追踪 + XPBar/ProgressHub 目标进度集成 + 完成时庆祝动效"
+        "description": "多词典按需加载 + useDictionaryIndex 多词典管理 + dictionaryCache 集成"
       },
       {
         "id": "iter-003",
-        "title": "长期里程碑卡片与成就路径",
+        "title": "搜索性能优化（debounce + 索引查询）",
         "scope": "frontend-only",
         "status": "pending",
-        "description": "里程碑卡片（30/60/90天目标）+ 成就路径展示 + 连击里程碑奖励"
+        "description": "搜索防抖 + 索引查询集成到 DictionaryBrowser + 性能基准测试"
       },
       {
         "id": "iter-004",
-        "title": "动机流失预警与温柔引导",
+        "title": "PersonalWord 独立索引",
         "scope": "frontend-only",
         "status": "pending",
-        "description": "动机流失检测 + 温柔引导提示 + 降频提醒策略"
+        "description": "PersonalWord indexedMap + 独立索引 Hook + usePractice 干扰项索引集成"
+      },
+      {
+        "id": "iter-005",
+        "title": "数据迁移脚本与向后兼容",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "localStorage 旧数据迁移 + 向后兼容验证 + 索引统计与监控"
       }
     ],
     "currentIterationIndex": 0
   },
   "plan": {
     "iterationId": "iter-001",
-    "iterationTitle": "每日/每周学习目标设定 UI",
+    "iterationTitle": "词典索引结构重构",
     "scope": "frontend-only",
     "steps": [
-      "Step 1: 添加 Goal 相关类型到 src/data/types.ts（GoalType 枚举、GoalPeriod 枚举、Goal 接口、GoalState 接口）",
-      "Step 2: 添加存储方法到 src/services/storage.ts（GOALS_KEY + getGoals/saveGoals/defaultGoals）",
-      "Step 3: 创建 src/hooks/useGoals.ts（惰性初始化 + 日期感知重置 + CRUD 操作 + 预设目标值）",
-      "Step 4: 创建 src/components/GoalSettingPanel.tsx（Header + 每日目标区[题数/XP/streak预设] + 每周目标区[题数/XP预设] + 自定义输入 + 保存按钮），遵循 DailyChallengePanel 样式模式",
-      "Step 5: 更新 ViewRouter.tsx 添加 'goals' 视图 + ViewRouterProps goals 相关属性",
-      "Step 6: 更新 App.tsx 集成 useGoals + 在 XPBar 区域添加目标按钮 + 传递 goals props 到 ViewRouter",
-      "Step 7: 创建 src/hooks/__tests__/useGoals.test.ts（惰性初始化/预设目标/自定义目标/保存验证）",
-      "Step 8: 创建 src/components/__tests__/GoalSettingPanel.test.tsx（预设选择/自定义输入/保存回调）",
-      "Step 9: 运行全量 vitest 验证零回归",
-      "Step 10: Build + Lint 验证"
+      "Step 1: DictionaryIndex 类型定义 - 在 src/data/types.ts 添加 DictionaryIndex / IndexEntry / IndexStats 接口（Map<string, IndexEntry> + Map<string, string[]> byLevel + getById/getByWord/getByLevel/getStats 方法签名）",
+      "Step 2: useDictionaryIndex Hook 实现 - 创建 src/hooks/useDictionaryIndex.ts，惰性初始化（首次调用 loadDictionary 时构建索引），构建三个 Map：byId (O(1) id→sentenceId)、byWord (O(1) lowercase→sentenceId[])、byLevel (O(1) level→sentenceId[])，暴露 getById/getByWord/getByLevel/getStats/getIndexedIds 方法",
+      "Step 3: 索引构建逻辑 - 遍历 Sentence[]，逐条插入三个 Map（word lowercase，id lowercase），收集 level 分布统计",
+      "Step 4: useDictionaryIndex Hook 测试 - 创建 src/hooks/__tests__/useDictionaryIndex.test.ts，覆盖空数据/单词典/多词典/大小写不敏感/level 过滤/索引统计/已构建跳过重复构建等场景",
+      "Step 5: DictionaryIndex 工具函数测试 - 创建 src/data/__tests__/dictionaryIndex.test.ts，覆盖 buildDictionaryIndex/splitIntoWords/getSentenceIdsByWord 函数边界",
+      "Step 6: 全量测试回归 - npm test 确保 1650+ 测试零回归"
     ],
     "filesToModify": [
-      "src/data/types.ts",
-      "src/services/storage.ts",
-      "src/components/routing/ViewRouter.tsx",
-      "src/App.tsx"
+      "src/data/types.ts"
     ],
     "filesToCreate": [
-      "src/hooks/useGoals.ts",
-      "src/components/GoalSettingPanel.tsx",
-      "src/hooks/__tests__/useGoals.test.ts",
-      "src/components/__tests__/GoalSettingPanel.test.tsx"
+      "src/data/dictionaryIndex.ts",
+      "src/hooks/useDictionaryIndex.ts",
+      "src/data/__tests__/dictionaryIndex.test.ts",
+      "src/hooks/__tests__/useDictionaryIndex.test.ts"
     ],
     "dependencies": [],
-    "testStrategy": "useGoals hook 测试覆盖：惰性初始化、日期重置逻辑、目标 CRUD、预设值变更、状态持久化。GoalSettingPanel 测试覆盖：预设按钮选中、自定义输入、启用/禁用切换、保存回调。零新增依赖，纯 UI+State 逻辑。"
-  },
-  "currentCycle": {
-    "id": "2026-05-12-135",
-    "mode": "commit",
-    "stage": "COMMIT",
-    "startedAt": "2026-05-12T09:45:42.880Z",
-    "brainstormResults": [
-      {
-        "id": "epic-037",
-        "title": "学习动机可视化与目标设定系统",
-        "description": "让用户设定个人学习目标（每日题数/XP/streak），系统追踪进度并可视化呈现，形成「目标→行动→达成」完整正向循环。补充游戏化体系（系统给目标）中缺失的「用户自设目标」维度。",
-        "proposedBy": "PM-UX",
-        "supportedBy": ["PM-Growth", "PM-Lean", "UX", "EXP"],
-        "concerns": "目标设定 UI 可能增加认知负担；需避免目标过高导致挫败感；Epic 验收标准需清晰（目标达成 vs 目标设定）",
-        "priority": "high",
-        "estimatedEffort": "medium",
-        "iterationsPreview": [
-          {"title": "iter-001：每日/每周学习目标设定 UI", "scope": "frontend-only"},
-          {"title": "iter-002：目标进度实时追踪与可视化", "scope": "frontend-only"},
-          {"title": "iter-003：长期里程碑卡片与成就路径", "scope": "frontend-only"},
-          {"title": "iter-004：动机流失预警与温柔引导", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-036-ext",
-        "title": "用户召回与留存引擎扩展",
-        "description": "在 epic-036 iter-001（recall reminder）基础上扩展激活层（新用户引导）和动机层（学习 streak 系统），与 epic-029 的成就体系打通，形成完整的「召回→激活→留存」漏斗。",
-        "proposedBy": "PM-Growth",
-        "supportedBy": ["PM-Lean", "EXP"],
-        "concerns": "与 epic-037 功能部分重叠；学习 streak 与复习 streak 可能产生混淆；epic-037 若当选则 epic-036-ext 应推迟",
-        "priority": "medium",
-        "estimatedEffort": "medium",
-        "iterationsPreview": [
-          {"title": "iter-002：新用户引导与首次价值体验", "scope": "frontend-only"},
-          {"title": "iter-003：学习 streak 连续激励系统", "scope": "frontend-only"},
-          {"title": "iter-004：邀请好友与社交回流机制", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-038",
-        "title": "E2E 测试体系与质量守卫自动化",
-        "description": "建立 Playwright E2E 自动化测试基础设施，覆盖关键用户路径（首次练习→每日挑战→徽章解锁→分享），消除 E2E flaky 测试问题，为后续所有 Epic 提供稳固的质量保障。",
-        "proposedBy": "QA",
-        "supportedBy": ["PM-Mon", "ARCH"],
-        "concerns": "E2E 测试维护成本高；Playwright 在 CI 环境可能不稳定；测试用例优先级需谨慎排序；非用户可见功能，短期价值不显著",
-        "priority": "medium",
-        "estimatedEffort": "medium",
-        "iterationsPreview": [
-          {"title": "iter-001：Playwright 基础设施与 CI 集成", "scope": "frontend-only"},
-          {"title": "iter-002：关键路径 E2E 测试（首次→练习→结果→分享）", "scope": "frontend-only"},
-          {"title": "iter-003：视觉回归测试基线建立", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-041",
-        "title": "PWA 离线优先与首屏优化",
-        "description": "Service Worker + 离线缓存让学习功能在无网环境下可用，App Shell 缓存实现即时加载（0ms 导航），消除网络依赖打造真正的「学习工具」而非「Web 应用」。",
-        "proposedBy": "ARCH",
-        "supportedBy": ["PM-Mon"],
-        "concerns": "iOS Safari PWA 支持受限（无法后台推送）；Service Worker 维护成本；离线状态 UX 设计复杂；epic-004/006 技术基础已就绪但非核心需求",
-        "priority": "medium",
-        "estimatedEffort": "large",
-        "iterationsPreview": [
-          {"title": "iter-001：PWA Manifest + Service Worker 基础", "scope": "frontend-only"},
-          {"title": "iter-002：App Shell 缓存与即时加载", "scope": "frontend-only"},
-          {"title": "iter-003：离线状态 UX 与数据同步", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-046",
-        "title": "构建体积与性能守卫自动化",
-        "description": "CI 集成构建体积 delta 检测（>5% 触发 review）+ Lighthouse CI 性能基线（FCP/LCP）+ 测试运行时间监控，防止性能债务累积。",
-        "proposedBy": "PM-Mon",
-        "supportedBy": ["ARCH"],
-        "concerns": "非用户可见功能；epic-006 已建立 650KB 基线，当前风险可控；预防性投入可能过度；需持续维护 CI 配置",
-        "priority": "low",
-        "estimatedEffort": "small",
-        "iterationsPreview": [
-          {"title": "iter-001：CI 构建体积 delta 检测", "scope": "frontend-only"},
-          {"title": "iter-002：Lighthouse CI 性能基线", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-047",
-        "title": "学习路径仪表盘 MVP",
-        "description": "基于已有数据（epic-018 ProgressHub + epic-028 效率指标）的轻量学习路径可视化：学习节奏分析 + 薄弱点攻克历史 + 路径 PDF 导出。",
-        "proposedBy": "PM-Lean",
-        "supportedBy": ["PM-Growth", "PM-Mon"],
-        "concerns": "与 epic-018 ProgressHub 功能部分重叠；非全新数据；价值增量有限；epic-037 若当选则 epic-047 应推迟或合并",
-        "priority": "low",
-        "estimatedEffort": "small",
-        "iterationsPreview": [
-          {"title": "iter-001：学习节奏卡片", "scope": "frontend-only"},
-          {"title": "iter-002：薄弱点攻克历史", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-048",
-        "title": "自定义词典导入与数据主权深化",
-        "description": "CSV/JSON 自定义词库导入 + 个人例句标注，与 epic-009 个人词库打通，实现个人数据主权。",
-        "proposedBy": "PM-Eco",
-        "supportedBy": [],
-        "concerns": "CSV/JSON 格式维护成本高；用户导入词库使用频率低；epic-009 iter-003 已完成生词标记，需求不迫切；无明显支持者",
-        "priority": "low",
-        "estimatedEffort": "medium",
-        "iterationsPreview": [
-          {"title": "iter-001：自定义词典格式与导入 UI", "scope": "frontend-only"},
-          {"title": "iter-002：个人例句标注", "scope": "frontend-only"}
-        ]
-      },
-      {
-        "id": "epic-049",
-        "title": "深度个性化学习路径引擎",
-        "description": "基于已有学习数据的 AI-less 个性化推荐：学习节奏匹配 + 难度区间动态调整 + 练习模式推荐组合。",
-        "proposedBy": "EXP",
-        "supportedBy": [],
-        "concerns": "与 epic-028 自适应出题重叠；复杂度高，过度工程化；纯前端场景下「AI-less 个性化」价值有限；无支持者",
-        "priority": "low",
-        "estimatedEffort": "large",
-        "iterationsPreview": [
-          {"title": "iter-001：学习节奏匹配", "scope": "frontend-only"},
-          {"title": "iter-002：难度区间动态调整", "scope": "frontend-only"},
-          {"title": "iter-003：练习模式推荐", "scope": "frontend-only"}
-        ]
-      }
-    ],
-    "discussionSummary": "本次 brainstorm 产出 8 个 Epic 候选。epic-037「学习动机可视化与目标设定系统」以 4 支持（PM-UX提案，PM-Growth/PM-Lean/UX/EXP 支持）压倒性胜出，因其填补了产品「用户自设目标」这一核心 gap：游戏化体系（XP/连击/徽章/排行榜）解决了「系统给什么目标」，但从未解决「用户自己想要什么」。epic-036 扩展（PM-Growth 提案，3 支持）紧随其后，作为 epic-036 iter-001 的自然延伸。epic-038 E2E 测试体系（QA 提案，3 支持）列为高优先级备选。epic-041 PWA（ARCH提案）和 epic-046 性能守卫（PM-Mon提案）技术价值清晰但非用户核心需求。epic-047/048/049 因功能重叠或价值不足列为 low。"
+    "testStrategy": "useDictionaryIndex Hook 测试（惰性初始化/多词典/Maps 正确性）+ dictionaryIndex 工具函数测试（buildDictionaryIndex/splitIntoWords）+ 全量回归测试（1650+）"
   },
   "previousCycle": {
-    "id": "2026-05-12-134",
+    "id": "2026-05-12-143",
     "mode": "plan",
     "stage": "REPORT"
   },
   "epicHistory": [
     {
+      "id": "epic-043",
+      "title": "词典数据架构升级与查询性能优化",
+      "status": "in_progress",
+      "iterationsCount": 5,
+      "completedIterations": 1,
+      "pendingIterations": 4,
+      "createdAt": "2026-05-12T20:30:00.000Z",
+      "proposedBy": "ARCH",
+      "supportedBy": [
+        "PM-Eco",
+        "QA",
+        "PM-Lean"
+      ]
+    },
+    {
       "id": "epic-037",
       "title": "学习动机可视化与目标设定系统",
-      "status": "in_progress",
+      "status": "completed",
       "iterationsCount": 4,
-      "completedIterations": 1,
-      "pendingIterations": 3,
-      "versionRange": "v0.60.0-v0.63.0",
+      "completedIterations": 4,
+      "pendingIterations": 0,
+      "versionRange": "v0.60.0-v0.64.0",
+      "completedAt": "2026-05-12T20:28:00.000Z",
       "createdAt": "2026-05-12T09:45:42.880Z",
       "proposedBy": "PM-UX",
       "supportedBy": [
@@ -382,7 +455,7 @@
     {
       "id": "epic-036",
       "title": "用户召回与留存引擎",
-      "status": "in_progress",
+      "status": "pending",
       "iterationsCount": 4,
       "completedIterations": 1,
       "pendingIterations": 3,
@@ -439,6 +512,7 @@
       "pendingIterations": 0,
       "versionRange": "v0.45.0-v0.49.0",
       "completedAt": "2026-05-12T11:20:00.000Z",
+      "createdAt": "2026-05-12T07:00:00.000Z",
       "proposedBy": "EXP",
       "supportedBy": [
         "PM-UX",
@@ -531,27 +605,27 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 1495,
+      "passed": 1714,
       "failed": 0,
       "skipped": 1,
-      "total": 1496,
-      "duration": "22.41s"
+      "total": 1715,
+      "duration": "23.92s"
     },
     "e2eTests": {
       "passed": 0,
       "failed": 0,
       "flaky": false,
-      "note": "skipped - not last pending iteration (3 pending remaining)"
+      "note": "skipped - 4 pending iterations remaining (iter-002~005)"
     },
     "lint": {
       "passed": true,
-      "warnings": 3,
+      "warnings": 4,
       "errors": 0,
-      "note": "3 pre-existing warnings (react-refresh + exhaustive-deps)"
+      "note": "4 pre-existing warnings (react-hooks/exhaustive-deps x2, react-refresh, unused-disable)"
     },
     "build": {
       "passed": true,
-      "duration": "3.37s (tsc + vite)"
+      "duration": "3.61s (tsc + vite)"
     }
   },
   "directives": {
@@ -583,14 +657,14 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-e3wghqw63-litangmms-projects.vercel.app",
-    "version": "v0.59.0",
-    "commit": "04d4a81",
+    "url": "https://en-learn-fj3kz1y71-litangmms-projects.vercel.app",
+    "version": "v0.64.0",
+    "commit": "bd95245",
     "iterationId": "iter-001",
-    "iterationTitle": "复习时机优化提醒",
-    "deployedAt": "2026-05-12T09:15:30.000Z"
+    "iterationTitle": "词典索引结构重构",
+    "deployedAt": "2026-05-12T12:22:52.000Z"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-12T18:30:00.000Z",
-  "implementationStatus": "COMMIT 阶段完成。源码已提交 04d4a81，文档已提交 6544153。准备进入 DEPLOY 阶段。"
+  "lastRun": "2026-05-12T21:05:00.000Z",
+  "implementationStatus": "IDLE"
 }

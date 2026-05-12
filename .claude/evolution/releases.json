@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.63.0",
+      "tag": "v0.63.0",
+      "commit": "8b38b57",
+      "date": "2026-05-12T12:22:52.784Z",
+      "iterationId": "iter-003",
+      "title": "长期里程碑卡片与成就路径",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-fj3kz1y71-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.62.0",
+      "tag": "v0.62.0",
+      "commit": "4e9c664",
+      "date": "2026-05-12T11:14:48.386Z",
+      "iterationId": "iter-002",
+      "title": "目标进度实时追踪与可视化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-9bz0w4en0-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.61.0",
       "tag": "v0.61.0",
       "commit": "c47e5cc",

@@ -6,6 +6,18 @@
 ## 常见问题
 （由进化引擎自动总结）
 
+### 2026-05-12 (cycle-2026-05-12-146)
+- **迭代**: epic-043 iter-001「词典索引结构重构」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖，零构建体积增长
+- **关键决策**:
+  - DictionaryIndex 类型定义（IndexEntry/IndexStats/DictionaryIndex 三接口）
+  - useDictionaryIndex Hook 惰性初始化（首次 loadDictionary 时构建索引）
+  - 三 Map 结构（byId/byWord/byLevel）实现 O(1) 查询性能
+  - splitIntoWords Unicode-aware 分词，避免 emoji 问题
+  - IndexStats.byLevel 使用 Record<string, number> 便于序列化
+- **重构**: 无（零新增组件，仅工具函数和 Hook）
+- **观察**: epic-043 iter-001 完成（1/5），1714 测试历史最高水位。epic-009 完成词典浏览基础后，epic-043 将查询性能从 O(n) 优化到 O(1)。后续 iter-002~005 将继续推进按需加载、搜索优化、PersonalWord 索引和数据迁移。**epic-043 完成度 1/5，准备进入 iter-002（按需加载与懒加载策略）**
+
 ### 2026-05-12 (cycle-2026-05-12-129)
 - **迭代**: epic-030 iter-004「疲劳恢复激励机制」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，零构建体积增长

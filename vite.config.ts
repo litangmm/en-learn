@@ -51,5 +51,25 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     css: true,
     exclude: ['node_modules', 'e2e'],
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: './coverage',
+      thresholds: {
+        lines: 70,
+        functions: 70,
+        branches: 60,
+        statements: 70,
+      },
+      exclude: [
+        'node_modules/**',
+        'e2e/**',
+        '*.config.ts',
+        '*.config.js',
+        'vite.config.ts',
+        'vitest.setup.ts',
+        'src/index.tsx',
+        'src/vite-env.d.ts',
+      ],
+    },
   },
 })

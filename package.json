@@ -16,7 +16,9 @@
     "test:e2e:safe": "CI=true playwright test",
     "test:visual": "playwright test e2e/visual.spec.ts --update-snapshots",
     "test:visual:compare": "playwright test e2e/visual.spec.ts --update-snapshots",
-    "test:visual:baseline": "playwright test e2e/visual.spec.ts"
+    "test:visual:baseline": "playwright test e2e/visual.spec.ts",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:ci": "vitest run --coverage --reporter=verbose"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -78,6 +80,7 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-v8": "^4.1.6",
     "autoprefixer": "^10.4.23",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

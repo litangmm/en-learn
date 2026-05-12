@@ -8,6 +8,18 @@
 
 ## 历史数据
 
+### 2026-05-12 (cycle-2026-05-12-120)
+- **迭代**: epic-029 iter-004「成就徽章墙导出」—— **完整实现**
+- **实现质量**: 高 — 零新增依赖（复用 html2canvas），零构建体积增长
+- **关键决策**:
+  - BadgeExportPanel 组件提供网格预览所有徽章（解锁+锁定）
+  - useBadgeExport Hook 使用 html2canvas 的 html2canvas() 方法将 DOM 转为 canvas
+  - canvas.toBlob() 导出为 PNG 文件，通过 URL.createObjectURL + anchor click 实现下载
+  - 文件名格式 `badges-{timestamp}.png`
+  - BadgePanel 添加导出触发按钮（Download 图标），集成到 Trophy 入口
+- **重构**: 无
+- **观察**: html2canvas 复用 epic-005 已安装依赖，零新增依赖。BadgeExportPanel 作为纯展示组件，useBadgeExport Hook 提供纯函数式导出逻辑，无副作用。1346 测试是项目历史最高水位。**epic-029 仅剩 iter-005（数据可视化）待实施**
+
 ### 2026-05-12 (cycle-2026-05-12-103)
 - **迭代**: epic-028 iter-003「每日复习计划与提醒系统」—— **完整实现**
 - **实现质量**: 高 — 零新增依赖，零构建体积增长

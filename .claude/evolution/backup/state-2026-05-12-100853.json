@@ -5,13 +5,6 @@
     {
       "id": "2026-05-12-120",
       "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-029 iter-004 成就徽章墙导出报告完成。1346 测试零回归，历史最高水位。epic-029 完成度 4/5，iter-005 学习数据可视化待 PLAN。"
-    },
-    {
-      "id": "2026-05-12-120",
-      "mode": "vision",
       "stage": "TEST",
       "status": "completed",
       "summary": "epic-029 iter-004 成就徽章墙导出测试通过。1346 测试零回归，1 skipped，lint 1 warning，build 3.77s。"
@@ -24,7 +17,7 @@
       "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + 全面测试。"
     },
     {
-      "id": "2026-05-12-119",
+      "id": "2026-05-12-118",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
@@ -80,14 +73,18 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "IDLE",
+  "status": "REPORT",
   "commit": "b28e9be",
-  "cycleCount": 120,
+  "cycleCount": 119,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-12-119",
+    "mode": "vision",
+    "stage": "PLAN"
+  },
   "previousCycle": {
-    "id": "2026-05-12-120",
+    "id": "2026-05-12-118",
     "mode": "vision",
     "stage": "REPORT"
   },
@@ -132,9 +129,33 @@
         "status": "pending"
       }
     ],
-    "currentIterationIndex": 4
+    "currentIterationIndex": 3
   },
-  "plan": null,
+  "plan": {
+    "iterationId": "iter-004",
+    "iterationTitle": "成就徽章墙导出",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: Add BadgeExportPanel component with grid preview of all badges",
+      "Step 2: Add useBadgeExport hook using html2canvas to generate PNG",
+      "Step 3: Add export trigger button to BadgePanel header with download icon",
+      "Step 4: Write unit tests for useBadgeExport hook",
+      "Step 5: Write component tests for BadgeExportPanel",
+      "Step 6: Integrate export flow in App.tsx if needed",
+      "Step 7: Run full test suite and verify zero regressions"
+    ],
+    "filesToModify": [
+      "src/components/BadgePanel.tsx"
+    ],
+    "filesToCreate": [
+      "src/components/BadgeExportPanel.tsx",
+      "src/hooks/useBadgeExport.ts",
+      "src/components/__tests__/BadgeExportPanel.test.tsx",
+      "src/hooks/__tests__/useBadgeExport.test.ts"
+    ],
+    "dependencies": [],
+    "testStrategy": "useBadgeExport hook unit tests + BadgeExportPanel component tests + full test suite regression check"
+  },
   "brainstormResults": [
     {
       "id": "epic-029",
@@ -317,7 +338,7 @@
       "title": "学习成就社交展示与留存闭环",
       "status": "in_progress",
       "iterationsCount": 5,
-      "completedIterations": 4,
+      "completedIterations": 3,
       "versionRange": "v0.50.0-v0.52.0",
       "createdAt": "2026-05-12T03:20:00.000Z",
       "proposedBy": "PM-Growth",
@@ -418,7 +439,7 @@
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "epic-029 iter-004 completed, 1 iteration remaining (iter-005 pending)"
+      "reason": "epic-029 iter-003 completed, 2 iterations remaining (iter-004~005 pending)"
     },
     "lint": {
       "passed": true,
@@ -427,12 +448,12 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.77s (tsc + vite)"
+      "duration": "3.16s (tsc + vite)"
     }
   },
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-029 iter-004 成就徽章墙导出完成。新增：useBadgeExport hook（html2canvas图片导出）+ BadgeExportPanel组件（网格预览+下载）+ 全面测试。1346测试零回归，epic-029 完成度 4/5，iter-005 学习数据可视化待 PLAN。",
+  "implementationStatus": "epic-029 iter-004 成就徽章墙导出完成。新增：useBadgeExport hook（html2canvas图片导出）+ BadgeExportPanel组件（网格预览+下载）+ 全面测试。1346测试零回归，epic-029 完成度 4/5。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -616,16 +637,6 @@
         "createdAt": "2026-05-12T12:20:00.000Z",
         "executedAt": "2026-05-12T12:20:00.000Z",
         "executionNote": "报告已生成，经验档案已更新，state.json 已备份。epic-029 完成度 3/5，iter-004 徽章墙导出待 PLAN"
-      },
-      {
-        "id": "dir-20260512120-01",
-        "type": "custom",
-        "target": "epic-029",
-        "action": "【Cycle-120 Report 完成】epic-029 iter-004 成就徽章墙导出报告生成，经验档案已更新",
-        "reason": "REPORT 阶段完成，生成报告，归档经验，备份 state.json",
-        "createdAt": "2026-05-12T10:08:00.000Z",
-        "executedAt": "2026-05-12T10:08:00.000Z",
-        "executionNote": "报告已生成，经验档案已更新，state.json 已备份。epic-029 完成度 4/5，iter-005 学习数据可视化待 PLAN"
       }
     ]
   },
@@ -639,6 +650,6 @@
     "iterationTitle": "邀请好友一起学",
     "deployedAt": "2026-05-12T01:08:40.357Z"
   },
-  "pendingDeployment": true,
-  "lastRun": "2026-05-12T10:08:53.000Z"
+  "pendingDeployment": false,
+  "lastRun": "2026-05-12T12:20:00.000Z"
 }

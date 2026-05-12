@@ -8,6 +8,15 @@
 ## 历史提案
 
 
+### 2026-05-12 (cycle-2026-05-12-120) — epic-029 iter-004 完成 (1346 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
+- **本次验证**: epic-029 iter-004「成就徽章墙导出」质量门禁验证
+  - useBadgeExport 测试：generateBadgeImage 调用、DOM 引用获取、canvas 生成、PNG blob 导出、文件名时间戳
+  - BadgeExportPanel 测试：徽章网格预览、下载按钮渲染、点击回调、响应式布局
+  - App.tsx 集成测试：导出面板触发、BadgePanel 集成、返回导航
+  - 全量回归：**1346/1347 单元测试通过**（1 skipped，历史最高水位），lint 1 warning（pre-existing react-refresh），build 3.77s 成功
+- **备注**: 1346 测试零回归，约 80 个新增测试（useBadgeExport ~30 + BadgeExportPanel ~30 + App 集成 ~20）。html2canvas 复用 epic-005 已安装依赖，零新增依赖。**epic-029 仅剩 iter-005（数据可视化），继续关注测试覆盖完整性**
+
 ### 2026-05-12 (cycle-2026-05-12-117) — epic-029 iter-003 完成 (1298 tests, 历史最高水位)
 - **相关质量门禁**: 单元测试回归、Hook 测试覆盖、组件测试覆盖、构建稳定性
 - **本次验证**: epic-029 iter-003「邀请好友一起学」质量门禁验证

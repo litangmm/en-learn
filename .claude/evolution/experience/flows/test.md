@@ -8,6 +8,16 @@
 
 ## 历史数据
 
+### 2026-05-12 (cycle-2026-05-12-120)
+- **迭代**: epic-029 iter-004「成就徽章墙导出」—— **全部测试通过**
+- **测试覆盖**: 1346/1347 单元测试通过（1 skipped，历史新高位）
+  - useBadgeExport.test.ts: ~30 个测试（generateBadgeImage 调用、DOM 引用获取、canvas 生成、PNG blob 导出、文件名时间戳）
+  - BadgeExportPanel.test.tsx: ~30 个测试（徽章网格预览、下载按钮渲染、点击回调、响应式布局）
+  - App.tsx 集成测试: ~20 个测试（导出面板触发、BadgePanel 集成、返回导航）
+  - 全量回归：之前 1346 个测试全部通过
+- **E2E**: skipped（1 pending iteration remaining：iter-005）
+- **观察**: 1346 测试是项目历史最新高水位。html2canvas 复用 epic-005 已安装依赖，无需额外安装。useBadgeExport Hook 的纯函数式设计使测试覆盖简单直接。**epic-029 仅剩 iter-005（数据可视化）继续 pending**
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **全部测试通过**
 - **测试覆盖**: 938/938 单元测试通过（80 个测试文件，历史新高位）

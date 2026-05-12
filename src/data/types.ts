@@ -784,3 +784,69 @@ export interface MilestoneState {
   /** Last update timestamp (milliseconds) */
   updatedAt: number;
 }
+
+/**
+ * Represents a single indexed dictionary entry.
+ * Contains the sentence ID and positions of the indexed word within that sentence.
+ */
+export interface IndexEntry {
+  /** The sentence ID this entry refers to */
+  sentenceId: string;
+  /** Character positions where the word appears in the sentence (start index of each occurrence) */
+  wordPositions: number[];
+}
+
+/**
+ * Statistics about the dictionary index.
+ */
+export interface IndexStats {
+  /** Total number of indexed entries */
+  totalCount: number;
+  /** Distribution of entries by level (level -> count) */
+  byLevel: Record<string, number>;
+  /** Number of unique words indexed */
+  uniqueWords: number;
+  /** Time taken to build the index (milliseconds) */
+  buildTimeMs: number;
+}
+
+/**
+ * Dictionary index for O(1) lookup of dictionary sentences.
+ * Provides multiple access patterns: by ID, by word, and by level.
+ */
+export interface DictionaryIndex {
+  /** Map of sentence ID -> sentence text for O(1) lookup by ID */
+  byId: Map<string, string>;
+  /** Map of lowercase word -> array of sentence IDs containing that word */
+  byWord: Map<string, IndexEntry[]>;
+  /** Map of level -> array of sentence IDs at that level */
+  byLevel: Map<string, string[]>;
+  /**
+   * Get sentence text by ID.
+   * @param id - The sentence ID
+   * @returns The sentence text, or undefined if not found
+   */
+  getById(id: string): string | undefined;
+  /**
+   * Get sentence IDs containing the given word (case-insensitive).
+   * @param word - The word to search for
+   * @returns Array of sentence IDs containing the word
+   */
+  getByWord(word: string): string[];
+  /**
+   * Get all sentence IDs at a given level.
+   * @param level - The level to filter by
+   * @returns Array of sentence IDs at that level
+   */
+  getByLevel(level: string): string[];
+  /**
+   * Get index statistics.
+   * @returns IndexStats object with index metrics
+   */
+  getStats(): IndexStats;
+  /**
+   * Get all indexed sentence IDs.
+   * @returns Array of all sentence IDs in the index
+   */
+  getIndexedIds(): string[];
+}

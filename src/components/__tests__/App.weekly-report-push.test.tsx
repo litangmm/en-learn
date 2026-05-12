@@ -175,6 +175,9 @@ vi.mock('@/services/storage', () => ({
     getReviewStats: vi.fn(() => ({ stats: { date: new Date().toISOString().split('T')[0], reviewedCount: 0, completedReviewIds: [] } })),
     getBadges: vi.fn(() => ({ unlocked: [], progress: { totalAnswered: 0, totalCorrect: 0, totalSessions: 0, maxStreakEver: 0, perfectSessions: 0, totalReviews: 0, totalChallengesCompleted: 0 } })),
     getShareMetrics: vi.fn(() => ({ totalShareCount: 0, formatCounts: { text: 0, image: 0 }, typeCounts: {}, lastShareAt: null, firstShareAt: null })),
+    getGoals: vi.fn(() => null),
+    saveGoals: vi.fn(),
+    generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
   },
   StorageService: {},
 }));

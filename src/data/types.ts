@@ -606,3 +606,76 @@ export const DEFAULT_INVITE_CONFIG: InviteConfig = {
   rewardXPPerInvite: 50,
   maxInvitesAllowed: 0,
 };
+
+// ============================================================================
+// Goal System Types (epic-037)
+// ============================================================================
+
+/**
+ * Types of learning goals users can set.
+ * - 'questions': Complete a target number of practice questions
+ * - 'xp': Earn a target amount of XP
+ * - 'streak': Maintain a consecutive practice streak
+ */
+export type GoalType = 'questions' | 'xp' | 'streak';
+
+/**
+ * Period for goal tracking.
+ * - 'daily': Goal resets every day at midnight
+ * - 'weekly': Goal resets every Monday
+ */
+export type GoalPeriod = 'daily' | 'weekly';
+
+/**
+ * User-defined learning goal.
+ */
+export interface Goal {
+  /** Unique identifier for this goal instance */
+  id: string;
+  /** Type of goal (questions / xp / streak) */
+  type: GoalType;
+  /** Goal period (daily / weekly) */
+  period: GoalPeriod;
+  /** Display title for this goal */
+  title: string;
+  /** Target value to achieve */
+  target: number;
+  /** Current progress toward the target */
+  current: number;
+  /** Whether the goal has been completed */
+  completed: boolean;
+  /** Timestamp when this goal was created */
+  createdAt: number;
+  /** Timestamp when this goal was last updated */
+  updatedAt: number;
+}
+
+/**
+ * State wrapper for user goals.
+ * Contains all user goals and tracking metadata.
+ */
+export interface GoalState {
+  /** List of user-defined goals */
+  goals: Goal[];
+  /** Last update timestamp (milliseconds) */
+  updatedAt: number;
+}
+
+// ---------------------------------------------------------------------------
+// Goal Preset Configurations
+// ---------------------------------------------------------------------------
+
+/** Preset values for daily question goals */
+export const DAILY_QUESTION_PRESETS = [5, 10, 15] as const;
+
+/** Preset values for daily XP goals */
+export const DAILY_XP_PRESETS = [50, 100, 150] as const;
+
+/** Preset values for daily streak goals */
+export const DAILY_STREAK_PRESETS = [3, 5, 7] as const;
+
+/** Preset values for weekly question goals */
+export const WEEKLY_QUESTION_PRESETS = [30, 50, 100] as const;
+
+/** Preset values for weekly XP goals */
+export const WEEKLY_XP_PRESETS = [300, 500, 800] as const;

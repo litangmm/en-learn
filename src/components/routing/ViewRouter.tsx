@@ -1,4 +1,4 @@
-import type { LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter, DailyChallenge } from '@/data/types';
+import type { LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter, DailyChallenge, Goal } from '@/data/types';
 import { MistakeBook } from '@/components/MistakeBook';
 import { HistoryView } from '@/components/HistoryView';
 import { DataManager } from '@/components/DataManager';
@@ -12,6 +12,7 @@ import { LearningProfile } from '@/components/LearningProfile';
 import { WeaknessPanel } from '@/components/WeaknessPanel';
 import { LearningEfficiencyPanel } from '@/components/LearningEfficiencyPanel';
 import { InviteFriendsPanel } from '@/components/InviteFriendsPanel';
+import { GoalSettingPanel } from '@/components/GoalSettingPanel';
 
 export type View =
   | 'practice'
@@ -27,7 +28,8 @@ export type View =
   | 'badges'
   | 'leaderboard'
   | 'dictionary-browser'
-  | 'invite';
+  | 'invite'
+  | 'goals';
 
 export interface ViewRouterProps {
   view: View;
@@ -67,6 +69,10 @@ export interface ViewRouterProps {
   onLeaderboardTimeFilterChange: (filter: LeaderboardTimeFilter) => void;
   onBackFromLeaderboard: () => void;
   onBackFromInvite?: () => void;
+  // GoalSettingPanel
+  goals: Goal[];
+  onSaveGoals: (goals: Goal[]) => void;
+  onBackFromGoals: () => void;
 }
 
 export function ViewRouter(props: ViewRouterProps) {
@@ -97,6 +103,9 @@ export function ViewRouter(props: ViewRouterProps) {
     onLeaderboardTimeFilterChange,
     onBackFromLeaderboard,
     onBackFromInvite = () => {},
+    goals,
+    onSaveGoals,
+    onBackFromGoals,
   } = props;
 
   switch (view) {
@@ -174,6 +183,15 @@ export function ViewRouter(props: ViewRouterProps) {
 
     case 'invite':
       return <InviteFriendsPanel onBack={onBackFromInvite} />;
+
+    case 'goals':
+      return (
+        <GoalSettingPanel
+          goals={goals}
+          onSave={onSaveGoals}
+          onBack={onBackFromGoals}
+        />
+      );
 
     case 'practice':
     default:

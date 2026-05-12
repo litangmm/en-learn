@@ -24,6 +24,7 @@ import { useWeaknessStats } from '@/hooks/useWeaknessStats';
 import { useSpacedRepetition } from '@/hooks/useSpacedRepetition';
 import { useReviewStreak } from '@/hooks/useReviewStreak';
 import { useRecallReminder } from '@/hooks/useRecallReminder';
+import { useGoals } from '@/hooks/useGoals';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
 import { BadgeUnlockToast } from '@/components/BadgeUnlockToast';
@@ -160,6 +161,7 @@ function App() {
   const currentStreak = streakData.currentStreak;
   const { status: recallStatus, dueCount: recallDueCount, dismiss: dismissRecall } = useRecallReminder();
   const { hintLevel, shouldShowHint } = useHintLevel();
+  const { state: goalsState, updateGoals } = useGoals();
 
   // Track previous level for detecting level-ups (initialized after profile is available)
   const previousLevelRef = useRef(profile.currentLevel);
@@ -602,6 +604,19 @@ function App() {
     setView('invite');
   };
 
+  const handleOpenGoals = () => {
+    setView('goals');
+  };
+
+  const handleSaveGoals = (goals: import('@/data/types').Goal[]) => {
+    updateGoals(goals);
+    setView('practice');
+  };
+
+  const handleBackFromGoals = () => {
+    setView('practice');
+  };
+
   const handleBackFromInvite = () => {
     setView('practice');
   };
@@ -822,6 +837,7 @@ function App() {
                 onOpenLeaderboard={handleOpenLeaderboard}
                 onOpenWeakness={handleOpenWeakness}
                 onOpenInvite={handleOpenInvite}
+                onOpenGoals={handleOpenGoals}
               />
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
@@ -1057,6 +1073,9 @@ function App() {
           onLeaderboardTimeFilterChange={setLeaderboardTimeFilter}
           onBackFromLeaderboard={handleBackFromLeaderboard}
           onBackFromInvite={handleBackFromInvite}
+          goals={goalsState.goals}
+          onSaveGoals={handleSaveGoals}
+          onBackFromGoals={handleBackFromGoals}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {view === 'practice' && !state.isComplete && (

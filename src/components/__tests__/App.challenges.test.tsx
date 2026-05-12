@@ -222,6 +222,9 @@ vi.mock('@/services/storage', () => ({
     generateInviteCode: vi.fn(() => 'TESTCODE1'),
     initInviteMetrics: vi.fn(() => ({ inviteCode: 'TESTCODE1', invitesSent: 0, invitesAccepted: 0, rewardsEarned: 0, createdAt: Date.now(), lastSharedAt: null })),
     getInviteConfig: vi.fn(() => ({ rewardXPPerInvite: 50, maxInvitesAllowed: 0 })),
+    getGoals: vi.fn(() => null),
+    saveGoals: vi.fn(),
+    generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
   },
 }));
 

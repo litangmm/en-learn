@@ -249,6 +249,9 @@ vi.mock('@/services/storage', () => ({
     addPersonalWord: vi.fn(),
     removePersonalWord: vi.fn(),
     getPersonalWordCount: vi.fn(() => 0),
+    getGoals: vi.fn(() => null),
+    saveGoals: vi.fn(),
+    generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
   },
 }));
 

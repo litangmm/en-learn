@@ -93,6 +93,7 @@ vi.mock('@/hooks/useXP', () => ({
     addPersonalWord: vi.fn(),
     removePersonalWord: vi.fn(),
     getPersonalWordCount: vi.fn(() => 0),
+
     resetXPProfile: vi.fn(),
     streak: 0,
     maxStreakReached: 0,
@@ -163,6 +164,9 @@ vi.mock('@/services/storage', () => ({
     addPersonalWord: vi.fn(),
     removePersonalWord: vi.fn(),
     getPersonalWordCount: vi.fn(() => 0),
+    getGoals: vi.fn(() => null),
+    saveGoals: vi.fn(),
+    generateDefaultGoals: vi.fn(() => ({ goals: [], updatedAt: Date.now() })),
   },
 }));
 

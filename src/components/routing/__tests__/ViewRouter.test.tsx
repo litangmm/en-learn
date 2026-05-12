@@ -9,7 +9,7 @@ import { DailyChallengePanel } from '@/components/DailyChallengePanel';
 import { BadgePanel } from '@/components/BadgePanel';
 import { Leaderboard } from '@/components/Leaderboard';
 import { ProgressHub } from '@/components/ProgressHub';
-import type { DailyChallenge, LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter } from '@/data/types';
+import type { DailyChallenge, LeaderboardEntry, LeaderboardCategory, LeaderboardTimeFilter, Goal } from '@/data/types';
 
 // Mock child components
 vi.mock('@/components/MistakeBook', () => ({
@@ -46,6 +46,10 @@ vi.mock('@/components/ProgressHub', () => ({
 
 vi.mock('@/components/WeaknessPanel', () => ({
   WeaknessPanel: vi.fn(() => <div data-testid="weakness-panel">WeaknessPanel</div>),
+}));
+
+vi.mock('@/components/GoalSettingPanel', () => ({
+  GoalSettingPanel: vi.fn(() => <div data-testid="goal-setting-panel">GoalSettingPanel</div>),
 }));
 
 function createMockChallenges(): DailyChallenge[] {
@@ -87,6 +91,17 @@ function createMockLeaderboardEntries(): LeaderboardEntry[] {
   ];
 }
 
+function createMockGoals(): Goal[] {
+  const now = Date.now();
+  return [
+    { id: 'daily-questions', type: 'questions', period: 'daily', title: '每日答题目标', target: 10, current: 0, completed: false, createdAt: now, updatedAt: now },
+    { id: 'daily-xp', type: 'xp', period: 'daily', title: '每日 XP 目标', target: 100, current: 0, completed: false, createdAt: now, updatedAt: now },
+    { id: 'daily-streak', type: 'streak', period: 'daily', title: '每日学习连续', target: 5, current: 0, completed: false, createdAt: now, updatedAt: now },
+    { id: 'weekly-questions', type: 'questions', period: 'weekly', title: '每周答题目标', target: 50, current: 0, completed: false, createdAt: now, updatedAt: now },
+    { id: 'weekly-xp', type: 'xp', period: 'weekly', title: '每周 XP 目标', target: 500, current: 0, completed: false, createdAt: now, updatedAt: now },
+  ];
+}
+
 function createDefaultProps() {
   return {
     view: 'practice' as const,
@@ -112,6 +127,9 @@ function createDefaultProps() {
     onLeaderboardCategoryChange: vi.fn(),
     onLeaderboardTimeFilterChange: vi.fn(),
     onBackFromLeaderboard: vi.fn(),
+    goals: createMockGoals(),
+    onSaveGoals: vi.fn(),
+    onBackFromGoals: vi.fn(),
   };
 }
 

@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 
@@ -37,6 +37,7 @@ const DAILY_REVIEW_STATS_KEY = 'en-learn-daily-review-stats';
 const WEEKLY_REPORT_CONFIG_KEY = 'en-learn-weekly-report-config';
 const INVITE_METRICS_KEY = 'en-learn-invite-metrics';
 const INVITE_CONFIG_KEY = 'en-learn-invite-config';
+const GOALS_KEY = 'en-learn-goals';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -313,6 +314,78 @@ function isValidDailyChallengeState(data: unknown): data is DailyChallengeState 
   }
 
   if (!obj.challenges.every(isValidDailyChallenge)) {
+    return false;
+  }
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Goal System Validators (epic-037)
+// ---------------------------------------------------------------------------
+
+function isValidGoal(data: unknown): data is Goal {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.id !== 'string') {
+    return false;
+  }
+
+  if (obj.type !== 'questions' && obj.type !== 'xp' && obj.type !== 'streak') {
+    return false;
+  }
+
+  if (obj.period !== 'daily' && obj.period !== 'weekly') {
+    return false;
+  }
+
+  if (typeof obj.title !== 'string') {
+    return false;
+  }
+
+  if (typeof obj.target !== 'number' || obj.target <= 0) {
+    return false;
+  }
+
+  if (typeof obj.current !== 'number' || obj.current < 0) {
+    return false;
+  }
+
+  if (typeof obj.completed !== 'boolean') {
+    return false;
+  }
+
+  if (typeof obj.createdAt !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.updatedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidGoalState(data: unknown): data is GoalState {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (!Array.isArray(obj.goals)) {
+    return false;
+  }
+
+  if (!obj.goals.every(isValidGoal)) {
+    return false;
+  }
+
+  if (typeof obj.updatedAt !== 'number') {
     return false;
   }
 
@@ -932,6 +1005,38 @@ function saveInviteConfig(config: InviteConfig): void {
     localStorage.setItem(INVITE_CONFIG_KEY, JSON.stringify(config));
   } catch (error) {
     console.warn('[StorageService] Failed to save invite config:', error);
+  }
+}
+
+function loadGoals(): GoalState | null {
+  const raw = localStorage.getItem(GOALS_KEY);
+  if (raw === null) {
+    return null;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted goals data, clearing');
+    localStorage.removeItem(GOALS_KEY);
+    return null;
+  }
+
+  if (!isValidGoalState(parsed)) {
+    console.warn('[StorageService] Invalid goal state schema, clearing');
+    localStorage.removeItem(GOALS_KEY);
+    return null;
+  }
+
+  return parsed;
+}
+
+function saveGoals(state: GoalState): void {
+  try {
+    localStorage.setItem(GOALS_KEY, JSON.stringify(state));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save goals:', error);
   }
 }
 
@@ -1637,6 +1742,33 @@ export const StorageService = {
 
   setInviteConfig(config: InviteConfig): void {
     saveInviteConfig(config);
+  },
+
+  // Goals CRUD (epic-037)
+  getGoals(): GoalState | null {
+    return loadGoals();
+  },
+
+  saveGoals(state: GoalState): void {
+    saveGoals(state);
+  },
+
+  generateDefaultGoals(): GoalState {
+    const now = Date.now();
+    const state: GoalState = {
+      goals: [
+        // Daily goals
+        { id: 'daily-questions', type: 'questions', period: 'daily', title: '每日答题目标', target: 10, current: 0, completed: false, createdAt: now, updatedAt: now },
+        { id: 'daily-xp', type: 'xp', period: 'daily', title: '每日 XP 目标', target: 100, current: 0, completed: false, createdAt: now, updatedAt: now },
+        { id: 'daily-streak', type: 'streak', period: 'daily', title: '每日学习连续', target: 5, current: 0, completed: false, createdAt: now, updatedAt: now },
+        // Weekly goals
+        { id: 'weekly-questions', type: 'questions', period: 'weekly', title: '每周答题目标', target: 50, current: 0, completed: false, createdAt: now, updatedAt: now },
+        { id: 'weekly-xp', type: 'xp', period: 'weekly', title: '每周 XP 目标', target: 500, current: 0, completed: false, createdAt: now, updatedAt: now },
+      ],
+      updatedAt: now,
+    };
+    saveGoals(state);
+    return state;
   },
 
   exportAllData(): ExportData {

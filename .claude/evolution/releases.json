@@ -2,6 +2,32 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.60.0",
+      "tag": "v0.60.0",
+      "commit": "5706da4",
+      "date": "2026-05-12T09:21:33.419Z",
+      "iterationId": "iter-001",
+      "title": "复习时机优化提醒（补丁修复）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-4wlnorjj2-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.59.0",
+      "tag": "v0.59.0",
+      "commit": "6cef917",
+      "date": "2026-05-12T09:15:31.066Z",
+      "iterationId": "iter-001",
+      "title": "复习时机优化提醒",
+      "features": [
+        "App.tsx: fix sessionStartTimeRef type mismatch, use sessionStartTimeForTimer for SessionTimer",
+        "useRecallReminder: simplify canShow with useMemo instead of useState+useEffect",
+        "BreathingExercise/SessionTimer/useFatigueRecovery: add targeted eslint-disable comments"
+      ],
+      "deployUrl": "https://en-learn-e3wghqw63-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.52.0",
       "tag": "v0.52.0",
       "commit": "4f5ea4f",

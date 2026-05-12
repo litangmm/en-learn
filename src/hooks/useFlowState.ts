@@ -12,7 +12,7 @@
  * This hook is session-scoped (not persisted) — resets when user starts a new session.
  */
 
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 // Constants for flow detection thresholds
 const ACCURACY_WINDOW = 5; // Number of recent answers to consider for accuracy
@@ -188,15 +188,15 @@ function computeFlowState(
 export function useFlowState(): UseFlowStateReturn {
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);
   const [consecutiveErrors, setConsecutiveErrors] = useState(0);
-  const lastCorrectTimestampRef = useRef<number | null>(null);
+  const [lastCorrectTimestamp, setLastCorrectTimestamp] = useState<number | null>(null);
 
   const { flowState, fatigueSignals } = useMemo(() => {
-    const result = computeFlowState(answers, consecutiveErrors, lastCorrectTimestampRef.current);
+    const result = computeFlowState(answers, consecutiveErrors, lastCorrectTimestamp);
     return { flowState: result.state, fatigueSignals: result.signals };
-  }, [answers, consecutiveErrors]);
+  }, [answers, consecutiveErrors, lastCorrectTimestamp]);
 
   const recordCorrect = useCallback((answerTimeMs?: number) => {
-    lastCorrectTimestampRef.current = Date.now();
+    setLastCorrectTimestamp(Date.now());
     setConsecutiveErrors(0);
     setAnswers(prev => [
       ...prev.slice(-(ACCURACY_WINDOW + SPEED_WINDOW - 1)), // Keep rolling window
@@ -215,7 +215,7 @@ export function useFlowState(): UseFlowStateReturn {
   const reset = useCallback(() => {
     setAnswers([]);
     setConsecutiveErrors(0);
-    lastCorrectTimestampRef.current = null;
+    setLastCorrectTimestamp(null);
   }, []);
 
   const recentAccuracy = useMemo(() => {

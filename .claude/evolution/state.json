@@ -4,6 +4,20 @@
   "history": [
     {
       "id": "2026-05-12-129",
+      "mode": "report",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-030 完成报告。4个迭代全部完成：iter-001（8个bug修复）、iter-002（useFlowState + Pomodoro）、iter-003（时段分析）、iter-004（疲劳恢复）。1427 测试零回归，版本 v0.54.0-v0.57.0。"
+    },
+    {
+      "id": "2026-05-12-129",
+      "mode": "implement",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-030 iter-004 IMPLEMENT 完成。useFatigueRecovery hook + RestReminderModal + BreathingExercise + StretchReminder + 单元测试。1427 测试零回归，Build 3.90s。"
+    },
+    {
+      "id": "2026-05-12-129",
       "mode": "plan",
       "stage": "PLAN",
       "status": "completed",
@@ -122,22 +136,22 @@
       "summary": "PLAN 阶段完成。epic-030 iter-001 计划确认：8 个主练习链路 bug 修复（dir-1778465917386）+ 疲劳检测 Hook（useFlowState）+ 单元测试。分支 A：已有 Epic，plan 已就绪，迭代状态更新为 in_progress。dir-1778414197688（响应式）将在后续迭代处理。"
     }
   ],
-  "status": "IMPLEMENT",
-  "commit": "cb729e0",
+  "status": "REPORT",
+  "commit": "76c31be",
   "cycleCount": 129,
-  "nextMode": "implement",
+  "nextMode": "report",
   "failedAttempts": 0,
   "currentCycle": {
     "id": "2026-05-12-129",
-    "mode": "plan",
-    "stage": "IMPLEMENT",
-    "startedAt": "2026-05-12T14:25:00.000Z",
-    "completedAt": null
+    "mode": "implement",
+    "stage": "REPORT",
+    "startedAt": "2026-05-12T14:35:00.000Z",
+    "completedAt": "2026-05-12T14:35:30.000Z"
   },
   "previousCycle": {
     "id": "2026-05-12-129",
-    "mode": "plan",
-    "stage": "PLAN"
+    "mode": "implement",
+    "stage": "IMPLEMENT"
   },
   "brainstormResults": [
     {
@@ -254,93 +268,16 @@
         "id": "iter-004",
         "title": "疲劳恢复激励机制",
         "scope": "frontend-only",
-        "status": "pending",
+        "status": "completed",
         "description": "检测到疲劳后提供正向引导：休息提醒 + 趣味性内容过渡 + 短休息游戏化（深呼吸计时/伸展动画），而非强制中断，保护学习积极性。"
       }
     ],
-    "currentIterationIndex": 3,
+    "currentIterationIndex": 4,
     "currentIterationId": "iter-004",
-    "completedIterationsCount": 3,
+    "completedIterationsCount": 4,
     "totalIterationsCount": 4
   },
-  "plan": {
-    "id": "2026-05-12-129-iter-004",
-    "iteration": "iter-004",
-    "title": "疲劳恢复激励机制",
-    "description": "检测到疲劳后提供正向引导：休息提醒 + 趣味性内容过渡 + 短休息游戏化（深呼吸计时/伸展动画），而非强制中断，保护学习积极性。",
-    "scope": "frontend-only",
-    "tasks": [
-      {
-        "id": "t1",
-        "title": "创建 useFatigueRecovery hook",
-        "description": "基于useFlowState的fatigued状态，提供恢复激励逻辑",
-        "priority": "high",
-        "status": "pending",
-        "file": "src/hooks/useFatigueRecovery.ts"
-      },
-      {
-        "id": "t2",
-        "title": "创建 RestReminderModal 组件",
-        "description": "疲劳检测触发后的休息提醒弹窗，支持深呼吸练习或伸展动画",
-        "priority": "high",
-        "status": "pending",
-        "file": "src/components/RestReminderModal.tsx"
-      },
-      {
-        "id": "t3",
-        "title": "创建 BreathingExercise 组件",
-        "description": "深呼吸计时动画，帮助用户放松",
-        "priority": "medium",
-        "status": "pending",
-        "file": "src/components/BreathingExercise.tsx"
-      },
-      {
-        "id": "t4",
-        "title": "创建 StretchReminder 组件",
-        "description": "简单的伸展动画提醒",
-        "priority": "medium",
-        "status": "pending",
-        "file": "src/components/StretchReminder.tsx"
-      },
-      {
-        "id": "t5",
-        "title": "集成疲劳恢复机制到主流程",
-        "description": "在PracticeCard中检测疲劳状态并触发恢复流程",
-        "priority": "high",
-        "status": "pending",
-        "file": "src/components/PracticeCard.tsx"
-      },
-      {
-        "id": "t6",
-        "title": "编写单元测试",
-        "description": "为useFatigueRecovery hook编写测试",
-        "priority": "high",
-        "status": "pending",
-        "file": "src/hooks/__tests__/useFatigueRecovery.test.ts"
-      }
-    ],
-    "technicalDecisions": [
-      {
-        "decision": "恢复触发时机",
-        "options": ["连续3次疲劳信号后触发", "单次强疲劳信号触发", "用户确认后触发"],
-        "chosen": "疲劳状态持续一段时间后温和提醒",
-        "rationale": "避免频繁打断用户，只在确实需要休息时提醒"
-      },
-      {
-        "decision": "休息形式",
-        "options": ["纯文字提醒", "深呼吸动画", "伸展动画", "趣味性内容过渡"],
-        "chosen": "深呼吸动画 + 伸展动画选项",
-        "rationale": "深呼吸和伸展是科学有效的放松方式，且实现简单"
-      }
-    ],
-    "acceptanceCriteria": [
-      "useFatigueRecovery 正确识别恢复时机",
-      "RestReminderModal 正常显示和关闭",
-      "BreathingExercise 动画流畅",
-      "集成到PracticeCard不破坏现有流程",
-      "单元测试覆盖核心逻辑"
-    ]
-  },
+  "plan": null,
   "techReviewBaseline": {
     "lintWarnings": 1,
     "typeErrors": 0,
@@ -356,11 +293,12 @@
     {
       "id": "epic-030",
       "title": "学习心流深度优化与抗疲劳设计",
-      "status": "in_progress",
+      "status": "completed",
       "iterationsCount": 4,
-      "completedIterations": 3,
-      "pendingIterations": 1,
-      "versionRange": "v0.54.0-v0.56.0",
+      "completedIterations": 4,
+      "pendingIterations": 0,
+      "versionRange": "v0.54.0-v0.57.0",
+      "completedAt": "2026-05-12T14:35:00.000Z",
       "createdAt": "2026-05-12T11:35:00.000Z",
       "completedAt": null,
       "proposedBy": "PM-UX",

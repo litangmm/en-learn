@@ -1,0 +1,22 @@
+{
+  "id": "2026-05-13-175",
+  "mode": "report",
+  "stage": "REPORT",
+  "status": "completed",
+  "timestamp": "2026-05-13T11:50:00.000Z",
+  "epic": {
+    "id": "epic-050",
+    "title": "质量基础设施升级与 E2E 稳定性修复",
+    "iteration": "iter-003",
+    "iterationTitle": "视觉回归测试引入"
+  },
+  "testResults": {
+    "unit": { "passed": 1833, "failed": 0, "skipped": 1 },
+    "e2e": { "passed": 16, "failed": 0, "skipped": 0 }
+  },
+  "build": { "passed": true, "duration": "3.55s" },
+  "deploy": { "url": "https://en-learn-5762nq14c-litangmms-projects.vercel.app", "version": "v0.71.0" },
+  "commits": ["ec8a45f", "583fd21"],
+  "nextMode": "brainstorm",
+  "epicCompletion": "3/5"
+}

@@ -197,6 +197,13 @@
   5. 听写模式独立提示和独立体验
   用户真实评测第二轮反馈明确指出「桌面顶部布局和移动端适配是最大短板，功能越丰富顶部越拥挤」。**epic-004 iter-006 应为下一优先迭代**
 
+### 2026-05-13 (cycle-2026-05-13-183) — epic-058 iter-001 完成 (1952 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-001「流失信号识别系统」—— 作为支持者
+- **结果**: epic-058 iter-001 **完成并部署**，v0.74.0，1952/1957 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ChurnSignal types (SignalType/SignalSeverity/ChurnRiskLevel/ChurnSignal/ChurnAssessment) + useChurnSignals hook (calculateChurnSignals/5 signal types/getChurnRiskLevel/getTopRiskFactors) + ChurnAlertBanner component (severity styling/dismissible/localStorage/CTA) + App.tsx integration (high/critical 显示) + 73 tests (useChurnSignals 50 + ChurnAlertBanner 23) + App.churn-alert.test.tsx (6 tests) + 21 App test mocks 更新
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: epic-058 的 5 种流失信号与 EXP「自适应学习」理念形成协同——准确率下降信号可驱动自适应出题策略调整（近期正确率低的模式降低权重），连击断档信号可触发个性化复习建议。epic-058 还有 3 个迭代（iter-002 分级召回干预/iter-003 召回效果追踪/iter-004 流失预警看板），继续支持，关注与自适应学习的深度整合
+
 ## 成功模式
 （由进化引擎自动总结）
 

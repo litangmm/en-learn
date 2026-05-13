@@ -230,3 +230,10 @@
 
 ## 改进方向
 （由进化引擎自动总结）
+
+### 2026-05-13 (cycle-2026-05-13-183) — epic-058 iter-001 完成 (1952 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-001「流失信号识别系统」—— 作为支持者
+- **结果**: epic-058 iter-001 **完成并部署**，v0.74.0，1952/1957 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ChurnSignal types + useChurnSignals hook (5 signal types) + ChurnAlertBanner component (dismissible/severity styling) + App.tsx integration
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: ChurnAlertBanner 作为内联 Banner，不阻塞用户操作，符合 UX「不打断学习心流」原则。dismissible 设计允许用户主动关闭，避免流失预警在低风险情况下干扰用户体验。severity 分级（low/medium/high/critical）让预警视觉层次清晰。**epic-058 还有 3 个迭代（iter-002~004），继续支持**

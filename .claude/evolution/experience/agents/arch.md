@@ -217,6 +217,13 @@
   - 版本 v0.25.0，commit 7bde648
 - **观察**: epic-006 全部 3 个迭代已完成。ViewRouter + NavigationContext 抽象了视图路由，PracticeCard 策略模式解耦了模式渲染，构建体积监控提供了性能基线。App.tsx 从 ~300 行条件渲染简化到清晰的 ViewRouter 配置。ARCH 连续 20+ 个 cycle 的坚持最终完成了历史使命。**epic-004「体验优化与响应式适配」的响应式布局问题（dir-1778414197688 指令：桌面顶部+移动端弹窗+成就toast+排行榜标注+听写独立体验）应成为下一 Epic 优先候选**
 
+### 2026-05-13 (cycle-2026-05-13-183) — epic-058 iter-001 完成 (1952 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-001「流失信号识别系统」—— 作为支持者
+- **结果**: epic-058 iter-001 **完成并部署**，v0.74.0，1952/1957 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ChurnSignal types (SignalType/SignalSeverity/ChurnRiskLevel/ChurnSignal/ChurnAssessment) + useChurnSignals hook (calculateChurnSignals/5 signal types/getChurnRiskLevel/getTopRiskFactors) + ChurnAlertBanner component (severity styling/dismissible/localStorage/CTA) + App.tsx integration (high/critical 显示) + 73 tests + App.churn-alert.test.tsx (6 tests) + 21 App test mocks 更新
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: epic-058 零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。useChurnSignals Hook 的纯函数设计（calculateChurnSignals/getChurnRiskLevel/getTopRiskFactors）无副作用，83 个新增测试保证了架构健康度。ChurnAlertBanner 作为内联 Banner 组件集成到 App.tsx，无新增视图复杂度。**epic-058 还有 3 个迭代（iter-002~004），继续支持，持续关注架构健康度**
+
 ## 成功模式
 （由进化引擎自动总结）
 

@@ -2,6 +2,21 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.74.0",
+      "tag": "v0.74.0",
+      "commit": "25279bf",
+      "date": "2026-05-12T22:46:19.336Z",
+      "iterationId": "iter-001",
+      "title": "流失信号识别系统",
+      "features": [
+        "Add React import for JSX support",
+        "Use proper types for ChurnSignal in tests (session_gap type, severity enum)",
+        "Fix framer-motion mock with proper TypeScript types",
+        "Fix ChurnAlertBanner unused import"
+      ],
+      "deployUrl": "https://en-learn-oyj0h5wn1-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.73.0",
       "tag": "v0.73.0",
       "commit": "c691835",

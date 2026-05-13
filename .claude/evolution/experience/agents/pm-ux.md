@@ -220,6 +220,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-029 支持者）
 - **观察**: iter-001 的成就时刻动态卡片是 PM-UX「学习心流」理念的「即时成就感」维度的关键落地——5 种时刻模板（升级/徽章解锁/连击新高/XP里程碑/满分）让系统在用户学习的每个关键节点自动触发视觉化正向反馈，无需用户主动操作，保护学习心流。卡片短暂展示（可设置自动消失时间）确保不打断答题节奏。**epic-029 剩余 iter-002~005 继续支持**
 
+### 2026-05-13 (cycle-2026-05-13-183) — epic-058 iter-001 完成 (1952 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-001「流失信号识别系统」—— 作为支持者
+- **结果**: epic-058 iter-001 **完成并部署**，v0.74.0，1952/1957 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ChurnSignal types + useChurnSignals hook (5 signal types) + ChurnAlertBanner component (dismissible/severity styling) + App.tsx integration (high/critical 显示)
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: ChurnAlertBanner 的 dismissible 设计（localStorage 持久化）和 severity 分级（low/medium/high/critical）符合 PM-UX「不打断学习心流」理念——流失预警只在高风险时显示，且用户可主动关闭。Banner 作为内联组件而非弹窗，不阻塞用户操作。**epic-058 还有 3 个迭代（iter-002~004），继续支持**
+
 ## 改进方向
 （由进化引擎自动总结）
 

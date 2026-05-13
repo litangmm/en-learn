@@ -176,6 +176,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-029 提案者 + 首个迭代完成）
 - **观察**: iter-001 成就时刻动态卡片是 PM-Growth「留存闭环」理念的关键落地——5 种时刻模板覆盖学习过程中的关键成就节点。useAchievementMoment Hook 的分层检测逻辑（升级/徽章/连击/XP/满分）让系统在恰当时机触发分享卡片生成，形成「学习→成就→分享→社交认同→回流」正向循环。**epic-029 剩余 iter-002~005 继续推进中**
 
+### 2026-05-13 (cycle-2026-05-13-183) — epic-058 iter-001 完成 (1952 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-001「流失信号识别系统」—— **提案者**
+- **结果**: epic-058 iter-001 **完成并部署**，v0.74.0，1952/1957 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ChurnSignal types (SignalType/SignalSeverity/ChurnRiskLevel/ChurnSignal/ChurnAssessment) + useChurnSignals hook (calculateChurnSignals/5 signal types/getChurnRiskLevel/getTopRiskFactors) + ChurnAlertBanner component (severity styling/dismissible/localStorage/CTA) + App.tsx integration (high/critical 显示) + 73 tests (useChurnSignals 50 + ChurnAlertBanner 23) + App.churn-alert.test.tsx (6 tests) + 21 App test mocks 更新
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 提案者 + 首个迭代完成）
+- **观察**: epic-058 是 PM-Growth「用户来了做什么 + 用户不来怎么办」留存闭环的关键组成部分——epic-036(用户召回)+epic-037(目标设定)+epic-029(成就系统)完成了「用户来了做什么」，epic-058 补充了「用户不来怎么办」。5 种流失信号（目标偏移/准确率下降/连击断档/复习积压/活跃消失）利用已有数据（useGoals/XP/reviewStreak/spacedRepetition/history），零新增依赖。epic-058 还有 3 个迭代（iter-002 分级召回干预/iter-003 召回效果追踪/iter-004 流失预警看板），继续推进中
+
 ## 成功模式
 （由进化引擎自动总结）
 

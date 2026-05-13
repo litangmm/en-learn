@@ -1061,3 +1061,96 @@ export interface Intervention {
   /** Timestamp when this intervention was generated */
   createdAt: number;
 }
+
+// ============================================================================
+// Churn Metrics Types (epic-058 iter-003)
+// ============================================================================
+
+/**
+ * Response type from user engagement with intervention.
+ */
+export type InterventionResponse = 'accepted' | 'dismissed' | 'snoozed';
+
+/**
+ * A single intervention trigger event.
+ */
+export interface InterventionTrigger {
+  /** Unique identifier for this trigger */
+  id: string;
+  /** The intervention level at time of trigger */
+  level: InterventionLevel;
+  /** The action type at time of trigger */
+  action: InterventionAction;
+  /** Timestamp when this trigger occurred */
+  triggeredAt: number;
+  /** Churn risk level at time of trigger */
+  riskLevel: ChurnRiskLevel;
+  /** Number of active signals at time of trigger */
+  signalCount: number;
+}
+
+/**
+ * A single intervention response event.
+ */
+export interface InterventionResponseEvent {
+  /** Unique identifier for this response */
+  id: string;
+  /** ID of the trigger this response corresponds to */
+  triggerId: string;
+  /** Type of response */
+  response: InterventionResponse;
+  /** Timestamp when response occurred */
+  respondedAt: number;
+  /** Duration in ms before response (for tracking engagement speed) */
+  durationMs: number;
+  /** Churn risk level at time of response */
+  riskLevel: ChurnRiskLevel;
+}
+
+/**
+ * Engagement metrics for a single session or time period.
+ */
+export interface EngagementMetrics {
+  /** Number of correct answers */
+  correctAnswers: number;
+  /** Number of total answers (attempts) */
+  totalAnswers: number;
+  /** Total XP earned */
+  totalXP: number;
+  /** Longest streak achieved */
+  maxStreak: number;
+  /** Session duration in milliseconds */
+  sessionDurationMs: number;
+  /** Timestamp of session start */
+  sessionStart: number;
+  /** Timestamp of session end */
+  sessionEnd: number;
+}
+
+/**
+ * Aggregated churn metrics data.
+ * Tracks intervention triggers, responses, and engagement over time.
+ */
+export interface ChurnMetrics {
+  /** All intervention triggers */
+  triggers: InterventionTrigger[];
+  /** All intervention response events */
+  responses: InterventionResponseEvent[];
+  /** Engagement metrics per session */
+  sessions: EngagementMetrics[];
+  /** Timestamp when metrics were last updated */
+  lastUpdated: number;
+  /** Cumulative conversion rate (accepted / total triggers) */
+  cumulativeConversionRate: number;
+}
+
+/**
+ * Default empty churn metrics.
+ */
+export const DEFAULT_CHURN_METRICS: ChurnMetrics = {
+  triggers: [],
+  responses: [],
+  sessions: [],
+  lastUpdated: Date.now(),
+  cumulativeConversionRate: 0,
+};

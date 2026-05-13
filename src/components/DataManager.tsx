@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/dialog';
 import { storage } from '@/services/storage';
 import { usePersonalWords } from '@/hooks/usePersonalWords';
+import { ChurnMetricsPanel } from '@/components/ChurnMetricsPanel';
 import type { View } from '@/components/routing/ViewRouter';
 
 interface DataManagerProps {
@@ -188,6 +189,11 @@ export function DataManager({ onBack, onNavigate }: DataManagerProps) {
             </CardContent>
           </Card>
         </motion.div>
+      </div>
+
+      {/* Churn Metrics Summary */}
+      <div className="mb-8">
+        <ChurnMetricsPanel />
       </div>
 
       {/* Import Status */}

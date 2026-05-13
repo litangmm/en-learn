@@ -1,6 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary } from '@/data/types';
-import { MILESTONE_DEFINITIONS } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics } from '@/data/types';
+import { MILESTONE_DEFINITIONS, DEFAULT_CHURN_METRICS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 import { clearDictionaryCache, getCachedDictionary } from '@/data/dictionaryCache';
@@ -43,6 +43,7 @@ const INVITE_CONFIG_KEY = 'en-learn-invite-config';
 const GOALS_KEY = 'en-learn-goals';
 const MILESTONES_KEY = 'en-learn-milestones';
 const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
+const CHURN_METRICS_KEY = 'en-learn-churn-metrics';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -2023,6 +2024,44 @@ export const StorageService = {
     return updated;
   },
 
+  // Churn Metrics CRUD (epic-058 iter-003)
+  getChurnMetrics(): ChurnMetrics {
+    const raw = localStorage.getItem(CHURN_METRICS_KEY);
+    if (raw === null) {
+      return { ...DEFAULT_CHURN_METRICS };
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      // Validate and return parsed data
+      if (typeof parsed === 'object' && parsed !== null && Array.isArray(parsed.triggers)) {
+        return parsed as ChurnMetrics;
+      }
+      console.warn('[StorageService] Invalid churn metrics schema, resetting');
+      localStorage.removeItem(CHURN_METRICS_KEY);
+      return { ...DEFAULT_CHURN_METRICS };
+    } catch {
+      console.warn('[StorageService] Corrupted churn metrics data, clearing');
+      localStorage.removeItem(CHURN_METRICS_KEY);
+      return { ...DEFAULT_CHURN_METRICS };
+    }
+  },
+
+  saveChurnMetrics(metrics: ChurnMetrics): void {
+    try {
+      localStorage.setItem(CHURN_METRICS_KEY, JSON.stringify(metrics));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save churn metrics:', error);
+    }
+  },
+
+  updateChurnMetrics(updater: (_prev: ChurnMetrics) => ChurnMetrics): ChurnMetrics {
+    const current = this.getChurnMetrics();
+    const updated = updater(current);
+    this.saveChurnMetrics(updated);
+    return updated;
+  },
+
   exportAllData(): ExportData {
     return {
       version: 1,
@@ -2037,21 +2076,22 @@ export const StorageService = {
         badges: this.getBadges(),
         personalWords: loadPersonalWords(),
         personalDictionary: this.getPersonalDictionary() ?? undefined,
+        churnMetrics: this.getChurnMetrics(),
       },
     };
   },
 
-  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number; personalWords: number; personalDictionary: number } } {
+  importAllData(data: unknown): { success: boolean; message: string; importedCounts: { session: number; mistakes: number; history: number; xpProfile: number; dailyChallenges: number; badgeProgress: number; badges: number; personalWords: number; personalDictionary: number; churnMetrics: number } } {
     if (!isValidExportData(data)) {
       return {
         success: false,
         message: '导入失败：数据格式无效。请确认文件是由本应用导出的备份文件。',
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0, churnMetrics: 0 },
       };
     }
 
-    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges, personalWords, personalDictionary } = data.data;
-    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 };
+    const { session, mistakes, history, xpProfile, dailyChallenges, badgeProgress, badges, personalWords, personalDictionary, churnMetrics } = data.data;
+    const importedCounts = { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0, churnMetrics: 0 };
     const personalWordsToImport = personalWords ?? [];
 
     try {
@@ -2117,6 +2157,12 @@ export const StorageService = {
         importedCounts.personalDictionary = 1;
       }
 
+      // Import churn metrics state
+      if (churnMetrics) {
+        this.saveChurnMetrics(churnMetrics);
+        importedCounts.churnMetrics = 1;
+      }
+
       const parts: string[] = [];
       if (importedCounts.session > 0) parts.push('1 个会话');
       if (importedCounts.mistakes > 0) parts.push(`${importedCounts.mistakes} 条错题`);
@@ -2127,6 +2173,7 @@ export const StorageService = {
       if (importedCounts.badges > 0) parts.push('1 个徽章状态');
       if (importedCounts.personalWords > 0) parts.push(`${importedCounts.personalWords} 个生词`);
       if (importedCounts.personalDictionary > 0) parts.push('1 个个人词库状态');
+      if (importedCounts.churnMetrics > 0) parts.push('1 个流失预警数据');
 
       const message = parts.length > 0
         ? `导入成功：共导入 ${parts.join('、')}。`
@@ -2137,7 +2184,7 @@ export const StorageService = {
       return {
         success: false,
         message: `导入失败：写入存储时出错（${error instanceof Error ? error.message : String(error)}）`,
-        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0 },
+        importedCounts: { session: 0, mistakes: 0, history: 0, xpProfile: 0, dailyChallenges: 0, badgeProgress: 0, badges: 0, personalWords: 0, personalDictionary: 0, churnMetrics: 0 },
       };
     }
   },
@@ -2156,6 +2203,7 @@ export interface ExportData {
     badges?: BadgeState;
     personalWords?: PersonalWord[];
     personalDictionary?: PersonalDictionary;
+    churnMetrics?: ChurnMetrics;
   };
 }
 
@@ -2235,6 +2283,17 @@ function isValidExportData(data: unknown): data is ExportData {
   // personalDictionary is optional; if present, must be valid
   if (dataObj.personalDictionary !== undefined && !isValidPersonalDictionary(dataObj.personalDictionary)) {
     return false;
+  }
+
+  // churnMetrics is optional; if present, must have required fields
+  if (dataObj.churnMetrics !== undefined) {
+    if (typeof dataObj.churnMetrics !== 'object' || dataObj.churnMetrics === null) {
+      return false;
+    }
+    const metrics = dataObj.churnMetrics as Record<string, unknown>;
+    if (!Array.isArray(metrics.triggers) || !Array.isArray(metrics.responses) || !Array.isArray(metrics.sessions)) {
+      return false;
+    }
   }
 
   return true;

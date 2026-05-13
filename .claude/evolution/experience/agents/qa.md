@@ -388,3 +388,15 @@
   - 全量回归：**1952/1957 单元测试通过**（5 skipped，历史最高水位），lint 0 errors，build 3.38s success
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: 1952 测试零回归，新增 79 个测试（useChurnSignals 50 + ChurnAlertBanner 23 + App.churn-alert 6）。83 个新增测试覆盖了 5 种流失信号类型和 4 种风险等级的全部边界条件。zero 新增依赖、零构建体积增长，完全符合「依赖最小化」原则。**epic-058 还有 3 个迭代（iter-002~004），继续关注测试覆盖完整性**
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、useChurnIntervention hook 测试、InterventionPanel 组件测试、App.tsx 集成测试、构建稳定性
+- **本次验证**: epic-058 iter-002「分级召回干预机制」质量门禁验证
+  - useChurnIntervention.test.ts: 25 tests（intervention level thresholds: critical/high/medium/low from riskLevel, action recommendations based on signal types, snooze behavior: 24h/48h/1w）
+  - InterventionPanel.test.tsx: 9 tests（render, severity variants, action buttons, snooze, dismiss）
+  - App.churn-intervention.test.tsx: 6 tests（show/hide, snooze persistence, action triggers）
+  - 21 App test mocks 更新（添加 intervention 相关状态）
+  - 全量回归：**1996/2001 单元测试通过**（5 skipped，历史最高水位），lint 0 errors，build 3.58s success
+- **技术债务修复**: 140 个 unused variables 修复（跨 47 个文件，`_` 前缀命名规范）+ 2 个 html2canvas mock bug 修复（top-level mock callback 问题）
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: 1996 测试零回归，新增 44 个测试（useChurnIntervention 25 + InterventionPanel 9 + App.churn-intervention 6）。技术债务清理（140 unused vars）展现了 QA 对代码健康度的持续关注。**epic-058 还有 2 个迭代（iter-003~004），继续关注测试覆盖完整性**

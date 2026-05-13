@@ -265,3 +265,15 @@
   - usePractice.test.ts: 22 个测试（恢复 persisted state, 保存触发, dictionary 切换清理）
 - **E2E**: skipped（非最后 pending iteration）
 - **观察**: 测试策略有效，关键边界均有覆盖
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **迭代**: epic-058 iter-002「分级召回干预机制」—— **全部测试通过**
+- **测试覆盖**: 1996/2001 单元测试通过（5 skipped，历史最高水位，零回归）
+  - useChurnIntervention.test.ts: 25 tests（intervention level thresholds, action recommendations, snooze behavior）
+  - InterventionPanel.test.tsx: 9 tests（render, severity variants, action buttons, snooze, dismiss）
+  - App.churn-intervention.test.tsx: 6 tests（show/hide, snooze persistence, action triggers）
+  - 21 App test mocks 更新（添加 intervention 相关状态）
+  - 全量回归：之前 1952 个测试全部通过（5 skipped）
+- **E2E**: skipped（2 pending iterations remaining：iter-003~004）
+- **技术债务修复**: 140 个 unused variables 修复（跨 47 个文件，`_` 前缀命名规范）+ 2 个 html2canvas mock bug 修复
+- **观察**: 1996 测试零回归，新增 44 个测试。技术债务清理展现了 QA 对代码健康度的持续关注。**epic-058 完成度 2/4，剩余 iter-003~004（召回效果追踪/流失预警看板）**

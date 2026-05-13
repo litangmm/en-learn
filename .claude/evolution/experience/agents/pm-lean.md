@@ -202,3 +202,10 @@
 
 ## 改进方向
 （由进化引擎自动总结）
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— 作为支持者
+- **结果**: epic-058 iter-002 **完成并测试通过**，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook (snooze/localStorage) + InterventionPanel component (modal/severity/snooze) + App.tsx integration
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: iter-002 完美体现 MVP 思维——分级干预机制完全复用 useChurnSignals 的输出数据（riskLevel + signals），零新增依赖。snooze 机制使用 localStorage 持久化，无新增存储设计。**epic-058 还有 2 个迭代（iter-003 召回效果追踪/iter-004 流失预警看板），继续支持**

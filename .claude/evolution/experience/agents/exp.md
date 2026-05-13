@@ -260,3 +260,10 @@
 
 ## 改进方向
 （由进化引擎自动总结）
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— 作为支持者
+- **结果**: epic-058 iter-002 **完成并部署**，v0.75.0，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook (snooze/localStorage) + InterventionPanel component (modal/severity/snooze) + App.tsx integration + 44 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: iter-002 的分级干预机制（low/medium/high/critical）可作为 EXP「自适应学习」理念的重要数据维度——流失风险等级可驱动自适应出题策略（如高风险用户降低题目难度、延长单次学习时长）。snooze 机制（24h/48h/1w）避免重复打扰，数据可追踪用户响应率。**epic-058 还有 2 个迭代（iter-003 召回效果追踪/iter-004 流失预警看板），继续支持，关注与自适应学习的深度整合**

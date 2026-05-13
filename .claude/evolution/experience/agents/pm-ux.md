@@ -240,3 +240,10 @@
   - iter-004：RestReminderModal + BreathingExercise + StretchReminder + useFatigueRecovery Hook
 - **当前状态**: **连续未被选中计数保持清零**（epic-030 收官）
 - **观察**: epic-030 从提案到完成历经 4 个迭代，完整构建了「学习心流深度优化与抗疲劳设计」体系：疲劳检测（useFlowState）→ 自适应调整（FlowStateBanner + Pomodoro）→ 时段分析（TimeSlotQualityCard + PeakHoursBadge）→ 疲劳恢复（RestReminderModal + BreathingExercise）。dir-1778465917386 的 8 个 bug 修复和 dir-1778414197688 的响应式重构均已完成，1427 测试是项目历史最高水位。**epic-030 收官后，下一 Epic 候选：epic-030b「学习动机可视化与目标设定系统」或 epic-030c「深度个性化学习路径引擎」（均为 high 优先级）**
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— 作为支持者
+- **结果**: epic-058 iter-002 **完成并测试通过**，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionPanel component (modal/severity styling/snooze/action buttons) + useChurnIntervention hook (snooze/localStorage) + App.tsx integration
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: InterventionPanel 的 dismissible 设计和 severity 分级（low/medium/high/critical）符合 PM-UX「不打断学习心流」理念——流失预警只在风险达到 medium 及以上时才显示干预面板，且用户可 snooze（24h/48h/1w）避免重复打扰。modal 形式仅在 critical 风险时触发，确保不频繁阻塞用户操作。**epic-058 还有 2 个迭代（iter-003~004），继续支持**

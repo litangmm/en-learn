@@ -403,3 +403,13 @@
 - **实现质量**: 高 — 代码结构清晰，错误处理完善
 - **关键决策**: 使用单例模式封装 localStorage；500ms debounce 保存；版本化 schema 预留迁移空间
 - **观察**: 边界情况处理充分（corrupted JSON, quota exceeded, version mismatch）
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002「分级召回干预机制」—— **全部测试通过**
+- **实现质量**: 高 — 全程零新增依赖，零构建体积增长
+- **关键决策**:
+  - InterventionLevel type (low/medium/high/critical) 和 InterventionAction type (none/toast/banner/modal) 清晰分离关注点
+  - useChurnIntervention hook 通过 snooze/localStorage 实现干预静默，尊重用户体验
+  - InterventionPanel 作为 modal 在 critical 风险时触发，banner 在 high 风险时触发，toast 在 medium 风险时触发
+  - App.tsx 集成使用 showInterventionPanel 条件渲染，不增加 App.tsx 复杂度
+- **重构**: 无（零新增组件，零逻辑重构）
+- **观察**: epic-058 iter-002 全程零新增依赖。1996 测试零回归。**epic-058 还有 2 个迭代（iter-003~004），继续推进**

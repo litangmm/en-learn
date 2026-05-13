@@ -183,6 +183,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 提案者 + 首个迭代完成）
 - **观察**: epic-058 是 PM-Growth「用户来了做什么 + 用户不来怎么办」留存闭环的关键组成部分——epic-036(用户召回)+epic-037(目标设定)+epic-029(成就系统)完成了「用户来了做什么」，epic-058 补充了「用户不来怎么办」。5 种流失信号（目标偏移/准确率下降/连击断档/复习积压/活跃消失）利用已有数据（useGoals/XP/reviewStreak/spacedRepetition/history），零新增依赖。epic-058 还有 3 个迭代（iter-002 分级召回干预/iter-003 召回效果追踪/iter-004 流失预警看板），继续推进中
 
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— **提案者 + 全程推进**
+- **结果**: epic-058 iter-002 **完成并部署**，v0.75.0，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionLevel type (low/medium/high/critical) + InterventionAction type (none/toast/banner/modal) + useChurnIntervention hook (getInterventionLevel/getInterventionActions/getRecommendedAction, snooze/localStorage) + InterventionPanel component (modal/severity styling/snooze/action buttons) + App.tsx integration (showInterventionPanel when riskLevel >= medium) + 44 tests (useChurnIntervention 25 + InterventionPanel 9 + App.churn-intervention 6) + 21 App test mocks 更新
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 提案者，2/4 迭代完成）
+- **观察**: iter-002 完美体现 PM-Growth「留存闭环」理念——分级干预（toast/banner/modal 根据风险等级）让预警系统既不过度打扰用户，又能在必要时提供足够的干预力度。snooze 机制（24h/48h/1w）避免重复打扰，尊重用户体验。**epic-058 还有 2 个迭代（iter-003 召回效果追踪/iter-004 流失预警看板），继续推进中**
+
 ## 成功模式
 （由进化引擎自动总结）
 

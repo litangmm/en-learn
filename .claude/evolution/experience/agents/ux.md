@@ -237,3 +237,10 @@
 - **完成内容**: ChurnSignal types + useChurnSignals hook (5 signal types) + ChurnAlertBanner component (dismissible/severity styling) + App.tsx integration
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: ChurnAlertBanner 作为内联 Banner，不阻塞用户操作，符合 UX「不打断学习心流」原则。dismissible 设计允许用户主动关闭，避免流失预警在低风险情况下干扰用户体验。severity 分级（low/medium/high/critical）让预警视觉层次清晰。**epic-058 还有 3 个迭代（iter-002~004），继续支持**
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— 作为支持者
+- **结果**: epic-058 iter-002 **完成并测试通过**，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionPanel component (modal/severity styling/snooze/action buttons) + useChurnIntervention hook (snooze/localStorage) + App.tsx integration
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: InterventionPanel 的 severity 分级视觉设计（4 种颜色/图标/文案）让流失预警的视觉层次清晰，符合 UX 的「清晰信息层次」原则。snooze 按钮（24h/48h/1w）提供用户主动控制权，尊重用户体验。**epic-058 还有 2 个迭代（iter-003~004），继续支持**

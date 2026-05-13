@@ -273,3 +273,10 @@
 
 ## 改进方向
 （由进化引擎自动总结）
+
+### 2026-05-13 (cycle-2026-05-13-186) — epic-058 iter-002 完成 (1996 tests, 历史最高水位)
+- **相关 Epic**: epic-058 iter-002「分级召回干预机制」—— 作为支持者
+- **结果**: epic-058 iter-002 **完成并测试通过**，1996/2001 测试通过（5 skipped，历史最高水位）
+- **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook + InterventionPanel component + App.tsx integration + 44 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
+- **观察**: iter-002 全程零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。useChurnIntervention hook 的 snooze/localStorage 模式与现有存储设计一致。**epic-058 还有 2 个迭代（iter-003~004），继续支持，持续关注架构健康度**

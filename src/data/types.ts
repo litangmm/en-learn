@@ -991,3 +991,73 @@ export interface ChurnAssessment {
   /** Recommendation action based on risk level */
   recommendedAction?: string;
 }
+
+// ============================================================================
+// Churn Intervention Types (epic-058 iter-002)
+// ============================================================================
+
+/**
+ * Intervention level based on churn risk.
+ * Determines the urgency and type of intervention to apply.
+ */
+export type InterventionLevel = 'low' | 'medium' | 'high' | 'critical';
+
+/**
+ * Intervention action types.
+ * Defines what kind of UI component or action to trigger.
+ */
+export type InterventionAction =
+  | 'none'      // No intervention needed
+  | 'toast'     // Light toast notification
+  | 'banner'    // Dismissible banner (already exists as ChurnAlertBanner)
+  | 'modal';    // Full modal with detailed message and actions
+
+/**
+ * Configuration for snooze behavior.
+ * Controls how long the intervention is temporarily dismissed.
+ */
+export interface SnoozeConfig {
+  /** Duration in milliseconds for snooze */
+  duration: number;
+  /** Label for snooze button */
+  label: string;
+}
+
+/**
+ * Default snooze durations in milliseconds.
+ */
+export const SNOOZE_DURATIONS = {
+  '24h': 24 * 60 * 60 * 1000,
+  '48h': 48 * 60 * 60 * 1000,
+  '1w': 7 * 24 * 60 * 60 * 1000,
+} as const;
+
+/**
+ * Default snooze configurations.
+ */
+export const DEFAULT_SNOOZE_OPTIONS: SnoozeConfig[] = [
+  { duration: SNOOZE_DURATIONS['24h'], label: '稍后提醒' },
+  { duration: SNOOZE_DURATIONS['48h'], label: '两天后再看' },
+  { duration: SNOOZE_DURATIONS['1w'], label: '下周再说' },
+];
+
+/**
+ * An intervention action to be taken.
+ * Contains all information needed to render and handle the intervention.
+ */
+export interface Intervention {
+  /** Unique identifier for this intervention */
+  id: string;
+  /** The intervention level */
+  level: InterventionLevel;
+  /** The action to take */
+  action: InterventionAction;
+  /** Personalized message based on risk level and signals */
+  message: string;
+  /** Call-to-action button text */
+  ctaText: string;
+  /** Available snooze options */
+  snoozeOptions: SnoozeConfig[];
+  /** Timestamp when this intervention was generated */
+  createdAt: number;
+}

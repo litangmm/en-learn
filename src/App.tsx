@@ -42,7 +42,9 @@ import { WeeklyReportCard } from '@/components/WeeklyReportCard';
 import { useAchievementMoment } from '@/hooks/useAchievementMoment';
 import { useWeeklyReport } from '@/hooks/useWeeklyReport';
 import { useChurnSignals } from '@/hooks/useChurnSignals';
+import { useChurnIntervention } from '@/hooks/useChurnIntervention';
 import { ChurnAlertBanner } from '@/components/ChurnAlertBanner';
+import { InterventionPanel } from '@/components/InterventionPanel';
 import { Toaster } from '@/components/ui/sonner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -173,13 +175,25 @@ function App() {
   const { completedGoal, triggerKey: goalTriggerKey, dismiss: dismissGoalCompletion } = useGoalCompletionNotifier();
 
   // Initialize useChurnSignals hook
-  const { riskLevel: churnRiskLevel, topRiskFactors: churnTopRiskFactors } = useChurnSignals({
+  const { riskLevel: churnRiskLevel, signals: churnSignals, topRiskFactors: churnTopRiskFactors } = useChurnSignals({
     history: storage.getHistory(),
     overdueCount: storage.getReviewQueueCount(),
     dailyGoalProgress: dailyGoals.map(g => ({ current: g.current, target: g.target })),
     weeklyGoalProgress: weeklyGoals.map(g => ({ current: g.current, target: g.target })),
     lastReviewDate: streakData.lastReviewDate,
     currentStreak: streakData.currentStreak,
+  });
+
+  // Initialize useChurnIntervention hook
+  const {
+    intervention: churnIntervention,
+    shouldShowPanel: showChurnPanel,
+    shouldShowBanner: showChurnBanner,
+    snooze: snoozeChurnIntervention,
+  } = useChurnIntervention({
+    riskLevel: churnRiskLevel,
+    signals: churnSignals,
+    topRiskFactors: churnTopRiskFactors,
   });
 
   // Helper: get daily questions goal progress for XPBar
@@ -768,12 +782,25 @@ function App() {
       {!(isFocusMode && view === 'practice' && !state.isComplete) && (
       <>
         {/* Churn Alert Banner */}
-        <ChurnAlertBanner
-          riskLevel={churnRiskLevel}
-          topRiskFactors={churnTopRiskFactors}
-          onDismiss={() => {}}
-          onEngage={handleRestart}
-        />
+        {showChurnBanner && (
+          <ChurnAlertBanner
+            riskLevel={churnRiskLevel}
+            topRiskFactors={churnTopRiskFactors}
+            onDismiss={() => {}}
+            onEngage={handleRestart}
+          />
+        )}
+
+        {/* Churn Intervention Panel */}
+        {showChurnPanel && churnIntervention && (
+          <InterventionPanel
+            intervention={churnIntervention}
+            onEngage={handleRestart}
+            onDismiss={() => {}}
+            onSnooze={snoozeChurnIntervention}
+            snoozeOptions={churnIntervention.snoozeOptions}
+          />
+        )}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Brand area - prevent compression with min-w-0 and flex-shrink-0 */}

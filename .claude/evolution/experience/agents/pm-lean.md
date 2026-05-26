@@ -216,6 +216,13 @@
 - **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展 + useLearnInsights.ts 扩展 + App.tsx 集成
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: iter-001 完美体现 MVP 思维——综合面板完全复用 AbilityRadar/ProgressTrend/LearnInsightPanel 已有组件，零新增依赖。abilityModeAccuracy 和 trendData 完全从现有 storage 数据派生，无需新增存储。HealthGauge 作为独立组件，职责单一。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注数据聚合对 localStorage 读写压力的影响**
+### 2026-05-27 (cycle-2026-05-27-201) — epic-083 iter-003 完成 (2616 tests, 历史最高水位)
+- **提案 Epic**: epic-083「个人学习数据深度挖掘与复用」—— **提案者 + 3/4 iterations 完成**
+- **结果**: epic-083 iter-003 **完成并部署**，v0.87.0，2616/2621 测试通过（5 skipped，历史最高水位）
+- **完成内容**: usePersonalDictionaryStats hook（词数/掌握度/标记时间分析）+ PersonalDictionaryStatsPanel 组件（6 种效率指标卡片）+ 61 个新增测试全通过
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 提案者）
+- **观察**: iter-003 完美体现 PM-Lean MVP 思维——个人词库效率分析完全复用 PersonalWordIndex（epic-043 iter-004）和 PersonalWord marked 标记（epic-009 iter-003），零新增依赖、零新增存储。6 种效率指标（词数/掌握度/掌握等级分布/平均间隔/最长未复习/高错误率词）完全基于 localStorage 数据派生，无需修改任何数据存储。**epic-083 完成度 3/4，剩余 iter-004（遗忘曲线可视化），继续推进，iter-004 可复用 useSpacedRepetition 的 nextReviewAt 数据**
+
 ### 2026-05-27 (cycle-2026-05-27-200) — epic-083 iter-001 完成 (2549 tests)
 - **提案 Epic**: epic-083「个人学习数据深度挖掘与复用」—— **提案者**
 - **结果**: epic-083 iter-001 **完成并部署**，v0.85.0，2549/2549 测试通过

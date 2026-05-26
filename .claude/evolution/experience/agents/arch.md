@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-27 (cycle-2026-05-27-201) — epic-083 iter-003 支持完成 (2616 tests, 历史最高水位)
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: epic-083 iter-003 **完成并部署**，v0.87.0，2616/2621 测试通过（5 skipped，历史最高水位）
+- **完成内容**: usePersonalDictionaryStats hook + PersonalDictionaryStatsPanel 组件（6 种效率指标卡片）+ 61 个新增测试全通过
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: epic-083 iter-003 复用 PersonalWordIndex（epic-043 iter-004）的架构基础设施，以最小侵入方式扩展个人词库效率分析。6 种效率指标完全基于 localStorage 数据派生，零新增存储设计。**epic-083 完成度 3/4，剩余 iter-004（遗忘曲线可视化），继续支持，关注 useSpacedRepetition 的 nextReviewAt 数据复用**
+
 ### 2026-05-27 (cycle-2026-05-27-200) — epic-083 iter-001 完成
 - **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
 - **结果**: epic-083 iter-001 **完成并部署**，v0.85.0，2549/2549 测试通过

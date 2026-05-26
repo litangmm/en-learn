@@ -1,4 +1,4 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -26,6 +26,7 @@ interface MoreMenuProps {
   onOpenWeakness: () => void;
   onOpenInvite?: () => void;
   onOpenGoals?: () => void;
+  onOpenChurnDashboard?: () => void;
 }
 
 export function MoreMenu({
@@ -46,6 +47,7 @@ export function MoreMenu({
   onOpenWeakness,
   onOpenInvite,
   onOpenGoals,
+  onOpenChurnDashboard,
 }: MoreMenuProps) {
   return (
     <DropdownMenu>
@@ -137,6 +139,14 @@ export function MoreMenu({
           <TrendingUp className="w-4 h-4 text-slate-500" />
           <span>排行</span>
         </DropdownMenuItem>
+
+        {/* 流失预警看板 */}
+        {onOpenChurnDashboard && (
+          <DropdownMenuItem onClick={onOpenChurnDashboard} className="cursor-pointer" data-testid="menuitem-churn-dashboard">
+            <ShieldAlert className="w-4 h-4 text-red-500" />
+            <span>流失预警看板</span>
+          </DropdownMenuItem>
+        )}
 
         {/* 学习目标 */}
         {onOpenGoals && (

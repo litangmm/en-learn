@@ -915,6 +915,7 @@ function App() {
                 onOpenWeakness={handleOpenWeakness}
                 onOpenInvite={handleOpenInvite}
                 onOpenGoals={handleOpenGoals}
+                onOpenChurnDashboard={() => setView('churn-dashboard')}
               />
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
@@ -1154,6 +1155,7 @@ function App() {
           goals={goalsState.goals}
           onSaveGoals={handleSaveGoals}
           onBackFromGoals={handleBackFromGoals}
+          onBackFromChurnDashboard={() => setView('practice')}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {view === 'practice' && !state.isComplete && (
@@ -1294,6 +1296,7 @@ function App() {
           historyCount={historyCount}
           reviewDueCount={reviewDueCount}
           weaknessCount={weaknessStats.totalWeakCount}
+          criticalRiskCount={churnRiskLevel === 'critical' ? 1 : 0}
         />
       )}
 

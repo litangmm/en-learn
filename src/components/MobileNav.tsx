@@ -1,4 +1,4 @@
-import { Headphones, BookOpen, History, Database, Award, TrendingUp, BarChart3, AlertTriangle } from 'lucide-react';
+import { Headphones, BookOpen, History, Database, Award, TrendingUp, BarChart3, AlertTriangle, ShieldAlert } from 'lucide-react';
 import type { View } from './routing';
 
 interface MobileNavProps {
@@ -8,6 +8,7 @@ interface MobileNavProps {
   historyCount?: number;
   reviewDueCount?: number;
   weaknessCount?: number;
+  criticalRiskCount?: number;
 }
 
 const NAV_ITEMS: { id: View; label: string; icon: typeof Headphones }[] = [
@@ -19,6 +20,7 @@ const NAV_ITEMS: { id: View; label: string; icon: typeof Headphones }[] = [
   { id: 'badges', label: '成就', icon: Award },
   { id: 'leaderboard', label: '排行', icon: TrendingUp },
   { id: 'weakness', label: '薄弱', icon: AlertTriangle },
+  { id: 'churn-dashboard', label: '预警', icon: ShieldAlert },
 ];
 
 export function MobileNav({
@@ -28,6 +30,7 @@ export function MobileNav({
   historyCount = 0,
   reviewDueCount = 0,
   weaknessCount = 0,
+  criticalRiskCount = 0,
 }: MobileNavProps) {
   const getBadge = (id: View) => {
     if (id === 'mistake-book' && mistakeCount > 0) {
@@ -55,6 +58,13 @@ export function MobileNav({
       return (
         <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
           {weaknessCount > 99 ? '99+' : weaknessCount}
+        </span>
+      );
+    }
+    if (id === 'churn-dashboard' && criticalRiskCount > 0) {
+      return (
+        <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 bg-red-500 text-white text-[10px] font-medium rounded-full flex items-center justify-center">
+          {criticalRiskCount > 99 ? '99+' : criticalRiskCount}
         </span>
       );
     }

@@ -19,6 +19,7 @@ import { WeaknessPanel } from '@/components/WeaknessPanel';
 import { LearningEfficiencyPanel } from '@/components/LearningEfficiencyPanel';
 import { InviteFriendsPanel } from '@/components/InviteFriendsPanel';
 import { GoalSettingPanel } from '@/components/GoalSettingPanel';
+import { ChurnWarningDashboard } from '@/components/ChurnWarningDashboard';
 
 export type View =
   | 'practice'
@@ -35,7 +36,8 @@ export type View =
   | 'leaderboard'
   | 'dictionary-browser'
   | 'invite'
-  | 'goals';
+  | 'goals'
+  | 'churn-dashboard';
 
 export interface ViewRouterProps {
   view: unknown;
@@ -79,6 +81,8 @@ export interface ViewRouterProps {
   goals?: Goal[];
   onSaveGoals: (_goals: Goal[]) => void;
   onBackFromGoals: () => void;
+  // ChurnWarningDashboard
+  onBackFromChurnDashboard?: () => void;
 }
 
 export function ViewRouter(props: ViewRouterProps) {
@@ -112,6 +116,7 @@ export function ViewRouter(props: ViewRouterProps) {
     goals,
     onSaveGoals,
     onBackFromGoals,
+    onBackFromChurnDashboard = () => {},
   } = props;
 
   switch (view) {
@@ -198,6 +203,9 @@ export function ViewRouter(props: ViewRouterProps) {
           onBack={onBackFromGoals}
         />
       );
+
+    case 'churn-dashboard':
+      return <ChurnWarningDashboard onBack={onBackFromChurnDashboard} />;
 
     case 'practice':
     default:

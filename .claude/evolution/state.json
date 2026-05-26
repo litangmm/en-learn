@@ -171,13 +171,16 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "COMMIT",
-  "commit": null,
+  "status": "DEPLOY",
+  "commit": "b5e7cb7",
   "cycleCount": 198,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": {
+  "currentCycle": {
+    "id": "2026-05-27-200",
+    "mode": "vision",
+    "stage": "COMMIT"
+  },
     "id": "2026-05-27-198",
     "mode": "vision",
     "stage": "PLAN"

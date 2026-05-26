@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics, ModeStats, PracticeMode } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics, ModeStats, PracticeMode, AdaptiveQuestionContext } from '@/data/types';
 import { MILESTONE_DEFINITIONS, DEFAULT_CHURN_METRICS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
@@ -45,6 +45,7 @@ const MILESTONES_KEY = 'en-learn-milestones';
 const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
 const CHURN_METRICS_KEY = 'en-learn-churn-metrics';
 const MODE_STATS_KEY = 'en-learn-mode-stats';
+const ADAPTIVE_QUESTION_CONTEXT_KEY = 'en-learn-adaptive-context';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -471,6 +472,97 @@ function isValidPersonalDictionary(data: unknown): data is PersonalDictionary {
   return true;
 }
 
+// ---------------------------------------------------------------------------
+// Adaptive Question Context Validator (epic-085 iter-001)
+// ---------------------------------------------------------------------------
+
+/**
+ * Default empty adaptive question context.
+ */
+const DEFAULT_ADAPTIVE_QUESTION_CONTEXT: AdaptiveQuestionContext = {
+  totalXP: 0,
+  currentLevel: 1,
+  currentStreak: 0,
+  mistakes: [],
+  weaknesses: [],
+  recommendations: [],
+  flowState: 'normal',
+  fatigueSignals: [],
+  updatedAt: Date.now(),
+};
+
+function isValidAdaptiveQuestionContext(data: unknown): data is AdaptiveQuestionContext {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.totalXP !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.currentLevel !== 'number' || obj.currentLevel < 1) {
+    return false;
+  }
+
+  if (typeof obj.currentStreak !== 'number' || obj.currentStreak < 0) {
+    return false;
+  }
+
+  if (!Array.isArray(obj.mistakes)) {
+    return false;
+  }
+
+  // Verify all mistakes are valid using isValidMistake
+  if (!obj.mistakes.every((m) => isValidMistake(m))) {
+    return false;
+  }
+
+  // weaknesses is optional; if present, must be an array
+  if (obj.weaknesses !== undefined && !Array.isArray(obj.weaknesses)) {
+    return false;
+  }
+
+  // recommendations is optional; if present, must be an array
+  if (obj.recommendations !== undefined && !Array.isArray(obj.recommendations)) {
+    return false;
+  }
+
+  // flowState must be one of the allowed values
+  if (obj.flowState !== 'focused' && obj.flowState !== 'normal' && obj.flowState !== 'fatigued') {
+    return false;
+  }
+
+  // fatigueSignals is optional; if present, must be an array of valid fatigue signal objects
+  if (obj.fatigueSignals !== undefined) {
+    if (!Array.isArray(obj.fatigueSignals)) {
+      return false;
+    }
+    for (const signal of obj.fatigueSignals) {
+      if (typeof signal !== 'object' || signal === null) {
+        return false;
+      }
+      const s = signal as Record<string, unknown>;
+      if (s.type !== 'accuracy' && s.type !== 'consecutive_errors' && s.type !== 'speed') {
+        return false;
+      }
+      if (typeof s.description !== 'string') {
+        return false;
+      }
+      if (typeof s.severity !== 'number') {
+        return false;
+      }
+    }
+  }
+
+  if (typeof obj.updatedAt !== 'number') {
+    return false;
+  }
+
+  return true;
+}
+
 function isValidDailyReviewStats(data: unknown): data is DailyReviewState {
   if (typeof data !== 'object' || data === null) {
     return false;
@@ -851,6 +943,42 @@ function savePersonalWords(words: PersonalWord[]): void {
     localStorage.setItem(PERSONAL_WORDS_KEY, JSON.stringify(words));
   } catch (error) {
     console.warn('[StorageService] Failed to save personal words:', error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Adaptive Question Context Load/Save (epic-085 iter-001)
+// ---------------------------------------------------------------------------
+
+function loadAdaptiveQuestionContext(): AdaptiveQuestionContext {
+  const raw = localStorage.getItem(ADAPTIVE_QUESTION_CONTEXT_KEY);
+  if (raw === null) {
+    return { ...DEFAULT_ADAPTIVE_QUESTION_CONTEXT, updatedAt: Date.now() };
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted adaptive question context data, clearing');
+    localStorage.removeItem(ADAPTIVE_QUESTION_CONTEXT_KEY);
+    return { ...DEFAULT_ADAPTIVE_QUESTION_CONTEXT, updatedAt: Date.now() };
+  }
+
+  if (isValidAdaptiveQuestionContext(parsed)) {
+    return parsed;
+  }
+
+  console.warn('[StorageService] Invalid adaptive question context schema, clearing');
+  localStorage.removeItem(ADAPTIVE_QUESTION_CONTEXT_KEY);
+  return { ...DEFAULT_ADAPTIVE_QUESTION_CONTEXT, updatedAt: Date.now() };
+}
+
+function _saveAdaptiveQuestionContext(ctx: AdaptiveQuestionContext): void {
+  try {
+    localStorage.setItem(ADAPTIVE_QUESTION_CONTEXT_KEY, JSON.stringify(ctx));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save adaptive question context:', error);
   }
 }
 
@@ -2119,6 +2247,30 @@ export const StorageService = {
 
     this.saveModeStats(current);
     return current;
+  },
+
+  // ---------------------------------------------------------------------------
+  // Adaptive Question Context (epic-085 iter-001)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Gets the adaptive question context from storage.
+   * Returns default context if none exists or data is corrupted.
+   */
+  getAdaptiveQuestionContext(): AdaptiveQuestionContext {
+    return loadAdaptiveQuestionContext();
+  },
+
+  /**
+   * Saves the adaptive question context to storage.
+   * Updates the updatedAt timestamp automatically.
+   */
+  saveAdaptiveQuestionContext(ctx: AdaptiveQuestionContext): void {
+    const updated: AdaptiveQuestionContext = {
+      ...ctx,
+      updatedAt: Date.now(),
+    };
+    _saveAdaptiveQuestionContext(updated);
   },
 
   exportAllData(): ExportData {

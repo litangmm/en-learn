@@ -1438,6 +1438,39 @@ export const DEFAULT_LEARN_INSIGHT_DATA: LearnInsightData = {
   lastUpdated: Date.now(),
 };
 
+// ============================================================================
+// Adaptive Learning Types (epic-085 iter-001)
+// ============================================================================
+
+/**
+ * User's learning state context for adaptive question selection.
+ * Aggregates data from multiple learning data sources.
+ */
+export interface AdaptiveQuestionContext {
+  /** Total XP the user has accumulated */
+  totalXP: number;
+  /** Current user level */
+  currentLevel: number;
+  /** Current learning streak (consecutive correct answers) */
+  currentStreak: number;
+  /** All mistakes/missteps recorded */
+  mistakes: Mistake[];
+  /** Detected weaknesses (optional, derived from mistakes) */
+  weaknesses?: Weakness[];
+  /** All practice recommendations for the user */
+  recommendations?: PracticeRecommendation[];
+  /** Current flow state: 'focused' | 'normal' | 'fatigued' */
+  flowState: 'focused' | 'normal' | 'fatigued';
+  /** Fatigue signals for detailed state info */
+  fatigueSignals?: Array<{
+    type: 'accuracy' | 'consecutive_errors' | 'speed';
+    description: string;
+    severity: number;
+  }>;
+  /** Timestamp when this context was last updated */
+  updatedAt: number;
+}
+
 /**
  * Learning report type representing the health report to be generated and shared.
  * This is the final deliverable of epic-069 iter-004.

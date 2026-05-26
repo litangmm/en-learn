@@ -3,6 +3,48 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-26-193",
+      "mode": "tech-review",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "BRAINSTORM 阶段完成（tech-review mode）。9 个 Epic 候选（epic-081~epic-089），epic-086「组件库体积审计与 Tree-Shaking 优化」当选（ARCH 提出，PM-Mon/PM-UX/QA/PM-Growth 支持，4 支持最高）。epic-082「练习卡片疲劳度分级与智能降难机制」(4 支持)、epic-083「构建体积实时监控与回归告警系统」(4 支持) 列为备选。2253 测试历史最高水位，零回归。epic-069 完成度 2/4，iter-003~004 pending，run.sh 将自动检测并继续 PLAN（iter-003）或在下轮 cycle 完成后选择 epic-086 执行。"
+    },
+    {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-069 iter-002「能力雷达图与趋势折线图深度联动」收官：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests（历史最高水位）+ Build 3.42s + Lint 0 errors + v0.80.0 部署成功。epic-069 完成度 2/4，剩余 iter-003（薄弱模式诊断）+ iter-004（学习健康报告生成）pending。run.sh 将自动检测并继续 PLAN（iter-003）。epic-078「App.tsx 视图路由配置中心重构」（4 支持：ARCH/PM-UX/QA/PM-Mon）作为下次 BRAINSTORM 候选。"
+    },
+    {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.44s 通过，Vercel 部署成功（https://en-learn-e1mi8y3n9-litangmms-projects.vercel.app），创建 git tag v0.80.0（c75e7af）。git push --tags 因网络错误失败，下次运行自动重试。epic-069 完成度 2/4，iter-002 全部完成，版本范围 v0.79.0-v0.80.0，准备进入 REPORT 阶段。"
+    },
+    {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "IMPLEMENT 阶段完成。epic-069 iter-002「能力雷达图与趋势折线图深度联动」收官：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests 零回归（历史最高水位），Build 3.42s，Lint 0 errors。epic-069 完成度 2/4，iter-002 全部完成，准备进入 TEST 阶段。"
+    },
+    {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "TEST 阶段完成。2253 单元测试零回归（5 skipped, 28.30s），Build 3.66s（比上轮 3.42s +0.24s），Lint 0 errors。epic-069 完成度 2/4，iter-002「能力雷达图与趋势折线图深度联动」测试通过，准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "COMMIT 阶段完成。源码已提交 cee955c（epic-069 iter-002 能力雷达图与趋势折线图深度联动：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests），文档已提交 c75e7af（agent experiences + history）。2253 测试零回归（历史最高水位），Build 3.42s，Lint 0 errors。epic-069 完成度 2/4，iter-002 全部完成，准备进入 DEPLOY 阶段。"
+    },
+    {
       "id": "2026-05-26-191",
       "mode": "vision",
       "stage": "BRAINSTORM",
@@ -728,220 +770,364 @@
       "stage": "REPORT",
       "status": "completed",
       "summary": "epic-029 iter-005 学习数据可视化完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + ProgressHub集成。1381 测试零回归，v0.53.0 部署成功。"
+    },
+    {
+      "id": "2026-05-26-193",
+      "mode": "tech-review",
+      "stage": "TECH_REVIEW",
+      "status": "completed",
+      "summary": "TECH_REVIEW 阶段完成。扫描结果：Lint 零 errors（上次 0），TypeScript 零 type errors（上次 0），2253 测试零回归（上次 2197→本次 2253 +56）。Build 3.62s 通过（上次 3.66s→本次 3.62s -0.04s）。无未使用导入，无 any 类型使用（仅 2 处 test mock + 1 处注释，均为合法），无硬编码问题。7 个 complexity warnings 保持（App 60, PracticeCard 42, ViewRouter 25, useFlowState 21, storage 23/26/32），为核心文件，暂不处理。技术债务基线：lint errors 0，unused vars 0，type errors 0，any usage 0。准备进入 BRAINSTORM 阶段，候选 Epic：epic-078（App.tsx 视图路由配置中心重构）等。",
+      "completedAt": "2026-05-26T14:07:41.331Z"
     }
   ],
   "brainstormResults": [
     {
-      "id": "epic-063",
-      "title": "学习数据深度洞察与智能学习报告",
-      "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分（记忆保持/遗忘曲线/薄弱点攻克）。将所有学习洞察汇聚于一处，形成「学习健康报告」，让用户对自己的学习状态有全局感知。",
-      "proposedBy": "PM-Growth",
+      "id": "epic-086",
+      "title": "组件库体积审计与 Tree-Shaking 优化",
+      "description": "当前 App.tsx complexity 达到 60（接近可维护性临界点），PracticeCard 42，ViewRouter 25。每次新增 Epic（epic-069 的 LearnInsightDashboard、epic-058 的 ChurnWarningDashboard）都在累积 App.tsx 复杂度。在引入下一个用户可见 Epic 之前，必须做一次全面的组件库审计：清理死代码、验证 Tree-Shaking、建立 complexity 基线。这是 tech-review 模式的核心任务，为后续 Epic 创建安全空间。",
+      "proposedBy": "ARCH",
       "supportedBy": [
-        "PM-UX",
-        "PM-Lean",
         "PM-Mon",
-        "UX",
+        "PM-UX",
         "QA",
-        "EXP"
+        "PM-Growth"
       ],
-      "concerns": "Dashboard 数据聚合可能增加 localStorage 读写压力；多数据源整合复杂度高；需避免信息过载",
+      "concerns": "静态分析可能发现大量死代码（需要清理时间）；Tree-Shaking 验证可能需要重构部分导出模式；但清理后的代码为后续 Epic 创造安全空间，长期收益大于短期工作量",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 综合学习洞察面板",
+          "title": "iter-001: 组件库全面审计",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 能力雷达图与趋势折线图深度联动",
+          "title": "iter-002: 未使用代码清理",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 薄弱模式诊断与个性化建议",
+          "title": "iter-003: Tree-Shaking 验证",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-004: 学习健康报告生成与分享",
+          "title": "iter-004: 代码分割策略优化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 组件复杂度基线建立",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-006: 审计报告与趋势看板",
           "scope": "frontend-only"
         }
       ]
     },
     {
-      "id": "epic-064",
-      "title": "交互式学习路径可视化向导",
-      "description": "epic-043 的 DictionaryIndex 和 PersonalWordIndex、epic-055 的个人词库、epic-028 的间隔重复调度共同构成了学习路径的「导航基础设施」。用户需要一个交互式路径图：看到自己从「新词→熟悉→掌握→复习」的完整旅程，可视化标记自己在各阶段的当前位置，智能推荐下一步应该攻克哪些词。这是从「被动复习」到「主动规划」的关键升级。",
+      "id": "epic-082",
+      "title": "练习卡片疲劳度分级与智能降难机制",
+      "description": "epic-030 的 FlowState 感知疲劳，但没有「降难度」机制——用户疲劳时仍然面对同样难度，容易产生挫败感。应该在用户连续答错 2 题时自动降低干扰项难度，在连续答错 4 题时降低题目类型，从 sentence-reorder 降级到 dictation，从 dictation 降级到 multiple-choice。",
       "proposedBy": "PM-UX",
       "supportedBy": [
-        "UX",
         "PM-Growth",
+        "UX",
         "EXP"
       ],
-      "concerns": "路径图交互复杂度高；节点太多时可能混乱；需要清晰的信息层次设计",
-      "priority": "medium",
+      "concerns": "降难度可能让用户感到被「轻视」；需要微妙的 UI 设计让用户感知到「系统在帮助我」而非「系统在降低难度」；降难度阈值需要通过 A/B 测试验证",
+      "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 学习路径图数据结构设计",
+          "title": "iter-001: 练习难度等级定义",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 交互式路径图 UI 实现",
+          "title": "iter-002: 连续错题自动降难度 Hook",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 当前位置标记与下一步推荐",
+          "title": "iter-003: 降难度 UI 提示",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-004: 路径可视化集成与优化",
+          "title": "iter-004: 降难度效果追踪",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 疲劳-降难度联动",
           "scope": "frontend-only"
         }
       ]
     },
     {
-      "id": "epic-065",
-      "title": "智能自适应学习节奏优化引擎",
-      "description": "epic-030 的 FlowState 和 Pomodoro、epic-028 的间隔重复、epic-055 的个人词库已各自运行。用户需要一个统一的「学习节奏优化器」：根据当前疲劳度（FlowState）、复习紧迫度（spaced repetition）、个人词库大小（epic-055）、历史答题节奏，自动推荐「今天应该练多久、练什么、什么时候休息」。从数据孤岛到智能整合，实现「学习节奏自适应」。",
-      "proposedBy": "EXP",
+      "id": "epic-083",
+      "title": "构建体积实时监控与回归告警系统",
+      "description": "当前 TECH_REVIEW 手动检查构建体积，但无法在日常开发中自动监控。应该建立构建体积基准线（当前约 3.6s build），在 PR/commit 时自动检测体积变化，超过阈值自动告警。Vercel 的流量成本与包体积正相关，这是将「性能变现」的第一步。",
+      "proposedBy": "PM-Mon",
       "supportedBy": [
-        "PM-UX",
+        "ARCH",
         "PM-Lean",
         "QA"
       ],
-      "concerns": "多系统数据整合复杂度高；节奏推荐可能与用户习惯冲突；需要可量化的效果验证",
-      "priority": "high",
+      "concerns": "CI hook 集成需要修改 git hooks 或 CI 配置；告警阈值需要持续调优；Bundle Analyzer 可能增加 CI 时间",
+      "priority": "medium-high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 学习节奏数据聚合层",
+          "title": "iter-001: 构建体积基准线建立",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 智能节奏推荐算法",
+          "title": "iter-002: CI hook 集成",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 节奏可视化与用户控制",
+          "title": "iter-003: 告警阈值配置",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-004: 节奏优化效果追踪",
+          "title": "iter-004: 体积趋势看板",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: Bundle Analyzer 集成",
           "scope": "frontend-only"
         }
       ]
     },
     {
-      "id": "epic-066",
-      "title": "学习数据隐私保护与本地化存储安全",
-      "description": "随着 localStorage 数据量增长（session/mistakes/history/XP/goals/churnSignals/reviewStreak 等 20+ 个 key），数据安全成为刚需。加密存储（用户可设密码保护学习数据）、数据导出加密（导出文件可加密）、导入验证增强（防止损坏数据污染存储）、本地存储容量监控与告警，保护用户学习数据的私密性和完整性。",
-      "proposedBy": "PM-Eco",
+      "id": "epic-089",
+      "title": "AI 个性化自适应出题引擎 v2",
+      "description": "epic-055 的个人词库和 epic-069 的 abilityModeAccuracy 为 AI 出题提供了数据基础。在现有 useAdaptivePractice 基础上引入「用户能力画像」——根据用户在「听/说/读/写/词」五个维度的表现，动态调整出题权重。能力弱的维度自动增加出题频率，能力强的维度降低出题频率。",
+      "proposedBy": "EXP",
       "supportedBy": [
-        "PM-Mon",
-        "QA",
+        "PM-UX",
         "ARCH"
       ],
-      "concerns": "加密会增加性能开销；用户可能忘记密码；需简洁的恢复机制",
+      "concerns": "能力画像的更新算法需要持续调优；A/B 测试需要足够大的样本量才能验证效果；「AI 出题」可能增加用户对「黑盒算法」的信任问题",
       "priority": "medium",
       "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 数据加密存储方案",
+          "title": "iter-001: 用户能力画像数据结构",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 加密导出与密码保护",
+          "title": "iter-002: 基于 abilityModeAccuracy 的出题权重算法",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 数据完整性验证与修复",
+          "title": "iter-003: 能力画像更新 Hook",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-004: 存储容量监控与告警",
+          "title": "iter-004: 能力画像可视化",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: A/B 测试框架",
           "scope": "frontend-only"
         }
       ]
     },
     {
-      "id": "epic-067",
-      "title": "多语言学习支持与本地化扩展",
-      "description": "当前产品仅支持中文界面，但用户群可能包括想学英语的外国人。产品架构应具备多语言扩展能力：界面文案国际化（中文/英文切换）、词典多语言支持（英汉/英英/汉英）、学习报告多语言生成。多语言支持也是「开放生态」PM-Eco 的长期愿景的技术基础。",
+      "id": "epic-084",
+      "title": "epic-055 个人词库续：智能干扰项池增强",
+      "description": "epic-055 iter-001 完成了个人生词复习模式，但 iter-002「智能干扰项池」一直没有进展。个人词库的价值在于「自己的错题」能生成最精准的干扰项——同义词混淆、历史错误选项复用、相似拼写词干扰。以 MVP 方式快速验证：先复用现有 useAdaptivePractice 的干扰项逻辑，仅扩展个人词库专用干扰项池。",
+      "proposedBy": "PM-Lean",
+      "supportedBy": [
+        "PM-Eco",
+        "QA"
+      ],
+      "concerns": "历史 pending 的 epic-055 iterations 积压降低团队对 MVP 交付的信心；干扰项池的算法调优需要测试数据支持",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "iter-001: 个人词库专用干扰项数据结构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 干扰项生成算法 MVP",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 个人词库练习集成",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 干扰项效果 A/B 测试",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 干扰项质量反馈",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-081",
+      "title": "用户学习行为漏斗分析与优化",
+      "description": "当前产品有「学习洞察」但缺少「用户行为漏斗」——没有数据追踪用户从「打开 App → 开始练习 → 完成复习 → 离开」的完整路径。没有漏斗数据就无法优化用户旅程，无法回答「用户在哪一步流失最多」「哪个模式完成率最低」等增长关键问题。",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-Mon",
+        "PM-Lean"
+      ],
+      "concerns": "漏斗数据采集需要定义清晰的事件模型；tech-review 模式下非核心任务优先级降低",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "iter-001: 学习行为漏斗数据采集",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 漏斗可视化仪表盘",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 模式级完成率分析",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 漏斗优化建议引擎",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 漏斗数据导出与分享",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-085",
+      "title": "个人学习数据主权与导出增强",
+      "description": "epic-069 的 LearnInsightDashboard 已展示学习数据，但用户无法完整导出自已的数据。应该提供：全量学习数据 JSON 导出（含时间戳）、数据导入与恢复、跨设备数据迁移（通过加密 JSON 文件）。",
       "proposedBy": "PM-Eco",
       "supportedBy": [
-        "UX",
-        "PM-UX"
+        "PM-Growth",
+        "QA"
       ],
-      "concerns": "多语言维护成本高；界面翻译需要专业润色；需避免中文-centric 假设",
-      "priority": "low",
-      "estimatedEffort": "large",
+      "concerns": "全量数据导出涉及 20+ 个 localStorage key，数据量可能很大；加密 JSON 需要密钥管理；非 tech-review 核心任务",
+      "priority": "medium",
+      "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 界面文案国际化架构",
+          "title": "iter-001: 全量数据导出 JSON 格式设计",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 中英文切换与本地化组件",
+          "title": "iter-002: 数据导入与完整性验证",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 多语言词典数据格式扩展",
+          "title": "iter-003: 跨设备数据迁移",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-004: 多语言学习报告生成",
+          "title": "iter-004: 增量导出",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 数据导出记录",
           "scope": "frontend-only"
         }
       ]
     },
     {
-      "id": "epic-068",
-      "title": "学习成就等级体系重设计与精英徽章",
-      "description": "epic-029 的徽章系统已运行，但 12 枚徽章的阈值设计已无法满足高活跃用户的需求——部分用户已达到所有徽章，缺乏新的挑战目标。需要引入「精英等级」（大师/宗师/传说）和对应的「精英徽章」，为高活跃用户提供持续追求的空间，同时为普通用户提供「精英徽章」的长期视觉激励。",
-      "proposedBy": "UX",
+      "id": "epic-088",
+      "title": "跨浏览器兼容性测试矩阵",
+      "description": "当前测试仅在 Chromium 运行，但用户可能使用 Safari/Firefox/Edge。产品使用 Web Speech API，各浏览器语音支持差异大。需要在 Playwright 中建立多浏览器测试矩阵，并为语音 API 的浏览器差异添加 polyfill 或降级逻辑。",
+      "proposedBy": "QA",
       "supportedBy": [
-        "PM-Growth",
-        "PM-UX"
+        "ARCH"
       ],
-      "concerns": "精英等级可能让普通用户感到遥不可及；徽章数量增加需要避免视觉混乱；需要保留普通用户的成长空间",
+      "concerns": "Safari E2E 测试在 CI 中不稳定；多浏览器配置增加测试时间；Web Speech API polyfill 可能引入兼容性问题",
       "priority": "medium",
-      "estimatedEffort": "small",
+      "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 精英等级体系设计",
+          "title": "iter-001: 多浏览器 Playwright 配置",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 精英徽章设计与解锁条件",
+          "title": "iter-002: 核心功能跨浏览器冒烟测试",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: 精英徽章展示与成就展示集成",
+          "title": "iter-003: Web Speech API 浏览器差异检测",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 语音 API polyfill 或降级逻辑",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 兼容性测试报告生成",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-087",
+      "title": "新手引导流程重构与首次体验优化",
+      "description": "当前产品有 onboarding dialog，但 epic-055（个人词库）、epic-069（学习洞察面板）、epic-058（流失预警）等新功能增加后，新手引导没有同步更新。新用户可能「迷失」在众多功能入口中，不知道从哪里开始。需要基于 UX「清晰目标 + 即时进度」原则重构引导流程。",
+      "proposedBy": "UX",
+      "supportedBy": [],
+      "concerns": "UI 变更范围较大；需要与 onboarding 状态管理协调；非 tech-review 模式核心任务",
+      "priority": "low",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "iter-001: 新手引导用户旅程分析",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-002: 引导流程 MVP 重构",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-003: 进度条 + 完成标记",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-004: 引导跳过与重置",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "iter-005: 引导效果数据追踪",
           "scope": "frontend-only"
         }
       ]
     }
   ],
   "currentCycle": {
-    "id": "2026-05-26-191",
-    "mode": "vision",
-    "stage": "BRAINSTORM",
-    "startedAt": "2026-05-26T12:43:08.048Z",
-    "completedAt": "2026-05-26T12:50:00.000Z"
+    "id": "2026-05-26-193",
+    "mode": "tech-review",
+    "stage": "PLAN",
+    "startedAt": "2026-05-26T14:07:41.331Z"
   },
   "status": "PLAN",
   "nextMode": null,
-  "commit": "8a21948",
-  "docCommit": "666fee4",
-  "cycleCount": 190,
+  "commit": "cee955c",
+  "docCommit": "c75e7af",
+  "cycleCount": 192,
   "failedAttempts": 0,
-  "implementationStatus": "REPORT 阶段完成。epic-069 iter-001「综合学习洞察面板」收官，2197 测试零回归，Build 3.43s，v0.79.0 已部署。epic-069 完成度 1/4，剩余 iter-002~004 pending。run.sh 将自动检测 pending iterations 并继续 PLAN。",
-  "currentEpic": "epic-069",
+  "implementationStatus": "",
+  "currentEpic": {
+    "id": "epic-069",
+    "title": "学习数据孤岛打通与统一学习仪表盘",
+    "iterationsCount": 4,
+    "completedIterations": 2,
+    "pendingIterations": 2,
+    "currentIterationIndex": 2
+  },
   "pendingIterations": [
     {
       "id": "iter-002",
       "title": "能力雷达图与趋势折线图深度联动",
       "scope": "frontend-only",
-      "status": "pending"
+      "status": "completed"
     },
     {
       "id": "iter-003",
@@ -956,7 +1142,6 @@
       "status": "pending"
     }
   ],
-  "plan": null,
   "epicHistory": [
     {
       "id": "epic-069",
@@ -974,7 +1159,7 @@
           "id": "iter-002",
           "title": "能力雷达图与趋势折线图深度联动",
           "scope": "frontend-only",
-          "status": "pending"
+          "status": "completed"
         },
         {
           "id": "iter-003",
@@ -990,9 +1175,9 @@
         }
       ],
       "iterationsCount": 4,
-      "completedIterations": 0,
-      "pendingIterations": 4,
-      "currentIterationIndex": 0,
+      "completedIterations": 2,
+      "pendingIterations": 2,
+      "currentIterationIndex": 2,
       "createdAt": "2026-05-26T10:35:00.000Z",
       "proposedBy": "PM-Growth",
       "supportedBy": [
@@ -1306,15 +1491,15 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 2197,
+      "passed": 2253,
       "failed": 0,
       "skipped": 5,
-      "total": 2202,
-      "duration": "27.63s"
+      "total": 2258,
+      "duration": "28.30s"
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "E2E only runs on last iteration of epic. epic-069 has 3 more pending iterations (iter-002~004). Skipping E2E this cycle."
+      "reason": "E2E only runs on last iteration of epic. epic-069 has 2 more pending iterations (iter-003~004). Skipping E2E this cycle."
     },
     "lint": {
       "passed": true,
@@ -1323,7 +1508,7 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.43s (tsc + vite)"
+      "duration": "3.66s (tsc + vite)"
     }
   },
   "directives": {
@@ -1355,12 +1540,12 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-q6hw53awo-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-26T12:19:07.000Z",
-    "version": "v0.79.0",
-    "commit": "666fee4",
-    "iterationId": "iter-001",
-    "iterationTitle": "综合学习洞察面板",
+    "url": "https://en-learn-e1mi8y3n9-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-26T13:47:56.507Z",
+    "version": "v0.80.0",
+    "commit": "c75e7af",
+    "iterationId": "iter-002",
+    "iterationTitle": "能力雷达图与趋势折线图深度联动",
     "error": null
   },
   "pendingDeployment": false,
@@ -1368,29 +1553,17 @@
   "pendingCommit": null,
   "pendingIterationId": null,
   "pendingIterationTitle": null,
-  "lastRun": "2026-05-26T12:27:15.000Z",
+  "lastRun": "2026-05-26T13:50:33.000Z",
   "techReviewBaseline": {
     "lintWarnings": 0,
     "lintErrors": 0,
     "unusedImports": 0,
-    "complexityWarnings": 6,
+    "complexityWarnings": 7,
     "typeErrors": 0,
     "anyTypeUsage": 0,
     "suppressedWarnings": 17,
-    "buildDuration": "3.35s",
-    "note": "140 unused vars fixed in this cycle. 6 complexity warnings remain (App 56, PracticeCard 42, storage 23/24/26, useFlowState 21). All pre-existing suppressed warnings intentional."
+    "buildDuration": "3.62s",
+    "note": "2253 tests zero regression (+56 from last cycle). 7 complexity warnings remain (App 60, PracticeCard 42, ViewRouter 25, useFlowState 21, storage 23/26/32). All pre-existing suppressed warnings intentional."
   },
-  "selectedEpic": {
-    "id": "epic-078",
-    "title": "App.tsx 视图路由配置中心重构",
-    "description": "当前 App.tsx 管理着 20+ 个视图、10+ 种练习模式、专注模式、PWA、响应式断点等多个维度的条件渲染，复杂度已达 60（cyclomatic complexity）。随着 epic-069 的学习洞察面板（learn-insight-dashboard）等新视图持续叠加，App.tsx 已接近可维护性临界点。需要将视图路由配置完全外部化到 ViewRouter.tsx，实现声明式路由声明，将 App.tsx 从「状态机+视图渲染器」转变为纯粹的「数据驱动视图展示层」。",
-    "proposedBy": "ARCH",
-    "supportedBy": [
-      "PM-UX",
-      "QA",
-      "PM-Mon"
-    ],
-    "priority": "high",
-    "estimatedEffort": "medium"
-  }
+  "selectedEpic": null
 }

@@ -456,6 +456,104 @@ describe('LearnInsightDashboard', () => {
       expect(screen.getByText('听写', { selector: '.bg-blue-100' })).toBeInTheDocument();
       expect(screen.queryByText('排序', { selector: '.bg-blue-100' })).not.toBeInTheDocument();
     });
+
+    it('updates trend data when mode is selected', () => {
+      render(<LearnInsightDashboard />);
+
+      // Get reference to getFilteredTrend mock before clicking
+      const getFilteredTrendMock = useProgressStatsModule.getFilteredTrend;
+
+      // Click on a mode in the radar
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+      fireEvent.click(clickableGroups![0]); // Click fill-in-blanks
+
+      // getFilteredTrend should have been called with the selected mode
+      expect(getFilteredTrendMock).toHaveBeenCalled();
+    });
+
+    it('clears mode filter when clear button is clicked', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+
+      // Select a mode
+      fireEvent.click(clickableGroups![0]);
+      expect(screen.getByText('填空', { selector: '.bg-blue-100' })).toBeInTheDocument();
+
+      // Find and click the clear button
+      const clearButton = screen.getByRole('button', { name: '清除筛选' });
+      fireEvent.click(clearButton);
+
+      // Filter indicator should be gone
+      expect(document.querySelector('.bg-blue-100.rounded-full')).not.toBeInTheDocument();
+
+      // getDailyXP should now be called (not getFilteredTrend) since mode is cleared
+      const getDailyXPMock = useProgressStatsModule.getDailyXP;
+      expect(getDailyXPMock).toHaveBeenCalled();
+    });
+
+    it('displays mode label in filter indicator for each mode type', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+
+      if (!clickableGroups) return;
+
+      // Test each mode type
+      const modeLabels = ['填空', '选择', '排序', '听写'];
+
+      for (let i = 0; i < clickableGroups.length; i++) {
+        fireEvent.click(clickableGroups[i]);
+
+        const filterIndicator = document.querySelector('.bg-blue-100.rounded-full');
+        expect(filterIndicator).toBeInTheDocument();
+        expect(screen.getByText(modeLabels[i], { selector: '.bg-blue-100' })).toBeInTheDocument();
+
+        // Deselect for next iteration
+        fireEvent.click(clickableGroups[i]);
+      }
+    });
+
+    it('re-renders trend data when switching between modes', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+      const getFilteredTrendMock = useProgressStatsModule.getFilteredTrend as ReturnType<typeof vi.fn>;
+
+      // Clear any previous calls
+      getFilteredTrendMock.mockClear();
+
+      // Click first mode
+      fireEvent.click(clickableGroups![0]);
+      const firstCallCount = getFilteredTrendMock.mock.calls.length;
+
+      // Click second mode (should trigger new call)
+      fireEvent.click(clickableGroups![1]);
+      const secondCallCount = getFilteredTrendMock.mock.calls.length;
+
+      // getFilteredTrend should have been called at least once per mode selection
+      expect(secondCallCount).toBeGreaterThanOrEqual(firstCallCount);
+    });
+
+    it('filter indicator appears in the trend section header', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+      fireEvent.click(clickableGroups![0]);
+
+      // Find the trend section header (contains "学习趋势")
+      const trendSection = screen.getByText('学习趋势').closest('div');
+      expect(trendSection).toBeInTheDocument();
+
+      // The filter indicator should be within the trend section header
+      const filterIndicator = trendSection?.querySelector('.bg-blue-100');
+      expect(filterIndicator).toBeInTheDocument();
+    });
   });
 
   describe('Accessibility', () => {

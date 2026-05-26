@@ -14,6 +14,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 提案者）
 - **观察**: epic-079 iter-001 完成了 ViewRouter 注册中心模式的核心基础设施。ARCH 自 epic-006（cycle-38）「前端架构债务清理」提案以来持续追踪 App.tsx 复杂度问题，终于在 epic-079 中完成了声明式视图注册体系。VIEW_CONFIGS 单例源设计确保了所有视图元数据（id/title/i18nKey/icon/a11yRole）的单一来源，避免 App.tsx 中的硬编码字符串。ViewRegistryProvider 的架构允许后续视图动态注册/注销，为路由驱动式自适应学习状态机（epic-085）奠定基础。**epic-079 完成度 1/3，剩余 iter-002（完成全部视图迁移）+ iter-003（Schema 标准化，co-built with epic-086）继续推进**
 
+### 2026-05-27 (cycle-2026-05-27-197) — epic-079 iter-002 完成
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— **提案者**
+- **结果**: epic-079 iter-002 **完成并部署**，v0.83.0，4795 测试通过（历史最高水位）
+- **完成内容**: 移除 App.tsx 中 9 处 `view === 'practice'` 条件：错误边界（LoadingScreen/ErrorScreen/EmptyState）和 Header 控件（PracticeControls/PersonalPracticePanel/DictionarySelector）简化。FocusMode 条件保留（语义正确）。
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 提案者）
+- **观察**: epic-079 iter-002 清理了剩余 9 处 `view === 'practice'` 条件。关键决策：FocusMode 中的条件保留是正确的语义决策（FocusMode 仅在 practice 视图有意义）。从 iter-001（注册中心模式）到 iter-002（条件清理）完整推进，iter-003（Schema 标准化，co-built with epic-086）将是收官之作。**epic-079 完成度 2/3，剩余 iter-003 待 PLAN**
+
 ### 2026-05-13 (cycle-2026-05-13-155) — epic-043 iter-003 完成
 - **相关 Epic**: epic-043「词典数据架构升级与查询性能优化」—— **提案者**
 - **结果**: epic-043 iter-003 **完成并部署**，v0.66.0，1806/1807 测试通过（历史最高水位）

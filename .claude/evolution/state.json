@@ -225,12 +225,12 @@
   "currentCycle": {
     "id": "2026-05-26-189",
     "mode": "tech-review",
-    "stage": "TEST",
+    "stage": "COMMIT",
     "startedAt": "2026-05-26T08:57:00.000Z"
   },
-  "status": "TEST",
+  "status": "COMMIT",
   "nextMode": null,
-  "commit": "e8b6d0a",
+  "commit": "f11687b",
   "docCommit": "ffd3606",
   "cycleCount": 189,
   "failedAttempts": 0,

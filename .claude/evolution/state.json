@@ -14,7 +14,7 @@
       "mode": "tech-review",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "BRAINSTORM 阶段完成（tech-review 模式）。epic-058 全部 4 个迭代圆满收官（v0.74.0-v0.77.0）后，触发 tech-review 模式 brainstorm。5 个新 Epic 候选（epic-069~073），epic-069「学习数据深度洞察与智能仪表盘」当选（PM-Growth 提出，PM-UX/UX/EXP/QA/PM-Lean 支持，6 支持最高）。epic-071「智能学习节奏优化引擎」（EXP 提出，3 支持）和 epic-073「精英成就等级体系」（UX 提出，2 支持）列为备选。epic-063/064/065/066/067/068 为上轮遗留备选 Epic，本次已重新评估。2042 测试历史最高水位，零回归，持续 20+ cycle。"
+      "summary": "BRAINSTORM 阶段完成（tech-review 模式）。5 个新 Epic 候选（epic-074~079），epic-077「App.tsx 复杂度治理」当选（ARCH 提出，PM-UX/PM-Lean/QA/UX 支持，4 支持最高）。epic-074「构建性能监控与回归告警」（PM-Mon 提出，3 支持）和 epic-075「轻量存储层抽象」（PM-Lean 提出，3 支持）列为备选。epic-069 iter-002~004 已重新评估为备选（与 epic-077 并行）。2117 测试零回归。"
     },
     {
       "id": "2026-05-26-189",
@@ -152,80 +152,78 @@
   ],
   "brainstormResults": [
     {
-      "id": "epic-069",
-      "title": "学习数据深度洞察与智能仪表盘",
-      "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分（记忆保持/遗忘曲线/薄弱点攻克）。将所有学习洞察汇聚于一处，形成「学习健康报告」，让用户对自己的学习状态有全局感知。",
-      "proposedBy": "PM-Growth",
-      "supportedBy": ["PM-UX", "UX", "EXP", "QA", "PM-Lean"],
-      "concerns": "Dashboard 数据聚合可能增加 localStorage 读写压力；多数据源整合复杂度高；需避免信息过载；迭代链路需清晰可测",
+      "id": "epic-077",
+      "title": "App.tsx 复杂度治理",
+      "description": "App.tsx 1403 行、PracticeCard 440 行，6 个 complexity warnings 累积 20+ cycle。每次新功能迭代都在臃肿的基础上叠加复杂度，导致构建时间从 3.36s 增长到 11.30s。需要拆分视图路由配置中心（App.tsx 56 → 目标 < 30）、组件拆分（PracticeCard 440 → 目标 < 100）、存储层统一接口（storage 23/24/26 warnings），为后续所有 Epic 奠定可维护的基础。",
+      "proposedBy": "ARCH",
+      "supportedBy": ["PM-UX", "PM-Lean", "QA", "UX"],
+      "concerns": "改动面大可能影响 epic-069 进度；需充分测试确保无回归；建议 epic-069 iter-002 可并行执行（不依赖 App.tsx 重构）",
       "priority": "high",
       "estimatedEffort": "medium",
       "iterationsPreview": [
-        {"title": "iter-001: 综合学习洞察面板核心架构", "scope": "frontend-only"},
-        {"title": "iter-002: 能力雷达图与趋势折线图深度联动", "scope": "frontend-only"},
-        {"title": "iter-003: 薄弱模式诊断与个性化建议", "scope": "frontend-only"},
-        {"title": "iter-004: 学习健康报告生成与分享", "scope": "frontend-only"}
+        {"title": "iter-001: 视图路由配置中心", "scope": "frontend-only"},
+        {"title": "iter-002: PracticeCard 组件拆分", "scope": "frontend-only"},
+        {"title": "iter-003: 存储层统一接口", "scope": "frontend-only"}
       ]
     },
     {
-      "id": "epic-070",
-      "title": "跨系统数据整合引擎",
-      "description": "当前产品拥有多个独立运作的数据系统（XP/连击/目标/里程碑/流失预警/词典索引），但它们之间没有数据共享机制。需要一个统一的「数据聚合层」：将所有学习数据（答题历史/XP/连击/目标进度/流失信号/词典查询）汇聚，形成可复用的数据管道。",
-      "proposedBy": "ARCH",
-      "supportedBy": ["PM-Mon", "PM-Lean", "QA"],
-      "concerns": "数据聚合层可能引入性能开销；需要清晰的数据流设计；避免重复计算",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: 统一数据聚合层架构设计", "scope": "frontend-only"},
-        {"title": "iter-002: 数据管道实现与性能优化", "scope": "frontend-only"},
-        {"title": "iter-003: 数据层集成与 API 统一", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-071",
-      "title": "智能学习节奏优化引擎",
-      "description": "epic-030 的 FlowState 和 Pomodoro、epic-028 的间隔重复、epic-055 的个人词库已各自运行。用户需要一个统一的「学习节奏优化器」：根据当前疲劳度、复习紧迫度、个人词库大小、历史答题节奏，自动推荐学习节奏。",
-      "proposedBy": "EXP",
-      "supportedBy": ["PM-UX", "PM-Lean", "QA"],
-      "concerns": "多系统数据整合复杂度高；节奏推荐可能与用户习惯冲突；需要可量化的效果验证",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {"title": "iter-001: 学习节奏数据聚合层", "scope": "frontend-only"},
-        {"title": "iter-002: 智能节奏推荐算法", "scope": "frontend-only"},
-        {"title": "iter-003: 节奏可视化与用户控制", "scope": "frontend-only"},
-        {"title": "iter-004: 节奏优化效果追踪", "scope": "frontend-only"}
-      ]
-    },
-    {
-      "id": "epic-072",
-      "title": "构建性能监控与自动告警",
-      "description": "随着产品功能增长，构建体积持续增长风险需要被监控。当前缺乏构建体积基线和自动告警机制——需要建立构建体积监控基线，设置体积阈值，在 CI 中自动检测并告警。",
+      "id": "epic-074",
+      "title": "构建性能监控与回归告警",
+      "description": "构建时间从 3.36s 飙升至 11.30s（epic-069 iter-001），缺乏基线和自动告警机制。需要建立构建性能基线，设置体积阈值，在 CI 中自动检测并告警，防止构建性能劣化。",
       "proposedBy": "PM-Mon",
       "supportedBy": ["ARCH", "QA"],
       "concerns": "需要 CI 集成；阈值设置需要经验数据；避免过于敏感的告警",
-      "priority": "medium",
+      "priority": "high",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {"title": "iter-001: 构建体积监控基线建立", "scope": "frontend-only"},
+        {"title": "iter-001: 构建性能监控基线建立", "scope": "frontend-only"},
         {"title": "iter-002: CI 集成自动告警", "scope": "frontend-only"},
-        {"title": "iter-003: 性能回归可视化", "scope": "frontend-only"}
+        {"title": "iter-003: 性能回归可视化面板", "scope": "frontend-only"}
       ]
     },
     {
-      "id": "epic-073",
-      "title": "精英成就等级体系重设计",
-      "description": "epic-029 的徽章系统已运行，但 12 枚徽章的阈值设计已无法满足高活跃用户的需求。需要引入「精英等级」（大师/宗师/传说）和对应的「精英徽章」，为高活跃用户提供持续追求的空间。",
-      "proposedBy": "UX",
-      "supportedBy": ["PM-Growth", "PM-UX"],
-      "concerns": "精英等级可能让普通用户感到遥不可及；徽章数量增加需要避免视觉混乱",
+      "id": "epic-075",
+      "title": "轻量存储层抽象",
+      "description": "当前 storage.ts 存在 23/24/26 complexity warnings，缺乏统一的存储接口。所有 Epic 的数据持久化都依赖 storage.ts，统一存储层接口可改善可测试性和可维护性。",
+      "proposedBy": "PM-Lean",
+      "supportedBy": ["PM-UX", "PM-Eco"],
+      "concerns": "增加新的抽象层可能引入复杂度；需避免过度设计；MVP 优先",
       "priority": "medium",
       "estimatedEffort": "small",
       "iterationsPreview": [
-        {"title": "iter-001: 精英等级体系设计", "scope": "frontend-only"},
-        {"title": "iter-002: 精英徽章设计与解锁条件", "scope": "frontend-only"},
-        {"title": "iter-003: 精英徽章展示与成就展示集成", "scope": "frontend-only"}
+        {"title": "iter-001: 存储层统一接口设计", "scope": "frontend-only"},
+        {"title": "iter-002: storage.ts 复杂度警告修复", "scope": "frontend-only"},
+        {"title": "iter-003: localStorage 统一管理", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-078",
+      "title": "能力雷达图深度联动",
+      "description": "epic-069 iter-002 的核心目标：能力雷达图与趋势折线图深度联动。精细化五维能力模型、增强雷达图动画与交互、实现能力提升路径可视化。",
+      "proposedBy": "UX",
+      "supportedBy": ["PM-Growth", "PM-UX"],
+      "concerns": "功能迭代，不解决技术债务问题；与 epic-069 重复度高（已作为备选迭代）",
+      "priority": "medium",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {"title": "iter-001: 五维能力模型精细化", "scope": "frontend-only"},
+        {"title": "iter-002: 能力雷达图动画与交互", "scope": "frontend-only"},
+        {"title": "iter-003: 能力提升路径可视化", "scope": "frontend-only"}
+      ]
+    },
+    {
+      "id": "epic-079",
+      "title": "E2E 测试稳定性治理",
+      "description": "E2E 6 个 flaky 测试影响 CI 可靠性。需识别并修复 flaky 测试、增加跨浏览器兼容性覆盖、补充边界情况测试。",
+      "proposedBy": "QA",
+      "supportedBy": ["QA"],
+      "concerns": "E2E 修复优先级低于 complexity warnings；需明确 flaky 根因",
+      "priority": "low",
+      "estimatedEffort": "small",
+      "iterationsPreview": [
+        {"title": "iter-001: flaky 测试识别与修复", "scope": "frontend-only"},
+        {"title": "iter-002: 跨浏览器兼容性测试覆盖", "scope": "frontend-only"},
+        {"title": "iter-003: 边界情况测试补充", "scope": "frontend-only"}
       ]
     }
   ],
@@ -233,20 +231,20 @@
     "id": "2026-05-26-189",
     "mode": "tech-review",
     "stage": "BRAINSTORM",
-    "startedAt": "2026-05-26T08:57:00.000Z"
+    "completedAt": "2026-05-26T10:05:00.000Z"
   },
-  "status": "BRAINSTORM",
+  "status": "PLAN",
   "nextMode": null,
   "commit": "dc9df4c",
   "docCommit": "ffd3606",
   "cycleCount": 190,
   "failedAttempts": 0,
-  "implementationStatus": "REPORT 阶段完成。epic-069 iter-001「综合学习洞察面板核心架构」圆满收官：LearnInsight 类型定义 + useLearnInsights hook (聚合 5 个 hooks) + LearnInsightPanel 组件 (健康评分环形图/能力雷达/薄弱点分析/个性化建议) + 44 tests。2117 测试零回归（历史最高水位），Build 11.30s，Lint 0 errors，v0.78.0 已部署。epic-069 完成度 1/4，剩余 iter-002~004 pending。",
-  "currentEpic": "epic-069",
+  "implementationStatus": "BRAINSTORM 阶段完成。epic-077「App.tsx 复杂度治理」当选（ARCH 提出，4 支持最高）：App.tsx 1403 行 → 目标 < 30，PracticeCard 440 行 → 目标 < 100，storage complexity warnings 23/24/26 → 0。3 个迭代：视图路由配置中心 + PracticeCard 组件拆分 + 存储层统一接口。epic-069 iter-002~004 保留为后续备选。2117 测试零回归。",
+  "currentEpic": "epic-077",
   "pendingIterations": [],
   "selectedEpic": {
-    "id": "epic-069",
-    "title": "学习数据深度洞察与智能仪表盘"
+    "id": "epic-077",
+    "title": "App.tsx 复杂度治理"
   },
   "plan": {
     "iterationId": "iter-001",
@@ -287,6 +285,24 @@
     "testStrategy": "useLearnInsights 纯函数测试：健康评分计算 (low/medium/high/critical)、洞察数据聚合、各维度数据映射、边界条件 (无数据/全部完成/无薄弱点)。LearnInsightPanel 组件测试：健康评分显示、能力雷达集成、薄弱点列表渲染、建议卡片、导航集成。复用 AbilityRadar/ProgressTrend 作为子组件。"
   },
   "epicHistory": [
+    {
+      "id": "epic-077",
+      "title": "App.tsx 复杂度治理",
+      "description": "App.tsx 1403 行、PracticeCard 440 行，6 个 complexity warnings 累积 20+ cycle。需要拆分视图路由配置中心（App.tsx 56 → 目标 < 30）、组件拆分（PracticeCard 440 → 目标 < 100）、存储层统一接口。",
+      "status": "pending",
+      "iterations": [
+        {"id": "iter-001", "title": "视图路由配置中心", "scope": "frontend-only", "status": "pending"},
+        {"id": "iter-002", "title": "PracticeCard 组件拆分", "scope": "frontend-only", "status": "pending"},
+        {"id": "iter-003", "title": "存储层统一接口", "scope": "frontend-only", "status": "pending"}
+      ],
+      "iterationsCount": 3,
+      "completedIterations": 0,
+      "pendingIterations": [],
+      "currentIterationIndex": 0,
+      "createdAt": "2026-05-26T10:05:00.000Z",
+      "proposedBy": "ARCH",
+      "supportedBy": ["PM-UX", "PM-Lean", "QA", "UX"]
+    },
     {
       "id": "epic-069",
       "title": "学习数据深度洞察与智能仪表盘",

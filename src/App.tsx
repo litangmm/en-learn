@@ -99,6 +99,9 @@ function App() {
   const [achievementMomentTrigger, setAchievementMomentTrigger] = useState<{ moment: AchievementMoment | null; key: number } | null>(null);
   const [weeklyReportTrigger, setWeeklyReportTrigger] = useState<{ key: number } | null>(null);
 
+  // Learning report panel state
+  const [isLearningReportOpen, setIsLearningReportOpen] = useState(false);
+
   // Personal dictionary mode state
   const [isPersonalMode, setIsPersonalMode] = useState(false);
 
@@ -143,6 +146,7 @@ function App() {
     'churn-dashboard': () => setView('churn-dashboard'),
     'learn-insight': () => setView('learn-insight'),
     'learn-insight-dashboard': () => setView('learn-insight-dashboard'),
+    'learning-report': () => setIsLearningReportOpen(true),
   };
 
   // Initialize weekly report hook
@@ -1118,6 +1122,8 @@ function App() {
           onBackFromChurnDashboard={() => viewHandlers['practice']()}
           onBackFromLearnInsight={() => viewHandlers['practice']()}
           onBackFromLearnInsightDashboard={() => viewHandlers['practice']()}
+          isLearningReportOpen={isLearningReportOpen}
+          onCloseLearningReport={() => setIsLearningReportOpen(false)}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {view === 'practice' && !state.isComplete && (

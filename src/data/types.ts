@@ -1383,3 +1383,67 @@ export const DEFAULT_LEARN_INSIGHT_DATA: LearnInsightData = {
   insights: [],
   lastUpdated: Date.now(),
 };
+
+/**
+ * Learning report type representing the health report to be generated and shared.
+ * This is the final deliverable of epic-069 iter-004.
+ */
+export interface LearningReport {
+  /** Unique identifier for the report */
+  id: string;
+  /** Period label (e.g., "本周学习报告") */
+  periodLabel: string;
+  /** Generation timestamp */
+  generatedAt: number;
+  /** Period date range */
+  period: {
+    startDate: string;
+    endDate: string;
+  };
+  /** Overall health score */
+  healthScore: {
+    score: number;
+    level: HealthScoreLevel;
+    label: string;
+  };
+  /** XP summary */
+  xp: {
+    total: number;
+    level: number;
+    weeklyGained: number;
+  };
+  /** Accuracy summary */
+  accuracy: {
+    total: number;
+    trend: 'up' | 'down' | 'stable';
+  };
+  /** Streak data */
+  streak: {
+    current: number;
+    best: number;
+  };
+  /** Practice summary */
+  practice: {
+    totalQuestions: number;
+    totalSessions: number;
+    modesPracticed: number;
+  };
+  /** Weakest mode recommendation */
+  weakModeRecommendation: {
+    mode: PracticeMode;
+    accuracy: number;
+    suggestion: string;
+    priority: 1 | 2 | 3;
+  } | null;
+  /** Top achievements or milestones */
+  achievements: {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+  }[];
+  /** Personalized insights */
+  insights: InsightItem[];
+  /** Next action recommendations */
+  nextActions: string[];
+}

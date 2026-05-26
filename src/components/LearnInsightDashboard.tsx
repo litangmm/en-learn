@@ -6,6 +6,7 @@ import {
   TrendingUp,
   ChevronRight,
   ArrowLeft,
+  FileText,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -131,6 +132,18 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
           >
             详细数据
             <ChevronRight className="w-4 h-4 ml-1" />
+          </Button>
+        )}
+        {onNavigate && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onNavigate('learning-report')}
+            className="text-blue-600"
+            data-testid="view-learning-report-button"
+          >
+            <FileText className="w-4 h-4 mr-1" />
+            查看报告
           </Button>
         )}
       </div>

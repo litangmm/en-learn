@@ -22,6 +22,7 @@ import { GoalSettingPanel } from '@/components/GoalSettingPanel';
 import { ChurnWarningDashboard } from '@/components/ChurnWarningDashboard';
 import { LearnInsightPanel } from '@/components/LearnInsightPanel';
 import { LearnInsightDashboard } from '@/components/LearnInsightDashboard';
+import { LearningReportPanel } from '@/components/LearningReportPanel';
 
 export type View =
   | 'practice'
@@ -41,7 +42,8 @@ export type View =
   | 'goals'
   | 'churn-dashboard'
   | 'learn-insight'
-  | 'learn-insight-dashboard';
+  | 'learn-insight-dashboard'
+  | 'learning-report';
 
 export interface ViewRouterProps {
   view: unknown;
@@ -93,6 +95,9 @@ export interface ViewRouterProps {
   onBackFromLearnInsight?: () => void;
   // LearnInsightDashboard
   onBackFromLearnInsightDashboard?: () => void;
+  // LearningReportPanel props
+  isLearningReportOpen?: boolean;
+  onCloseLearningReport?: () => void;
 }
 
 export function ViewRouter(props: ViewRouterProps) {
@@ -129,6 +134,8 @@ export function ViewRouter(props: ViewRouterProps) {
     onBackFromChurnDashboard = () => {},
     onBackFromLearnInsight = () => {},
     onBackFromLearnInsightDashboard = () => {},
+    isLearningReportOpen = false,
+    onCloseLearningReport,
   } = props;
 
   switch (view) {
@@ -224,6 +231,14 @@ export function ViewRouter(props: ViewRouterProps) {
 
     case 'learn-insight-dashboard':
       return <LearnInsightDashboard onBack={onBackFromLearnInsightDashboard} />;
+
+    case 'learning-report':
+      return (
+        <LearningReportPanel
+          isOpen={isLearningReportOpen}
+          onClose={onCloseLearningReport || (() => {})}
+        />
+      );
 
     case 'practice':
     default:

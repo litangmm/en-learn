@@ -735,13 +735,13 @@ function AppWithProviders() {
 
   const currentDict = getDictionaryById(dictionaryId);
 
-  // Loading state
-  if (isLoading && view === 'practice') {
+  // Loading state - show loading screen regardless of view (error boundary pattern)
+  if (isLoading) {
     return <LoadingScreen dictionaryName={currentDict?.name} />;
   }
 
-  // Error state
-  if (error && view === 'practice') {
+  // Error state - show error screen regardless of view (error boundary pattern)
+  if (error) {
     return (
       <ErrorScreen
         message={error}
@@ -754,8 +754,8 @@ function AppWithProviders() {
     );
   }
 
-  // Empty data state
-  if (!currentSentence && !state.isComplete && view === 'practice' && !practiceSentenceIds) {
+  // Empty data state - show empty state regardless of view
+  if (!currentSentence && !state.isComplete && !practiceSentenceIds) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
@@ -805,8 +805,8 @@ function AppWithProviders() {
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            {/* Practice controls - visible on desktop in practice view */}
-            {!state.isComplete && view === 'practice' && (
+            {/* Practice controls - visible on desktop when not complete */}
+            {!state.isComplete && (
               <div className="flex items-center gap-3 flex-shrink-0">
                 <XPBar level={profile.currentLevel} progress={profile.levelProgress} compact onClick={handleOpenProgress} goalProgress={dailyQuestionsGoalProgress} />
                 <StreakFeedback streak={streak} />
@@ -867,7 +867,7 @@ function AppWithProviders() {
                   <p className="text-sm font-medium text-slate-700">得分: {state.score}</p>
                 </div>
                 {/* Personal Practice Panel - shown when not in personal mode */}
-                {!isPersonalMode && view === 'practice' && (
+                {!isPersonalMode && (
                   <PersonalPracticePanel onStartPractice={handleStartPersonalPractice} />
                 )}
               </div>
@@ -875,7 +875,8 @@ function AppWithProviders() {
 
             {/* Desktop nav section - hidden on mobile */}
             <div className="hidden md:flex items-center gap-2 flex-shrink-0 overflow-x-auto no-scrollbar">
-              {view === 'practice' && (
+              {/* Practice controls - shown when not complete */}
+              {!state.isComplete && (
                 <>
                   <DictionarySelector
                     value={dictionaryId}

@@ -23,6 +23,7 @@ import { ChurnWarningDashboard } from '@/components/ChurnWarningDashboard';
 import { LearnInsightPanel } from '@/components/LearnInsightPanel';
 import { LearnInsightDashboard } from '@/components/LearnInsightDashboard';
 import { LearningReportPanel } from '@/components/LearningReportPanel';
+import { LearnProfilePanel } from '@/components/LearnProfilePanel';
 
 export type View =
   | 'practice'
@@ -43,7 +44,8 @@ export type View =
   | 'churn-dashboard'
   | 'learn-insight'
   | 'learn-insight-dashboard'
-  | 'learning-report';
+  | 'learning-report'
+  | 'learn-profile';
 
 export interface ViewRouterProps {
   view: unknown;
@@ -98,6 +100,8 @@ export interface ViewRouterProps {
   // LearningReportPanel props
   isLearningReportOpen?: boolean;
   onCloseLearningReport?: () => void;
+  // LearnProfilePanel props
+  onBackFromLearnProfile?: () => void;
 }
 
 export function ViewRouter(props: ViewRouterProps) {
@@ -136,6 +140,7 @@ export function ViewRouter(props: ViewRouterProps) {
     onBackFromLearnInsightDashboard = () => {},
     isLearningReportOpen = false,
     onCloseLearningReport,
+    onBackFromLearnProfile = () => {},
   } = props;
 
   switch (view) {
@@ -239,6 +244,9 @@ export function ViewRouter(props: ViewRouterProps) {
           onClose={onCloseLearningReport || (() => {})}
         />
       );
+
+    case 'learn-profile':
+      return <LearnProfilePanel onBack={onBackFromLearnProfile} />;
 
     case 'practice':
     default:

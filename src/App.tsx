@@ -173,6 +173,7 @@ function AppWithProviders() {
     'learn-insight': simpleViewHandler('learn-insight'),
     'learn-insight-dashboard': simpleViewHandler('learn-insight-dashboard'),
     'learning-report': () => setIsLearningReportOpen(true),
+    'learn-profile': simpleViewHandler('learn-profile'),
   };
 
   // Initialize weekly report hook
@@ -908,6 +909,7 @@ function AppWithProviders() {
                 onOpenGoals={handleOpenGoals}
                 onOpenChurnDashboard={() => viewHandlers['churn-dashboard']()}
                 onOpenLearnInsight={() => viewHandlers['learn-insight']()}
+                onOpenLearnProfile={() => viewHandlers['learn-profile']()}
               />
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
@@ -1156,6 +1158,7 @@ function AppWithProviders() {
           onBackFromLearnInsightDashboard={() => viewHandlers['practice']()}
           isLearningReportOpen={isLearningReportOpen}
           onCloseLearningReport={() => setIsLearningReportOpen(false)}
+          onBackFromLearnProfile={() => viewHandlers['practice']()}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {!state.isComplete && (

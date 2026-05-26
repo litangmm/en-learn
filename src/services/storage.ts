@@ -23,9 +23,9 @@ export interface StorageSchemaV2 {
 
 export type PersistedSession = StorageSchemaV1 | StorageSchemaV2;
 
-const SESSION_KEY = 'en-learn-session';
-const MISTAKES_KEY = 'en-learn-mistakes';
-const HISTORY_KEY = 'en-learn-history';
+export const SESSION_KEY = 'en-learn-session';
+export const MISTAKES_KEY = 'en-learn-mistakes';
+export const HISTORY_KEY = 'en-learn-history';
 const XP_PROFILE_KEY = 'en-learn-xp-profile';
 const DAILY_CHALLENGES_KEY = 'en-learn-daily-challenges';
 const BADGES_KEY = 'en-learn-badges';

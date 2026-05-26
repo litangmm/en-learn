@@ -1,4 +1,4 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -28,6 +28,7 @@ interface MoreMenuProps {
   onOpenGoals?: () => void;
   onOpenChurnDashboard?: () => void;
   onOpenLearnInsight?: () => void;
+  onOpenLearnProfile?: () => void;
 }
 
 export function MoreMenu({
@@ -50,6 +51,7 @@ export function MoreMenu({
   onOpenGoals,
   onOpenChurnDashboard,
   onOpenLearnInsight,
+  onOpenLearnProfile,
 }: MoreMenuProps) {
   return (
     <DropdownMenu>
@@ -163,6 +165,14 @@ export function MoreMenu({
           <DropdownMenuItem onClick={onOpenLearnInsight} className="cursor-pointer" data-testid="menuitem-learn-insight">
             <Activity className="w-4 h-4 text-green-500" />
             <span>学习洞察</span>
+          </DropdownMenuItem>
+        )}
+
+        {/* 学习画像 */}
+        {onOpenLearnProfile && (
+          <DropdownMenuItem onClick={onOpenLearnProfile} className="cursor-pointer" data-testid="menuitem-learn-profile">
+            <User className="w-4 h-4 text-purple-500" />
+            <span>学习画像</span>
           </DropdownMenuItem>
         )}
 

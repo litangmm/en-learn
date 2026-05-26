@@ -319,8 +319,8 @@ describe('App Routing with Registry Pattern', () => {
   });
 
   describe('VIEW_CONFIGS Initialization', () => {
-    it('should have 19 view configs defined', () => {
-      expect(VIEW_CONFIGS).toHaveLength(19);
+    it('should have 20 view configs defined', () => {
+      expect(VIEW_CONFIGS).toHaveLength(20);
     });
 
     it('should include all required view IDs', () => {
@@ -366,7 +366,7 @@ describe('App Routing with Registry Pattern', () => {
         </ViewRegistryProvider>
       );
 
-      expect(screen.getByTestId('registry-size')).toHaveTextContent('19');
+      expect(screen.getByTestId('registry-size')).toHaveTextContent('20');
     });
 
     it('should make view configs accessible via getViewConfig', () => {
@@ -437,14 +437,14 @@ describe('App Routing with Registry Pattern', () => {
       );
 
       // Initial count
-      expect(screen.getByTestId('registry-size')).toHaveTextContent('19');
+      expect(screen.getByTestId('registry-size')).toHaveTextContent('20');
 
       // Add one more
       act(() => {
         screen.getByTestId('register-extra').click();
       });
 
-      expect(screen.getByTestId('registry-size')).toHaveTextContent('20');
+      expect(screen.getByTestId('registry-size')).toHaveTextContent('21');
     });
   });
 

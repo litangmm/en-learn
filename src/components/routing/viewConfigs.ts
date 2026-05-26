@@ -224,4 +224,15 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     requiresAuth: false,
     metadata: { requiresAuth: false },
   }),
+  createViewConfig({
+    id: 'learn-profile',
+    title: '学习画像',
+    icon: 'user',
+    description: '查看个人学习数据统计',
+    category: 'progress',
+    navigationOrder: 17,
+    menuGroup: 'progress',
+    requiresAuth: false,
+    metadata: { requiresAuth: false },
+  }),
 ];

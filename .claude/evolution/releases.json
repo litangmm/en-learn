@@ -2,6 +2,46 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.77.0",
+      "tag": "v0.77.0",
+      "commit": "e8b6d0a",
+      "date": "2026-05-26T08:37:00.570Z",
+      "iterationId": "iter-004",
+      "title": "流失预警数据看板",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-9mow4ymih-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.76.0",
+      "tag": "v0.76.0",
+      "commit": "ffd3606",
+      "date": "2026-05-13T01:25:12.195Z",
+      "iterationId": "iter-003",
+      "title": "召回效果追踪与优化",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-jjzczlac0-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.75.0",
+      "tag": "v0.75.0",
+      "commit": "3b02e0b",
+      "date": "2026-05-13T00:15:12.545Z",
+      "iterationId": "iter-002",
+      "title": "分级召回干预机制",
+      "features": [
+        "InterventionLevel type + InterventionAction type",
+        "useChurnIntervention hook (getInterventionLevel/snooze/localStorage)",
+        "InterventionPanel component (modal/severity/snooze)",
+        "App.tsx integration (showChurnBanner/showChurnPanel)",
+        "44 new tests (useChurnIntervention 25 + InterventionPanel 9 + App 10)"
+      ],
+      "deployUrl": "https://en-learn-q75qw9jf1-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.74.0",
       "tag": "v0.74.0",
       "commit": "25279bf",

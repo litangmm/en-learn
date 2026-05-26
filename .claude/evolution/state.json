@@ -101,8 +101,8 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "DEPLOY",
-  "commit": "9f9507d",
+  "status": "REPORT",
+  "commit": "c18b10a",
   "cycleCount": 123,
   "nextMode": "vision",
   "failedAttempts": 0,
@@ -136,7 +136,10 @@
         "id": "iter-001",
         "title": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
         "scope": "frontend-only",
-        "status": "completed"
+        "status": "deployed",
+        "deployedAt": "2026-05-27T12:00:00.000Z",
+        "deployedUrl": "https://en-learn-lcvd69ew3-litangmms-projects.vercel.app",
+        "version": "v0.82.0"
       },
       {
         "id": "iter-002",
@@ -151,7 +154,7 @@
         "status": "pending"
       }
     ],
-    "currentIterationIndex": 0
+    "currentIterationIndex": 1
   },
   "plan": {
     "iterationId": "iter-001",
@@ -241,8 +244,8 @@
       "title": "App.tsx 视图路由配置中心强制落地",
       "status": "in_progress",
       "iterationsCount": 3,
-      "completedIterations": 0,
-      "versionRange": null,
+      "completedIterations": 1,
+      "versionRange": "v0.82.0",
       "createdAt": "2026-05-27T12:00:00.000Z",
       "proposedBy": "ARCH",
       "supportedBy": [
@@ -321,7 +324,7 @@
   },
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-079 iter-001 ViewRouter 注册中心模式测试通过。2405 测试零回归，0 lint errors，build 3.50s。epic-079 完成度 1/3，iter-002 待 PLAN。",
+  "implementationStatus": "epic-079 iter-001 部署成功。v0.82.0 部署到 Vercel，git tag v0.82.0 已推送。epic-079 完成度 1/3，iter-002 待 PLAN。",
   "directives": {
     "version": "1.0",
     "pending": [],
@@ -351,12 +354,12 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-eg0abubcn-litangmms-projects.vercel.app",
-    "version": "v0.53.0",
-    "commit": "4f5ea4f",
-    "iterationId": "iter-003",
-    "iterationTitle": "邀请好友一起学",
-    "deployedAt": "2026-05-12T02:30:00.000Z"
+    "url": "https://en-learn-lcvd69ew3-litangmms-projects.vercel.app",
+    "version": "v0.82.0",
+    "commit": "c18b10a",
+    "iterationId": "iter-001",
+    "iterationTitle": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+    "deployedAt": "2026-05-27T12:00:00.000Z"
   },
   "pendingDeployment": false,
   "lastRun": "2026-05-27T12:00:00.000Z"

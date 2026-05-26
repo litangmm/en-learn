@@ -1,6 +1,28 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LearnProfilePanel } from '../LearnProfilePanel';
+import type { PracticeRecommendation } from '@/data/types';
+
+// Sample recommendation data for testing
+const mockRecommendations: PracticeRecommendation[] = [
+  {
+    id: 'rec-1',
+    type: 'high-error',
+    priority: 1,
+    reason: '高频错误',
+    targetSentenceId: 'test-sentence-1',
+    action: '开始练习',
+  },
+  {
+    id: 'rec-2',
+    type: 'mode-weak',
+    priority: 2,
+    reason: '模式薄弱',
+    targetSentenceId: 'test-sentence-2',
+    action: '开始练习',
+    suggestedMode: 'fill-in-blanks',
+  },
+];
 
 // Mock the sub-components
 vi.mock('../LearningProfileCard', () => ({
@@ -28,6 +50,59 @@ vi.mock('../MilestoneTimeline', () => ({
     <div data-testid="milestone-timeline">MilestoneTimeline</div>
   ),
 }));
+
+// Mock the PracticeRecommendationPanel component
+vi.mock('../PracticeRecommendationPanel', () => ({
+  PracticeRecommendationPanel: ({
+    recommendations,
+    onStartPractice,
+    onDismissRecommendation,
+  }: {
+    recommendations: PracticeRecommendation[];
+    onStartPractice: (_rec: PracticeRecommendation) => void;
+    onDismissRecommendation: (_recId: string) => void;
+  }) => (
+    <div data-testid="practice-recommendation-panel">
+      <span data-testid="recommendation-count">{recommendations.length}</span>
+      {recommendations.map((rec) => (
+        <div key={rec.id} data-testid={`recommendation-${rec.id}`}>
+          <span>{rec.reason}</span>
+          <button
+            data-testid={`start-practice-${rec.id}`}
+            onClick={() => onStartPractice(rec)}
+          >
+            开始练习
+          </button>
+          <button
+            data-testid={`dismiss-recommendation-${rec.id}`}
+            onClick={() => onDismissRecommendation(rec.id)}
+          >
+            关闭
+          </button>
+        </div>
+      ))}
+    </div>
+  ),
+}));
+
+// Mock storage service
+vi.mock('@/services/storage', () => ({
+  storage: {
+    getMistakes: vi.fn(() => []),
+    getPersonalWords: vi.fn(() => []),
+  },
+}));
+
+// Mock the usePracticeRecommendations hook - default returns empty recommendations
+vi.mock('@/hooks/usePracticeRecommendations', () => ({
+  usePracticeRecommendations: vi.fn(() => ({
+    recommendations: [],
+    isLoading: false,
+    refreshRecommendations: vi.fn(),
+  })),
+}));
+
+import { usePracticeRecommendations } from '@/hooks/usePracticeRecommendations';
 
 describe('LearnProfilePanel', () => {
   const mockOnBack = vi.fn();
@@ -103,6 +178,144 @@ describe('LearnProfilePanel', () => {
     it('renders the radar chart description', () => {
       render(<LearnProfilePanel onBack={mockOnBack} />);
       expect(screen.getByText('各模式正确率分布')).toBeInTheDocument();
+    });
+  });
+
+  describe('Section 2: Practice Recommendations', () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('renders recommendations section when recommendations exist', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mockRecommendations,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.getByTestId('section-practice-recommendations')).toBeInTheDocument();
+    });
+
+    it('renders section title for recommendations', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mockRecommendations,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.getByText('智能推荐')).toBeInTheDocument();
+    });
+
+    it('renders PracticeRecommendationPanel component with recommendations', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mockRecommendations,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.getByTestId('practice-recommendation-panel')).toBeInTheDocument();
+      expect(screen.getByTestId('recommendation-count')).toHaveTextContent('2');
+    });
+
+    it('does not render recommendations section when no recommendations', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: [],
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.queryByTestId('section-practice-recommendations')).not.toBeInTheDocument();
+    });
+
+    it('renders individual recommendation cards', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mockRecommendations,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.getByTestId('recommendation-rec-1')).toBeInTheDocument();
+      expect(screen.getByTestId('recommendation-rec-2')).toBeInTheDocument();
+    });
+
+    it('calls onStartPractice when start button is clicked', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: [mockRecommendations[0]],
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      const startBtn = screen.getByTestId('start-practice-rec-1');
+      fireEvent.click(startBtn);
+      // The mock implementation calls onStartPractice with the recommendation
+    });
+
+    it('calls onDismissRecommendation when dismiss button is clicked', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: [mockRecommendations[0]],
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      const dismissBtn = screen.getByTestId('dismiss-recommendation-rec-1');
+      fireEvent.click(dismissBtn);
+      // The mock implementation calls onDismissRecommendation with the id
+    });
+
+    it('shows recommendations section for different priority levels', () => {
+      const mixedPriorityRecs: PracticeRecommendation[] = [
+        { ...mockRecommendations[0], priority: 1 },
+        { ...mockRecommendations[1], priority: 2 },
+        {
+          id: 'rec-3',
+          type: 'new-word' as const,
+          priority: 3 as const,
+          reason: '新内容推荐',
+          targetSentenceId: 'new-sentence',
+          action: '开始练习',
+        },
+      ];
+
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mixedPriorityRecs,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      expect(screen.getByTestId('section-practice-recommendations')).toBeInTheDocument();
+      expect(screen.getByTestId('recommendation-count')).toHaveTextContent('3');
+    });
+
+    it('handles empty recommendations gracefully', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: [],
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      // Section should not be rendered when no recommendations
+      expect(screen.queryByTestId('section-practice-recommendations')).not.toBeInTheDocument();
+    });
+
+    it('section has correct aria-labelledby attribute', () => {
+      (usePracticeRecommendations as ReturnType<typeof vi.fn>).mockReturnValue({
+        recommendations: mockRecommendations,
+        isLoading: false,
+        refreshRecommendations: vi.fn(),
+      });
+
+      render(<LearnProfilePanel onBack={mockOnBack} />);
+      const section = screen.getByTestId('section-practice-recommendations');
+      expect(section).toHaveAttribute('aria-labelledby', 'section-practice-recommendations-title');
     });
   });
 

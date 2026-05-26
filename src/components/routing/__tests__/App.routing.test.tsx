@@ -455,9 +455,11 @@ describe('App Routing with Registry Pattern', () => {
       expect(practiceConfig?.metadata).toBeDefined();
     });
 
-    it('should have views without extra metadata', () => {
+    it('should have views with standardized metadata', () => {
       const progressConfig = VIEW_CONFIGS.find(c => c.id === 'progress');
-      expect(progressConfig?.metadata).toBeUndefined();
+      expect(progressConfig?.metadata).toBeDefined();
+      // All views now have requiresAuth metadata
+      expect(progressConfig?.metadata?.requiresAuth).toBe(false);
     });
 
     it('should provide registry access through NavigationProvider pattern', () => {

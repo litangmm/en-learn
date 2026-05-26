@@ -1,6 +1,12 @@
 import type { View } from './ViewRouter';
 
-// ViewConfig: declarative view registration schema
+/** View category for grouping and filtering */
+export type ViewCategory = 'learning' | 'progress' | 'achievement' | 'social' | 'system';
+
+/**
+ * ViewConfig: declarative view registration schema
+ * Provides metadata for routing, navigation, and access control
+ */
 export interface ViewConfig {
   /** Unique identifier for the view */
   id: View;
@@ -14,6 +20,14 @@ export interface ViewConfig {
   a11yRole?: string;
   /** Optional metadata for view-specific behavior */
   metadata?: Record<string, unknown>;
+  /** Human-readable description for the view */
+  description?: string;
+  /** Category for grouping views (learning/progress/achievement/social/system) */
+  category?: ViewCategory;
+  /** Numeric order for sorting in navigation menus */
+  navigationOrder?: number;
+  /** Group name for navigation menu grouping */
+  menuGroup?: string;
 }
 
 // Default view registry with all standard views

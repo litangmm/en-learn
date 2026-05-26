@@ -1,33 +1,38 @@
 import type { View } from './ViewRouter';
+import type { StandardizedViewConfig } from './schema';
+
+// Re-export schema types for consumers
+export {
+  hasLegacyMetadata,
+  getStandardizedProps,
+  createViewConfig,
+  type StandardizedViewConfig,
+  type ViewAuthConfig,
+  type ViewRouteConfig,
+  type ViewNavigationConfig,
+  type LegacyViewMetadata,
+} from './schema';
 
 /** View category for grouping and filtering */
 export type ViewCategory = 'learning' | 'progress' | 'achievement' | 'social' | 'system';
 
 /**
  * ViewConfig: declarative view registration schema
- * Provides metadata for routing, navigation, and access control
+ * Provides metadata for routing, navigation, and access control.
+ *
+ * Standardized properties (top-level):
+ * - requiresAuth: boolean - whether the view requires authentication
+ * - primary: boolean - whether this is a primary/main view
+ * - defaultRoute: boolean - whether this is the default landing route
+ *
+ * Legacy metadata is supported for backward compatibility but top-level
+ * properties are preferred for better type safety.
  */
-export interface ViewConfig {
+export interface ViewConfig extends StandardizedViewConfig {
   /** Unique identifier for the view */
   id: View;
   /** Human-readable title for display */
   title: string;
-  /** Internationalization key */
-  i18n?: string;
-  /** Icon identifier for navigation items */
-  icon?: string;
-  /** Accessibility role for screen readers */
-  a11yRole?: string;
-  /** Optional metadata for view-specific behavior */
-  metadata?: Record<string, unknown>;
-  /** Human-readable description for the view */
-  description?: string;
-  /** Category for grouping views (learning/progress/achievement/social/system) */
-  category?: ViewCategory;
-  /** Numeric order for sorting in navigation menus */
-  navigationOrder?: number;
-  /** Group name for navigation menu grouping */
-  menuGroup?: string;
 }
 
 // Default view registry with all standard views

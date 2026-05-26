@@ -1,18 +1,19 @@
 import type { ViewConfig } from './index';
+import { createViewConfig } from './schema';
 
 /**
  * View configurations for the application routing system.
  * This is the single source of truth for all view definitions.
  *
- * Standardized metadata keys:
+ * Standardized schema:
  * - requiresAuth: boolean - whether the view requires authentication
  * - primary: boolean - whether this is a primary/main view
  * - defaultRoute: boolean - whether this is the default landing route
- * - navIcon: string - icon name for navigation
- * - navLabel: string - label for navigation items
+ *
+ * Uses top-level properties with metadata preserved for backward compatibility.
  */
 export const VIEW_CONFIGS: ViewConfig[] = [
-  {
+  createViewConfig({
     id: 'practice',
     title: '练习',
     icon: 'practice',
@@ -20,9 +21,12 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'learning',
     navigationOrder: 1,
     menuGroup: 'main',
+    primary: true,
+    defaultRoute: true,
+    requiresAuth: false,
     metadata: { primary: true, defaultRoute: true, requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'progress',
     title: '学习进度',
     icon: 'progress',
@@ -30,9 +34,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 10,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'profile',
     title: '个人资料',
     icon: 'profile',
@@ -40,9 +45,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'system',
     navigationOrder: 50,
     menuGroup: 'settings',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'efficiency',
     title: '学习效率',
     icon: 'efficiency',
@@ -50,9 +56,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 11,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'mistake-book',
     title: '错题本',
     icon: 'mistake-book',
@@ -60,9 +67,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'learning',
     navigationOrder: 3,
     menuGroup: 'review',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'history',
     title: '练习历史',
     icon: 'history',
@@ -70,9 +78,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 12,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'data',
     title: '数据管理',
     icon: 'data',
@@ -80,9 +89,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'system',
     navigationOrder: 60,
     menuGroup: 'settings',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'review',
     title: '智能复习',
     icon: 'review',
@@ -90,9 +100,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'learning',
     navigationOrder: 4,
     menuGroup: 'review',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'weakness',
     title: '弱点分析',
     icon: 'weakness',
@@ -100,9 +111,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 13,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'challenges',
     title: '每日挑战',
     icon: 'challenges',
@@ -110,9 +122,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'achievement',
     navigationOrder: 20,
     menuGroup: 'gamification',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'badges',
     title: '成就徽章',
     icon: 'badges',
@@ -120,9 +133,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'achievement',
     navigationOrder: 21,
     menuGroup: 'gamification',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'leaderboard',
     title: '排行榜',
     icon: 'leaderboard',
@@ -130,9 +144,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'social',
     navigationOrder: 30,
     menuGroup: 'social',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'invite',
     title: '邀请好友',
     icon: 'invite',
@@ -140,9 +155,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'social',
     navigationOrder: 31,
     menuGroup: 'social',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'dictionary-browser',
     title: '词典浏览',
     icon: 'dictionary',
@@ -150,9 +166,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'learning',
     navigationOrder: 5,
     menuGroup: 'learning',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'goals',
     title: '目标设置',
     icon: 'goals',
@@ -160,9 +177,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'achievement',
     navigationOrder: 22,
     menuGroup: 'gamification',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'churn-dashboard',
     title: '流失预警',
     icon: 'churn',
@@ -170,9 +188,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'system',
     navigationOrder: 70,
     menuGroup: 'admin',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'learn-insight',
     title: '学习洞察',
     icon: 'insight',
@@ -180,9 +199,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 14,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'learn-insight-dashboard',
     title: '学习仪表盘',
     icon: 'dashboard',
@@ -190,9 +210,10 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 15,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
-  {
+  }),
+  createViewConfig({
     id: 'learning-report',
     title: '学习报告',
     icon: 'report',
@@ -200,6 +221,7 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     category: 'progress',
     navigationOrder: 16,
     menuGroup: 'progress',
+    requiresAuth: false,
     metadata: { requiresAuth: false },
-  },
+  }),
 ];

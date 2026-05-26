@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { storage } from '@/services/storage';
-import { LEVEL_THRESHOLDS, type XPProfile, type PracticeMode, type ModeAccuracy, type DailyTrend, type WeeklyReport } from '@/data/types';
+import { LEVEL_THRESHOLDS, type XPProfile, type PracticeMode, type ModeAccuracy, type DailyTrend, type WeeklyReport, type FilteredTrend } from '@/data/types';
 import { dictionaries } from '@/data/dictionaries';
 
 export interface ProgressStats {
@@ -115,24 +115,41 @@ export function useProgressStats(): ProgressStats {
 
 /**
  * Get mode accuracy data for the radar chart.
- * Since SessionHistory doesn't store mode, we use the XP profile to derive overall stats
- * and distribute based on practice patterns. For now, return uniform distribution
- * with actual totals, as mode-specific tracking is not available.
+ * Reads from mode stats storage if available, falls back to badge progress
+ * with uniform distribution across modes.
  */
 export function getModeAccuracy(): ModeAccuracy[] {
+  const modeStats = storage.getModeStats();
   const badgeProgress = storage.getBadgeProgress();
+
+  // Check if we have any mode-specific data
+  const hasModeData = Object.keys(modeStats).length > 0;
   const totalAnswered = badgeProgress.totalAnswered;
   const totalCorrect = badgeProgress.totalCorrect;
 
-  // Since we don't have per-mode tracking in storage yet,
-  // distribute total stats evenly across modes for radar display.
-  // This provides a baseline; future iterations can add per-mode tracking.
-  return ALL_MODES.map(mode => ({
-    mode,
-    accuracy: totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0,
-    totalQuestions: totalAnswered,
-    correctCount: totalCorrect,
-  }));
+  return ALL_MODES.map(mode => {
+    if (hasModeData && modeStats[mode]) {
+      // Use mode-specific stats
+      const stats = modeStats[mode];
+      const accuracy = stats.questions > 0
+        ? Math.round((stats.correct / stats.questions) * 100)
+        : 0;
+      return {
+        mode,
+        accuracy,
+        totalQuestions: stats.questions,
+        correctCount: stats.correct,
+      };
+    }
+
+    // Fallback: distribute badge progress uniformly across modes
+    return {
+      mode,
+      accuracy: totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0,
+      totalQuestions: totalAnswered,
+      correctCount: totalCorrect,
+    };
+  });
 }
 
 /**
@@ -162,11 +179,15 @@ export function getDailyXP(days: number = 7): DailyTrend[] {
     let dayXP = 0;
     let dayQuestions = 0;
     let dayCorrect = 0;
+    const modesPracticed = new Set<PracticeMode>();
 
     dayEntries.forEach(entry => {
       dayXP += entry.score;
       dayQuestions += entry.totalQuestions;
       dayCorrect += entry.correctCount;
+      if (entry.mode) {
+        modesPracticed.add(entry.mode);
+      }
     });
 
     const dayAccuracy = dayQuestions > 0
@@ -179,6 +200,85 @@ export function getDailyXP(days: number = 7): DailyTrend[] {
       xp: dayXP,
       questions: dayQuestions,
       accuracy: dayAccuracy,
+      modesPracticed: Array.from(modesPracticed),
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Get filtered daily trend data for specific practice modes.
+ * Returns daily data filtered by the selected modes, showing only days
+ * where at least one of the selected modes was practiced.
+ *
+ * @param modes - Array of practice modes to filter by (empty array = all modes)
+ * @param days - Number of days to return (default 7)
+ * @returns Array of filtered trend data
+ */
+export function getFilteredTrend(modes: PracticeMode[], days: number = 7): FilteredTrend[] {
+  const history = storage.getHistory();
+  const now = new Date();
+  const result: FilteredTrend[] = [];
+
+  // If no modes specified, treat as all modes (show all activity)
+  const filterModes = modes.length > 0;
+
+  // Generate array of dates going back 'days' days
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    const dayOfWeek = date.getDay();
+    const dayName = DAY_NAMES[dayOfWeek];
+
+    // Filter history entries for this date and mode
+    const dayEntries = history.filter(entry => {
+      const entryDate = new Date(entry.timestamp).toISOString().split('T')[0];
+      if (entryDate !== dateStr) return false;
+
+      // If filtering by modes, check if entry matches
+      if (filterModes) {
+        // Entry must have a mode that matches one of the selected modes
+        if (!entry.mode) return false;
+        return modes.includes(entry.mode);
+      }
+
+      return true;
+    });
+
+    // Calculate stats for the day
+    let dayXP = 0;
+    let dayQuestions = 0;
+    let dayCorrect = 0;
+    const modesPracticed = new Set<PracticeMode>();
+
+    dayEntries.forEach(entry => {
+      dayXP += entry.score;
+      dayQuestions += entry.totalQuestions;
+      dayCorrect += entry.correctCount;
+      if (entry.mode) {
+        modesPracticed.add(entry.mode);
+      }
+    });
+
+    const dayAccuracy = dayQuestions > 0
+      ? Math.round((dayCorrect / dayQuestions) * 100)
+      : 0;
+
+    // hasActivity is true if any of the selected modes was practiced
+    const hasActivity = filterModes
+      ? modesPracticed.size > 0
+      : dayQuestions > 0;
+
+    result.push({
+      date: dateStr,
+      dayName,
+      xp: dayXP,
+      questions: dayQuestions,
+      accuracy: dayAccuracy,
+      modesPracticed: Array.from(modesPracticed),
+      hasActivity,
     });
   }
 

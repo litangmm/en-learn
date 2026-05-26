@@ -1,5 +1,5 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics, ModeStats, PracticeMode } from '@/data/types';
 import { MILESTONE_DEFINITIONS, DEFAULT_CHURN_METRICS } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
@@ -44,6 +44,7 @@ const GOALS_KEY = 'en-learn-goals';
 const MILESTONES_KEY = 'en-learn-milestones';
 const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
 const CHURN_METRICS_KEY = 'en-learn-churn-metrics';
+const MODE_STATS_KEY = 'en-learn-mode-stats';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -2060,6 +2061,64 @@ export const StorageService = {
     const updated = updater(current);
     this.saveChurnMetrics(updated);
     return updated;
+  },
+
+  // ---------------------------------------------------------------------------
+  // Mode Stats CRUD (epic-069 iter-002)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Get mode statistics from storage.
+   * Returns an object mapping mode names to their stats.
+   */
+  getModeStats(): ModeStats {
+    const raw = localStorage.getItem(MODE_STATS_KEY);
+    if (raw === null) {
+      return {};
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) {
+        return parsed as ModeStats;
+      }
+      console.warn('[StorageService] Invalid mode stats schema, resetting');
+      localStorage.removeItem(MODE_STATS_KEY);
+      return {};
+    } catch {
+      console.warn('[StorageService] Corrupted mode stats data, clearing');
+      localStorage.removeItem(MODE_STATS_KEY);
+      return {};
+    }
+  },
+
+  /**
+   * Save mode statistics to storage.
+   */
+  saveModeStats(stats: ModeStats): void {
+    try {
+      localStorage.setItem(MODE_STATS_KEY, JSON.stringify(stats));
+    } catch (error) {
+      console.warn('[StorageService] Failed to save mode stats:', error);
+    }
+  },
+
+  /**
+   * Update mode statistics with a single mode's results.
+   * This is called after each practice session to track per-mode performance.
+   */
+  updateModeStats(mode: PracticeMode, questions: number, correct: number): ModeStats {
+    const current = this.getModeStats();
+    const existing = current[mode] || { questions: 0, correct: 0, lastUpdated: 0 };
+
+    current[mode] = {
+      questions: existing.questions + questions,
+      correct: existing.correct + correct,
+      lastUpdated: Date.now(),
+    };
+
+    this.saveModeStats(current);
+    return current;
   },
 
   exportAllData(): ExportData {

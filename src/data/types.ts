@@ -94,6 +94,8 @@ export interface SessionHistory {
   totalQuestions: number;
   correctCount: number;
   accuracy: number;
+  /** The practice mode used for this session (optional for backward compatibility) */
+  mode?: PracticeMode;
 }
 
 export interface XPProfile {
@@ -367,6 +369,22 @@ export interface DailyTrend {
   xp: number;
   questions: number;
   accuracy: number;
+  /** Which modes were practiced on this day (for filtering) */
+  modesPracticed?: PracticeMode[];
+}
+
+/**
+ * Filtered trend data returned by getFilteredTrend.
+ */
+export interface FilteredTrend {
+  date: string;
+  dayName: string;
+  xp: number;
+  questions: number;
+  accuracy: number;
+  modesPracticed: PracticeMode[];
+  /** Whether this day had any activity for the selected modes */
+  hasActivity: boolean;
 }
 
 /**
@@ -1158,6 +1176,16 @@ export const DEFAULT_CHURN_METRICS: ChurnMetrics = {
 // ============================================================================
 // Learning Insights Types (epic-069 iter-001)
 // ============================================================================
+
+/**
+ * Per-mode statistics for mode accuracy tracking.
+ * Tracks questions and correct answers per practice mode.
+ */
+export type ModeStats = Partial<Record<PracticeMode, {
+  questions: number;
+  correct: number;
+  lastUpdated: number;
+}>>;
 
 /**
  * Health score level for overall learning wellness.

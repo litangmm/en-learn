@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { Sentence, ChoiceOption, PracticeMode } from '@/data/types';
+import type { Sentence, ChoiceOption, PracticeMode, SessionHistory } from '@/data/types';
 import { isDefinitionSentence, isPersonalDictionary } from '@/data/types';
 import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -252,7 +252,8 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
         : 0;
       const dict = getDictionaryById(dictionaryId);
 
-      storage.addHistory({
+      // Build history entry, including mode if provided
+      const historyEntry: SessionHistory = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         timestamp: Date.now(),
         duration: Math.max(duration, 1),
@@ -262,11 +263,23 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
         totalQuestions,
         correctCount,
         accuracy,
-      });
+      };
+
+      // Add mode field if provided (for filtered trend tracking)
+      if (mode) {
+        historyEntry.mode = mode;
+      }
+
+      storage.addHistory(historyEntry);
+
+      // Update mode stats if mode is provided (for per-mode accuracy tracking)
+      if (mode) {
+        storage.updateModeStats(mode, totalQuestions, correctCount);
+      }
 
       sessionStartTimeRef.current = null;
     }
-  }, [state.isComplete, state.userAnswers, state.score, dictionaryId, shuffledSentences.length]);
+  }, [state.isComplete, state.userAnswers, state.score, dictionaryId, shuffledSentences.length, mode]);
 
   const currentSentence: Sentence | undefined = shuffledSentences[state.currentIndex];
 

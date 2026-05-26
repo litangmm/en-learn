@@ -11,6 +11,7 @@ import { LongTermMilestoneCard } from './LongTermMilestoneCard';
 import { MilestonePath } from './MilestonePath';
 import { useProgressStats, getThisWeekReport, getDictionaryProgress, getReviewStreak } from '@/hooks/useProgressStats';
 import { useMilestones } from '@/hooks/useMilestones';
+import { getNextLevelXP } from '@/lib/utils';
 import type { View } from './routing';
 import type { Goal } from '@/data/types';
 
@@ -249,11 +250,4 @@ export function ProgressHub({ onNavigate, goals }: ProgressHubProps) {
       </div>
     </div>
   );
-}
-
-// Helper to get next level XP threshold
-function getNextLevelXP(currentLevel: number): number {
-  const thresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000];
-  if (currentLevel >= thresholds.length) return thresholds[thresholds.length - 1];
-  return thresholds[currentLevel] - thresholds[currentLevel - 1];
 }

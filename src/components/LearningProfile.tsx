@@ -3,6 +3,7 @@ import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
 import { useProgressStats } from '@/hooks/useProgressStats';
 import { useBadges } from '@/hooks/useBadges';
+import { getNextLevelXP } from '@/lib/utils';
 import type { View } from './routing';
 
 interface LearningProfileProps {
@@ -24,13 +25,6 @@ export function LearningProfile({ onNavigate, onBack }: LearningProfileProps) {
   // Get unlocked count
   const totalBadges = BADGE_DEFINITIONS.length;
   const unlockedCount = badgeState.unlocked.length;
-
-  // Calculate next level XP
-  const getNextLevelXP = (currentLevel: number): number => {
-    const thresholds = [0, 100, 250, 450, 700, 1000, 1350, 1750, 2200, 2700, 3300, 4000];
-    if (currentLevel >= thresholds.length) return thresholds[thresholds.length - 1];
-    return thresholds[currentLevel] - thresholds[currentLevel - 1];
-  };
 
   return (
     <div className="min-h-screen bg-slate-50">

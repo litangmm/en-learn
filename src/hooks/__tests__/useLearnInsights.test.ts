@@ -31,6 +31,12 @@ vi.mock('../useProgressStats', () => ({
     modeAccuracy: [],
   })),
   ALL_MODES: ['fill-in-blanks', 'multiple-choice', 'sentence-reorder', 'dictation'],
+  getModeAccuracy: vi.fn(() => [
+    { mode: 'fill-in-blanks', accuracy: 75, totalQuestions: 100, correctCount: 75 },
+    { mode: 'multiple-choice', accuracy: 75, totalQuestions: 100, correctCount: 75 },
+    { mode: 'sentence-reorder', accuracy: 75, totalQuestions: 100, correctCount: 75 },
+    { mode: 'dictation', accuracy: 75, totalQuestions: 100, correctCount: 75 },
+  ]),
 }));
 
 // Mock useWeaknessStats

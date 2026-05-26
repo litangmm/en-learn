@@ -24,7 +24,7 @@ import type {
   PracticeMode,
   LearnInsightRecommendation,
 } from '@/data/types';
-import { ALL_MODES } from './useProgressStats';
+import { ALL_MODES, getModeAccuracy } from './useProgressStats';
 import { useProgressStats } from './useProgressStats';
 import { useWeaknessStats } from './useWeaknessStats';
 import { useGoals } from './useGoals';
@@ -590,7 +590,9 @@ export function aggregateLearnInsights(params: {
   const accuracyTrend = calculateAccuracyTrend(params.history);
 
   // Calculate mode accuracy for ability radar chart
-  const abilityModeAccuracy = calculateModeAccuracy(params.history, params.badgeProgress);
+  // Use ModeStats-aware calculation from storage (via getModeAccuracy)
+  // Falls back to uniform distribution if no mode-specific data exists
+  const abilityModeAccuracy = getModeAccuracy();
 
   // Calculate 7-day trend data
   const trendData = calculateTrendData(params.history);

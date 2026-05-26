@@ -762,6 +762,166 @@ describe('LearnInsightDashboard', () => {
       const cardWithBorder = cardTitle.closest('div[class*="border-red"]');
       expect(cardWithBorder).toBeInTheDocument();
     });
+
+    it('should display priority 2 with orange styling', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 80, totalQuestions: 50, correctCount: 40 },
+          { mode: 'multiple-choice', accuracy: 55, totalQuestions: 30, correctCount: 16 },
+          { mode: 'sentence-reorder', accuracy: 70, totalQuestions: 20, correctCount: 14 },
+          { mode: 'dictation', accuracy: 80, totalQuestions: 15, correctCount: 12 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      // Priority 2 should have orange border (border-orange-400)
+      const cardTitle = screen.getByText('薄弱环节');
+      const cardWithBorder = cardTitle.closest('div[class*="border-orange"]');
+      expect(cardWithBorder).toBeInTheDocument();
+    });
+
+    it('should display priority 3 with yellow styling', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 80, totalQuestions: 50, correctCount: 40 },
+          { mode: 'multiple-choice', accuracy: 75, totalQuestions: 30, correctCount: 22 },
+          { mode: 'sentence-reorder', accuracy: 65, totalQuestions: 20, correctCount: 13 },
+          { mode: 'dictation', accuracy: 80, totalQuestions: 15, correctCount: 12 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      // Priority 3 should have yellow border (border-yellow-400)
+      const cardTitle = screen.getByText('薄弱环节');
+      const cardWithBorder = cardTitle.closest('div[class*="border-yellow"]');
+      expect(cardWithBorder).toBeInTheDocument();
+    });
+
+    it('should display fill-in-blanks mode label (填空)', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 45, totalQuestions: 50, correctCount: 22 },
+          { mode: 'multiple-choice', accuracy: 80, totalQuestions: 30, correctCount: 24 },
+          { mode: 'sentence-reorder', accuracy: 70, totalQuestions: 20, correctCount: 14 },
+          { mode: 'dictation', accuracy: 80, totalQuestions: 15, correctCount: 12 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      // Should show 填空 as the weak mode
+      expect(screen.getByText('填空', { selector: 'div[class*="border-red"] *' })).toBeInTheDocument();
+    });
+
+    it('should display multiple-choice mode label (选择)', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 80, totalQuestions: 50, correctCount: 40 },
+          { mode: 'multiple-choice', accuracy: 45, totalQuestions: 30, correctCount: 13 },
+          { mode: 'sentence-reorder', accuracy: 70, totalQuestions: 20, correctCount: 14 },
+          { mode: 'dictation', accuracy: 80, totalQuestions: 15, correctCount: 12 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      // Should show 选择 as the weak mode
+      expect(screen.getByText('选择', { selector: 'div[class*="border-red"] *' })).toBeInTheDocument();
+    });
+
+    it('should display sentence-reorder mode label (排序)', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 80, totalQuestions: 50, correctCount: 40 },
+          { mode: 'multiple-choice', accuracy: 80, totalQuestions: 30, correctCount: 24 },
+          { mode: 'sentence-reorder', accuracy: 45, totalQuestions: 20, correctCount: 9 },
+          { mode: 'dictation', accuracy: 80, totalQuestions: 15, correctCount: 12 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      // Should show 排序 as the weak mode
+      expect(screen.getByText('排序', { selector: 'div[class*="border-red"] *' })).toBeInTheDocument();
+    });
+
+    it('should have data-testid attribute on WeaknessRecommendationPanel', () => {
+      (useLearnInsightsModule.useLearnInsights as ReturnType<typeof vi.fn>).mockReturnValueOnce({
+        healthScore: { level: 'high', score: 85, color: '#22c55e', icon: 'activity' },
+        xpProfile: { totalXP: 1000, currentLevel: 3, progressToNextLevel: 50 },
+        streak: { currentStreak: 5, longestStreak: 10, isActive: true },
+        accuracy: { total: 75, trend: 'up' },
+        abilityModeAccuracy: [
+          { mode: 'fill-in-blanks', accuracy: 80, totalQuestions: 50, correctCount: 40 },
+          { mode: 'multiple-choice', accuracy: 75, totalQuestions: 30, correctCount: 22 },
+          { mode: 'sentence-reorder', accuracy: 70, totalQuestions: 20, correctCount: 14 },
+          { mode: 'dictation', accuracy: 45, totalQuestions: 15, correctCount: 7 },
+        ],
+        weaknessPatterns: [],
+        churnRisk: { level: 'low', isAtRisk: false },
+        goalCompletion: { dailyCompleted: 5, dailyTotal: 10, weeklyCompleted: 3, weeklyTotal: 5 },
+        flowState: { currentState: 'normal', isFatigued: false, recommendedBreak: false },
+        insights: [],
+        lastUpdated: Date.now(),
+      });
+
+      render(<LearnInsightDashboard />);
+
+      const panel = screen.getByTestId('weakness-recommendation-panel');
+      expect(panel).toBeInTheDocument();
+    });
   });
 
   describe('Accessibility', () => {

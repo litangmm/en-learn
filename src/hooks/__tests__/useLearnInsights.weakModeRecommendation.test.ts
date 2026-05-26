@@ -201,6 +201,33 @@ describe('calculateWeakModeRecommendation', () => {
       expect(result).toBeNull();
     });
 
+    it('should return null when accuracy is exactly at threshold (70)', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 90, 20),
+        createModeAccuracy('dictation', 70, 15), // exactly at threshold, not below
+        createModeAccuracy('multiple-choice', 85, 25),
+        createModeAccuracy('sentence-reorder', 80, 18),
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      // 70 is NOT < 70, so dictation is NOT considered weak
+      expect(result).toBeNull();
+    });
+
+    it('should return null when accuracy is just above threshold (71)', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 90, 20),
+        createModeAccuracy('dictation', 71, 15),
+        createModeAccuracy('multiple-choice', 85, 25),
+        createModeAccuracy('sentence-reorder', 80, 18),
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      expect(result).toBeNull();
+    });
+
     it('should return dictation when threshold is 1 (0 < 1)', () => {
       const modeAccuracy: ModeAccuracy[] = [
         createModeAccuracy('fill-in-blanks', 90, 20),
@@ -244,6 +271,21 @@ describe('calculateWeakModeRecommendation', () => {
       // All modes are below 100 threshold, so should return the weakest
       expect(result).not.toBeNull();
       expect(result?.mode).toBe('sentence-reorder');
+    });
+
+    it('should detect weak mode when accuracy is just below threshold (69)', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 90, 20),
+        createModeAccuracy('dictation', 69, 15), // just below 70
+        createModeAccuracy('multiple-choice', 85, 25),
+        createModeAccuracy('sentence-reorder', 80, 18),
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      expect(result).not.toBeNull();
+      expect(result?.mode).toBe('dictation');
+      expect(result?.accuracy).toBe(69);
     });
   });
 
@@ -298,6 +340,17 @@ describe('calculateWeakModeRecommendation', () => {
       expect(result50?.priority).toBe(2); // 50 >= 50 && < 60
     });
 
+    it('should return priority 3 at threshold boundary (69 vs 70)', () => {
+      const modeAccuracy69: ModeAccuracy[] = [createModeAccuracy('fill-in-blanks', 69, 10)];
+      const modeAccuracy70: ModeAccuracy[] = [createModeAccuracy('fill-in-blanks', 70, 10)];
+
+      const result69 = calculateWeakModeRecommendation(modeAccuracy69);
+      const result70 = calculateWeakModeRecommendation(modeAccuracy70);
+
+      expect(result69?.priority).toBe(3); // 69 < 70, above 60
+      expect(result70).toBeNull(); // 70 is not < 70, so not weak
+    });
+
     it('should return priority 3 when accuracy is 60-69', () => {
       const modeAccuracy: ModeAccuracy[] = [
         createModeAccuracy('fill-in-blanks', 85, 20),
@@ -321,6 +374,18 @@ describe('calculateWeakModeRecommendation', () => {
 
       expect(result59?.priority).toBe(2); // 59 < 60
       expect(result60?.priority).toBe(3); // 60 >= 60 && < threshold
+    });
+
+    it('should return priority 1 for accuracy exactly at 0', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 0, 10),
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      expect(result).not.toBeNull();
+      expect(result?.priority).toBe(1);
+      expect(result?.accuracy).toBe(0);
     });
 
     it('should return correct recommendation structure with all fields', () => {
@@ -368,6 +433,34 @@ describe('calculateWeakModeRecommendation', () => {
 
       expect(result).not.toBeNull();
       expect(result?.mode).toBe('dictation'); // Only weak practiced mode
+    });
+
+    it('should return null when all modes are unpracticed (0 questions)', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 20, 0), // below threshold but 0 questions
+        createModeAccuracy('dictation', 30, 0), // below threshold but 0 questions
+        createModeAccuracy('multiple-choice', 40, 0), // below threshold but 0 questions
+        createModeAccuracy('sentence-reorder', 50, 0), // below threshold but 0 questions
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      // All modes have 0 questions, so none can be considered practiced
+      expect(result).toBeNull();
+    });
+
+    it('should return weak practiced mode when all modes below threshold but some are unpracticed', () => {
+      const modeAccuracy: ModeAccuracy[] = [
+        createModeAccuracy('fill-in-blanks', 85, 30),
+        createModeAccuracy('dictation', 65, 10), // practiced, weak (below 70)
+        createModeAccuracy('multiple-choice', 50, 0), // not practiced, below threshold
+        createModeAccuracy('sentence-reorder', 60, 0), // not practiced, below threshold
+      ];
+
+      const result = calculateWeakModeRecommendation(modeAccuracy);
+
+      expect(result).not.toBeNull();
+      expect(result?.mode).toBe('dictation'); // Only practiced weak mode
     });
   });
 });

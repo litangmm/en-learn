@@ -120,4 +120,71 @@ describe('ProgressTrend', () => {
     const svg = document.querySelector('svg');
     expect(svg).toBeInTheDocument();
   });
+
+  it('renders time range buttons', () => {
+    render(<ProgressTrend />);
+
+    expect(screen.getByText('7d')).toBeInTheDocument();
+    expect(screen.getByText('14d')).toBeInTheDocument();
+    expect(screen.getByText('30d')).toBeInTheDocument();
+  });
+
+  it('shows 7d as selected by default', () => {
+    render(<ProgressTrend />);
+
+    const button7d = screen.getByText('7d');
+    expect(button7d.closest('button')).toHaveClass('bg-white');
+  });
+
+  it('switches to 14d range when clicked', () => {
+    render(<ProgressTrend />);
+
+    const button14d = screen.getByText('14d');
+    fireEvent.click(button14d);
+
+    // 14d button should now be selected (has bg-white class)
+    expect(button14d.closest('button')).toHaveClass('bg-white');
+    // 7d should no longer be selected
+    const button7d = screen.getByText('7d');
+    expect(button7d.closest('button')).not.toHaveClass('bg-white');
+  });
+
+  it('switches to 30d range when clicked', () => {
+    render(<ProgressTrend />);
+
+    const button30d = screen.getByText('30d');
+    fireEvent.click(button30d);
+
+    expect(button30d.closest('button')).toHaveClass('bg-white');
+  });
+
+  it('calls getDailyXP with correct days when range changes', () => {
+    render(<ProgressTrend />);
+
+    const button14d = screen.getByText('14d');
+    fireEvent.click(button14d);
+
+    expect(mockGetDailyXP).toHaveBeenCalledWith(14);
+  });
+
+  it('hides range buttons when external data is provided', () => {
+    const customData: DailyTrend[] = [
+      { date: '2024-01-01', dayName: '周一', xp: 50, questions: 25, accuracy: 80 },
+      { date: '2024-01-02', dayName: '周二', xp: 60, questions: 30, accuracy: 85 },
+    ];
+
+    render(<ProgressTrend data={customData} />);
+
+    expect(screen.queryByText('7d')).not.toBeInTheDocument();
+    expect(screen.queryByText('14d')).not.toBeInTheDocument();
+    expect(screen.queryByText('30d')).not.toBeInTheDocument();
+  });
+
+  it('uses initial days prop value', () => {
+    render(<ProgressTrend days={14} />);
+
+    // 14d button should be selected by default
+    const button14d = screen.getByText('14d');
+    expect(button14d.closest('button')).toHaveClass('bg-white');
+  });
 });

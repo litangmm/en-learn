@@ -11,9 +11,9 @@ export type TrendMetric = 'questions' | 'xp';
  * Props for the ProgressTrend component.
  */
 export interface ProgressTrendProps {
-  /** Custom data to display. If not provided, uses getDailyXP() from storage. */
+  /** Custom data to display. If provided, range buttons are disabled. */
   data?: DailyTrend[];
-  /** Number of days to display. Defaults to 7. */
+  /** Number of days to display. Defaults to 7. Used as initial value for internal state. */
   days?: number;
   /** Height of the chart. Defaults to 160. */
   height?: number;
@@ -27,12 +27,18 @@ export interface ProgressTrendProps {
  */
 export function ProgressTrend({
   data,
-  days = 7,
+  days: initialDays = 7,
   height = 160,
   onDayClick,
 }: ProgressTrendProps) {
-  // Get data from storage if not provided
-  const dailyData = data ?? getDailyXP(days);
+  // Internal state for selected time range
+  const [selectedDays, setSelectedDays] = useState(initialDays);
+
+  // Determine if we're using external data or internal fetching
+  const useExternalData = data !== undefined;
+
+  // Get data from storage if not provided externally
+  const dailyData = useExternalData ? data : getDailyXP(selectedDays);
 
   // Check if there's any data
   const hasData = dailyData.some(d => d.xp > 0 || d.questions > 0);
@@ -147,28 +153,50 @@ export function ProgressTrend({
 
   return (
     <div className="relative" style={{ width, height }}>
-      {/* Metric toggle */}
-      <div className="absolute top-0 right-0 flex gap-1 bg-slate-100 rounded-lg p-1">
-        <button
-          onClick={() => setMetric('xp')}
-          className={`px-2 py-1 text-xs rounded ${
-            metric === 'xp'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
-          }`}
-        >
-          XP
-        </button>
-        <button
-          onClick={() => setMetric('questions')}
-          className={`px-2 py-1 text-xs rounded ${
-            metric === 'questions'
-              ? 'bg-white text-blue-600 shadow-sm'
-              : 'text-slate-500 hover:text-slate-700'
-          }`}
-        >
-          题数
-        </button>
+      {/* Time range and metric toggles */}
+      <div className="absolute top-0 left-0 right-0 flex justify-between items-center">
+        {/* Time range selector */}
+        {!useExternalData && (
+          <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+            {([7, 14, 30] as const).map((d) => (
+              <button
+                key={d}
+                onClick={() => setSelectedDays(d)}
+                className={`px-2 py-1 text-xs rounded ${
+                  selectedDays === d
+                    ? 'bg-white text-blue-600 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'
+                }`}
+              >
+                {d}d
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Metric toggle */}
+        <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
+          <button
+            onClick={() => setMetric('xp')}
+            className={`px-2 py-1 text-xs rounded ${
+              metric === 'xp'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            XP
+          </button>
+          <button
+            onClick={() => setMetric('questions')}
+            className={`px-2 py-1 text-xs rounded ${
+              metric === 'questions'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            题数
+          </button>
+        </div>
       </div>
 
       <svg

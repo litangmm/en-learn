@@ -3,6 +3,103 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-26-191",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "BRAINSTORM 阶段完成（vision mode）。9 个 Epic 候选（epic-078~epic-086），epic-078「App.tsx 视图路由配置中心重构」当选（ARCH 提出，PM-UX/QA/PM-Mon 支持，4 支持最高）。epic-079「智能自适应学习节奏优化引擎」(3 支持)、epic-080「个人词库学习路线图」(3 支持) 列为备选。2197 测试历史最高水位，零回归。epic-069 完成度 1/4，iter-002~004 pending，run.sh 将自动检测并继续 PLAN。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "REPORT 阶段完成。epic-069 iter-001「综合学习洞察面板」收官：LearnInsightDashboard + HealthGauge + AbilityRadar + ProgressTrend 集成，abilityModeAccuracy 和 trendData 从 storage 派生，App.tsx 新增 'learn-insight-dashboard' 视图。2197 测试零回归（历史最高水位），Build 3.43s（比上轮 3.70s 减少 0.27s），Lint 0 errors，v0.79.0 已部署。epic-069 完成度 1/4，剩余 iter-002~004 pending，run.sh 将自动检测并继续 PLAN。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "DEPLOY 阶段完成。Build 3.67s 通过，Vercel 部署成功（https://en-learn-q6hw53awo-litangmms-projects.vercel.app），创建 git tag v0.79.0，已推送到远程。epic-069 iter-001 综合学习洞察面板正式发布。epic-069 完成度 1/4，剩余 iter-002~004 pending，版本范围 v0.79.0。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "COMMIT 阶段完成。源码已提交 8a21948（epic-069 iter-001 综合学习洞察面板：LearnInsightDashboard + HealthGauge + 2197 tests），文档已提交 666fee4（directives + releases）。2197 测试零回归，Build 3.43s，Lint 0 errors。epic-069 完成度 1/4，iter-001 全部完成，准备进入 DEPLOY 阶段。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "TEST 阶段完成。2197 单元测试零回归（5 skipped, 27.63s），Build 3.43s，Lint 0 errors。epic-069 完成度 1/4，iter-001 综合学习洞察面板测试通过，准备进入 COMMIT 阶段。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "IMPLEMENT 阶段完成。LearnInsightDashboard 综合学习洞察面板已集成：types.ts 添加 abilityModeAccuracy 和 trendData 字段；useLearnInsights.ts 扩展 calculateModeAccuracy/calculateTrendData 函数；App.tsx 添加 onBackFromLearnInsightDashboard 到 ViewRouter；HealthGauge.test.tsx unused import 修复。2197 测试零回归（历史最高水位），Build 3.72s，Lint 0 errors。epic-069 完成度 1/4，准备进入 TEST 阶段。"
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "PLAN 阶段完成。epic-069「学习数据孤岛打通与统一学习仪表盘」拆分完成，4 个迭代（iter-001~004）：综合学习洞察面板、能力雷达图与趋势折线图深度联动、薄弱模式诊断与个性化建议、学习健康报告生成与分享。iter-001 计划复用 AbilityRadar/ProgressTrend/LearnInsightPanel 组件，统一学习数据入口。epic-069 完成度 0/4，准备进入 IMPLEMENT 阶段。2042 测试零回归。",
+      "selectedEpic": {
+        "id": "epic-069",
+        "title": "学习数据孤岛打通与统一学习仪表盘",
+        "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分。将所有学习洞察汇聚于一处，形成「学习健康报告」。",
+        "proposedBy": "PM-Growth",
+        "supportedBy": [
+          "PM-UX",
+          "PM-Lean",
+          "UX",
+          "PM-Mon",
+          "QA",
+          "EXP"
+        ],
+        "priority": "high",
+        "estimatedEffort": "medium"
+      },
+      "currentEpic": {
+        "id": "epic-069",
+        "title": "学习数据孤岛打通与统一学习仪表盘",
+        "iterationsCount": 4,
+        "completedIterations": 1,
+        "pendingIterations": 3,
+        "currentIterationIndex": 1
+      },
+      "plan": {
+        "iterationId": "iter-001",
+        "iterationTitle": "综合学习洞察面板",
+        "scope": "frontend-only",
+        "steps": 10,
+        "filesToModify": [
+          "src/data/types.ts",
+          "src/hooks/useLearnInsights.ts",
+          "src/App.tsx"
+        ],
+        "filesToCreate": [
+          "src/components/LearnInsightDashboard.tsx",
+          "src/components/__tests__/LearnInsightDashboard.test.tsx",
+          "src/hooks/__tests__/useLearnInsights.abilityModeAccuracy.test.ts",
+          "src/components/__tests__/App.learn-insight.test.tsx"
+        ]
+      }
+    },
+    {
+      "id": "2026-05-26-189",
+      "mode": "tech-review",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "BRAINSTORM 阶段完成（tech-review mode）。9 个 Epic 候选（epic-069~epic-077），epic-069「学习数据孤岛打通与统一学习仪表盘」当选（PM-Growth 提出，PM-UX/PM-Lean/UX/PM-Mon/QA/EXP 支持，6 支持最高）。epic-070「App.tsx 复杂度治理」(4 支持)、epic-071「构建体积监控」(3 支持)、epic-072「epic-055 个人词库续」(3 支持) 列为备选。2042 测试历史最高水位，零回归。epic-058 完成度 4/4，epic-058 全部完成。准备进入 PLAN 阶段。"
+    },
+    {
       "id": "2026-05-26-189",
       "mode": "tech-review",
       "stage": "TECH_REVIEW",
@@ -825,22 +922,88 @@
     }
   ],
   "currentCycle": {
-    "id": "2026-05-26-189",
-    "mode": "tech-review",
+    "id": "2026-05-26-191",
+    "mode": "vision",
     "stage": "BRAINSTORM",
-    "startedAt": "2026-05-26T10:34:34.411Z"
+    "startedAt": "2026-05-26T12:43:08.048Z",
+    "completedAt": "2026-05-26T12:50:00.000Z"
   },
-  "status": "BRAINSTORM",
+  "status": "PLAN",
   "nextMode": null,
-  "commit": "e8b6d0a",
-  "docCommit": "ffd3606",
-  "cycleCount": 188,
+  "commit": "8a21948",
+  "docCommit": "666fee4",
+  "cycleCount": 190,
   "failedAttempts": 0,
-  "implementationStatus": "REPORT 阶段完成。epic-058「学习动机流失预警与挽回系统」全部 4 个迭代圆满收官（v0.74.0-v0.77.0）。2042 测试零回归（历史最高水位，持续 20+ cycle）。epic-058 完成度 4/4，epic-058 全部完成。",
-  "currentEpic": "epic-058",
-  "pendingIterations": [],
+  "implementationStatus": "REPORT 阶段完成。epic-069 iter-001「综合学习洞察面板」收官，2197 测试零回归，Build 3.43s，v0.79.0 已部署。epic-069 完成度 1/4，剩余 iter-002~004 pending。run.sh 将自动检测 pending iterations 并继续 PLAN。",
+  "currentEpic": "epic-069",
+  "pendingIterations": [
+    {
+      "id": "iter-002",
+      "title": "能力雷达图与趋势折线图深度联动",
+      "scope": "frontend-only",
+      "status": "pending"
+    },
+    {
+      "id": "iter-003",
+      "title": "薄弱模式诊断与个性化建议",
+      "scope": "frontend-only",
+      "status": "pending"
+    },
+    {
+      "id": "iter-004",
+      "title": "学习健康报告生成与分享",
+      "scope": "frontend-only",
+      "status": "pending"
+    }
+  ],
   "plan": null,
   "epicHistory": [
+    {
+      "id": "epic-069",
+      "title": "学习数据孤岛打通与统一学习仪表盘",
+      "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分（记忆保持/遗忘曲线/薄弱点攻克）。将所有学习洞察汇聚于一处，形成「学习健康报告」，让用户对自己的学习状态有全局感知。",
+      "status": "in_progress",
+      "iterations": [
+        {
+          "id": "iter-001",
+          "title": "综合学习洞察面板",
+          "scope": "frontend-only",
+          "status": "completed"
+        },
+        {
+          "id": "iter-002",
+          "title": "能力雷达图与趋势折线图深度联动",
+          "scope": "frontend-only",
+          "status": "pending"
+        },
+        {
+          "id": "iter-003",
+          "title": "薄弱模式诊断与个性化建议",
+          "scope": "frontend-only",
+          "status": "pending"
+        },
+        {
+          "id": "iter-004",
+          "title": "学习健康报告生成与分享",
+          "scope": "frontend-only",
+          "status": "pending"
+        }
+      ],
+      "iterationsCount": 4,
+      "completedIterations": 0,
+      "pendingIterations": 4,
+      "currentIterationIndex": 0,
+      "createdAt": "2026-05-26T10:35:00.000Z",
+      "proposedBy": "PM-Growth",
+      "supportedBy": [
+        "PM-UX",
+        "PM-Lean",
+        "UX",
+        "PM-Mon",
+        "QA",
+        "EXP"
+      ]
+    },
     {
       "id": "epic-058",
       "title": "学习动机流失预警与挽回系统",
@@ -1143,29 +1306,15 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 2042,
+      "passed": 2197,
       "failed": 0,
       "skipped": 5,
-      "total": 2047,
-      "duration": "42.05s"
+      "total": 2202,
+      "duration": "27.63s"
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "epic-058 iter-004 is the last iteration (4/4 completed), E2E ran but 6 failures are pre-existing flaky tests unrelated to this iteration (dev server load/element visibility). Unit tests and build/lint all pass. Marking E2E as flaky per test.md rules."
-    },
-    "coverage": {
-      "statements": 81.94,
-      "lines": 81.89,
-      "functions": 84.88,
-      "branches": 75.13,
-      "thresholds": {
-        "lines": 70,
-        "functions": 70,
-        "branches": 60,
-        "statements": 70
-      },
-      "baseline": "v0.71.0",
-      "note": "Coverage baseline established at epic-050 iter-004. All thresholds exceeded."
+      "reason": "E2E only runs on last iteration of epic. epic-069 has 3 more pending iterations (iter-002~004). Skipping E2E this cycle."
     },
     "lint": {
       "passed": true,
@@ -1174,7 +1323,7 @@
     },
     "build": {
       "passed": true,
-      "duration": "4.15s (tsc + vite)"
+      "duration": "3.43s (tsc + vite)"
     }
   },
   "directives": {
@@ -1206,12 +1355,12 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-9mow4ymih-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-26T08:37:00.570Z",
-    "version": "v0.77.0",
-    "commit": "e8b6d0a",
-    "iterationId": "iter-004",
-    "iterationTitle": "流失预警数据看板",
+    "url": "https://en-learn-q6hw53awo-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-26T12:19:07.000Z",
+    "version": "v0.79.0",
+    "commit": "666fee4",
+    "iterationId": "iter-001",
+    "iterationTitle": "综合学习洞察面板",
     "error": null
   },
   "pendingDeployment": false,
@@ -1219,7 +1368,7 @@
   "pendingCommit": null,
   "pendingIterationId": null,
   "pendingIterationTitle": null,
-  "lastRun": "2026-05-26T08:37:00.000Z",
+  "lastRun": "2026-05-26T12:27:15.000Z",
   "techReviewBaseline": {
     "lintWarnings": 0,
     "lintErrors": 0,
@@ -1230,5 +1379,18 @@
     "suppressedWarnings": 17,
     "buildDuration": "3.35s",
     "note": "140 unused vars fixed in this cycle. 6 complexity warnings remain (App 56, PracticeCard 42, storage 23/24/26, useFlowState 21). All pre-existing suppressed warnings intentional."
+  },
+  "selectedEpic": {
+    "id": "epic-078",
+    "title": "App.tsx 视图路由配置中心重构",
+    "description": "当前 App.tsx 管理着 20+ 个视图、10+ 种练习模式、专注模式、PWA、响应式断点等多个维度的条件渲染，复杂度已达 60（cyclomatic complexity）。随着 epic-069 的学习洞察面板（learn-insight-dashboard）等新视图持续叠加，App.tsx 已接近可维护性临界点。需要将视图路由配置完全外部化到 ViewRouter.tsx，实现声明式路由声明，将 App.tsx 从「状态机+视图渲染器」转变为纯粹的「数据驱动视图展示层」。",
+    "proposedBy": "ARCH",
+    "supportedBy": [
+      "PM-UX",
+      "QA",
+      "PM-Mon"
+    ],
+    "priority": "high",
+    "estimatedEffort": "medium"
   }
 }

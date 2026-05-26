@@ -242,3 +242,10 @@
 - **结果**: epic-018 iter-001「里程碑导航与进度概览」**完成并部署**，v0.39.0，848/848 测试通过
 - **当前状态**: **连续未被选中计数保持清零**（提案者身份，Epic 推进中）
 - **观察**: epic-018 在 brainstorm 中获 5 支持（PM-Growth/UX/EXP/PM-Lean/QA），超过 epic-022（3 支持）、epic-023（3 支持）。iter-001 产出：useProgressStats Hook（XP 档案/学习天数/正确率/词库数）、ProgressHub 组件、MilestoneCard 组件、XPBar onClick 导航、MobileNav 进度入口、ViewRouter progress 路由。**epic-018 剩余 iter-002（能力雷达图/进度趋势）、iter-003（成就系统/学习档案）继续推进中**
+### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— **提案者**
+- **结果**: epic-069 iter-002 **完成并部署**，v0.80.0，2253/2258 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 提案者）
+- **观察**: epic-069 iter-002 完成了 PM-Growth「数据联动」理念的关键落地——AbilityRadar onModeSelect 让用户点击雷达轴高亮对应趋势线，直观对比各模式的学习表现。getModeAccuracy 的纯函数设计（无副作用）便于未来扩展为个性化推荐。7d/14d/30d 时间范围选择器增加了「时间维度」的自定义空间，用户可看短期（7天）或长期（30天）趋势，数据洞察更完整。**epic-069 完成度 2/4，剩余 iter-003（薄弱模式诊断）+ iter-004（学习健康报告生成），继续推进**
+

@@ -299,3 +299,16 @@
 - **当前状态**: **连续未被选中计数清零**（提案者身份，Epic 进行中）
 - **观察**: epic-078 是在 epic-069 iter-001 完成后的新一次 brainstorm。ARCH 自 epic-069 完成后（即上一个 cycle）积累了新的洞察：App.tsx complexity 达到 60，接近可维护性临界点。iter-001 基于 epic-077 的 ViewRouter 重构成果（已完成），迭代链路清晰。epic-078 复用 ViewRouter.tsx 作为配置中心，数据基础（ViewState 类型 + 视图枚举 + 回调接口）已在 epic-077 iter-001 中建立，零新增依赖。**epic-078 还有 4 个迭代（iter-001~004），ARCH 将继续推进，关注 App.tsx 复杂度降低和架构健康度提升**
 
+### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— 作为支持者
+- **结果**: epic-069 iter-002 **完成并部署**，v0.80.0，2253/2258 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: epic-069 iter-002 全程零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。ModeStats 扩展（新增 en-learn-mode-stats）以最小侵入方式记录模式答题数据，getModeAccuracy 纯函数设计无副作用，架构扩展性好。LearnInsightDashboard 的 radar-trend wiring 展示了组件间数据联动的最佳实践。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续支持，关注 iter-002 完成后 epic-078 能否推进**
+
+### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 / epic-078 备选
+- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」完成 / epic-078 备选
+- **结果**: epic-069 iter-002 完成并部署，v0.80.0，2253 测试通过；epic-078 作为下次 BRAINSTORM 首选候选
+- **当前状态**: **连续未被选中计数保持清零**（支持 epic-069）
+- **观察**: epic-069 iter-002 的 LearnInsightDashboard 新增 'learn-insight-dashboard' 视图入口进一步累积 App.tsx 复杂度。epic-078「App.tsx 视图路由配置中心重构」将在下次 BRAINSTORM 候选（4 支持：ARCH/PM-UX/QA/PM-Mon）。ViewRouter.tsx 接管视图路由声明的模式已在 epic-069 中得到验证，为 epic-078 的架构重构奠定了基础。**epic-078 作为下次 BRAINSTORM 首选，继续推动 App.tsx 复杂度治理**
+

@@ -274,3 +274,10 @@
 - **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展（abilityModeAccuracy/trendData）+ useLearnInsights.ts 扩展（calculateModeAccuracy/calculateTrendData）+ App.tsx 集成（'learn-insight-dashboard' 视图）+ 全面测试
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: epic-069 iter-001 的综合学习洞察面板是 EXP「自适应学习」理念的关键数据基础设施——abilityModeAccuracy（各模式正确率）和 trendData（7日趋势）共同构成自适应出题权重的核心输入。未来 iter-002 的「能力雷达图与趋势折线图深度联动」可直接利用这些数据驱动自适应推荐。2197 测试零回归，构建时间 3.43s（比上轮 3.70s 减少 0.27s）。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注 abilityModeAccuracy 数据在自适应出题中的落地**
+### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— 作为支持者
+- **结果**: epic-069 iter-002 **完成并测试通过**，2253/2258 测试通过（5 skipped，历史最高水位）
+- **完成内容**: ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: epic-069 iter-002 的 ModeStats 扩展（getModeAccuracy 计算各模式正确率）为 EXP「自适应学习」提供了关键数据基础——用户在各模式的正确率分布（normal/fill-in-blanks/dictation/multiple-choice/sentence-reorder）可作为自适应出题权重的数据源。onModeSelect 回调让用户可点击雷达轴高亮对应趋势线，实现了「数据联动」理念。7d/14d/30d 时间范围选择器让用户可从不同时间尺度审视学习趋势。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续支持，关注 abilityModeAccuracy 数据在自适应出题中的深度落地**
+

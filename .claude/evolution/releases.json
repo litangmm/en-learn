@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.80.0",
+      "tag": "v0.80.0",
+      "commit": "c75e7af",
+      "date": "2026-05-26T13:46:24.418Z",
+      "iterationId": "iter-002",
+      "title": "能力雷达图与趋势折线图深度联动",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-e1mi8y3n9-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.79.0",
+      "tag": "v0.79.0",
+      "commit": "666fee4",
+      "date": "2026-05-26T12:19:08.024Z",
+      "iterationId": "iter-001",
+      "title": "综合学习洞察面板",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-q6hw53awo-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.77.0",
       "tag": "v0.77.0",
       "commit": "e8b6d0a",

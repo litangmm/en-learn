@@ -410,3 +410,10 @@
   - 全量回归：**2197/2202 单元测试通过**（5 skipped，历史最高水位），lint 0 errors，build 3.43s success（比上轮 3.70s 减少 0.27s）
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: 2197 测试零回归，历史最高水位持续保持。HealthGauge.test.tsx 的 unused import 修复（HealthScore）确保零 lint warnings。Build 3.43s 持续改善（比上轮 3.70s 减少 0.27s）。**epic-069 还有 3 个迭代（iter-002~004），继续关注新面板功能的测试覆盖完整性**
+### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— 作为支持者
+- **结果**: epic-069 iter-002 **完成并测试通过**，2253/2258 测试通过（5 skipped，历史最高水位）
+- **完成内容**: LearnInsightDashboard.radar-trend.test.tsx + ProgressTrend.range-selector.test.tsx + useLearnInsights.trend-filter.test.ts + 2253 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: 2253 测试零回归，历史最高水位持续保持（连续 2 cycle）。iter-002 新增约 56 个测试（LearnInsightDashboard.radar-trend 联动测试 + ProgressTrend range-selector 测试 + useLearnInsights.trend-filter 测试）。getModeAccuracy 的纯函数设计便于单元测试覆盖，getFilteredTrend 的时间范围过滤逻辑通过参数化测试覆盖 7d/14d/30d 边界。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续关注新面板功能的测试覆盖完整性**
+

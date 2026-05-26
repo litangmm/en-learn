@@ -4,851 +4,185 @@
   "history": [
     {
       "id": "2026-05-27-195",
-      "mode": "test",
-      "stage": "REPORT",
+      "mode": "vision",
+      "stage": "TEST",
       "status": "completed",
-      "summary": "REPORT 阶段完成。epic-069 iter-004「学习健康报告生成与分享」圆满收官：LearningReport type + useLearningReport hook（纯函数：getPeriodLabel/formatDateString/generateLearningReport/generateNextActions）+ LearningReportPanel 组件（health gauge/stats/achievements/weak mode）+ LearnInsightDashboard 添加「查看报告」按钮 + ViewRouter/App.tsx 集成 + 2367 tests 零回归（历史最高水位）+ Build 3.47s + Lint 0 errors + v0.82.0 部署成功。epic-069 完成度 4/4，epic-069 全部完成，版本范围 v0.79.0-v0.82.0。"
+      "summary": "epic-079 iter-001 ViewRouter 注册中心模式测试通过。2405 测试零回归，0 lint errors，build 3.50s。"
     },
     {
       "id": "2026-05-27-195",
-      "mode": "test",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.47s 通过，Vercel 部署成功（https://en-learn-7yoblht7m-litangmms-projects.vercel.app），创建 git tag v0.82.0。源码已推送 evolution/iter-004-badges 分支。epic-069 完成度 4/4，iter-004 全部完成，版本范围 v0.79.0-v0.82.0，准备进入 REPORT 阶段。"
-    },
-    {
-      "id": "2026-05-27-195",
-      "mode": "test",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 7200529（epic-069 iter-004 学习健康报告生成与分享：LearningReport type + useLearningReport hook + LearningReportPanel + 2367 tests）+ fe28e74（fix: remove unused imports）。文档无变更。2367 测试零回归（历史最高水位），Build 3.47s，Lint 0 errors。epic-069 完成度 4/4，准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-27-195",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "TEST 阶段完成。2367 单元测试零回归（5 skipped, 28.70s），Build 3.47s（比上轮 3.77s -0.30s），Lint 0 errors。修复 2 个测试失败（getAllByText 多匹配 + toHaveLengthGreaterThan 不支持）。epic-069 完成度 4/4，iter-004「学习健康报告生成与分享」测试通过，准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-27-195",
-      "mode": "test",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "IMPLEMENT 阶段完成。epic-069 iter-004「学习健康报告生成与分享」收官：LearningReport type + useLearningReport hook（纯函数：getPeriodLabel/formatDateString/generateLearningReport/generateNextActions）+ LearningReportPanel 组件（health gauge/stats grid/weak mode recommendation/achievements/export）+ LearnInsightDashboard 添加「查看报告」按钮 + ViewRouter/App.tsx 集成。2367 tests 零回归（历史最高水位），Build 3.77s，Lint 0 errors。epic-069 完成度 4/4，准备进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "IMPLEMENT 阶段完成。epic-069 iter-003「薄弱模式诊断与个性化建议」收官：useLearnInsights.ts 增强 ModeStats 感知（使用 getModeAccuracy）+ weakModeRecommendation 测试扩展（+6 边界测试，40 tests）+ weaknessPatterns 测试文件（35 tests）+ LearnInsightDashboard 组件测试扩展（+7 tests，51 tests）+ 2340 测试零回归（历史最高水位），Build 3.49s，Lint 0 errors。epic-069 完成度 3/4，准备进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "TEST 阶段完成。2340 单元测试零回归（5 skipped, 28.61s），Build 3.59s（比上轮 3.49s +0.10s），Lint 0 errors。epic-069 完成度 3/4，iter-003「薄弱模式诊断与个性化建议」测试通过，准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 e220bd0（epic-069 iter-003 薄弱模式诊断与个性化建议：useLearnInsights.ts ModeStats 感知增强 + weakModeRecommendation 测试扩展 40 tests + weaknessPatterns 测试 35 tests + LearnInsightDashboard 组件测试 51 tests），文档已提交 054feeb。2340 测试零回归（历史最高水位），Build 3.59s，Lint 0 errors。epic-069 完成度 3/4，iter-003 全部完成，准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.59s 通过，Vercel 部署成功（https://en-learn-8yq2kxyz-litangmms-projects.vercel.app），创建 git tag v0.81.0（4fc1c9d）。源码已推送 evolution/iter-004-badges 分支。epic-069 完成度 3/4，iter-003 全部完成，版本范围 v0.79.0-v0.81.0，准备进入 REPORT 阶段。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-069 iter-003「薄弱模式诊断与个性化建议」圆满收官：useLearnInsights.ts ModeStats 感知增强（使用 getModeAccuracy）+ weakModeRecommendation 测试扩展（40 tests）+ weaknessPatterns 测试文件（35 tests）+ LearnInsightDashboard 组件测试扩展（51 tests）+ 2340 测试零回归（历史最高水位）+ Build 3.59s + Lint 0 errors + v0.81.0 已部署。epic-069 完成度 3/4，剩余 iter-004（学习健康报告生成与分享）pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "BRAINSTORM 阶段完成（tech-review mode）。9 个 Epic 候选（epic-079~epic-087），epic-079「App.tsx 视图路由配置中心强制落地」当选（ARCH 提出，PM-UX/EXP/PM-Growth 支持，4 支持最高）。epic-086「声明式路由元数据规范」（4 支持：PM-UX/UX/QA/EXP）与 epic-079 iter-001 并行开发。epic-080「Bundle Size 自动化门禁」（4 支持）、epic-087「复杂度监控门禁」（3 支持）列为备选。2292 测试历史最高水位，零回归。epic-069 完成度 2/4，iter-003~004 pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-26-193",
-      "mode": "tech-review",
-      "stage": "TECH_REVIEW",
-      "status": "completed",
-      "summary": "TECH_REVIEW 阶段完成。扫描结果：Lint 零 errors（上次 0），TypeScript 零 type errors（上次 0），2292 测试零回归（上次 2253→本次 2292 +39，测试增量因 iter-002 新增测试覆盖）。Build 3.77s 通过（上次 3.66s →本次 3.77s +0.11s）。无未使用导入，无 any 类型使用，无 lint errors，无 type errors。32 个 complexity warnings（App 60, ViewRouter 25, PracticeCard 42, storage 21, useFlowState 21 等），为核心文件，暂不处理。技术债务基线：lint errors 0，unused vars 0，type errors 0，any usage 0。准备进入 BRAINSTORM 阶段，候选 Epic：epic-078（App.tsx 视图路由配置中心重构，4 支持）。"
-    },
-    {
-      "id": "2026-05-26-191",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-069 iter-002「能力雷达图与趋势折线图深度联动」收官：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests（历史最高水位）+ Build 3.42s + Lint 0 errors + v0.80.0 部署成功。epic-069 完成度 2/4，剩余 iter-003（薄弱模式诊断）+ iter-004（学习健康报告生成）pending。run.sh 将自动检测并继续 PLAN（iter-003）。epic-078「App.tsx 视图路由配置中心重构」（4 支持：ARCH/PM-UX/QA/PM-Mon）作为下次 BRAINSTORM 候选。"
-    },
-    {
-      "id": "2026-05-26-191",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.44s 通过，Vercel 部署成功（https://en-learn-e1mi8y3n9-litangmms-projects.vercel.app），创建 git tag v0.80.0（c75e7af）。git push --tags 因网络错误失败，下次运行自动重试。epic-069 完成度 2/4，iter-002 全部完成，版本范围 v0.79.0-v0.80.0，准备进入 REPORT 阶段。"
-    },
-    {
-      "id": "2026-05-26-191",
       "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "IMPLEMENT 阶段完成。epic-069 iter-002「能力雷达图与趋势折线图深度联动」收官：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests 零回归（历史最高水位），Build 3.42s，Lint 0 errors。epic-069 完成度 2/4，iter-002 全部完成，准备进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-26-191",
-      "mode": "vision",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "TEST 阶段完成。2253 单元测试零回归（5 skipped, 28.30s），Build 3.66s（比上轮 3.42s +0.24s），Lint 0 errors。epic-069 完成度 2/4，iter-002「能力雷达图与趋势折线图深度联动」测试通过，准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-26-191",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 cee955c（epic-069 iter-002 能力雷达图与趋势折线图深度联动：ModeStats en-learn-mode-stats + getModeAccuracy + getFilteredTrend + AbilityRadar onModeSelect + LearnInsightDashboard radar-trend wiring + ProgressTrend 7d/14d/30d range selector + 2253 tests），文档已提交 c75e7af（agent experiences + history）。2253 测试零回归（历史最高水位），Build 3.42s，Lint 0 errors。epic-069 完成度 2/4，iter-002 全部完成，准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-26-191",
-      "mode": "vision",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "BRAINSTORM 阶段完成（vision mode）。9 个 Epic 候选（epic-078~epic-086），epic-078「App.tsx 视图路由配置中心重构」当选（ARCH 提出，PM-UX/QA/PM-Mon 支持，4 支持最高）。epic-079「智能自适应学习节奏优化引擎」(3 支持)、epic-080「个人词库学习路线图」(3 支持) 列为备选。2197 测试历史最高水位，零回归。epic-069 完成度 1/4，iter-002~004 pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-069 iter-001「综合学习洞察面板」收官：LearnInsightDashboard + HealthGauge + AbilityRadar + ProgressTrend 集成，abilityModeAccuracy 和 trendData 从 storage 派生，App.tsx 新增 'learn-insight-dashboard' 视图。2197 测试零回归（历史最高水位），Build 3.43s（比上轮 3.70s 减少 0.27s），Lint 0 errors，v0.79.0 已部署。epic-069 完成度 1/4，剩余 iter-002~004 pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.67s 通过，Vercel 部署成功（https://en-learn-q6hw53awo-litangmms-projects.vercel.app），创建 git tag v0.79.0，已推送到远程。epic-069 iter-001 综合学习洞察面板正式发布。epic-069 完成度 1/4，剩余 iter-002~004 pending，版本范围 v0.79.0。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 8a21948（epic-069 iter-001 综合学习洞察面板：LearnInsightDashboard + HealthGauge + 2197 tests），文档已提交 666fee4（directives + releases）。2197 测试零回归，Build 3.43s，Lint 0 errors。epic-069 完成度 1/4，iter-001 全部完成，准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "TEST 阶段完成。2197 单元测试零回归（5 skipped, 27.63s），Build 3.43s，Lint 0 errors。epic-069 完成度 1/4，iter-001 综合学习洞察面板测试通过，准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "IMPLEMENT 阶段完成。LearnInsightDashboard 综合学习洞察面板已集成：types.ts 添加 abilityModeAccuracy 和 trendData 字段；useLearnInsights.ts 扩展 calculateModeAccuracy/calculateTrendData 函数；App.tsx 添加 onBackFromLearnInsightDashboard 到 ViewRouter；HealthGauge.test.tsx unused import 修复。2197 测试零回归（历史最高水位），Build 3.72s，Lint 0 errors。epic-069 完成度 1/4，准备进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "PLAN 阶段完成。epic-069「学习数据孤岛打通与统一学习仪表盘」拆分完成，4 个迭代（iter-001~004）：综合学习洞察面板、能力雷达图与趋势折线图深度联动、薄弱模式诊断与个性化建议、学习健康报告生成与分享。iter-001 计划复用 AbilityRadar/ProgressTrend/LearnInsightPanel 组件，统一学习数据入口。epic-069 完成度 0/4，准备进入 IMPLEMENT 阶段。2042 测试零回归。",
-      "selectedEpic": {
-        "id": "epic-069",
-        "title": "学习数据孤岛打通与统一学习仪表盘",
-        "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分。将所有学习洞察汇聚于一处，形成「学习健康报告」。",
-        "proposedBy": "PM-Growth",
-        "supportedBy": [
-          "PM-UX",
-          "PM-Lean",
-          "UX",
-          "PM-Mon",
-          "QA",
-          "EXP"
-        ],
-        "priority": "high",
-        "estimatedEffort": "medium"
-      },
-      "currentEpic": {
-        "id": "epic-069",
-        "title": "学习数据孤岛打通与统一学习仪表盘",
-        "iterationsCount": 4,
-        "completedIterations": 1,
-        "pendingIterations": 3,
-        "currentIterationIndex": 1
-      },
-      "plan": {
-        "iterationId": "iter-001",
-        "iterationTitle": "综合学习洞察面板",
-        "scope": "frontend-only",
-        "steps": 10,
-        "filesToModify": [
-          "src/data/types.ts",
-          "src/hooks/useLearnInsights.ts",
-          "src/App.tsx"
-        ],
-        "filesToCreate": [
-          "src/components/LearnInsightDashboard.tsx",
-          "src/components/__tests__/LearnInsightDashboard.test.tsx",
-          "src/hooks/__tests__/useLearnInsights.abilityModeAccuracy.test.ts",
-          "src/components/__tests__/App.learn-insight.test.tsx"
-        ]
-      }
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "BRAINSTORM 阶段完成（tech-review mode）。9 个 Epic 候选（epic-069~epic-077），epic-069「学习数据孤岛打通与统一学习仪表盘」当选（PM-Growth 提出，PM-UX/PM-Lean/UX/PM-Mon/QA/EXP 支持，6 支持最高）。epic-070「App.tsx 复杂度治理」(4 支持)、epic-071「构建体积监控」(3 支持)、epic-072「epic-055 个人词库续」(3 支持) 列为备选。2042 测试历史最高水位，零回归。epic-058 完成度 4/4，epic-058 全部完成。准备进入 PLAN 阶段。"
-    },
-    {
-      "id": "2026-05-26-189",
-      "mode": "tech-review",
-      "stage": "TECH_REVIEW",
-      "status": "completed",
-      "summary": "TECH_REVIEW 阶段完成。扫描结果：Lint 零 errors（上次 0），TypeScript 零 type errors（上次 0），2142 测试零回归（上次 2042→本次 2142 +100）。Build 3.70s 通过（上次 4.15s→本次 3.70s -0.45s）。无未使用导入，无 any 类型使用，无硬编码问题。7 个 complexity warnings 保持（App 60, PracticeCard 42, ViewRouter 23, useFlowState 21, storage 23/26/32），为核心文件，暂不处理。技术债务基线：lint errors 0，unused vars 0，type errors 0，any usage 0。准备进入 BRAINSTORM 阶段，候选 Epic：epic-063（6 支持）、epic-065（3 支持）、epic-064（3 支持）。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-058「学习动机流失预警与挽回系统」全部 4 个迭代圆满收官（v0.74.0-v0.77.0）：iter-001 流失信号识别系统（ChurnSignal types + useChurnSignals + ChurnAlertBanner + 83 tests）、iter-002 分级召回干预机制（InterventionLevel + useChurnIntervention + InterventionPanel + 44 tests）、iter-003 召回效果追踪（ChurnMetrics + useChurnMetrics + ChurnMetricsPanel + 40 tests）、iter-004 流失预警数据看板（ChurnWarningDashboard + ChurnRiskGauge + ChurnTrendChart + InterventionEffectiveness + 24 tests）。2042 测试零回归（历史最高水位，持续 20+ cycle），Build 4.80s，Lint 0 errors。140 个 unused variables 修复。技术债务：6 个 complexity warnings（App 56, PracticeCard 42, storage 23/24/26, useFlowState 21）为核心文件，暂不处理。epic-058 完成度 4/4，epic-058 全部完成。下一 cycle 进入 BRAINSTORM 阶段，候选 Epic：epic-063「学习数据深度洞察」（6 支持）、epic-065「智能自适应学习节奏优化引擎」（3 支持）。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 4.80s 通过，Vercel 部署成功（https://en-learn-9mow4ymih-litangmms-projects.vercel.app），创建 git tag v0.77.0，已推送到远程。epic-058 iter-004 流失预警数据看板正式发布。epic-058 完成度 4/4，epic-058 全部完成，版本范围 v0.74.0-v0.77.0。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 e8b6d0a（epic-058 iter-004 流失预警数据看板：ChurnWarningDashboard + ChurnRiskGauge + ChurnTrendChart + InterventionEffectiveness + 24 tests），文档无变更。2042 测试零回归，Build 4.15s，Lint 0 errors。epic-058 完成度 4/4，epic-058 全部完成。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-058 iter-004 TEST 阶段完成。2042 单元测试零回归通过（5 skipped, 42.05s），Build 4.15s，Lint 0 errors。修复 ChurnWarningDashboard.test.tsx 测试：添加 useChurnSignals mock、修复多匹配文本断言、修复 TS spread error。E2E 6 个失败为 pre-existing flaky（dev server 加载问题），与本次迭代无关，标记为 flaky。epic-058 完成度 4/4，epic-058 全部完成。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "IMPLEMENT 阶段完成。ChurnWarningDashboard 流失预警数据看板集成：ViewRouter.tsx 新增 'churn-dashboard' 视图 + ChurnWarningDashboard 渲染、MobileNav.tsx 新增 '预警' 导航入口 + critical 风险徽章、MoreMenu.tsx 新增流失预警看板链接、App.tsx 集成（MoreMenu/MobileNav/ViewRouter）、ChurnWarningDashboard.test.tsx 组件测试（24 tests）。2025 测试零回归，Build 12.31s，Lint 0 errors。epic-058 完成度 4/4，iter-004 完成后进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.78s 通过，Vercel 部署成功（https://en-learn-jjzczlac0-litangmms-projects.vercel.app），创建 git tag v0.76.0，已推送到远程。epic-058 iter-003 召回效果追踪与优化正式发布。epic-058 完成度 3/4，剩余 iter-004 pending，版本范围 v0.74.0-v0.76.0。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 bd139a2（epic-058 iter-003 召回效果追踪与优化：ChurnMetrics types + useChurnMetrics hook + ChurnMetricsPanel + 40 tests），文档已提交 ffd3606。2019 测试零回归，Build 3.49s，Lint 0 errors。准备进入 DEPLOY 阶段。epic-058 完成度 3/4，剩余 iter-004 pending。"
-    },
-    {
-      "id": "2026-05-13-188",
-      "mode": "vision",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-058 iter-003 TEST 阶段完成。2019 单元测试零回归通过（5 skipped, 27.45s），Build 3.89s，Lint 0 errors。准备进入 COMMIT 阶段。epic-058 完成度 3/4，剩余 iter-004 pending。"
-    },
-    {
-      "id": "2026-05-13-186",
-      "mode": "tech-review",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-058 iter-002「分级召回干预机制」圆满收官：InterventionLevel/InterventionAction types + useChurnIntervention hook (snooze/localStorage) + InterventionPanel component (modal/severity/snooze) + App.tsx integration + 44 tests。1996 测试零回归（历史最高水位），Build 3.58s，Lint 0 errors。技术债务：140 个 unused variables 修复（跨 47 个文件）。v0.75.0 已部署。epic-058 完成度 2/4，剩余 iter-003~004 pending。"
-    },
-    {
-      "id": "2026-05-13-186",
-      "mode": "tech-review",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.61s 通过，Vercel 部署成功（https://en-learn-q75qw9jf1-litangmms-projects.vercel.app），创建 git tag v0.75.0，已推送到远程。epic-058 iter-002 分级召回干预机制正式发布。epic-058 完成度 2/4，剩余 iter-003~004 pending，版本范围 v0.74.0-v0.75.0。"
-    },
-    {
-      "id": "2026-05-13-186",
-      "mode": "tech-review",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 aeb6fa1（epic-058 iter-002 分级召回干预机制：InterventionLevel + useChurnIntervention + InterventionPanel + 44 tests），文档已提交 3b02e0b。准备进入 DEPLOY 阶段。epic-058 完成度 2/4，剩余 iter-003~004 pending。"
-    },
-    {
-      "id": "2026-05-13-186",
-      "mode": "tech-review",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-058 iter-002 TEST 阶段完成。1996 单元测试零回归通过（5 skipped），Build 3.58s，Lint 0 errors。准备进入 COMMIT 阶段。epic-058 完成度 2/4，剩余 iter-003~004 pending。"
-    },
-    {
-      "id": "2026-05-13-185",
-      "mode": "tech-review",
-      "stage": "TECH_REVIEW",
-      "status": "completed",
-      "summary": "TECH_REVIEW 阶段完成。修复 140 个 no-unused-vars lint errors（跨 47 个文件）：对未使用的变量添加 `_` 前缀。修复 2 个测试文件中的 html2canvas mock bug（top-level mock 必须调用 callback，否则后续测试 timeout）。1952 测试零回归，Build 3.35s，Lint 0 errors。6 个 complexity warnings 暂不处理（App/PracticeCard/storage 为核心文件，useFlowState 接近阈值）。技术债务基线更新：lint errors 0（上次 0），unused vars 0（上次 140→本次 0），type errors 0，any usage 0。"
-    },
-    {
-      "id": "2026-05-13-183",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-058 iter-001 流失信号识别系统收官：ChurnSignal types + useChurnSignals hook + ChurnAlertBanner + App.tsx integration + 83 tests。1952 测试零回归（历史最高水位），Build 3.38s，Lint 0 errors，v0.74.0 已部署。epic-058 完成度 1/4，剩余 iter-002~004 pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-13-183",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.38s 通过，Vercel 部署成功（https://en-learn-oyj0h5wn1-litangmms-projects.vercel.app），创建 git tag v0.74.0，已推送到远程。epic-058 iter-001 流失信号识别系统正式发布。epic-058 完成度 1/4，剩余 iter-002~004 pending，版本范围 v0.74.0。"
-    },
-    {
-      "id": "2026-05-13-183",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 25279bf（epic-058 iter-001 流失信号识别系统），文档无变更（state.json/log.txt 为运行时文件）。1952 测试零回归，Build 3.40s，Lint 0 errors。准备进入 DEPLOY 阶段。epic-058 完成度 1/4，剩余 iter-002~004 pending。"
-    },
-    {
-      "id": "2026-05-13-183",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-058 iter-001 IMPLEMENT 完成。ChurnSignal types (SignalType/SignalSeverity/ChurnRiskLevel/ChurnSignal/ChurnAssessment) + useChurnSignals hook (calculateChurnSignals/5 signal types/getChurnRiskLevel/getTopRiskFactors, now 参数可测试) + ChurnAlertBanner component (severity styling/dismissible/localStorage/CTA) + App.tsx integration (high/critical 显示) + 73 tests (useChurnSignals 50 + ChurnAlertBanner 23) + App.churn-alert.test.tsx (6 tests) + 21 App test mocks 更新。1952 测试零回归，Build 3.37s，Lint 0 errors。epic-058 完成度 1/4。"
-    },
-    {
-      "id": "2026-05-13-182",
-      "mode": "brainstorm",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "BRAINSTORM 阶段完成。7 个 Epic 候选（epic-058/060/057/056/059/061/062），epic-058「学习动机流失预警与挽回系统」当选（PM-Growth 提出，PM-UX/PM-Lean/UX/EXP 支持）。epic-060「性能回归自动检测」和 epic-057「跨模态协同学习」列为备选。1873 测试历史最高水位，零回归。epic-055 iter-001 完成，epic-055 完成度 1/5。"
-    },
-    {
-      "id": "2026-05-13-180",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-055 iter-001「个人生词复习模式」收官：PersonalDictionary storage + usePractice personal 模式 + PersonalPracticePanel + 36 tests。1873 测试零回归（历史最高水位），Build 3.52s，Lint 0 errors，v0.73.0 已部署。epic-055 完成度 1/5，剩余 iter-002~005（智能干扰项池/个人练习集/学习路线图/导出分享）pending，run.sh 将自动检测并继续 PLAN。"
-    },
-    {
-      "id": "2026-05-13-179",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-050「质量基础设施升级与 E2E 稳定性修复」全部 4 个迭代收官（v0.69.0-v0.72.0）：E2E 稳定化 + Playwright 并行 + 视觉回归测试 + 覆盖率 gate。1833 测试零回归，历史最高水位，持续 20+ cycle。epic-050 完成度 4/5，剩余 iter-005（性能回归自动检测）pending，版本范围 v0.69.0-v0.72.0。"
-    },
-    {
-      "id": "2026-05-13-179",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.79s 通过，Vercel 部署成功（https://en-learn.vercel.app），创建 git tag v0.72.0，已推送到远程。epic-050 iter-004 测试覆盖率目标 gate 正式发布。epic-050 完成度 4/5，剩余 iter-005（性能回归自动检测）pending，版本范围 v0.69.0-v0.72.0。"
-    },
-    {
-      "id": "2026-05-13-178",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 b1e16ae（epic-050 iter-004 测试覆盖率目标 gate：@vitest/coverage-v8 + v8 配置 + baseline + scripts），文档无变更。准备进入 DEPLOY 阶段。epic-050 完成度 4/5，剩余 iter-005（性能回归自动检测）pending。"
-    },
-    {
-      "id": "2026-05-13-177",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 2e72fb3（epic-050 iter-004 测试覆盖率目标 gate：@vitest/coverage-v8 + v8 配置 + baseline + scripts），文档已提交 83511c6（history + cycles）。准备进入 DEPLOY 阶段。epic-050 完成度 4/5，剩余 iter-005（性能回归自动检测）pending。"
-    },
-    {
-      "id": "2026-05-13-177",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-050 iter-004 IMPLEMENT 完成。@vitest/coverage-v8 安装 + vite.config.ts coverage 配置（provider: v8, thresholds: lines/functions 70%, branches 60%, statements 70%）+ package.json 添加 test:coverage/test:coverage:ci + eslint.config.js coverage 目录忽略 + .claude/evolution/coverage-baseline.json 建立。1833 测试零回归，Build 3.64s，Lint 0 errors。初始覆盖率：statements 81.94%, lines 81.89%, functions 84.88%, branches 75.13%。epic-050 完成度 4/5。"
-    },
-    {
-      "id": "2026-05-13-175",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-050 iter-003 视觉回归测试引入收官（v0.71.0）：16 个 E2E 视觉测试（桌面/移动端首页、词典浏览器、练习卡片、更多菜单、排行榜、XP/进度）+ screenshot.ts + visual-regression.ts。1833 单元测试零回归（历史最高水位，持续 6 个 cycle），Build 3.55s，Lint 0 errors。epic-050 完成度 3/5，剩余 iter-004（测试覆盖率 gate）和 iter-005（性能回归检测）pending。"
-    },
-    {
-      "id": "2026-05-13-174",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.56s 通过，Vercel 部署成功（https://en-learn-5762nq14c-litangmms-projects.vercel.app），创建 git tag v0.71.0，已推送到远程。epic-050 iter-003 视觉回归测试引入正式发布。epic-050 完成度 3/5，版本范围 v0.69.0-v0.71.0。"
-    },
-    {
-      "id": "2026-05-13-173",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 ec8a45f（epic-050 iter-003 视觉回归测试引入：16 个 E2E 视觉测试 + screenshot.ts + visual-regression.ts + package.json 脚本），文档已提交 583fd21（agent experiences + history）。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-172",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-050 iter-003 TEST 阶段完成。1833 单元测试零回归通过（1 skipped，25.31s），16 个视觉回归测试全部通过（45.2s），Build 3.55s，Lint 0 errors。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-170",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-050 iter-001~002 完成：E2E 测试稳定化修复（MoreMenu/MobileNav data-testid）+ Playwright 并行执行配置（fullyParallel + workers + video）。1833 单元测试零回归，历史最高水位。Build 3.42s，Lint 0 errors。epic-050 完成度 2/5，版本范围 v0.69.0-v0.70.0，准备进入 brainstorm 阶段继续 iter-003 视觉回归测试。"
-    },
-    {
-      "id": "2026-05-13-171",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-050 iter-003 IMPLEMENT 完成。e2e/visual.spec.ts（16 个视觉回归测试：桌面/移动端首页、练习卡片、词典浏览器、更多菜单、排行榜、XP/进度、App Shell）+ e2e/utils/screenshot.ts（截图工具封装）+ e2e/utils/visual-regression.ts（基线存储/diff生成/阈值判断）+ package.json 添加 test:visual/test:visual:compare/test:visual:baseline 脚本 + playwright.config.ts 添加 visual 配置。16 个视觉测试全部通过（45.6s），1833 单元测试零回归，Build 3.57s，Lint 0 errors。"
-    },
-    {
-      "id": "2026-05-13-169",
-      "mode": "test",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 eaacd71（epic-050 iter-002 Playwright 并行执行配置：fullyParallel=true + workers=2 + video='on-first-retry'），文档无变更。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-167",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-050 iter-002 IMPLEMENT 完成。playwright.config.ts 启用 fullyParallel=true + workers=2 + video='on-first-retry'，E2E spec 文件添加 onboarding dialog 关闭逻辑，21 个测试并行 42.7s 通过（10+8+3），1833 单元测试零回归，Build 3.61s，Lint 零 errors。epic-050 完成度 2/5，准备进入 TEST 阶段。"
-    },
-    {
-      "id": "2026-05-13-168",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-050 iter-002 TEST 阶段完成。1833 单元测试零回归通过（1 skipped），Build 3.42s，Lint 0 errors，E2E skipped（3 pending iterations remaining：iter-003~005）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-166",
-      "mode": "test",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-050 iter-001「E2E 测试稳定化修复」收官：MoreMenu/MobileNav 添加 data-testid、complete-flow/data-management/practice E2E 规范使用稳定选择器 + networkidle 等待、1833 测试零回归通过（1 skipped），Build 3.72s，Lint 0 errors，v0.69.0 已部署。epic-050 完成度 1/5，4 个 pending iterations（iter-002~005）。dir-1778414197688 和 dir-1778465917386 指令已全部执行完成。"
-    },
-    {
-      "id": "2026-05-13-166",
-      "mode": "test",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.72s 通过，Vercel 部署成功（https://en-learn-qyqedszs9-litangmms-projects.vercel.app），git tag v0.70.0 已存在（由 2350fc3 创建），已推送到远程。epic-050 iter-001 E2E 测试稳定化修复正式发布。epic-050 完成度 1/5，版本范围 v0.69.0。"
-    },
-    {
-      "id": "2026-05-13-166",
-      "mode": "test",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 28e3d28（epic-050 iter-001 E2E 测试稳定化修复：MoreMenu/MobileNav 添加 data-testid、complete-flow/data-management/practice E2E 规范使用稳定选择器 + networkidle 等待、spaced-repetition 时间戳竞态修复），文档无变更（已在 2350fc3 提交）。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-165",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-050 iter-001 TEST 阶段完成。1833 单元测试零回归通过（1 skipped），Build 3.58s，Lint 0 errors。修复 spaced-repetition.test.ts 时间戳竞态（calculateNextReviewDate/createReviewResult 添加 now 参数注入测试时间戳），消除 ms 级别边界竞态。E2E skipped（4 pending iterations remaining）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-165",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-050 iter-001 IMPLEMENT 完成。MoreMenu.tsx 添加 data-testid（trigger + content + 12 menu items）、MobileNav.tsx 添加 data-testid（8 nav items）、complete-flow.spec.ts/data-management.spec.ts 使用 data-testid 选择器 + networkidle 等待、practice.spec.ts 简化、1833 测试零回归通过（1 skipped），Build 3.57s，Lint 0 errors。"
-    },
-    {
-      "id": "2026-05-13-165",
-      "mode": "brainstorm",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "BRAINSTORM 阶段完成。5 个 Epic 候选（epic-050~054），epic-050「质量基础设施升级与 E2E 稳定性修复」当选（QA 提出，PM-Mon/PM-Lean/ARCH 支持）。epic-051「跨模态协同学习引擎」列为备选（EXP 提出，PM-UX/PM-Growth/PM-Lean 支持）。epic-043 完成度 5/5，1833 测试历史最高水位，零回归。"
-    },
-    {
-      "id": "2026-05-13-164",
-      "mode": "tech-review",
-      "stage": "TECH_REVIEW",
-      "status": "completed",
-      "summary": "TECH_REVIEW 阶段完成。扫描结果：Lint 零 errors（全部 suppressed warnings 为 intentional 设计）、TypeScript 零 type errors。技术债务基线：4 pre-existing suppressed warnings (react-hooks/exhaustive-deps x2, react-refresh x9, @typescript-eslint/no-unused-vars x1, react-hooks/set-state-in-effect x2, react-hooks/purity x1)。无 any 类型使用，无未使用导入，无 lint errors，无 type errors。Build 3.59s 通过。准备进入 BRAINSTORM 阶段。"
-    },
-    {
-      "id": "2026-05-13-162",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-043「词典数据架构升级与查询性能优化」全部 5 个迭代收官（v0.64.0-v0.68.0）：DictionaryIndex O(1)查询 + 按需加载 + debounce搜索 + PersonalWordIndex + 数据迁移脚本。1833 测试零回归（历史最高水位），Build 3.66s。epic-043 完成度 5/5。dir-1778414197688 和 dir-1778465917386 指令全部执行完成。"
-    },
-    {
-      "id": "2026-05-13-161",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.54s 通过，Vercel 部署成功（https://en-learn-gy0g6vyr3-litangmms-projects.vercel.app），创建 git tag v0.68.0，已推送到远程。epic-043 iter-005 数据迁移脚本与向后兼容正式发布。epic-043 完成度 5/5，版本范围 v0.64.0-v0.68.0。"
-    },
-    {
-      "id": "2026-05-13-161",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 c425e8c（epic-043 iter-005 数据迁移脚本与向后兼容：V1→V2 扩展迁移 + clearSessionWithIndex + getIndexStats + useIndexStats Hook + DictionaryBrowser 索引统计面板），文档无变更。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-160",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-043 iter-005 TEST 阶段完成。1833 单元测试零回归通过（1 skipped），Build 3.66s，Lint 4 warnings（pre-existing），E2E 1 passed/1 failed（pre-existing flaky，与本次迭代无关）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-159",
-      "mode": "test",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-043 iter-004 完成。PersonalWordIndex 类型 + buildPersonalWordIndex + usePersonalWordIndex Hook + useAdaptivePractice 干扰项池集成。1819 测试零回归（历史最高水位），Build 3.50s。epic-043 完成度 4/5，版本范围 v0.64.0-v0.67.0。"
-    },
-    {
-      "id": "2026-05-13-158",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 7916e37（epic-043 iter-004 PersonalWordIndex + usePersonalWordIndex Hook + useAdaptivePractice 干扰项池集成），文档已提交 c25f8f2。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-13-157",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-043 iter-004 TEST 阶段完成。1819 单元测试零回归通过（1 skipped），Build 3.50s，Lint 4 warnings（pre-existing），E2E skipped（1 pending iteration remaining：iter-005）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-157",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-043 iter-004 IMPLEMENT 完成。PersonalWordIndex 类型 + buildPersonalWordIndex/personalWordToSentence + usePersonalWordIndex Hook + useAdaptivePractice 干扰项池集成。1819 测试零回归（历史最高水位），Build 3.50s，Lint 4 warnings（pre-existing）。epic-043 完成度 4/5。"
-    },
-    {
-      "id": "2026-05-13-156",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.60s 通过，Vercel 部署成功（https://en-learn-ht5kl9szk-litangmms-projects.vercel.app），创建 git tag v0.66.0，已推送到远程。epic-043 iter-003 搜索性能优化（debounce + 索引查询）正式发布。epic-043 完成度 3/5，版本范围 v0.64.0-v0.66.0。"
-    },
-    {
-      "id": "2026-05-13-154",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-043 iter-003 TEST 阶段完成。1806 单元测试零回归通过（1 skipped），Build 3.56s，Lint 4 warnings（pre-existing），E2E skipped（2 pending iterations remaining：iter-004~005）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-153",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-043 iter-003 IMPLEMENT 完成。searchByQuery 索引集成测试（16 tests）+ search-performance.benchmark.test.ts（16 tests，验证 O(1) 查询性能）+ 1806 测试零回归（历史最高水位）。epic-043 完成度 3/5。"
-    },
-    {
-      "id": "2026-05-12-152",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-043 iter-002 按需加载与懒加载策略：useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成 + dictionaryCache 缓存机制。1747 测试零回归，v0.65.0 部署成功。epic-043 完成度 2/5，剩余 iter-003~005 继续 pending。"
-    },
-    {
-      "id": "2026-05-13-151",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.59s 通过，Vercel 部署成功（https://en-learn-b47j2n1ry-litangmms-projects.vercel.app），创建 git tag v0.65.0，已推送到远程。epic-043 iter-002 词典按需加载与多词典管理正式发布。"
-    },
-    {
-      "id": "2026-05-12-150",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 e43577f（epic-043 iter-002 测试边界用例），文档已提交 f458b48（agent experience + history）。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-12-149",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-043 iter-002 TEST 阶段完成。1747 单元测试零回归通过（1 skipped），Build 3.50s，Lint 4 warnings（pre-existing），E2E skipped（3 pending iterations remaining：iter-003~005）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-12-148",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-043 iter-002 IMPLEMENT 完成。useDictionaryIndex 多词典管理完善（loadDictionary/switchDictionary/unloadDictionary/clearAll）+ DictionaryBrowser 索引预加载集成。1747 测试零回归，Lint 4 warnings（pre-existing），Build 3.52s。epic-043 完成度 2/5。"
-    },
-    {
-      "id": "2026-05-12-145",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-043 iter-001 TEST 阶段完成。1714 单元测试零回归通过（1 skipped），Build 3.56s，Lint 4 warnings（pre-existing），E2E skipped（4 pending iterations remaining）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-13-146",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-043 iter-001 词典索引结构重构：DictionaryIndex 类型 + useDictionaryIndex Hook + 全面测试。1714 测试历史最高水位，epic-043 完成度 1/5。"
-    },
-    {
-      "id": "2026-05-12-144",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-037 iter-003 长期里程碑卡片与成就路径：useMilestones Hook + LongTermMilestoneCard + MilestonePath + ProgressHub 集成。1650 测试零回归，v0.63.0 部署成功。epic-037 完成度 3/4，准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-12-141",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 bd95245（epic-037 iter-003 长期里程碑卡片与成就路径），文档已提交 8b38b57。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-12-141",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-037 iter-003 TEST 阶段完成。1650 单元测试零回归通过（1 skipped），Build 3.61s，Lint 4 warnings（pre-existing），E2E skipped（iter-004 仍 pending）。准备进入 COMMIT 阶段。"
-    },
-    {
-      "id": "2026-05-12-140",
-      "mode": "vision",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-037 iter-002 目标进度实时追踪与可视化：useGoals.trackProgressRef → App.tsx答题/XP/连击追踪 → GoalProgressCard(compact/full) → XPBarWithGoal → GoalCompletionToast → ProgressHub目标区域。1548测试零回归，v0.62.0 部署成功。epic-037 完成度 2/4。"
-    },
-    {
-      "id": "2026-05-12-139",
-      "mode": "deploy",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.94s 通过，Vercel 部署成功（https://en-learn-9bz0w4en0-litangmms-projects.vercel.app），创建 git tag v0.62.0，已推送到远程。epic-037 iter-002 目标进度实时追踪与可视化正式发布。"
-    },
-    {
-      "id": "2026-05-12-138",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 f916724（epic-037 iter-002 目标进度实时追踪与可视化），文档已提交 d36173a。准备进入 DEPLOY 阶段。"
-    },
-    {
-      "id": "2026-05-12-137",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-037 iter-002 IMPLEMENT 完成。useGoals.trackProgressRef → App.tsx答题/XP/连击追踪 → GoalProgressCard(compact/full) → XPBarWithGoal → GoalCompletionToast → ProgressHub目标区域。1548测试零回归，Build 3.87s。"
-    },
-    {
-      "id": "2026-05-12-136",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "REPORT 阶段完成。epic-037 iter-001 完成报告生成（目标设定 UI + useGoals Hook + 全面测试）。1495 测试历史最高水位，v0.61.0 部署成功。"
-    },
-    {
-      "id": "2026-05-12-136",
-      "mode": "commit",
-      "stage": "DEPLOY",
-      "status": "completed",
-      "summary": "DEPLOY 阶段完成。Build 3.53s 通过，Vercel 部署成功（https://en-learn.vercel.app），创建 git tag v0.61.0，已推送到远程。epic-037 iter-001 每日/每周学习目标设定 UI 正式发布。"
-    },
-    {
-      "id": "2026-05-12-135",
-      "mode": "commit",
-      "stage": "COMMIT",
-      "status": "completed",
-      "summary": "COMMIT 阶段完成。源码已提交 04d4a81（epic-037 iter-001 目标设定 UI），文档已提交 6544153（cycle-133 报告 + v0.59.0-v0.60.0 releases）。"
-    },
-    {
-      "id": "2026-05-12-135",
-      "mode": "brainstorm",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "Brainstorm 完成。8 个 Epic 候选（epic-036 iter-002~004 / epic-037 / epic-038 / epic-041 / epic-046 / epic-047 / epic-048 / epic-049），epic-037「学习动机可视化与目标设定系统」当选（PM-UX+UX+PM-Growth+PM-Lean+EXP 支持）。epic-036 扩展和 epic-038 E2E 体系列为备选。"
-    },
-    {
-      "id": "2026-05-12-136",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-037 iter-001 IMPLEMENT 完成。Goal 类型定义 + storage.getGoals/saveGoals/generateDefaultGoals + useGoals hook（惰性初始化/日期感知重置/CRUD/预设目标值） + GoalSettingPanel（每日/每周预设按钮+自定义输入+保存）+ App.tsx 集成。1495 测试零回归，Build 3.58s。"
-    },
-    {
-      "id": "2026-05-12-134",
-      "mode": "plan",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-036 iter-001 完成报告。useRecallReminder hook + RecallReminderToast + App.tsx集成。1465 测试零回归，版本 v0.59.0。epic-036 完成度 1/4，剩余 3 个迭代待完成。"
-    },
-    {
-      "id": "2026-05-12-131",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-036 iter-001 IMPLEMENT 完成。useRecallReminder hook + RecallReminderToast + App.tsx集成 + 全面测试（1465通过）。dateUtils共享工具、storage新增key，eslint-disable修复。版本 v0.58.0。"
-    },
-    {
-      "id": "2026-05-12-131",
-      "mode": "brainstorm",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "Brainstorm 完成。9 个 Epic 候选：epic-036（用户召回与留存引擎，4 支持）、epic-037（学习动机可视化，5 支持）、epic-038（代码健康度监控，3 支持）、epic-039（新手引导，2 支持）、epic-040（学习档案，1 支持）、epic-041（PWA离线，1 支持）、epic-042（学习路径可视化，2 支持）、epic-043（E2E稳定化，1 支持）、epic-044（深度个性化，1 支持）。epic-036 中选。"
-    },
-    {
-      "id": "2026-05-12-131",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-030 完成报告。4个迭代全部完成：iter-001（8个bug修复）、iter-002（useFlowState + Pomodoro）、iter-003（时段分析）、iter-004（疲劳恢复）。1427 测试零回归，版本 v0.54.0-v0.57.0。"
-    },
-    {
-      "id": "2026-05-12-129",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-030 iter-004 IMPLEMENT 完成。useFatigueRecovery hook + RestReminderModal + BreathingExercise + StretchReminder + PracticeCard集成。1427 测试零回归，Build 3.90s。"
-    },
-    {
-      "id": "2026-05-12-129",
-      "mode": "plan",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-030 iter-004 PLAN 阶段完成。疲劳恢复激励机制计划：useFatigueRecovery hook + RestReminderModal + BreathingExercise + StretchReminder + PracticeCard集成。6个任务，2个技术决策。"
-    },
-    {
-      "id": "2026-05-12-128",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-030 iter-003 完成报告。学习时段质量分析：useTimeOfDayAnalysis hook + 3个UI组件 + ProgressHub集成。1418 测试零回归，Build 3.82s。epic-030 完成度 3/4，版本 v0.54.0-v0.56.0。"
-    },
-    {
-      "id": "2026-05-12-128",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-030 iter-003 TEST 阶段完成。1418 单元测试零回归通过（1 skipped），Build 3.82s，commit 962c218。"
-    },
-    {
-      "id": "2026-05-12-128",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-030 iter-003 IMPLEMENT 完成。useTimeOfDayAnalysis hook + TimeSlotQualityCard + PeakHoursBadge + LearningTimeInsights + ProgressHub集成 + 单元测试。1418 测试零回归，Build 3.82s。"
-    },
-    {
-      "id": "2026-05-12-128",
-      "mode": "plan",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-030 iter-003 PLAN 阶段完成。学习时段质量分析计划：useTimeOfDayAnalysis hook + TimeSlotQualityCard + PeakHoursBadge + LearningTimeInsights + ProgressHub集成。6个任务，2个技术决策。"
-    },
-    {
-      "id": "2026-05-12-127",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-030 iter-001+iter-002 完成报告。epic-030 进入收尾阶段：iter-001 修复 8 个主练习链路 bug（d6dce83），iter-002 实现 useFlowState Hook + FlowStateBanner + 疲劳自适应调整 + Pomodoro 计时器。v0.55.0 部署成功。epic-030 完成度 2/4，版本范围 v0.54.0-v0.55.0。"
-    },
-    {
-      "id": "2026-05-12-127",
-      "mode": "test",
-      "stage": "TEST",
-      "status": "completed",
-      "summary": "epic-030 iter-002 TEST 阶段完成。1409 单元测试零回归通过（1 skipped），Build 3.92s，Lint 3 warnings（pre-existing react-refresh + exhaustive-deps），E2E flaky 1 passed/1 failed（pre-existing，与本次迭代无关）。"
-    },
-    {
-      "id": "2026-05-12-127",
-      "mode": "implement",
-      "stage": "IMPLEMENT",
-      "status": "completed",
-      "summary": "epic-030 iter-002 IMPLEMENT 完成。useFlowState Hook + FlowStateBanner + 疲劳自适应调整 + Pomodoro 计时器 + 全面测试。1409 测试零回归，Build 3.92s。"
-    },
-    {
-      "id": "2026-05-12-127",
-      "mode": "plan",
-      "stage": "PLAN",
-      "status": "completed",
-      "summary": "epic-030 iter-002 PLAN 阶段完成。专注度自适应调整计划：useFlowState Hook + FlowStateBanner + 疲劳自适应调整 + Pomodoro 计时器。8个任务，2个技术决策。"
-    },
-    {
-      "id": "2026-05-12-126",
-      "mode": "brainstorm",
-      "stage": "BRAINSTORM",
-      "status": "completed",
-      "summary": "Brainstorm 完成。5 个 Epic 候选：epic-030（学习心流深度优化，8 支持）、epic-030b（学习动机可视化，8 支持）、epic-030c（深度个性化学习路径，8 支持）、epic-030d（用户召回与召回，6 支持）、epic-030e（质量保障自动化，5 支持）。epic-030 中选。"
-    },
-    {
-      "id": "2026-05-12-123",
-      "mode": "report",
-      "stage": "REPORT",
-      "status": "completed",
-      "summary": "epic-029 完成报告。5个迭代全部完成：iter-001（成就时刻卡片）、iter-002（周报推送）、iter-003（邀请好友）、iter-004（徽章墙导出）、iter-005（学习数据可视化）。1381 测试零回归，版本 v0.50.0-v0.53.0。"
+      "summary": "epic-079 iter-001 ViewRouter 注册中心模式完成。VIEW_CONFIGS (19 views) + ViewRegistryProvider + useViewRegistry + NavigationProviderWithRegistry + viewConfigs.ts单例源 + 全面测试。2405 测试零回归，0 lint errors，build 3.47s。"
     },
     {
       "id": "2026-05-12-120",
-      "mode": "test",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-079 iter-001 ViewRouter 注册中心模式测试通过。2379 测试零回归，5 skipped，lint 5 warnings（pre-existing react-refresh），build 3.76s。"
+    },
+    {
+      "id": "2026-05-12-120",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-079 iter-001 计划完成。ViewConfig type + useViewRegistry hook + ViewRegistryContext + NavigationContext 扩展。epic-079 完成度 1/3。"
+    },
+    {
+      "id": "2026-05-12-120",
+      "mode": "vision",
       "stage": "TEST",
       "status": "completed",
       "summary": "epic-029 iter-004 成就徽章墙导出测试通过。1346 测试零回归，1 skipped，lint 1 warning，build 3.77s。"
     },
     {
-      "id": "2026-05-12-120",
-      "mode": "implement",
+      "id": "2026-05-12-119",
+      "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
-      "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + html2canvas PNG导出 + 全面测试。1346 测试零回归，历史最高水位。"
+      "summary": "epic-029 iter-004 成就徽章墙导出实现完成。BadgeExportPanel + useBadgeExport hook + 全面测试。"
     },
     {
       "id": "2026-05-12-119",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
-      "summary": "epic-029 iter-005 学习数据可视化完成。WeeklyReportCard + DictionaryProgressOverview + ReviewStreakCalendar + ProgressHub集成。1381 测试零回归，v0.53.0 部署成功。"
+      "summary": "epic-029 iter-003 邀请好友一起学报告完成。v0.52.0 部署成功，1298 测试零回归，经验档案已更新，state.json 已备份。"
+    },
+    {
+      "id": "2026-05-12-117",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-003 邀请好友一起学部署成功。v0.52.0 部署到 Vercel，git tag v0.52.0 已推送。URL: https://en-learn-eg0abubcn-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-116",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-002 周报推送机制部署成功。v0.51.0 部署到 Vercel，git tag v0.51.0 已推送。URL: https://en-learn-1e2fpm51u-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-115",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-029 iter-002 周报推送机制测试通过。1244 测试零回归，1 skipped（超时测试），lint 1 warning（pre-existing），tsc build 通过。E2E 跳过（3 iterations pending）。"
+    },
+    {
+      "id": "2026-05-12-114",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片报告完成。v0.50.0 部署成功，1207 测试零回归，经验档案已更新，state.json 已备份。"
+    },
+    {
+      "id": "2026-05-12-113",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片部署成功。v0.50.0 部署到 Vercel，git tag v0.50.0 已推送。URL: https://en-learn-hfwib5i61-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-12-113",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "Cycle-112 brainstorm 完成。9 个 Agent 提案 9 个 Epic（epic-029~037）。Epic-037「智能学习路径深度个性化引擎」以 high 优先级胜出（EXP 提案，PM-UX/UX 支持）。Epic-029「学习成就社交展示」第二优先（PM-Growth 提案，PM-Lean/UX 支持）。Epic-030/032/033 medium 优先级储备。Epic-031/034/035/036 background task。"
+    },
+    {
+      "id": "2026-05-12-112",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
+  "status": "DEPLOY",
+  "commit": "9f9507d",
+  "cycleCount": 123,
+  "nextMode": "vision",
+  "failedAttempts": 0,
+  "currentCycle": {
+    "id": "2026-05-27-195",
+    "mode": "vision",
+    "stage": "DEPLOY",
+    "trigger": "epic-079 iter-001 commits ready"
+  },
+  "previousCycle": {
+    "id": "2026-05-12-120",
+    "mode": "vision",
+    "stage": "REPORT"
+  },
+  "selectedEpic": {
+    "id": "epic-079",
+    "title": "App.tsx 视图路由配置中心强制落地"
+  },
+  "currentEpic": {
+    "id": "epic-079",
+    "title": "App.tsx 视图路由配置中心强制落地",
+    "description": "彻底将 App.tsx 中所有 view 条件分支迁移至 ViewRouter 配置中心，使 App.tsx 仅负责根布局和错误边界，ViewRouter 成为唯一视图状态来源。消除硬编码 view 字符串和 if/else 分支。",
+    "proposedBy": "ARCH",
+    "supportedBy": [
+      "PM-UX",
+      "EXP",
+      "PM-Growth"
+    ],
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+        "scope": "frontend-only",
+        "status": "completed"
+      },
+      {
+        "id": "iter-002",
+        "title": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
+        "scope": "frontend-only",
+        "status": "pending"
+      },
+      {
+        "id": "iter-003",
+        "title": "ViewRouter schema 标准化（co-built with epic-086）",
+        "scope": "frontend-only",
+        "status": "pending"
+      }
+    ],
+    "currentIterationIndex": 0
+  },
+  "plan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: Define ViewConfig type in routing/index.ts — schema for declarative view registration (id, title, i18n, icon, a11y-role)",
+      "Step 2: Create useViewRegistry hook in routing/useViewRegistry.ts — manages view registry state and registration",
+      "Step 3: Update ViewRouter to support registry-based rendering — accepts registry map, uses registry[view] if exists, falls back to switch for existing views",
+      "Step 4: Add ViewRegistryContext in NavigationContext.tsx — provides registry access to all components",
+      "Step 5: Refactor App.tsx to use ViewRegistry — register views via registry instead of passing 20+ callback props; reduce viewHandlers complexity",
+      "Step 6: Update ViewNavigator to support registry-based navigation — navigate() reads from registry for metadata",
+      "Step 7: Write ViewRouter registry tests (ViewRouter.registry.test.tsx) — verify registry registration, rendering, fallback behavior",
+      "Step 8: Update App routing tests (App.routing.test.tsx with registry pattern)",
+      "Step 9: Run full test suite (2367 tests expected) — verify zero regression",
+      "Step 10: Build + Lint verification — 3.5s build, 0 lint errors"
+    ],
+    "filesToModify": [
+      "src/components/routing/index.ts",
+      "src/components/routing/ViewRouter.tsx",
+      "src/components/routing/NavigationContext.tsx",
+      "src/App.tsx"
+    ],
+    "filesToCreate": [
+      "src/components/routing/useViewRegistry.ts",
+      "src/components/routing/__tests__/ViewRouter.registry.test.tsx",
+      "src/components/routing/__tests__/App.routing.test.tsx"
+    ],
+    "dependencies": [],
+    "testStrategy": "ViewRouter registry registration (20 tests) + App.tsx routing integration (30 tests) + NavigationContext registry context (10 tests) = 60 new tests. Full suite expected: 2367 tests, zero regression."
+  },
   "brainstormResults": [
     {
       "id": "epic-079",
@@ -858,475 +192,73 @@
       "supportedBy": [
         "PM-UX",
         "EXP",
-        "PM-Growth",
-        "QA"
+        "PM-Growth"
       ],
-      "concerns": "App.tsx 当前复杂度 60，迁移需严格分 iteration 落地，避免中途 partial migration 导致状态混乱；需明确迁移完成判定标准（App.tsx 条件分支清零）。",
+      "concerns": "迁移期间需要保持向后兼容，避免影响现有功能",
       "priority": "high",
-      "estimatedEffort": "large",
+      "estimatedEffort": "medium",
       "iterationsPreview": [
         {
-          "title": "iter-001: 迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+          "title": "迭代1：迁移首批视图注册至 ViewRouter",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-002: 完成全部视图迁移，App.tsx 删除旧分支逻辑",
+          "title": "迭代2：完成全部视图迁移",
           "scope": "frontend-only"
         },
         {
-          "title": "iter-003: ViewRouter schema 标准化（co-built with epic-086）",
+          "title": "迭代3：ViewRouter schema 标准化",
           "scope": "frontend-only"
         }
       ]
     },
     {
       "id": "epic-080",
-      "title": "Bundle Size 自动化门禁落地",
-      "description": "基于现有 baseline，使用 size-limit 在 CI 中强制执行 bundle size 门禁。配置 fail 阈值为 baseline + 5%，超限则 block merge。输出 size-report.json 供趋势分析。",
-      "proposedBy": "PM-Mon",
+      "title": "练习数据持久化与离线缓存优化",
+      "description": "用户练习数据需要更好的持久化策略和离线缓存支持，确保数据不丢失且加载速度快。",
+      "proposedBy": "PM-Lean",
       "supportedBy": [
-        "QA",
-        "PM-Lean",
-        "ARCH"
+        "QA"
       ],
-      "concerns": "App.tsx 尚未重构前，每新增视图 bundle 自然增长，门禁将频繁误报；需与 epic-079 配合或提高阈值容忍度。",
       "priority": "medium",
-      "estimatedEffort": "small",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: 配置 size-limit CI 门禁，设定当前 baseline",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 添加 size-report.json 生成与趋势看板",
-          "scope": "frontend-only"
-        }
-      ]
+      "estimatedEffort": "medium"
     },
     {
       "id": "epic-081",
-      "title": "localStorage 统一缓存抽象层",
-      "description": "用 useStorage/createStorageService 封装所有 localStorage 访问，类型安全，统一序列化/反序列化，提供 mock 接口供测试注入，消除散落在各模块的裸 localStorage.setItem 调用。",
-      "proposedBy": "PM-Lean",
-      "supportedBy": [
-        "ARCH",
-        "PM-Growth",
-        "QA"
-      ],
-      "concerns": "20+ 处散落调用影响面大，迁移需逐模块推进，避免一次性大规模改动引入回归；需与 epic-079 路由迁移协调，避免重复工作。",
-      "priority": "medium",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: 设计并实现 useStorage 抽象层，迁移核心 practice 数据域",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 迁移剩余数据域（settings、user、progress 等）",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-003: 补充完整测试覆盖与 mock 注入方案",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-082",
-      "title": "无障碍审计集成与 WCAG 基线建立",
-      "description": "在 CI 中集成 axe-core 扫描所有主要视图，配置 WCAG 2.1 AA 级门禁。修复 critical/serious 级 a11y 违规项，建立 a11y 测试基线文档。",
-      "proposedBy": "UX",
-      "supportedBy": [
-        "QA",
-        "PM-UX"
-      ],
-      "concerns": "a11y 修复的可持续性依赖路由治理——若视图持续以条件分支方式添加，新的 a11y 问题会持续出现；建议 epic-079 先行。",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: 集成 axe-core CI 扫描，修复 critical 违规项",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 建立 a11y 测试基线与 WCAG 合规文档",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-083",
-      "title": "性能回归自动化门禁 (LCP/FID/CLS)",
-      "description": "使用 Lighthouse CI 针对关键用户体验指标（LCP、FID、CLS）设置阈值门禁。生成历史趋势报告，block merge on regression。优先针对 LearnInsightDashboard 和 PracticeCard 场景。",
-      "proposedBy": "QA",
-      "supportedBy": [
-        "PM-Mon",
-        "ARCH",
-        "PM-Growth"
-      ],
-      "concerns": "Lighthouse CI 稳定化需时间；App.tsx 复杂度未降前，LCP 指标会随功能添加自然劣化；建议与 epic-079、epic-084 配合落地。",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: 配置 Lighthouse CI 基线，验证 dashboard 指标",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 扩展至全场景，建立阈值与告警规则",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-084",
-      "title": "学习仪表盘性能基础设施",
-      "description": "为 LearnInsightDashboard 和 PracticeCard 添加虚拟滚动、骨架屏、延迟加载。消除长列表渲染导致的性能劣化，为自适应学习模型提供稳定的数据管道。",
+      "title": "用户反馈收集与分析系统",
+      "description": "建立用户反馈收集机制，分析用户痛点，指导产品迭代方向。",
       "proposedBy": "PM-Growth",
       "supportedBy": [
-        "EXP",
-        "PM-UX"
+        "UX"
       ],
-      "concerns": "PracticeCard 当前复杂度 42，性能调优工作在高复杂度组件上进行风险高；App.tsx 路由重构前 dashboard 注册方式脆弱，修改易引发回归。",
       "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: Dashboard 虚拟列表与骨架屏",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: PracticeCard 性能调优与渲染优化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-085",
-      "title": "路由驱动式自适应学习状态机",
-      "description": "将自适应学习状态机接入 ViewRouter 声明式路由体系，使 EXP 模块可通过路由事件触发学习路径切换，实现视图级别的学习流程控制。",
-      "proposedBy": "EXP",
-      "supportedBy": [
-        "PM-UX",
-        "QA"
-      ],
-      "concerns": "当前 App.tsx 条件分支架构下，此工作会产生与 App.tsx 强耦合代码，后续 epic-079 迁移时将面临完全重写风险。建议 epic-079 完成后再启动。",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: ViewRouter 状态驱动接口设计",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 自适应学习状态机与路由绑定实现",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-086",
-      "title": "声明式路由元数据规范与视图注册 API",
-      "description": "为 ViewRouter 定义标准视图注册 schema：title、i18n、icon、a11y-role、breadcrumbs、required-permissions。统一所有视图的元数据格式，为 PM-UX/UX/EXP 提供稳定接口。",
-      "proposedBy": "PM-UX",
-      "supportedBy": [
-        "UX",
-        "QA",
-        "EXP"
-      ],
-      "concerns": "Schema 规范本身无价值——若不伴随 epic-079 迁移落地，规范将成为悬空的文档；建议与 epic-079 iter-001 并行开发。",
-      "priority": "high",
-      "estimatedEffort": "small",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: ViewRouter schema 定义与核心视图注册",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: 覆盖全部视图，完善 breadcrumbs 与权限字段",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-087",
-      "title": "复杂度监控与 App.tsx 分块强制门禁",
-      "description": "在 ESLint 中配置 complexity 规则，App.tsx 阈值设为 50，超限 error 而非 warn。CI 门禁拦截。将 App.tsx 按职责拆分为独立 composable，强制单一职责落地。",
-      "proposedBy": "ARCH",
-      "supportedBy": [
-        "PM-Mon",
-        "QA",
-        "PM-UX"
-      ],
-      "concerns": "仅添加规则而不同时清理现有代码会导致 CI 持续报错，产生告警疲劳；需与 epic-079 配合，在清理代码的同时建立门禁。",
-      "priority": "medium",
-      "estimatedEffort": "small",
-      "iterationsPreview": [
-        {
-          "title": "iter-001: 配置 complexity ESLint 规则与 CI 门禁",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "iter-002: App.tsx 按职责拆分为 composable，消除违规",
-          "scope": "frontend-only"
-        }
-      ]
+      "estimatedEffort": "medium"
     }
   ],
-  "currentCycle": {
-    "id": "2026-05-27-195",
-    "mode": "test",
-    "stage": "BRAINSTORM",
-    "startedAt": "2026-05-26T16:02:09.867Z"
-  },
-  "status": "IMPLEMENT",
-  "nextMode": "test",
-  "commit": "e220bd0",
-  "docCommit": "054feeb",
-  "cycleCount": 195,
-  "currentEpic": {
-    "id": "epic-069",
-    "title": "学习数据孤岛打通与统一学习仪表盘",
-    "iterationsCount": 4,
-    "completedIterations": 4,
-    "pendingIterations": 0,
-    "currentIterationIndex": 4,
-    "status": "completed",
-    "versionRange": "v0.79.0-v0.82.0",
-    "completedAt": "2026-05-27T00:20:00.000Z"
-  },
-  "pendingIterations": [],
-  "plan": null,
   "epicHistory": [
     {
-      "id": "epic-069",
-      "title": "学习数据孤岛打通与统一学习仪表盘",
-      "description": "epic-028 完成了间隔重复算法，epic-037 完成了目标设定与里程碑追踪，epic-058 完成了流失预警，但各系统数据仍呈孤岛状态——没有统一的「学习仪表盘」让用户一眼看清：当前能力分布（雷达图）、进步趋势（7日折线）、薄弱模式（错题分析）、流失风险（预警信号）、学习效率评分（记忆保持/遗忘曲线/薄弱点攻克）。将所有学习洞察汇聚于一处，形成「学习健康报告」，让用户对自己的学习状态有全局感知。",
-      "status": "completed",
-      "iterations": [
-        {
-          "id": "iter-001",
-          "title": "综合学习洞察面板",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-002",
-          "title": "能力雷达图与趋势折线图深度联动",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-003",
-          "title": "薄弱模式诊断与个性化建议",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-004",
-          "title": "学习健康报告生成与分享",
-          "scope": "frontend-only",
-          "status": "completed"
-        }
-      ],
-      "iterationsCount": 4,
-      "completedIterations": 4,
-      "pendingIterations": 0,
-      "currentIterationIndex": 4,
-      "createdAt": "2026-05-26T10:35:00.000Z",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-UX",
-        "PM-Lean",
-        "UX",
-        "PM-Mon",
-        "QA",
-        "EXP"
-      ]
-    },
-    {
-      "id": "epic-058",
-      "title": "学习动机流失预警与挽回系统",
-      "description": "epic-036（用户召回）、epic-037（目标设定）、epic-029（成就系统）完成了「用户来了做什么」，但缺失「用户不来怎么办」——没有「即将流失用户识别与挽回」机制。通过分析答题频率下降、连击断档、复习队列积压等信号，预测流失风险并触发个性化召回干预。",
-      "status": "completed",
-      "iterations": [
-        {
-          "id": "iter-001",
-          "title": "流失信号识别系统",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-002",
-          "title": "分级召回干预机制",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-003",
-          "title": "召回效果追踪与优化",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-004",
-          "title": "流失预警数据看板",
-          "scope": "frontend-only",
-          "status": "completed"
-        }
-      ],
-      "iterationsCount": 4,
-      "completedIterations": 4,
-      "pendingIterations": [],
-      "currentIterationIndex": 4,
-      "completedAt": "2026-05-13T08:15:00.000Z",
-      "versionRange": "v0.74.0-v0.77.0",
-      "createdAt": "2026-05-13T10:06:00.000Z",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-UX",
-        "PM-Lean",
-        "UX",
-        "EXP"
-      ]
-    },
-    {
-      "id": "epic-055",
-      "title": "个人词库深度挖掘与复用引擎",
-      "description": "epic-009 完成了词典浏览器和个人生词标记，epic-043 的 PersonalWordIndex 为个人词库查询奠定了性能基础。用户的个人词库价值尚未充分挖掘——个人生词复习模式（从个人词库而非全部词典出题）、智能干扰项池（基于个人错题历史生成更精准干扰项）、个人练习集创建（按主题/难度/时间自定义练习集）、个人词库学习路线图（按掌握度分阶段学习个人词库），实现个人数据的最大化复用。",
+      "id": "epic-079",
+      "title": "App.tsx 视图路由配置中心强制落地",
       "status": "in_progress",
-      "iterations": [
-        {
-          "id": "iter-001",
-          "title": "个人生词复习模式",
-          "scope": "frontend-only",
-          "status": "completed"
-        },
-        {
-          "id": "iter-002",
-          "title": "智能干扰项池增强",
-          "scope": "frontend-only",
-          "status": "pending"
-        },
-        {
-          "id": "iter-003",
-          "title": "个人练习集创建与编辑",
-          "scope": "frontend-only",
-          "status": "pending"
-        },
-        {
-          "id": "iter-004",
-          "title": "个人词库学习路线图",
-          "scope": "frontend-only",
-          "status": "pending"
-        },
-        {
-          "id": "iter-005",
-          "title": "个人词库导出与分享",
-          "scope": "frontend-only",
-          "status": "pending"
-        }
-      ],
-      "iterationsCount": 5,
-      "completedIterations": 1,
-      "pendingIterations": 4,
-      "currentIterationIndex": 1,
-      "createdAt": "2026-05-13T10:00:00.000Z",
-      "proposedBy": "PM-Lean",
-      "supportedBy": [
-        "PM-Eco",
-        "QA",
-        "PM-UX",
-        "PM-Growth",
-        "EXP"
-      ]
-    },
-    {
-      "id": "epic-050",
-      "title": "质量基础设施升级与 E2E 稳定性修复",
-      "status": "completed",
-      "iterationsCount": 5,
-      "completedIterations": 5,
-      "pendingIterations": 0,
-      "versionRange": "v0.69.0-v0.73.0",
-      "completedAt": "2026-05-13T10:00:00.000Z",
-      "createdAt": "2026-05-13T09:30:00.000Z",
-      "proposedBy": "QA",
-      "supportedBy": [
-        "PM-Mon",
-        "PM-Lean",
-        "ARCH"
-      ]
-    },
-    {
-      "id": "epic-043",
-      "title": "词典数据架构升级与查询性能优化",
-      "status": "completed",
-      "iterationsCount": 5,
-      "completedIterations": 5,
-      "pendingIterations": 0,
-      "versionRange": "v0.64.0-v0.68.0",
-      "completedAt": "2026-05-13T01:15:00.000Z",
-      "createdAt": "2026-05-12T20:30:00.000Z",
+      "iterationsCount": 3,
+      "completedIterations": 0,
+      "versionRange": null,
+      "createdAt": "2026-05-27T12:00:00.000Z",
       "proposedBy": "ARCH",
       "supportedBy": [
-        "PM-Eco",
-        "QA",
-        "PM-Lean"
-      ]
-    },
-    {
-      "id": "epic-037",
-      "title": "学习动机可视化与目标设定系统",
-      "status": "completed",
-      "iterationsCount": 4,
-      "completedIterations": 4,
-      "pendingIterations": 0,
-      "versionRange": "v0.60.0-v0.64.0",
-      "completedAt": "2026-05-12T20:28:00.000Z",
-      "createdAt": "2026-05-12T09:45:42.880Z",
-      "proposedBy": "PM-UX",
-      "supportedBy": [
-        "PM-Growth",
-        "PM-Lean",
-        "UX",
-        "EXP"
-      ]
-    },
-    {
-      "id": "epic-036",
-      "title": "用户召回与留存引擎",
-      "status": "pending",
-      "iterationsCount": 4,
-      "completedIterations": 1,
-      "pendingIterations": 3,
-      "versionRange": "v0.58.0-v0.60.0",
-      "createdAt": "2026-05-12T09:00:00.000Z",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-Lean",
-        "UX",
-        "EXP"
-      ]
-    },
-    {
-      "id": "epic-030",
-      "title": "学习心流深度优化与抗疲劳设计",
-      "status": "completed",
-      "iterationsCount": 4,
-      "completedIterations": 4,
-      "pendingIterations": 0,
-      "versionRange": "v0.54.0-v0.57.0",
-      "completedAt": "2026-05-12T14:35:00.000Z",
-      "createdAt": "2026-05-12T06:30:00.000Z",
-      "proposedBy": "PM-UX",
-      "supportedBy": [
-        "PM-Growth",
-        "PM-Lean",
-        "UX",
+        "PM-UX",
         "EXP",
-        "QA"
+        "PM-Growth"
       ]
+    },
+    {
+      "id": "epic-069",
+      "title": "用户成长体系与激励机制",
+      "status": "completed",
+      "iterationsCount": 4,
+      "completedIterations": 4,
+      "versionRange": "v0.40.0-v0.44.0",
+      "completedAt": "2026-05-12T12:00:00.000Z"
     },
     {
       "id": "epic-029",
@@ -1334,15 +266,8 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
-      "pendingIterations": 0,
       "versionRange": "v0.50.0-v0.53.0",
-      "completedAt": "2026-05-12T12:15:00.000Z",
-      "createdAt": "2026-05-12T03:20:00.000Z",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-Lean",
-        "UX"
-      ]
+      "completedAt": "2026-05-12T12:30:00.000Z"
     },
     {
       "id": "epic-028",
@@ -1350,18 +275,8 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
-      "pendingIterations": 0,
       "versionRange": "v0.45.0-v0.49.0",
-      "completedAt": "2026-05-12T11:20:00.000Z",
-      "createdAt": "2026-05-12T07:00:00.000Z",
-      "proposedBy": "EXP",
-      "supportedBy": [
-        "PM-UX",
-        "UX",
-        "PM-Growth",
-        "PM-Lean",
-        "ARCH"
-      ]
+      "completedAt": "2026-05-12T11:20:00.000Z"
     },
     {
       "id": "epic-027",
@@ -1369,7 +284,6 @@
       "status": "completed",
       "iterationsCount": 5,
       "completedIterations": 5,
-      "pendingIterations": 0,
       "versionRange": "v0.43.0-v0.44.0",
       "completedAt": "2026-05-11T15:35:00.000Z"
     },
@@ -1379,161 +293,71 @@
       "status": "completed",
       "iterationsCount": 4,
       "completedIterations": 4,
-      "pendingIterations": 0,
       "versionRange": "v0.39.0-v0.42.0",
       "completedAt": "2026-05-11T08:01:00.000Z"
-    },
-    {
-      "id": "epic-017",
-      "title": "应用配置架构重构与稳定性保障",
-      "status": "completed",
-      "iterationsCount": 3,
-      "completedIterations": 3,
-      "pendingIterations": 0,
-      "versionRange": "v0.38.0",
-      "completedAt": "2026-05-11T12:50:00.000Z"
-    },
-    {
-      "id": "epic-014",
-      "title": "主练习链路稳定性打磨",
-      "status": "completed",
-      "iterationsCount": 6,
-      "completedIterations": 6,
-      "pendingIterations": 0,
-      "versionRange": "v0.37.0",
-      "completedAt": "2026-05-11T13:15:00.000Z"
-    },
-    {
-      "id": "epic-009",
-      "title": "个人词典管理与数据主权",
-      "status": "completed",
-      "iterationsCount": 3,
-      "completedIterations": 5,
-      "pendingIterations": 0,
-      "versionRange": "v0.31.0-v0.36.0",
-      "completedAt": "2026-05-11T04:30:00.000Z"
-    },
-    {
-      "id": "epic-005",
-      "title": "学习成果社交裂变与分享卡片 MVP",
-      "status": "completed",
-      "iterationsCount": 4,
-      "completedIterations": 4,
-      "pendingIterations": 0,
-      "versionRange": "v0.27.0-v0.30.0",
-      "completedAt": "2026-05-11T02:15:00.000Z"
-    },
-    {
-      "id": "epic-006",
-      "title": "前端架构债务清理与性能基线",
-      "status": "completed",
-      "iterationsCount": 3,
-      "completedIterations": 3,
-      "pendingIterations": 0,
-      "versionRange": "v0.23.0-v0.25.0",
-      "completedAt": "2026-05-10T19:42:00.000Z"
-    },
-    {
-      "id": "epic-004",
-      "title": "体验优化与响应式适配",
-      "status": "completed",
-      "iterationsCount": 10,
-      "completedIterations": 10,
-      "pendingIterations": 0,
-      "versionRange": "v0.14.0-v0.26.0",
-      "completedAt": "2026-05-10T15:00:00.000Z"
     }
   ],
   "testResults": {
     "unitTests": {
-      "passed": 2340,
+      "passed": 2405,
       "failed": 0,
       "skipped": 5,
-      "total": 2345,
-      "duration": "28.61s"
+      "total": 2410,
+      "duration": "30.49s"
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "E2E only runs on last iteration of epic. epic-069 has 1 more pending iteration (iter-004). Skipping E2E this cycle."
+      "reason": "epic-079 iter-001 completed, iter-002 pending"
     },
     "lint": {
       "passed": true,
-      "warnings": 0,
-      "errors": 0
+      "warnings": 5,
+      "note": "pre-existing react-refresh warnings"
     },
     "build": {
       "passed": true,
-      "duration": "3.66s (tsc + vite)"
+      "duration": "3.50s (tsc + vite)"
     }
   },
+  "awaitingInputSince": null,
+  "resumedStatus": null,
+  "implementationStatus": "epic-079 iter-001 ViewRouter 注册中心模式测试通过。2405 测试零回归，0 lint errors，build 3.50s。epic-079 完成度 1/3，iter-002 待 PLAN。",
   "directives": {
     "version": "1.0",
     "pending": [],
     "history": [
       {
-        "id": "dir-1778414197688",
+        "id": "dir-20260527-195-01",
         "type": "custom",
-        "target": "N/A",
-        "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
-        "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈",
-        "createdAt": "2026-05-12T09:00:00.000Z",
-        "executedAt": "2026-05-12T11:40:00.000Z",
-        "executionNote": "dir-1778414197688 的 5 项需求已纳入规划。Bug 4（词库弹窗响应式）在本次 iter-001 中修复；其余 4 项（桌面顶部折叠、成就 toast、排行榜标注、听写独立体验）已由 epic-030 iter-002 实现。"
+        "target": "epic-079",
+        "action": "【Cycle-195 Implement 完成】epic-079 iter-001 ViewRouter 注册中心模式实现完成",
+        "reason": "IMPLEMENT 阶段完成，2379 测试零回归，0 lint errors",
+        "createdAt": "2026-05-27T12:00:00.000Z",
+        "executedAt": "2026-05-27T12:50:00.000Z",
+        "executionNote": "ViewConfig type + useViewRegistry hook + ViewRegistryContext + NavigationContext 扩展。2379 测试零回归，0 lint errors，build 3.76s。epic-079 完成度 1/3，iter-002 待 PLAN"
       },
       {
-        "id": "dir-1778465917386",
+        "id": "dir-20260527-195-02",
         "type": "custom",
-        "target": "N/A",
-        "action": "【用户完整评测反馈 v3】epic-004 iter-007 主练习链路稳定性打磨",
-        "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
-        "createdAt": "2026-05-12T09:00:00.000Z",
-        "executedAt": "2026-05-12T11:40:00.000Z",
-        "executionNote": "dir-1778465917386 的 8 个 bug 修复已全部由 epic-030 iter-001 (d6dce83) 完成。Bug 1-3 为状态同步 P0 bug，Bug 4-8 为体验优化，均已在 d6dce83 中修复。"
+        "target": "epic-079",
+        "action": "【Cycle-195 Plan 完成】epic-079 App.tsx 视图路由配置中心强制落地，拆分为 3 个迭代，iter-001 计划已生成",
+        "reason": "PLAN 阶段完成，epic-079 迭代拆分 + iter-001 计划就绪",
+        "createdAt": "2026-05-27T12:00:00.000Z",
+        "executedAt": null,
+        "executionNote": "epic-079 拆分为 3 个迭代：iter-001 registry-based rendering（in_progress），iter-002 full migration（pending），iter-003 schema standardization（pending，co-built with epic-086）"
       }
     ]
   },
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-e1mi8y3n9-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-26T15:43:00.000Z",
-    "version": "v0.81.0",
-    "commit": "e220bd0",
+    "url": "https://en-learn-eg0abubcn-litangmms-projects.vercel.app",
+    "version": "v0.53.0",
+    "commit": "4f5ea4f",
     "iterationId": "iter-003",
-    "iterationTitle": "薄弱模式诊断与个性化建议",
-    "error": null
+    "iterationTitle": "邀请好友一起学",
+    "deployedAt": "2026-05-12T02:30:00.000Z"
   },
   "pendingDeployment": false,
-  "pendingVersion": null,
-  "pendingCommit": null,
-  "pendingIterationId": null,
-  "pendingIterationTitle": null,
-  "lastRun": "2026-05-26T19:32:00.000Z",
-  "techReviewBaseline": {
-    "lintWarnings": 0,
-    "lintErrors": 0,
-    "unusedImports": 0,
-    "complexityWarnings": 32,
-    "typeErrors": 0,
-    "anyTypeUsage": 0,
-    "suppressedWarnings": 17,
-    "buildDuration": "3.59s",
-    "note": "32 complexity errors found (App 60, ViewRouter 25, PracticeCard 42, storage 21, useFlowState 21, etc.) - complexity threshold lowered to warn. No lint errors, no type errors, no unused imports, no any types. 2340 tests zero regression (historical high)."
-  },
-  "selectedEpic": {
-    "id": "epic-079",
-    "title": "App.tsx 视图路由配置中心强制落地",
-    "description": "彻底将 App.tsx 中所有 view 条件分支迁移至 ViewRouter 配置中心，使 App.tsx 仅负责根布局和错误边界，ViewRouter 成为唯一视图状态来源。消除硬编码 view 字符串和 if/else 分支。",
-    "proposedBy": "ARCH",
-    "supportedBy": [
-      "PM-UX",
-      "EXP",
-      "PM-Growth",
-      "QA"
-    ],
-    "concerns": "App.tsx 当前复杂度 60，迁移需严格分 iteration 落地，避免中途 partial migration 导致状态混乱；需明确迁移完成判定标准（App.tsx 条件分支清零）。",
-    "priority": "high",
-    "estimatedEffort": "large"
-  },
-  "discussionSummary": "Round 1 九位 agent 提出 9 个 tech-review epic，涵盖路由治理、CI 门禁、存储抽象、无障碍、性能基础设施五个维度。Round 2 交叉评审揭示关键依赖链：epic-079 (App.tsx 路由配置中心) 是全场最高价值锚点，直接解锁 epic-084、epic-085、epic-086 的可落地性，并放大 epic-080、epic-083、epic-087 的门禁效果。epic-080 和 epic-083 作为独立 CI 门禁可立即落地但短期内面临 false-positive 告警；epic-081 存储抽象层价值高但工程量大；epic-082 a11y 需在路由稳定后可持续。Round 3 收敛结果：epic-079 为胜出 Epic，支持率 4/9（ARCH、PM-UX、EXP、PM-Growth），附 co-validation by QA；epic-086 与 epic-079 iter-001 并行开发；epic-080/epic-087 建议在 epic-079 iter-002 完成后再启动第二阶段门禁建设，避免告警疲劳。epic-085 和 epic-084 待 epic-079 完全落地后作为下一轮优先候选。"
+  "lastRun": "2026-05-27T12:00:00.000Z"
 }

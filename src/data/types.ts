@@ -1154,3 +1154,181 @@ export const DEFAULT_CHURN_METRICS: ChurnMetrics = {
   lastUpdated: Date.now(),
   cumulativeConversionRate: 0,
 };
+
+// ============================================================================
+// Learning Insights Types (epic-069 iter-001)
+// ============================================================================
+
+/**
+ * Health score level for overall learning wellness.
+ */
+export type HealthScoreLevel = 'critical' | 'low' | 'medium' | 'high';
+
+/**
+ * Individual health score for a specific dimension.
+ */
+export interface HealthScore {
+  /** Overall health level */
+  level: HealthScoreLevel;
+  /** Numeric score (0-100) */
+  score: number;
+  /** Color code for display */
+  color: string;
+  /** Icon identifier */
+  icon: string;
+}
+
+/**
+ * Types of weakness patterns that can be detected.
+ */
+export type WeaknessPatternType = 'accuracy' | 'mode' | 'dictionary' | 'neglected';
+
+/**
+ * A detected weakness pattern with actionable details.
+ */
+export interface WeaknessPattern {
+  /** Unique identifier */
+  id: string;
+  /** Type of weakness pattern */
+  patternType: WeaknessPatternType;
+  /** Display title */
+  title: string;
+  /** Detailed description */
+  description: string;
+  /** Affected items count */
+  affectedCount: number;
+  /** Severity level (1-3, higher is more severe) */
+  severity: 1 | 2 | 3;
+  /** Suggested action text */
+  suggestedAction: string;
+}
+
+/**
+ * Insight section types for the learn insight panel.
+ */
+export type LearnInsightSection =
+  | 'health'      // Overall health score
+  | 'ability'     // Ability radar chart
+  | 'weakness'    // Weakness patterns
+  | 'recommendation'; // Personalized recommendations
+
+/**
+ * A single insight item with category and content.
+ */
+export interface InsightItem {
+  /** Unique identifier */
+  id: string;
+  /** Section this insight belongs to */
+  section: LearnInsightSection;
+  /** Insight title */
+  title: string;
+  /** Insight description or content */
+  description: string;
+  /** Optional numeric value (for progress/stats) */
+  value?: number;
+  /** Optional unit label */
+  unit?: string;
+  /** Priority level (1 = highest) */
+  priority: number;
+  /** Timestamp when this insight was generated */
+  generatedAt: number;
+}
+
+/**
+ * Aggregated learning insights data for the insight panel.
+ * Combines data from multiple hooks to provide comprehensive learning analytics.
+ */
+export interface LearnInsightData {
+  /** Overall health score */
+  healthScore: HealthScore;
+  /** XP profile summary */
+  xpProfile: {
+    totalXP: number;
+    currentLevel: number;
+    progressToNextLevel: number;
+  };
+  /** Learning streak data */
+  streak: {
+    currentStreak: number;
+    longestStreak: number;
+    isActive: boolean;
+  };
+  /** Accuracy summary */
+  accuracy: {
+    total: number;
+    trend: 'up' | 'down' | 'stable';
+  };
+  /** Top weakness patterns */
+  weaknessPatterns: WeaknessPattern[];
+  /** Churn risk level (from useChurnSignals) */
+  churnRisk: {
+    level: ChurnRiskLevel;
+    isAtRisk: boolean;
+  };
+  /** Goal completion rate */
+  goalCompletion: {
+    dailyCompleted: number;
+    dailyTotal: number;
+    weeklyCompleted: number;
+    weeklyTotal: number;
+  };
+  /** Flow state summary */
+  flowState: {
+    currentState: string;
+    isFatigued: boolean;
+    recommendedBreak: boolean;
+  };
+  /** Personalized insights/recommendations */
+  insights: InsightItem[];
+  /** Timestamp when data was last updated */
+  lastUpdated: number;
+}
+
+/**
+ * Default empty health score.
+ */
+export const DEFAULT_HEALTH_SCORE: HealthScore = {
+  level: 'medium',
+  score: 50,
+  color: '#f59e0b',
+  icon: 'activity',
+};
+
+/**
+ * Default empty learn insight data.
+ */
+export const DEFAULT_LEARN_INSIGHT_DATA: LearnInsightData = {
+  healthScore: DEFAULT_HEALTH_SCORE,
+  xpProfile: {
+    totalXP: 0,
+    currentLevel: 1,
+    progressToNextLevel: 0,
+  },
+  streak: {
+    currentStreak: 0,
+    longestStreak: 0,
+    isActive: false,
+  },
+  accuracy: {
+    total: 0,
+    trend: 'stable',
+  },
+  weaknessPatterns: [],
+  churnRisk: {
+    level: 'low',
+    isAtRisk: false,
+  },
+  goalCompletion: {
+    dailyCompleted: 0,
+    dailyTotal: 0,
+    weeklyCompleted: 0,
+    weeklyTotal: 0,
+  },
+  flowState: {
+    currentState: 'neutral',
+    isFatigued: false,
+    recommendedBreak: false,
+  },
+  insights: [],
+  lastUpdated: Date.now(),
+};

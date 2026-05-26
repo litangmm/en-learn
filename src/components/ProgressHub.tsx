@@ -1,4 +1,4 @@
-import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart, Target as GoalIcon, Award } from 'lucide-react';
+import { Trophy, Target, Calendar, TrendingUp, Star, Radar, LineChart, Target as GoalIcon, Award, Activity } from 'lucide-react';
 import { MilestoneCard } from './MilestoneCard';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
@@ -228,6 +228,16 @@ export function ProgressHub({ onNavigate, goals }: ProgressHubProps) {
 
       {/* Quick Actions */}
       <div className="space-y-2">
+        <button
+          onClick={() => onNavigate('learn-insight')}
+          className="w-full py-3 px-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg text-green-700 font-medium hover:from-green-100 hover:to-emerald-100 transition-colors"
+          data-testid="learn-insight-button"
+        >
+          <span className="flex items-center justify-center gap-2">
+            <Activity className="w-5 h-5" />
+            学习洞察
+          </span>
+        </button>
         <button
           onClick={() => onNavigate('history')}
           className="w-full py-3 px-4 bg-white border border-slate-200 rounded-lg text-slate-700 font-medium hover:bg-slate-50 transition-colors"

@@ -301,15 +301,8 @@
     "history": []
   },
   "deployStatus": {
-    "deployed": true,
-    "target": "vercel",
-    "url": "https://en-learn-lcvd69ew3-litangmms-projects.vercel.app",
-    "version": "v0.82.0",
-    "commit": "c18b10a",
-    "iterationId": "iter-001",
-    "iterationTitle": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
-    "deployedAt": "2026-05-27T12:00:00.000Z"
-  },
+    "deployed": false,
+    "pendingDeployment": true,
   "pendingDeployment": false,
   "lastRun": "2026-05-27T12:50:00.000Z"
 }

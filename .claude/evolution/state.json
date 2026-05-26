@@ -5,6 +5,13 @@
     {
       "id": "2026-05-27-195",
       "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-079 iter-001 ViewRouter 注册中心模式完成。2405 测试零回归，0 lint errors，build 3.50s。epic-079 完成度 1/3，iter-002 待 PLAN。"
+    },
+    {
+      "id": "2026-05-27-195",
+      "mode": "vision",
       "stage": "TEST",
       "status": "completed",
       "summary": "epic-079 iter-001 ViewRouter 注册中心模式测试通过。2405 测试零回归，0 lint errors，build 3.50s。"
@@ -101,19 +108,14 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "REPORT",
+  "status": "IMPLEMENT",
   "commit": "c18b10a",
-  "cycleCount": 123,
+  "cycleCount": 124,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": {
-    "id": "2026-05-27-195",
-    "mode": "vision",
-    "stage": "DEPLOY",
-    "trigger": "epic-079 iter-001 commits ready"
-  },
+  "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-12-120",
+    "id": "2026-05-27-195",
     "mode": "vision",
     "stage": "REPORT"
   },
@@ -145,7 +147,7 @@
         "id": "iter-002",
         "title": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "in_progress"
       },
       {
         "id": "iter-003",
@@ -157,64 +159,32 @@
     "currentIterationIndex": 1
   },
   "plan": {
-    "iterationId": "iter-001",
-    "iterationTitle": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+    "iterationId": "iter-002",
+    "iterationTitle": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
     "scope": "frontend-only",
     "steps": [
-      "Step 1: Define ViewConfig type in routing/index.ts — schema for declarative view registration (id, title, i18n, icon, a11y-role)",
-      "Step 2: Create useViewRegistry hook in routing/useViewRegistry.ts — manages view registry state and registration",
-      "Step 3: Update ViewRouter to support registry-based rendering — accepts registry map, uses registry[view] if exists, falls back to switch for existing views",
-      "Step 4: Add ViewRegistryContext in NavigationContext.tsx — provides registry access to all components",
-      "Step 5: Refactor App.tsx to use ViewRegistry — register views via registry instead of passing 20+ callback props; reduce viewHandlers complexity",
-      "Step 6: Update ViewNavigator to support registry-based navigation — navigate() reads from registry for metadata",
-      "Step 7: Write ViewRouter registry tests (ViewRouter.registry.test.tsx) — verify registry registration, rendering, fallback behavior",
-      "Step 8: Update App routing tests (App.routing.test.tsx with registry pattern)",
-      "Step 9: Run full test suite (2367 tests expected) — verify zero regression",
-      "Step 10: Build + Lint verification — 3.5s build, 0 lint errors"
+      "Step 1: 分析 iter-001 后 App.tsx 中遗留的 view === 'practice' 条件渲染逻辑（14 处），识别哪些已由 ViewRouter 处理，哪些是 header/UI 逻辑",
+      "Step 2: 分析 App.tsx 中的 viewHandlers map（26 个 handler），识别 complex handlers 中的副作用逻辑（storage 调用、setIsReviewMode 等），确定哪些需要迁移到 ViewRouter",
+      "Step 3: 为 complex view handlers 添加 metadata 标记：标记每个 handler 的副作用类型（side-effect-free / reads-storage / sets-state），用于后续 schema 标准化",
+      "Step 4: 扩展 ViewRouter 以接受必要的 props 传递到各 panel 组件，确保 complex handlers（如 mistake-book/history/review）能正常回退到 practice",
+      "Step 5: 删除 App.tsx main 区域的 view === 'practice' 条件渲染（保留 LoadingScreen/ErrorScreen/EmptyState 这三个错误边界），由 ViewRouter 统一处理 practice 状态内联",
+      "Step 6: 删除 App.tsx header 区域的 view === 'practice' 条件渲染（header 始终渲染，ViewRouter 决定 content），注意 focus mode 和 mobile nav 仍有条件依赖",
+      "Step 7: 验证 ViewRouter switch 中 'practice' case 返回 null 的正确性，确保 practice content 仅在 main 区域渲染",
+      "Step 8: 更新 App.routing.test.tsx 中相关测试用例，添加 iter-002 新增路径的测试覆盖",
+      "Step 9: 运行全量测试（vitest）验证零回归，修复任何因条件分支删除导致的测试失败",
+      "Step 10: 运行 lint + build 验证通过"
     ],
     "filesToModify": [
-      "src/components/routing/index.ts",
+      "src/App.tsx",
       "src/components/routing/ViewRouter.tsx",
-      "src/components/routing/NavigationContext.tsx",
-      "src/App.tsx"
-    ],
-    "filesToCreate": [
-      "src/components/routing/useViewRegistry.ts",
-      "src/components/routing/__tests__/ViewRouter.registry.test.tsx",
+      "src/components/routing/__tests__/ViewRouter.test.tsx",
       "src/components/routing/__tests__/App.routing.test.tsx"
     ],
+    "filesToCreate": [],
     "dependencies": [],
-    "testStrategy": "ViewRouter registry registration (20 tests) + App.tsx routing integration (30 tests) + NavigationContext registry context (10 tests) = 60 new tests. Full suite expected: 2367 tests, zero regression."
+    "testStrategy": "全量 vitest 测试零回归。重点关注：1）view === 'practice' 条件渲染删除后的 header/mobile-nav 行为；2）complex handlers（mistake-book/history/review）回退到 practice 的流程；3）ViewRouter 'practice' case 返回 null 的边界情况"
   },
   "brainstormResults": [
-    {
-      "id": "epic-079",
-      "title": "App.tsx 视图路由配置中心强制落地",
-      "description": "彻底将 App.tsx 中所有 view 条件分支迁移至 ViewRouter 配置中心，使 App.tsx 仅负责根布局和错误边界，ViewRouter 成为唯一视图状态来源。消除硬编码 view 字符串和 if/else 分支。",
-      "proposedBy": "ARCH",
-      "supportedBy": [
-        "PM-UX",
-        "EXP",
-        "PM-Growth"
-      ],
-      "concerns": "迁移期间需要保持向后兼容，避免影响现有功能",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "迭代1：迁移首批视图注册至 ViewRouter",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代2：完成全部视图迁移",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "迭代3：ViewRouter schema 标准化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
     {
       "id": "epic-080",
       "title": "练习数据持久化与离线缓存优化",
@@ -260,8 +230,8 @@
       "status": "completed",
       "iterationsCount": 4,
       "completedIterations": 4,
-      "versionRange": "v0.40.0-v0.44.0",
-      "completedAt": "2026-05-12T12:00:00.000Z"
+      "versionRange": "v0.79.0-v0.81.0",
+      "completedAt": "2026-05-27T12:00:00.000Z"
     },
     {
       "id": "epic-029",
@@ -328,28 +298,7 @@
   "directives": {
     "version": "1.0",
     "pending": [],
-    "history": [
-      {
-        "id": "dir-20260527-195-01",
-        "type": "custom",
-        "target": "epic-079",
-        "action": "【Cycle-195 Implement 完成】epic-079 iter-001 ViewRouter 注册中心模式实现完成",
-        "reason": "IMPLEMENT 阶段完成，2379 测试零回归，0 lint errors",
-        "createdAt": "2026-05-27T12:00:00.000Z",
-        "executedAt": "2026-05-27T12:50:00.000Z",
-        "executionNote": "ViewConfig type + useViewRegistry hook + ViewRegistryContext + NavigationContext 扩展。2379 测试零回归，0 lint errors，build 3.76s。epic-079 完成度 1/3，iter-002 待 PLAN"
-      },
-      {
-        "id": "dir-20260527-195-02",
-        "type": "custom",
-        "target": "epic-079",
-        "action": "【Cycle-195 Plan 完成】epic-079 App.tsx 视图路由配置中心强制落地，拆分为 3 个迭代，iter-001 计划已生成",
-        "reason": "PLAN 阶段完成，epic-079 迭代拆分 + iter-001 计划就绪",
-        "createdAt": "2026-05-27T12:00:00.000Z",
-        "executedAt": null,
-        "executionNote": "epic-079 拆分为 3 个迭代：iter-001 registry-based rendering（in_progress），iter-002 full migration（pending），iter-003 schema standardization（pending，co-built with epic-086）"
-      }
-    ]
+    "history": []
   },
   "deployStatus": {
     "deployed": true,
@@ -362,5 +311,5 @@
     "deployedAt": "2026-05-27T12:00:00.000Z"
   },
   "pendingDeployment": false,
-  "lastRun": "2026-05-27T12:00:00.000Z"
+  "lastRun": "2026-05-27T12:50:00.000Z"
 }

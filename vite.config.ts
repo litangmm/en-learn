@@ -50,7 +50,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     css: true,
-    exclude: ['node_modules', 'e2e'],
+    exclude: ['node_modules', 'e2e', '.claude/worktrees/**'],
     coverage: {
       provider: 'v8',
       reportsDirectory: './coverage',

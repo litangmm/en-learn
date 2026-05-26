@@ -5,6 +5,13 @@
     {
       "id": "2026-05-27-200",
       "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-083 iter-002 智能练习推荐引擎完成。创建 6 个文件：PracticeRecommendation 类型 + usePracticeRecommendations hook + PracticeRecommendationCard + PracticeRecommendationPanel + usePracticeRecommendationPanel hook + 全面测试（50+ tests）。2616 测试零回归，0 lint errors，build 3.90s。epic-083 完成度 2/4，iter-003~004 pending。"
+    },
+    {
+      "id": "2026-05-27-200",
+      "mode": "vision",
       "stage": "IMPLEMENT",
       "status": "completed",
       "summary": "epic-083 iter-002 智能练习推荐引擎完成。创建 6 个文件：PracticeRecommendation 类型 + usePracticeRecommendations hook + PracticeRecommendationCard + PracticeRecommendationPanel + usePracticeRecommendationPanel hook + 全面测试（50+ tests）。2616 测试零回归，0 lint errors，build 3.90s。epic-083 完成度 2/4，iter-003~004 pending。"
@@ -206,7 +213,7 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "TEST",
+  "status": "COMMIT",
   "commit": "93e04f5",
   "cycleCount": 202,
   "nextMode": "vision",
@@ -247,7 +254,7 @@
         "id": "iter-003",
         "title": "个人词库效率分析",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "in_progress"
       },
       {
         "id": "iter-004",
@@ -630,8 +637,8 @@
       "failed": 0,
       "skipped": 5,
       "total": 2621,
-      "duration": "36.78s",
-      "note": "2616 tests pass, 5 skipped. Worktree tests excluded. Zero regressions."
+      "duration": "36.59s",
+      "note": "2616 tests pass, 5 skipped. Exclude .claude/worktrees from vitest config. Zero regressions."
     },
     "e2eTests": {
       "skipped": true,
@@ -644,7 +651,7 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.90s (tsc + vite)"
+      "duration": "3.63s (tsc + vite)"
     }
   },
   "awaitingInputSince": null,

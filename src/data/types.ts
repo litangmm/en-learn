@@ -1317,6 +1317,23 @@ export interface LearnInsightData {
 }
 
 /**
+ * Learn insight recommendation for weak mode detection.
+ * Provides personalized advice based on user's weakest practice mode.
+ */
+export interface LearnInsightRecommendation {
+  /** The weakest mode that needs attention */
+  weakMode: PracticeMode;
+  /** The practice mode (same as weakMode for display purposes) */
+  mode: PracticeMode;
+  /** Accuracy percentage (0-100) of the weak mode */
+  accuracy: number;
+  /** Chinese advice text for improving this mode */
+  suggestion: string;
+  /** Priority level (1 = highest, 3 = lowest) */
+  priority: 1 | 2 | 3;
+}
+
+/**
  * Default empty health score.
  */
 export const DEFAULT_HEALTH_SCORE: HealthScore = {

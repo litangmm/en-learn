@@ -12,10 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HealthGauge } from '@/components/HealthGauge';
 import { AbilityRadar } from '@/components/AbilityRadar';
 import { ProgressTrend } from '@/components/ProgressTrend';
-import { useLearnInsights } from '@/hooks/useLearnInsights';
+import { useLearnInsights, calculateWeakModeRecommendation } from '@/hooks/useLearnInsights';
 import { useProgressStats, getDailyXP, getFilteredTrend, MODE_LABELS } from '@/hooks/useProgressStats';
 import type { View } from './routing';
-import type { PracticeMode, DailyTrend } from '@/data/types';
+import type { PracticeMode, DailyTrend, LearnInsightRecommendation } from '@/data/types';
 
 /**
  * Props for the LearnInsightDashboard component.
@@ -43,6 +43,11 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
 
   // Track selected mode from radar for trend filtering
   const [selectedMode, setSelectedMode] = useState<PracticeMode | null>(null);
+
+  // Calculate weak mode recommendation
+  const weakModeRecommendation = useMemo(() => {
+    return calculateWeakModeRecommendation(insights.abilityModeAccuracy);
+  }, [insights.abilityModeAccuracy]);
 
   // Get trend data - filtered by selected mode or all modes
   const trendData = useMemo(() => {
@@ -250,6 +255,21 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
         </motion.div>
       </div>
 
+      {/* Weakness Recommendation Panel */}
+      {weakModeRecommendation && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28 }}
+          className="mb-6"
+        >
+          <WeaknessRecommendationPanel
+            recommendation={weakModeRecommendation}
+            onPractice={() => onNavigate?.('practice')}
+          />
+        </motion.div>
+      )}
+
       {/* Goal Progress Section */}
       {(insights.goalCompletion.dailyTotal > 0 || insights.goalCompletion.weeklyTotal > 0) && (
         <motion.div
@@ -420,6 +440,64 @@ function WeaknessItem({ pattern }: { pattern: {
       </div>
       <p className="text-xs text-blue-600 mt-2">💡 {pattern.suggestedAction}</p>
     </div>
+  );
+}
+
+/**
+ * Weakness recommendation panel component.
+ * Displays the weakest mode with actionable recommendation.
+ */
+function WeaknessRecommendationPanel({
+  recommendation,
+  onPractice,
+}: {
+  recommendation: LearnInsightRecommendation;
+  onPractice: () => void;
+}) {
+  const priorityBorderColors = {
+    1: 'border-red-500',
+    2: 'border-orange-400',
+    3: 'border-yellow-400',
+  };
+
+  const priorityBgColors = {
+    1: 'bg-red-50',
+    2: 'bg-orange-50',
+    3: 'bg-yellow-50',
+  };
+
+  return (
+    <Card
+      className={`border-2 ${priorityBorderColors[recommendation.priority]} ${priorityBgColors[recommendation.priority]}`}
+      data-testid="weakness-recommendation-panel"
+    >
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium text-slate-600 flex items-center gap-2">
+          <span className="w-4 h-4 text-red-500">📌</span>
+          薄弱环节
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl font-bold text-slate-800">
+              {MODE_LABELS[recommendation.mode]}
+            </span>
+            <span className="text-lg font-semibold text-red-600">
+              {recommendation.accuracy}%
+            </span>
+          </div>
+          <Button
+            size="sm"
+            onClick={onPractice}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            去练习
+          </Button>
+        </div>
+        <p className="text-sm text-slate-600">{recommendation.suggestion}</p>
+      </CardContent>
+    </Card>
   );
 }
 

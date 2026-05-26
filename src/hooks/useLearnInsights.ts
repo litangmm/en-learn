@@ -21,6 +21,8 @@ import type {
   SessionHistory,
   ModeAccuracy,
   DailyTrend,
+  PracticeMode,
+  LearnInsightRecommendation,
 } from '@/data/types';
 import { ALL_MODES } from './useProgressStats';
 import { useProgressStats } from './useProgressStats';
@@ -289,6 +291,69 @@ export function calculateModeAccuracy(
     totalQuestions,
     correctCount: totalCorrect,
   }));
+}
+
+/**
+ * Generate Chinese advice text for a practice mode.
+ *
+ * @param mode - The practice mode
+ * @returns Chinese advice string for the given mode
+ */
+export function generateModeAdvice(mode: PracticeMode): string {
+  const adviceMap: Record<PracticeMode, string> = {
+    'fill-in-blanks': '填空需要多阅读例句，理解上下文语境会很有帮助',
+    'dictation': '听写需要多听音频，跟读练习会很有帮助',
+    'multiple-choice': '选择题需要仔细阅读选项，理解题意再作答',
+    'sentence-reorder': '排序需要理解句子结构，多分析语法关系会很有帮助',
+  };
+  return adviceMap[mode];
+}
+
+/**
+ * Calculate weak mode recommendation from mode accuracy data.
+ * Finds the weakest mode (lowest accuracy) that has been practiced
+ * and has accuracy below the threshold.
+ *
+ * @param modeAccuracy - Array of mode accuracy data
+ * @param threshold - Accuracy threshold below which a mode is considered weak (default 70)
+ * @returns LearnInsightRecommendation or null if no weak mode found
+ */
+export function calculateWeakModeRecommendation(
+  modeAccuracy: ModeAccuracy[],
+  threshold: number = 70
+): LearnInsightRecommendation | null {
+  // Filter modes that have been practiced (totalQuestions > 0) and accuracy < threshold
+  const weakModes = modeAccuracy.filter(
+    m => m.totalQuestions > 0 && m.accuracy < threshold
+  );
+
+  // If no weak modes found, return null
+  if (weakModes.length === 0) {
+    return null;
+  }
+
+  // Find the mode with lowest accuracy
+  const weakest = weakModes.reduce((prev, curr) =>
+    curr.accuracy < prev.accuracy ? curr : prev
+  );
+
+  // Calculate priority based on accuracy
+  let priority: 1 | 2 | 3;
+  if (weakest.accuracy < 50) {
+    priority = 1;
+  } else if (weakest.accuracy < 60) {
+    priority = 2;
+  } else {
+    priority = 3;
+  }
+
+  return {
+    weakMode: weakest.mode,
+    mode: weakest.mode,
+    accuracy: weakest.accuracy,
+    suggestion: generateModeAdvice(weakest.mode),
+    priority,
+  };
 }
 
 /**

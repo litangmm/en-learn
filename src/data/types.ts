@@ -1258,6 +1258,10 @@ export interface LearnInsightData {
     total: number;
     trend: 'up' | 'down' | 'stable';
   };
+  /** Per-mode accuracy data for ability radar chart */
+  abilityModeAccuracy: ModeAccuracy[];
+  /** 7-day XP/trend data for progress chart */
+  trendData: DailyTrend[];
   /** Top weakness patterns */
   weaknessPatterns: WeaknessPattern[];
   /** Churn risk level (from useChurnSignals) */
@@ -1313,6 +1317,8 @@ export const DEFAULT_LEARN_INSIGHT_DATA: LearnInsightData = {
     total: 0,
     trend: 'stable',
   },
+  abilityModeAccuracy: [],
+  trendData: [],
   weaknessPatterns: [],
   churnRisk: {
     level: 'low',

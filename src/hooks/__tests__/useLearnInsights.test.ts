@@ -4,6 +4,8 @@ import {
   generateWeaknessPatterns,
   calculateGoalCompletionRate,
   calculateAccuracyTrend,
+  calculateModeAccuracy,
+  calculateTrendData,
   generateInsights,
   aggregateLearnInsights,
 } from '../useLearnInsights';
@@ -28,6 +30,7 @@ vi.mock('../useProgressStats', () => ({
     totalAccuracy: 75,
     modeAccuracy: [],
   })),
+  ALL_MODES: ['fill-in-blanks', 'multiple-choice', 'sentence-reorder', 'dictation'],
 }));
 
 // Mock useWeaknessStats
@@ -393,6 +396,7 @@ describe('aggregateLearnInsights', () => {
     weeklyGoals: { completed: 20, total: 50 },
     flowState: 'normal' as const,
     isFatigued: false,
+    badgeProgress: { totalAnswered: 100, totalCorrect: 75 },
   };
 
   it('should return LearnInsightData structure', () => {
@@ -402,6 +406,8 @@ describe('aggregateLearnInsights', () => {
     expect(result.xpProfile).toBeDefined();
     expect(result.streak).toBeDefined();
     expect(result.accuracy).toBeDefined();
+    expect(result.abilityModeAccuracy).toBeDefined();
+    expect(result.trendData).toBeDefined();
     expect(result.weaknessPatterns).toBeDefined();
     expect(result.churnRisk).toBeDefined();
     expect(result.goalCompletion).toBeDefined();
@@ -456,7 +462,168 @@ describe('useLearnInsights hook', () => {
     expect(generateWeaknessPatterns).toBeDefined();
     expect(calculateGoalCompletionRate).toBeDefined();
     expect(calculateAccuracyTrend).toBeDefined();
+    expect(calculateModeAccuracy).toBeDefined();
+    expect(calculateTrendData).toBeDefined();
     expect(generateInsights).toBeDefined();
     expect(aggregateLearnInsights).toBeDefined();
+  });
+});
+
+describe('calculateModeAccuracy', () => {
+  it('should return ModeAccuracy for all practice modes', () => {
+    const result = calculateModeAccuracy([], { totalAnswered: 100, totalCorrect: 75 });
+
+    expect(result).toHaveLength(4);
+    expect(result[0]).toHaveProperty('mode');
+    expect(result[0]).toHaveProperty('accuracy');
+    expect(result[0]).toHaveProperty('totalQuestions');
+    expect(result[0]).toHaveProperty('correctCount');
+  });
+
+  it('should calculate accuracy correctly', () => {
+    const result = calculateModeAccuracy([], { totalAnswered: 100, totalCorrect: 75 });
+
+    // 75/100 = 75%
+    expect(result[0].accuracy).toBe(75);
+    expect(result[0].totalQuestions).toBe(100);
+    expect(result[0].correctCount).toBe(75);
+  });
+
+  it('should handle zero questions', () => {
+    const result = calculateModeAccuracy([], { totalAnswered: 0, totalCorrect: 0 });
+
+    expect(result[0].accuracy).toBe(0);
+    expect(result[0].totalQuestions).toBe(0);
+    expect(result[0].correctCount).toBe(0);
+  });
+
+  it('should distribute stats across all modes', () => {
+    const result = calculateModeAccuracy([], { totalAnswered: 100, totalCorrect: 75 });
+
+    // All modes should have the same stats since we distribute evenly
+    result.forEach(modeData => {
+      expect(modeData.totalQuestions).toBe(100);
+      expect(modeData.correctCount).toBe(75);
+      expect(modeData.accuracy).toBe(75);
+    });
+  });
+});
+
+describe('calculateTrendData', () => {
+  it('should return trend data for 7 days by default', () => {
+    const result = calculateTrendData([]);
+
+    expect(result).toHaveLength(7);
+  });
+
+  it('should return trend data for specified days', () => {
+    const result = calculateTrendData([], 14);
+
+    expect(result).toHaveLength(14);
+  });
+
+  it('should include date, dayName, xp, questions, and accuracy for each day', () => {
+    const result = calculateTrendData([]);
+
+    expect(result[0]).toHaveProperty('date');
+    expect(result[0]).toHaveProperty('dayName');
+    expect(result[0]).toHaveProperty('xp');
+    expect(result[0]).toHaveProperty('questions');
+    expect(result[0]).toHaveProperty('accuracy');
+  });
+
+  it('should include day names in Chinese', () => {
+    const result = calculateTrendData([]);
+
+    const validDayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    result.forEach(day => {
+      expect(validDayNames).toContain(day.dayName);
+    });
+  });
+
+  it('should aggregate history entries by date', () => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const history: SessionHistory[] = [
+      {
+        id: 'session-1',
+        timestamp: today.getTime(),
+        duration: 300000,
+        dictionaryId: 'test',
+        dictionaryName: 'Test',
+        score: 100,
+        totalQuestions: 10,
+        correctCount: 8,
+        accuracy: 80,
+      },
+      {
+        id: 'session-2',
+        timestamp: yesterday.getTime(),
+        duration: 300000,
+        dictionaryId: 'test',
+        dictionaryName: 'Test',
+        score: 50,
+        totalQuestions: 5,
+        correctCount: 4,
+        accuracy: 80,
+      },
+    ];
+
+    const result = calculateTrendData(history);
+
+    // Find today's entry
+    const todayStr = today.toISOString().split('T')[0];
+    const todayEntry = result.find(d => d.date === todayStr);
+    expect(todayEntry).toBeDefined();
+    expect(todayEntry?.xp).toBe(100);
+    expect(todayEntry?.questions).toBe(10);
+    expect(todayEntry?.accuracy).toBe(80);
+
+    // Find yesterday's entry
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    const yesterdayEntry = result.find(d => d.date === yesterdayStr);
+    expect(yesterdayEntry).toBeDefined();
+    expect(yesterdayEntry?.xp).toBe(50);
+    expect(yesterdayEntry?.questions).toBe(5);
+    expect(yesterdayEntry?.accuracy).toBe(80);
+  });
+
+  it('should handle multiple sessions on the same day', () => {
+    const today = new Date();
+
+    const history: SessionHistory[] = [
+      {
+        id: 'session-1',
+        timestamp: today.getTime(),
+        duration: 300000,
+        dictionaryId: 'test',
+        dictionaryName: 'Test',
+        score: 100,
+        totalQuestions: 10,
+        correctCount: 8,
+        accuracy: 80,
+      },
+      {
+        id: 'session-2',
+        timestamp: today.getTime() + 3600000, // 1 hour later same day
+        duration: 300000,
+        dictionaryId: 'test',
+        dictionaryName: 'Test',
+        score: 50,
+        totalQuestions: 5,
+        correctCount: 4,
+        accuracy: 80,
+      },
+    ];
+
+    const result = calculateTrendData(history);
+
+    const todayStr = today.toISOString().split('T')[0];
+    const todayEntry = result.find(d => d.date === todayStr);
+    expect(todayEntry?.xp).toBe(150); // 100 + 50
+    expect(todayEntry?.questions).toBe(15); // 10 + 5
+    expect(todayEntry?.accuracy).toBe(80); // (8+4)/(10+5) = 80%
   });
 });

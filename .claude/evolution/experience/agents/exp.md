@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— 作为支持者
+- **结果**: epic-079 iter-001 **完成并部署**，v0.82.0，2405 测试通过（历史最高水位）
+- **完成内容**: ViewRouter 注册中心模式核心基础设施（VIEW_CONFIGS + ViewRegistryProvider + useViewRegistry + NavigationProviderWithRegistry）
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
+- **观察**: epic-079 iter-001 的 ViewRouter 注册中心模式为 EXP 提出的「路由驱动式自适应学习状态机」（epic-085）提供了基础设施。ViewRegistry 的声明式视图注册体系允许动态视图状态转换，结合 useViewRegistry 的注册/注销能力，可实现「根据用户学习状态动态调整视图布局」。useViewRegistry 的 Hook 设计（纯函数/无副作用）与 EXP 的「自适应学习」理念一致。**epic-079 完成度 1/3，iter-002（完成全部视图迁移）后，EXP 可基于 Registry 数据提出更精准的自适应视图方案**
+
 ### 2026-05-13 (cycle-2026-05-13-156) — epic-043 iter-003 REPORT 完成
 - **相关 Epic**: epic-043 iter-003「搜索性能优化」REPORT 阶段
 - **结果**: REPORT 完成，epic-043 3/5 iterations 完成，版本 v0.64.0-v0.66.0
@@ -288,4 +295,11 @@
 - **epic-085 后续**: epic-085「路由驱动式自适应学习状态机」需待 epic-079 完成后启动
 - **当前状态**: **epic-069 完成度 3/4，iter-004 pending；epic-079 支持者**
 - **观察**: epic-069 iter-003 的 weaknessPatterns（pattern/reason/mode/recommendation）直接为自适应学习提供了「薄弱点归因」数据。模式级别的 pattern 识别（accuracy 低于平均值）可用于调节该模式的出题权重。**epic-069 还有 1 个迭代（iter-004），epic-079 已当选，epic-085 需待 epic-079 完成后方可推进**
+
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成 (2405 tests, 历史最高水位)
+- **相关 Epic**: epic-079 iter-001「迁移首批视图注册至 ViewRouter」—— 作为支持者
+- **结果**: epic-079 iter-001 **完成并测试通过**，v0.82.0，2405/2410 测试通过（5 skipped，历史最高水位）
+- **完成内容**: VIEW_CONFIGS 常量（19 views）+ ViewRegistryProvider + useViewRegistry hook + NavigationProviderWithRegistry + ViewRouter 扩展 + viewConfigs.ts 单例源 + 全面测试
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
+- **观察**: epic-079 iter-001 的声明式路由注册模式为 EXP 的「自适应学习」提供了新视角——ViewRouter 注册中心模式让新视图可通过配置而非代码修改来添加，这意味着自适应学习相关的视图（如「薄弱点练习推荐」）可以声明式注册，与现有视图体系无缝集成。VIEW_CONFIGS 的可扩展 schema 为未来动态视图（如「根据用户流失风险动态生成的干预视图」）提供了基础设施。**epic-079 完成度 1/3，剩余 iter-002（全部视图迁移）+ iter-003（Schema 标准化），epic-085 需待 epic-079 完成后方可推进，继续支持**
 

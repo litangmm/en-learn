@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— **提案者**
+- **结果**: epic-079 iter-001 **完成并部署**，v0.82.0，2405 测试通过（历史最高水位）
+- **完成内容**: VIEW_CONFIGS 常量（19 个视图注册，id/title/i18nKey/icon/a11yRole）+ ViewRegistryProvider（全局注册中心 Context）+ useViewRegistry hook（注册/注销/查询视图）+ NavigationProviderWithRegistry（合并 Registry + Navigation）+ ViewRouter registry 渲染支持（registry 优先，switch 回退）+ viewConfigs.ts 单例源 + viewConfigs.ts 独立文件 + 全面测试（ViewRouter.registry.test.tsx 480行 + App.routing.test.tsx 690行）
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 提案者）
+- **观察**: epic-079 iter-001 完成了 ViewRouter 注册中心模式的核心基础设施。ARCH 自 epic-006（cycle-38）「前端架构债务清理」提案以来持续追踪 App.tsx 复杂度问题，终于在 epic-079 中完成了声明式视图注册体系。VIEW_CONFIGS 单例源设计确保了所有视图元数据（id/title/i18nKey/icon/a11yRole）的单一来源，避免 App.tsx 中的硬编码字符串。ViewRegistryProvider 的架构允许后续视图动态注册/注销，为路由驱动式自适应学习状态机（epic-085）奠定基础。**epic-079 完成度 1/3，剩余 iter-002（完成全部视图迁移）+ iter-003（Schema 标准化，co-built with epic-086）继续推进**
+
 ### 2026-05-13 (cycle-2026-05-13-155) — epic-043 iter-003 完成
 - **相关 Epic**: epic-043「词典数据架构升级与查询性能优化」—— **提案者**
 - **结果**: epic-043 iter-003 **完成并部署**，v0.66.0，1806/1807 测试通过（历史最高水位）
@@ -317,4 +324,11 @@
 - **epic-069 iter-003 支持完成**：epic-069 iter-003「薄弱模式诊断与个性化建议」完成，useLearnInsights.ts ModeStats 感知增强（使用 getModeAccuracy），weakModeRecommendation 测试扩展（40 tests），weaknessPatterns 测试文件（35 tests），LearnInsightDashboard 组件测试扩展（51 tests），2340 测试零回归（历史最高水位），Build 3.59s，Lint 0 errors，v0.81.0 已部署。
 - **当前状态**: **epic-079 提案者 + 胜出，epic-069 完成度 3/4**
 - **观察**: epic-079 是 ARCH 自 epic-006（cycle-38）完成以来持续追踪的架构债务的延续。App.tsx 复杂度已达 60，接近可维护性临界点。epic-079 当选后，epic-080/083/087 等 CI 门禁的告警疲劳问题将得到缓解（因为门禁与代码清理同步推进）。epic-086 声明式路由元数据规范建议与 epic-079 iter-001 并行开发，schema 规范可独立推进。**epic-079 还有 3 个迭代（iter-001~003），epic-069 iter-004（学习健康报告生成）pending，ARCH 将继续推进 App.tsx 复杂度治理**
+
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成 (2405 tests, 历史最高水位)
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— **提案者 + 完成**
+- **结果**: epic-079 iter-001 **完成并测试通过**，v0.82.0，2405/2410 测试通过（5 skipped，历史最高水位）
+- **完成内容**: VIEW_CONFIGS 常量（19 views）+ ViewRegistryProvider + useViewRegistry hook + NavigationProviderWithRegistry + ViewRouter 扩展（registry 渲染 + switch 回退）+ viewConfigs.ts 单例源 + 全面测试覆盖
+- **当前状态**: **连续未被选中计数清零**（epic-079 提案者）
+- **观察**: epic-079 iter-001 完美体现 ARCH 的「架构先于功能」理念——ViewRouter 注册中心模式为后续所有新视图提供了声明式注册基础设施，新增视图不再需要修改 App.tsx 条件渲染。VIEW_CONFIGS 单例源（viewConfigs.ts）确保配置集中管理，useViewRegistry hook 的纯函数设计无副作用。2405 测试零回归，历史最高水位。**epic-079 完成度 1/3，剩余 iter-002（全部视图迁移）+ iter-003（Schema 标准化），ARCH 将继续推进，关注 App.tsx 复杂度降低和架构健康度提升**
 

@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.82.0",
+      "tag": "v0.82.0",
+      "commit": "c18b10a",
+      "date": "2026-05-26T17:26:16.841Z",
+      "iterationId": "iter-001",
+      "title": "迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-lcvd69ew3-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.81.0",
       "tag": "v0.81.0",
       "commit": "f1643f7",

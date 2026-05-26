@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— 作为支持者
+- **结果**: epic-079 iter-001 **完成并部署**，v0.82.0，2405 测试通过（历史最高水位）
+- **完成内容**: ViewRouter 注册中心模式核心基础设施
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
+- **观察**: epic-079 iter-001 的声明式路由体系为 PM-Growth 的「学习社交裂变」提供了视图基础设施。VIEW_CONFIGS 的单例源设计允许在分享卡片中引用视图元数据（title/i18nKey/icon）。ViewRegistry 的可扩展性确保新功能（成就系统/周报等）可声明式注册，无需修改核心导航逻辑。这与 PM-Growth 关注的「功能快速迭代」原则一致。**epic-079 完成度 1/3，iter-002（完成全部视图迁移）后，App.tsx 复杂度降低，新视图迭代速度将显著提升**
+
 ### 2026-05-10 (cycle-2026-05-10-20)
 - **提案 Epic**: epic-005「学习社交裂变与留存闭环」
 - **结果**: 未被选中（epic-003 iter-004 完成，epic-005 仍为 medium 优先级储备）
@@ -256,4 +263,11 @@
 - **epic-079 支持**: epic-079「App.tsx 视图路由配置中心强制落地」当选，PM-Growth 作为支持者（4 支持：ARCH/PM-UX/EXP/PM-Growth）
 - **当前状态**: **epic-069 完成度 3/4，iter-004（学习健康报告生成）pending；epic-079 支持者**
 - **观察**: epic-069 iter-003 的薄弱模式诊断基于 ModeStats 的 getModeAccuracy 函数，为自适应学习提供了「薄弱点识别」的数据基础。iter-004「学习健康报告生成与分享」将整合 ModeStats、trendData、weaknessPatterns 生成完整健康报告。**epic-069 还有 1 个迭代（iter-004），epic-079 已当选作为下一优先 Epic，PM-Growth 将持续支持**
+
+### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成 (2405 tests, 历史最高水位)
+- **相关 Epic**: epic-079 iter-001「迁移首批视图注册至 ViewRouter」—— 作为支持者
+- **结果**: epic-079 iter-001 **完成并测试通过**，v0.82.0，2405/2410 测试通过（5 skipped，历史最高水位）
+- **完成内容**: VIEW_CONFIGS 常量（19 views）+ ViewRegistryProvider + useViewRegistry hook + NavigationProviderWithRegistry + ViewRouter 扩展 + viewConfigs.ts 单例源 + 全面测试
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
+- **观察**: epic-079 iter-001 的声明式路由注册模式为 PM-Growth 的「留存闭环」提供了新视角——新视图（如「成就展示」「学习周报」）可通过声明式注册添加到 ViewRouter，无需修改 App.tsx 条件渲染，这意味着游戏化数据（XP/等级/连击/徽章/每日挑战）对应的展示视图可以更快地迭代。VIEW_CONFIGS 的可扩展 schema 为未来「动态视图」（如「根据用户成就解锁的徽章墙视图」）提供了基础设施。**epic-079 完成度 1/3，剩余 iter-002（全部视图迁移）+ iter-003（Schema 标准化），继续支持**
 

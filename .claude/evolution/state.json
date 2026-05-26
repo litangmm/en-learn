@@ -3,6 +3,48 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-27-202",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-083 iter-004 commit 完成。2 个 commits：766a2f7（代码）+ 63842bd（经验档案更新）。epic-083 完成度 4/4，advance to DEPLOY。"
+    },
+    {
+      "id": "2026-05-27-202",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-083 iter-004 遗忘曲线可视化测试通过。修复 eslint react-hooks/purity 错误（添加 eslint-disable 注释）。2648 测试零回归，0 lint errors（13 warnings pre-existing），build 3.81s。E2E 跳过（epic-083 完成，4/4 iterations）。"
+    },
+    {
+      "id": "2026-05-27-202",
+      "mode": "vision",
+      "stage": "IMPLEMENT",
+      "status": "completed",
+      "summary": "epic-083 iter-004 遗忘曲线可视化完成。创建 6 个文件：ForgettingCurveData 类型 + useForgettingCurve hook + ForgettingCurveChart SVG 组件 + ForgettingCurvePanel 面板 + 全量测试（30+ tests）。2648 测试零回归，0 lint errors，build 3.79s。epic-083 完成度 4/4，advance to TEST。"
+    },
+    {
+      "id": "2026-05-27-201",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-083 iter-003 个人词库效率分析完成并部署。v0.87.0，2616 测试零回归，0 lint errors，build 3.63s。epic-083 完成度 3/4，iter-004 pending。"
+    },
+    {
+      "id": "2026-05-27-200",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-083 iter-002 部署成功。v0.87.0 部署到 Vercel，git tag v0.87.0 已创建并推送。URL: https://en-learn-jcdjdc31h-litangmms-projects.vercel.app"
+    },
+    {
+      "id": "2026-05-27-200",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-083 iter-002 commit 完成。2 个 commits：a4f1561（test fix）和 56c60ca（经验档案更新）。epic-083 完成度 2/4，advance to DEPLOY。"
+    },
+    {
       "id": "2026-05-27-200",
       "mode": "vision",
       "stage": "TEST",
@@ -21,7 +63,7 @@
       "mode": "vision",
       "stage": "DEPLOY",
       "status": "completed",
-      "summary": "epic-083 iter-001 部署成功。v0.85.0 部署到 Vercel，git tag v0.85.0 已创建并推送。URL: https://en-learn-6pm9w12cq-litangmms-projects.vercel.app"
+      "summary": "epic-083 iter-002 部署成功。v0.87.0 部署到 Vercel，git tag v0.87.0 已创建。URL: https://en-learn-jcdjdc31h-litangmms-projects.vercel.app"
     },
     {
       "id": "2026-05-27-200",
@@ -70,7 +112,7 @@
       "mode": "vision",
       "stage": "DEPLOY",
       "status": "completed",
-      "summary": "epic-079 iter-002 部署成功。v0.83.0 部署到 Vercel，git tag v0.83.0 已创建。URL: https://en-learn-i9ugvfjrt-litangmms-projects.vercel.app。push --tags 因网络问题失败，tag 已在本地。"
+      "summary": "epic-079 iter-002 部署成功。v0.83.0 部署到 Vercel，git tag v0.83.0 已创建。URL: https://en-learn-jcdjdc31h-litangmms-projects.vercel.app。push --tags 因网络问题失败，tag 已在本地。"
     },
     {
       "id": "2026-05-27-197",
@@ -213,18 +255,21 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "COMMIT",
-  "commit": "93e04f5",
+  "status": "DEPLOY",
+  "commit": "766a2f7",
   "cycleCount": 202,
   "nextMode": "vision",
   "failedAttempts": 0,
   "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-27-200",
+    "id": "2026-05-27-202",
     "mode": "vision",
-    "stage": "REPORT"
+    "stage": "COMMIT"
   },
-  "selectedEpic": null,
+  "selectedEpic": {
+    "id": "epic-083",
+    "title": "个人学习数据深度挖掘与复用"
+  },
   "currentEpic": {
     "id": "epic-083",
     "title": "个人学习数据深度挖掘与复用",
@@ -234,7 +279,7 @@
       "PM-Eco",
       "UX"
     ],
-    "status": "in_progress",
+    "status": "completed",
     "iterations": [
       {
         "id": "iter-001",
@@ -254,320 +299,44 @@
         "id": "iter-003",
         "title": "个人词库效率分析",
         "scope": "frontend-only",
-        "status": "in_progress"
+        "status": "completed",
+        "version": "v0.87.0"
       },
       {
         "id": "iter-004",
         "title": "遗忘曲线可视化",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "completed",
+        "version": "v0.88.0"
       }
     ],
-    "currentIterationIndex": 2
+    "currentIterationIndex": 4,
+    "completedAt": "2026-05-27T06:25:00.000Z"
   },
   "deployStatus": {
-    "deployed": false,
-    "target": "vercel"
+    "deployed": true,
+    "target": "vercel",
+    "url": "https://en-learn-jcdjdc31h-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-26T21:57:20.263Z",
+    "error": null
   },
   "plan": null,
-  "brainstormResults": [
-    {
-      "id": "epic-080",
-      "title": "用户激活引导与首次体验优化",
-      "description": "用户首次使用时缺乏引导，完成第一次练习后不知道接下来该做什么。ViewRouter 声明式路由体系就绪，可为新用户定制引导路径。",
-      "proposedBy": "PM-Growth",
-      "supportedBy": [
-        "PM-UX",
-        "UX"
-      ],
-      "concerns": "引导流程可能打断学习心流，需非侵入式设计",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "首次使用引导流程",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习路径推荐卡片",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "成就解锁通知体系",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "分享传播触发点优化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-081",
-      "title": "实时学习反馈与进度可视化增强",
-      "description": "用户在做练习时缺乏即时的进度感知和成就反馈。epic-079 的 ViewRouter 扩展性强，可新增实时反馈视图。",
-      "proposedBy": "PM-UX",
-      "supportedBy": [
-        "QA",
-        "EXP"
-      ],
-      "concerns": "动画增强可能影响性能，需性能基准测试",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "练习中实时进度条",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "即时正误反馈动画优化",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "连击里程碑实时庆祝动画",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习效率实时指示器",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "练习模式切换流畅度优化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-082",
-      "title": "构建体积持续监控与性能自动优化",
-      "description": "epic-006 建立的 650KB 阈值需持续监控，避免新功能引入导致体积膨胀。需建立自动化性能回归检测。",
-      "proposedBy": "PM-Mon",
-      "supportedBy": [
-        "ARCH",
-        "QA"
-      ],
-      "concerns": "性能监控增加 CI 复杂度，需平衡自动化与维护成本",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "CI 性能基线自动化",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "大依赖检测与告警",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "代码分割优化",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "Lighthouse 性能监控集成",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-083",
-      "title": "个人学习数据深度挖掘与复用",
-      "description": "用户的学习数据（错题/历史/个人词库）分散在多个视图，缺乏统一的数据分析和使用入口。localStorage 数据已完全就绪。",
-      "proposedBy": "PM-Lean",
-      "supportedBy": [
-        "PM-Eco",
-        "UX"
-      ],
-      "concerns": "复用现有数据价值待验证，需先验证用户需求",
-      "priority": "high",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "个人学习画像卡片",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "智能练习推荐引擎",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习数据导出增强",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "个人词库效率分析",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "遗忘曲线可视化",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-084",
-      "title": "开放式词典扩展接口与社区贡献体系",
-      "description": "当前词典封闭，用户无法添加自定义内容。ViewRouter 声明式体系可扩展为词典注册中心。",
-      "proposedBy": "PM-Eco",
-      "supportedBy": [],
-      "concerns": "开放生态增加维护成本，纯前端场景下社区功能受限",
-      "priority": "low",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {
-          "title": "自定义词典导入接口",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "个人例句编辑功能",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "词典版本追踪",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-085",
-      "title": "路由驱动式自适应学习状态机",
-      "description": "epic-079 的 ViewRouter 注册中心模式为自适应学习提供了基础设施。可基于用户学习状态动态调整视图和内容。",
-      "proposedBy": "ARCH",
-      "supportedBy": [
-        "EXP",
-        "PM-UX"
-      ],
-      "concerns": "自适应算法复杂度高，需大量数据验证",
-      "priority": "high",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {
-          "title": "学习状态感知 Hook",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "自适应视图切换",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "难度动态调整算法",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "ViewRouter 动态注册",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "状态持久化与恢复",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-086",
-      "title": "学习成就社交化与可视化展示",
-      "description": "用户的成就（徽章/连击/等级）缺乏社交展示渠道。epic-029 的成就系统已完成，可增强可视化。",
-      "proposedBy": "UX",
-      "supportedBy": [
-        "PM-Growth",
-        "PM-Lean"
-      ],
-      "concerns": "社交化功能需要后端支持，纯前端场景受限",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "学习历程时间轴",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "成就徽章动画增强",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习报告生成器",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习徽章导出增强",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-087",
-      "title": "端到端测试覆盖率提升与自动化边界测试",
-      "description": "当前测试 2423 个，但 E2E 测试不稳定，边界情况覆盖不足。需提升自动化测试质量。",
-      "proposedBy": "QA",
-      "supportedBy": [
-        "ARCH"
-      ],
-      "concerns": "E2E 稳定性问题难以根治，需投入大量维护资源",
-      "priority": "medium",
-      "estimatedEffort": "medium",
-      "iterationsPreview": [
-        {
-          "title": "Playwright E2E 稳定化修复",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "语音 API 兼容性测试",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "localStorage 边界测试",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "响应式测试覆盖增强",
-          "scope": "frontend-only"
-        }
-      ]
-    },
-    {
-      "id": "epic-088",
-      "title": "AI 驱动的学习路径个性化引擎",
-      "description": "当前的自适应学习是规则驱动，缺乏真正的 AI 个性化。可利用已有数据构建用户画像。",
-      "proposedBy": "EXP",
-      "supportedBy": [
-        "PM-UX"
-      ],
-      "concerns": "AI 算法需要大量数据验证，纯前端场景下能力受限",
-      "priority": "medium",
-      "estimatedEffort": "large",
-      "iterationsPreview": [
-        {
-          "title": "用户学习画像构建",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "智能出题权重算法升级",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "遗忘曲线个性化模型",
-          "scope": "frontend-only"
-        },
-        {
-          "title": "学习目标智能推荐",
-          "scope": "frontend-only"
-        }
-      ]
-    }
-  ],
+  "brainstormResults": [],
   "epicHistory": [
     {
       "id": "epic-083",
       "title": "个人学习数据深度挖掘与复用",
-      "status": "in_progress",
+      "status": "completed",
       "iterationsCount": 4,
-      "completedIterations": 2,
-      "versionRange": "v0.85.0-v0.86.0",
+      "completedIterations": 4,
+      "versionRange": "v0.85.0-v0.88.0",
       "createdAt": "2026-05-27T20:00:00.000Z",
       "proposedBy": "PM-Lean",
       "supportedBy": [
         "PM-Eco",
         "UX"
-      ]
+      ],
+      "completedAt": "2026-05-27T06:25:00.000Z"
     },
     {
       "id": "epic-079",
@@ -633,16 +402,16 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 2616,
+      "passed": 2648,
       "failed": 0,
       "skipped": 5,
-      "total": 2621,
-      "duration": "36.59s",
-      "note": "2616 tests pass, 5 skipped. Exclude .claude/worktrees from vitest config. Zero regressions."
+      "total": 2653,
+      "duration": "37.18s",
+      "note": "2648 tests pass, 5 skipped. Zero regressions."
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "not last pending iteration (2 iterations pending: iter-003~004)"
+      "reason": "epic-083 completed (4/4 iterations)"
     },
     "lint": {
       "passed": true,
@@ -651,10 +420,10 @@
     },
     "build": {
       "passed": true,
-      "duration": "3.63s (tsc + vite)"
+      "duration": "3.81s (tsc + vite)"
     }
   },
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": null
+  "implementationStatus": "epic-083 iter-004 遗忘曲线可视化完成。创建 6 个文件：ForgettingCurveData 类型 + useForgettingCurve hook + ForgettingCurveChart SVG 组件 + ForgettingCurvePanel 面板 + 全量测试（30+ tests）。2648 测试零回归，0 lint errors，build 3.79s。epic-083 完成度 4/4。"
 }

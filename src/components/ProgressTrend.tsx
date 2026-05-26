@@ -160,6 +160,7 @@ export function ProgressTrend({
           <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
             {([7, 14, 30] as const).map((d) => (
               <button
+                type="button"
                 key={d}
                 onClick={() => setSelectedDays(d)}
                 className={`px-2 py-1 text-xs rounded ${
@@ -177,6 +178,7 @@ export function ProgressTrend({
         {/* Metric toggle */}
         <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
           <button
+            type="button"
             onClick={() => setMetric('xp')}
             className={`px-2 py-1 text-xs rounded ${
               metric === 'xp'
@@ -187,6 +189,7 @@ export function ProgressTrend({
             XP
           </button>
           <button
+            type="button"
             onClick={() => setMetric('questions')}
             className={`px-2 py-1 text-xs rounded ${
               metric === 'questions'

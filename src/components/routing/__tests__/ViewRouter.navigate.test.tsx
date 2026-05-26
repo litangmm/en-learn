@@ -40,22 +40,6 @@ describe('ViewNavigator', () => {
     });
   });
 
-  describe('viewHandlers getter', () => {
-    it('returns a Map instance', () => {
-      const setView = vi.fn();
-      const navigator = new ViewNavigator(setView);
-      expect(navigator.viewHandlers).toBeInstanceOf(Map);
-    });
-
-    it('returns the same Map instance on multiple calls', () => {
-      const setView = vi.fn();
-      const navigator = new ViewNavigator(setView);
-      const handlers1 = navigator.viewHandlers;
-      const handlers2 = navigator.viewHandlers;
-      expect(handlers1).toBe(handlers2);
-    });
-  });
-
   describe('navigate()', () => {
     let setView: (_view: View) => void;
     let navigator: ViewNavigator;

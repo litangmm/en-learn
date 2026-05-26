@@ -50,7 +50,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter, AchievementMoment } from '@/data/types';
-import { ViewRouter, NavigationProvider, ViewNavigator, type View } from '@/components/routing';
+import { ViewRouter, NavigationProvider, useViewRegistry, type View } from '@/components/routing';
+import { ViewRegistryProvider } from '@/components/routing';
+import { VIEW_CONFIGS } from '@/components/routing/viewConfigs';
 import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
 import { getModeHint, formatElapsedTime, APP_BRAND, ONBOARDING_DICTIONARIES } from '@/utils/appHelpers';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -72,7 +74,30 @@ export interface SharePrompt {
   badge?: BadgeDefinition;
 }
 
-function App() {
+// Inner component that has access to useViewRegistry hook
+function NavigationProviderWithRegistry({
+  view,
+  onNavigate,
+  children,
+}: {
+  view: View;
+  onNavigate: (_view: View) => void;
+  children: React.ReactNode;
+}) {
+  const { registry, registeredViews } = useViewRegistry();
+  return (
+    <NavigationProvider
+      view={view}
+      onNavigate={onNavigate}
+      registry={registry}
+      registeredViews={registeredViews}
+    >
+      {children}
+    </NavigationProvider>
+  );
+}
+
+function AppWithProviders() {
   const isMobile = useIsMobile();
   const [dictionaryId, setDictionaryId] = useState('cet4');
   const [pendingDictionaryId, setPendingDictionaryId] = useState<string | null>(null);
@@ -105,15 +130,16 @@ function App() {
   // Personal dictionary mode state
   const [isPersonalMode, setIsPersonalMode] = useState(false);
 
-  // Create ViewNavigator for centralized navigation management
-  const navigator = new ViewNavigator(setView);
+  // Simple view handlers that derive from registry - these are stateless navigation
+  const simpleViewHandler = (view: View) => () => setView(view);
 
   // viewHandlers map for all view transitions - consolidates all navigation logic
+  // Most handlers derive from registry via simpleViewHandler; complex ones are explicit
   const viewHandlers: Record<View, () => void> = {
-    'practice': () => setView('practice'),
-    'progress': () => setView('progress'),
-    'profile': () => setView('profile'),
-    'efficiency': () => setView('efficiency'),
+    'practice': simpleViewHandler('practice'),
+    'progress': simpleViewHandler('progress'),
+    'profile': simpleViewHandler('profile'),
+    'efficiency': simpleViewHandler('efficiency'),
     'mistake-book': () => {
       setMistakeCount(storage.getMistakeCount());
       setView('mistake-book');
@@ -122,13 +148,13 @@ function App() {
       setHistoryCount(storage.getHistoryCount());
       setView('history');
     },
-    'data': () => setView('data'),
+    'data': simpleViewHandler('data'),
     'review': () => {
       setReviewDueCount(storage.getReviewQueueCount());
       setIsReviewMode(false);
       setView('review');
     },
-    'weakness': () => setView('weakness'),
+    'weakness': simpleViewHandler('weakness'),
     'challenges': () => {
       // Trigger weekly report check when trophy entrance is clicked
       if (showWeeklyReport && !weeklyReportTrigger) {
@@ -138,14 +164,14 @@ function App() {
       }
       setView('challenges');
     },
-    'badges': () => setView('badges'),
-    'leaderboard': () => setView('leaderboard'),
-    'invite': () => setView('invite'),
-    'dictionary-browser': () => setView('dictionary-browser'),
-    'goals': () => setView('goals'),
-    'churn-dashboard': () => setView('churn-dashboard'),
-    'learn-insight': () => setView('learn-insight'),
-    'learn-insight-dashboard': () => setView('learn-insight-dashboard'),
+    'badges': simpleViewHandler('badges'),
+    'leaderboard': simpleViewHandler('leaderboard'),
+    'invite': simpleViewHandler('invite'),
+    'dictionary-browser': simpleViewHandler('dictionary-browser'),
+    'goals': simpleViewHandler('goals'),
+    'churn-dashboard': simpleViewHandler('churn-dashboard'),
+    'learn-insight': simpleViewHandler('learn-insight'),
+    'learn-insight-dashboard': simpleViewHandler('learn-insight-dashboard'),
     'learning-report': () => setIsLearningReportOpen(true),
   };
 
@@ -701,9 +727,10 @@ function App() {
     viewHandlers['practice']();
   };
 
-  // Unified navigation handler using ViewNavigator
+  // Unified navigation handler for view transitions
+  // Uses setView directly; ViewNavigator class available in ViewRouter.tsx for future analytics/logging integration
   const handleNavigate = (newView: View) => {
-    navigator.navigate(newView);
+    setView(newView);
   };
 
   const currentDict = getDictionaryById(dictionaryId);
@@ -1088,7 +1115,11 @@ function App() {
       </Dialog>
 
       {/* Main Content */}
-      <NavigationProvider view={view} onNavigate={handleNavigate}>
+      <ViewRegistryProvider initialConfigs={VIEW_CONFIGS}>
+        <NavigationProviderWithRegistry
+          view={view}
+          onNavigate={handleNavigate}
+        >
         <ViewRouter
           view={view}
           onNavigate={handleNavigate}
@@ -1254,7 +1285,8 @@ function App() {
             </AnimatePresence>
           )}
         </main>
-      </NavigationProvider>
+        </NavigationProviderWithRegistry>
+        </ViewRegistryProvider>
 
       {isMobile && !isFocusMode && (
         <MobileNav
@@ -1366,4 +1398,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppWithProviders;

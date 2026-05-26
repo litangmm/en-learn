@@ -248,25 +248,18 @@ export function ViewRouter(props: ViewRouterProps) {
 
 /**
  * ViewNavigator provides a unified navigation interface for view transitions.
- * It accepts a setView method to handle all view navigation centrally.
+ * It accepts a setView method and optional registry metadata for logging/debugging.
  */
 export class ViewNavigator {
   private readonly _setView: (_view: View) => void;
-  private readonly _viewHandlers: Map<View, () => void>;
+  private readonly _registry?: Record<string, { title?: string; icon?: string }>;
 
-  constructor(setView: (_view: View) => void) {
+  constructor(setView: (_view: View) => void, registry?: Record<string, { title?: string; icon?: string }>) {
     if (typeof setView !== 'function') {
       throw new Error('ViewNavigator requires a setView function');
     }
     this._setView = setView;
-    this._viewHandlers = new Map();
-  }
-
-  /**
-   * viewHandlers map for registering view-specific handlers
-   */
-  get viewHandlers(): Map<View, () => void> {
-    return this._viewHandlers;
+    this._registry = registry;
   }
 
   /**
@@ -274,6 +267,13 @@ export class ViewNavigator {
    * @param view - The target view to navigate to
    */
   navigate(view: View): void {
+    // Use registry metadata for development logging and analytics hooks
+    const config = this._registry?.[view];
+    if (import.meta.env.DEV && config) {
+      console.debug(`[ViewNavigator] Navigating to: ${view} (${config.title || 'no title'})`);
+    } else if (import.meta.env.DEV) {
+      console.debug(`[ViewNavigator] Navigating to: ${view} (no registry config)`);
+    }
     this._setView(view);
   }
 

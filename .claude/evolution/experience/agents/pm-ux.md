@@ -247,3 +247,16 @@
 - **完成内容**: InterventionPanel component (modal/severity styling/snooze/action buttons) + useChurnIntervention hook (snooze/localStorage) + App.tsx integration
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: InterventionPanel 的 dismissible 设计和 severity 分级（low/medium/high/critical）符合 PM-UX「不打断学习心流」理念——流失预警只在风险达到 medium 及以上时才显示干预面板，且用户可 snooze（24h/48h/1w）避免重复打扰。modal 形式仅在 critical 风险时触发，确保不频繁阻塞用户操作。**epic-058 还有 2 个迭代（iter-003~004），继续支持**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-001「综合学习洞察面板」—— 作为支持者
+- **结果**: epic-069 iter-001 **完成并部署**，v0.79.0，2197/2202 测试通过（5 skipped，历史最高水位）
+- **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展 + useLearnInsights.ts 扩展 + App.tsx 集成
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: LearnInsightDashboard 的「一目了然」综合面板设计是 PM-UX「学习心流」理念的「成果可视化」维度的关键延伸——用户无需切换多个视图即可看到全局学习状态，消除分散查看时的认知断层。HealthGauge（综合评分）+ AbilityRadar（能力分布）+ ProgressTrend（进步趋势）的三模块布局提供了清晰的视觉层次。**epic-069 还有 3 个迭代（iter-002~004 能力雷达与趋势联动/薄弱模式诊断/健康报告生成），继续支持，关注数据面板的心流友好设计**
+
+### 2026-05-26 (cycle-2026-05-26-191) — epic-078 支持者
+- **相关 Epic**: epic-078「App.tsx 视图路由配置中心重构」—— 作为支持者
+- **结果**: epic-078 **当选**，4 支持（ARCH 提案，PM-UX/QA/PM-Mon 支持）
+- **观察**: epic-078 的「声明式路由」模式是 PM-UX「学习心流」理念的架构支撑——当新视图（如 learn-insight-dashboard）可以通过声明式注册而非修改 App.tsx 条件渲染来添加时，新增功能对现有用户学习体验的侵入性降到最低。iter-001 复用 ViewRouter.tsx（epic-077 成果），无需改变现有视图的行为。**epic-078 还有 4 个迭代（iter-001~004），继续支持，关注声明式路由对新增视图的侵入性降低**
+

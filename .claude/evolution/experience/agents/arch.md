@@ -280,3 +280,22 @@
 - **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook + InterventionPanel component + App.tsx integration + 44 tests
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: iter-002 全程零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。useChurnIntervention hook 的 snooze/localStorage 模式与现有存储设计一致。**epic-058 还有 2 个迭代（iter-003~004），继续支持，持续关注架构健康度**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-001「综合学习洞察面板」—— 作为支持者
+- **结果**: epic-069 iter-001 **完成并部署**，v0.79.0，2197/2202 测试通过（5 skipped，历史最高水位）
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: epic-069 iter-001 全程零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。LearnInsightDashboard 复用 AbilityRadar/ProgressTrend/LearnInsightPanel，架构扩展性好。App.tsx 新增 'learn-insight-dashboard' 视图入口，复杂度轻微增加。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注数据面板对 App.tsx 复杂度的累积影响**
+
+### 2026-05-26 (cycle-2026-05-26-191) — epic-078 当选提案者
+- **相关 Epic**: epic-078「App.tsx 视图路由配置中心重构」—— **提案者 + 高优先级胜出**
+- **结果**: epic-078 **当选**，4 支持（ARCH 提案，PM-UX/QA/PM-Mon 支持）
+- **提案 Epic**: epic-078 App.tsx 视图路由配置中心重构
+- **迭代思路**: 
+  - iter-001：ViewRouter 配置结构设计与基础重构（ViewRouter.tsx 接管所有视图注册）
+  - iter-002：App.tsx 复杂度拆分与职责转移（状态管理 + 视图渲染 → 纯数据驱动）
+  - iter-003：新增视图的声明式注册模式（learn-insight-dashboard 等新视图模板化）
+  - iter-004：路由配置的测试覆盖与文档化（ViewRouter 配置 schema + 测试）
+- **当前状态**: **连续未被选中计数清零**（提案者身份，Epic 进行中）
+- **观察**: epic-078 是在 epic-069 iter-001 完成后的新一次 brainstorm。ARCH 自 epic-069 完成后（即上一个 cycle）积累了新的洞察：App.tsx complexity 达到 60，接近可维护性临界点。iter-001 基于 epic-077 的 ViewRouter 重构成果（已完成），迭代链路清晰。epic-078 复用 ViewRouter.tsx 作为配置中心，数据基础（ViewState 类型 + 视图枚举 + 回调接口）已在 epic-077 iter-001 中建立，零新增依赖。**epic-078 还有 4 个迭代（iter-001~004），ARCH 将继续推进，关注 App.tsx 复杂度降低和架构健康度提升**
+

@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.83.0",
+      "tag": "v0.83.0",
+      "commit": "4481c24",
+      "date": "2026-05-26T18:09:41.552Z",
+      "iterationId": "iter-002",
+      "title": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-i9ugvfjrt-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.82.0",
       "tag": "v0.82.0",
       "commit": "c18b10a",

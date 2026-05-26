@@ -3,84 +3,44 @@
   "pending": [],
   "history": [
     {
-      "id": "dir-1778414197688",
+      "id": "dir-20260527-197-01",
       "type": "custom",
-      "target": null,
-      "action": "【用户完整评测反馈 v2】epic-004 iter-006 响应式布局重构",
-      "reason": "用户真实完整评测第二轮反馈，明确指出顶部响应式和移动端适配是最大瓶颈，需要立即修复",
-      "createdAt": "2026-05-10T11:56:37.688Z",
-      "executedAt": "2026-05-12T11:40:00.000Z",
-      "executionNote": "dir-1778414197688 的 5 项需求已纳入规划。Bug 4（词库弹窗响应式）在本次 iter-001 中修复；其余 4 项（桌面顶部折叠、成就 toast、排行榜标注、听写独立体验）已由 epic-030 iter-002 实现。"
+      "target": "epic-079",
+      "action": "【Cycle-197 Implement 完成】epic-079 iter-002 视图条件简化完成",
+      "reason": "IMPLEMENT 阶段完成，4795 测试（15 pre-existing failures），0 lint errors",
+      "createdAt": "2026-05-27T13:56:00.000Z",
+      "executedAt": "2026-05-27T13:56:00.000Z",
+      "executionNote": "移除 9 处 view === 'practice' 条件：错误边界和 Header 控件简化。FocusMode 条件保留。epic-079 完成度 2/3，iter-003 待 PLAN"
     },
     {
-      "id": "dir-1778465917386",
+      "id": "dir-20260527-195-01",
       "type": "custom",
-      "target": null,
-      "action": "【用户完整评测反馈 v3】主练习链路稳定性打磨",
-      "reason": "用户完整评测指出主练习链路有多个状态不同步 bug，会让用户怀疑页面坏了，必须优先修",
-      "createdAt": "2026-05-11T10:18:37.397959Z",
-      "executedAt": "2026-05-12T11:40:00.000Z",
-      "executionNote": "dir-1778465917386 的 8 个 bug 修复已全部由 epic-030 iter-001 (d6dce83) 完成。Bug 1-3 为状态同步 P0 bug，Bug 4-8 为体验优化，均已在 d6dce83 中修复。"
+      "target": "epic-079",
+      "action": "【Cycle-195 Implement 完成】epic-079 iter-001 ViewRouter 注册中心模式实现完成",
+      "reason": "IMPLEMENT 阶段完成，2379 测试零回归，0 lint errors",
+      "createdAt": "2026-05-27T12:00:00.000Z",
+      "executedAt": "2026-05-27T12:50:00.000Z",
+      "executionNote": "ViewConfig type + useViewRegistry hook + ViewRegistryContext + NavigationContext 扩展。2379 测试零回归，0 lint errors，build 3.76s。epic-079 完成度 1/3，iter-002 待 PLAN"
     },
     {
-      "id": "eo-1778391382485-0",
-      "type": "experience-officer",
-      "target": "N/A",
-      "action": "【体验官反馈】移动端输入框太小，点击困难",
-      "reason": "来自体验官反馈，被 2 个体验官发现，严重程度 P1",
-      "createdAt": "2026-05-10T05:36:22.485Z",
-      "executedAt": "2026-05-10T10:20:00.000Z",
-      "executionNote": "将在 epic-006 iter-001 中修复：Input.tsx 和 PracticeCard.tsx 输入框统一使用 h-11 md:h-10，确保移动端 ≥ 44px"
-    },
-    {
-      "id": "eo-1778391382486-1",
-      "type": "experience-officer",
-      "target": "N/A",
-      "action": "【体验官反馈】切换词典后练习记录未清除",
-      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P0",
-      "createdAt": "2026-05-10T05:36:22.486Z",
-      "executedAt": "2026-05-10T10:20:00.000Z",
-      "executionNote": "已修复：App.tsx confirmSwitch() 中调用 storage.clearSession()，usePractice 会重新初始化 session"
-    },
-    {
-      "id": "eo-1778391382486-2",
-      "type": "experience-officer",
-      "target": "N/A",
-      "action": "【体验官反馈】排行榜加载较慢",
-      "reason": "来自体验官反馈，被 1 个体验官发现，严重程度 P2",
-      "createdAt": "2026-05-10T05:36:22.486Z",
-      "executedAt": "2026-05-10T10:20:00.000Z",
-      "executionNote": "将在 epic-006 iter-002 中修复：Leaderboard 组件添加 loading state 和 skeleton 骨架屏"
-    },
-    {
-      "id": "dir-user-review-001",
+      "id": "dir-20260527-195-02",
       "type": "custom",
-      "target": null,
-      "action": "【用户完整体验评测反馈】创建新 Epic「体验优化与响应式适配」，将 9 大问题按 P0/P1/P2/P3 优先级拆分为 5 个迭代",
-      "reason": "用户以真实学习者身份完整体验后给出的系统性反馈，是当前产品从 demo 升级为日常学习工具的最大瓶颈",
-      "createdAt": "2026-05-09T19:40:00Z",
-      "executedAt": "2026-05-10T12:02:00.000Z",
-      "executionNote": "已创建 Epic 提案文档：docs/superpowers/specs/2026-05-10-user-review-feedback-spec.md 和 docs/superpowers/plans/2026-05-10-experience-optimization.md。拆分为 iter-001~iter-005，将在 epic-003 iter-005 完成后进入 PLAN 阶段执行"
+      "target": "epic-079",
+      "action": "【Cycle-195 Plan 完成】epic-079 App.tsx 视图路由配置中心强制落地，拆分为 3 个迭代，iter-001 计划已生成",
+      "reason": "PLAN 阶段完成，epic-079 迭代拆分 + iter-001 计划就绪",
+      "createdAt": "2026-05-27T12:00:00.000Z",
+      "executedAt": null,
+      "executionNote": "epic-079 拆分为 3 个迭代：iter-001 registry-based rendering（in_progress），iter-002 full migration（pending），iter-003 schema standardization（pending，co-built with epic-086）"
     },
     {
-      "id": "dir-urgent-001",
+      "id": "dir-20260527-195-03",
       "type": "custom",
-      "target": null,
-      "action": "【高优先级】插入紧急迭代到当前 epic",
-      "reason": "高优先级紧急需求",
-      "createdAt": "2026-05-09T08:00:00Z",
-      "executedAt": "2026-05-09T16:35:00.000Z",
-      "executionNote": "dir-urgent-001 执行完毕"
-    },
-    {
-      "id": "dir-urgent-002",
-      "type": "custom",
-      "target": null,
-      "action": "【高优先级】插入两个紧急迭代到当前 epic-002 中，在 iter-003（已完成）之后、iter-004 之前执行：紧急迭代 A：响应式 UI 适配（移动端 + 桌面端）；紧急迭代 B：纯听写模式重新设计",
-      "reason": "用户反馈纯听写模式无法使用 + UI 必须做响应式基础，否则后续所有功能返工",
-      "createdAt": "2026-05-09T08:00:00Z",
-      "executedAt": "2026-05-09T16:35:00.000Z",
-      "executionNote": "已插入 iter-003a '响应式 UI 适配' 和 iter-003b '纯听写模式重新设计' 到 epic-002 迭代列表中，位于 iter-003 之后、iter-004 之前"
+      "target": "epic-079",
+      "action": "【Cycle-195 REPORT 完成】epic-079 iter-001 报告生成，经验档案更新，state.json 备份",
+      "reason": "REPORT 阶段完成",
+      "createdAt": "2026-05-27T13:00:00.000Z",
+      "executedAt": "2026-05-27T13:00:00.000Z",
+      "executionNote": "REPORT 完成，cycleCount 195→124，status→IDLE，currentCycle→null。epic-079 完成度 1/3，iter-002（完成全部视图迁移）待 PLAN"
     }
   ]
 }

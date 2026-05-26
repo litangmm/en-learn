@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-27-196",
+      "mode": "vision",
+      "stage": "PLAN",
+      "status": "completed",
+      "summary": "epic-079 iter-002 计划完成。剩余 9 处 view === 'practice' 条件分析，5 步实现计划就绪。"
+    },
+    {
       "id": "2026-05-27-195",
       "mode": "vision",
       "stage": "TEST",
@@ -108,12 +115,16 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "IDLE",
+  "status": "IMPLEMENT",
   "commit": "514d837",
-  "cycleCount": 124,
+  "cycleCount": 196,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
+  "currentCycle": {
+    "id": "2026-05-27-196",
+    "mode": "vision",
+    "stage": "PLAN"
+  },
   "previousCycle": {
     "id": "2026-05-27-195",
     "mode": "vision",
@@ -147,7 +158,7 @@
         "id": "iter-002",
         "title": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
         "scope": "frontend-only",
-        "status": "pending"
+        "status": "in_progress"
       },
       {
         "id": "iter-003",
@@ -160,7 +171,24 @@
     "completedIterations": 1,
     "status": "in_progress"
   },
-  "plan": null,
+  "plan": {
+    "iterationId": "iter-002",
+    "iterationTitle": "完成全部视图迁移，App.tsx 删除旧分支逻辑",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 错误边界条件简化 - 移除 LoadingScreen/ErrorScreen/EmptyState 中的 view === 'practice'",
+      "Step 2: Header 控件条件简化 - 移除 PracticeControls/PersonalPracticePanel/DictionarySelector 中的 view === 'practice'",
+      "Step 3: FocusMode 条件保留 - 保留 FocusModeFloatingBar 和 FocusModeOverlay 中的 view === 'practice'（逻辑语义正确）",
+      "Step 4: 更新 App.tsx 测试中的 view 条件 mock",
+      "Step 5: 全量测试验证（2405 测试零回归）"
+    ],
+    "filesToModify": [
+      "src/App.tsx"
+    ],
+    "filesToCreate": [],
+    "dependencies": [],
+    "testStrategy": "2405 现有测试零回归，重点验证错误边界、loading、empty state 在非 practice view 时正确行为"
+  },
   "brainstormResults": [
     {
       "id": "epic-080",

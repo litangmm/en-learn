@@ -345,7 +345,7 @@ describe('App recall integration', () => {
     expect(screen.getByText('智能复习')).toBeInTheDocument();
 
     // Click back button
-    const backButton = screen.getByRole('button', { name: '' }); // Arrow back button
+    const backButton = screen.getByTestId('smart-review-back-button'); // SmartReview back button
     fireEvent.click(backButton);
 
     // Toast should be visible again when returning to practice view

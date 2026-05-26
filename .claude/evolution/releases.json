@@ -2,6 +2,18 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.81.0",
+      "tag": "v0.81.0",
+      "commit": "f1643f7",
+      "date": "2026-05-26T14:53:50.092Z",
+      "iterationId": "iter-003",
+      "title": "薄弱模式诊断与个性化建议",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-nlhd5vtzm-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.80.0",
       "tag": "v0.80.0",
       "commit": "c75e7af",

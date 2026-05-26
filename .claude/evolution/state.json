@@ -108,7 +108,7 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "IMPLEMENT",
+  "status": "TEST",
   "commit": "c18b10a",
   "cycleCount": 124,
   "nextMode": "vision",
@@ -294,7 +294,7 @@
   },
   "awaitingInputSince": null,
   "resumedStatus": null,
-  "implementationStatus": "epic-079 iter-001 部署成功。v0.82.0 部署到 Vercel，git tag v0.82.0 已推送。epic-079 完成度 1/3，iter-002 待 PLAN。",
+  "implementationStatus": "epic-079 iter-002 完成。删除 main 区域 view === 'practice' 条件渲染，保留 header/UI 条件逻辑（focus mode/mobile nav 仍需）。2405 测试零回归，0 lint errors，build 3.73s。准备进入 TEST 阶段。",
   "directives": {
     "version": "1.0",
     "pending": [],

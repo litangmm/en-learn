@@ -209,3 +209,10 @@
 - **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook (snooze/localStorage) + InterventionPanel component (modal/severity/snooze) + App.tsx integration
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: iter-002 完美体现 MVP 思维——分级干预机制完全复用 useChurnSignals 的输出数据（riskLevel + signals），零新增依赖。snooze 机制使用 localStorage 持久化，无新增存储设计。**epic-058 还有 2 个迭代（iter-003 召回效果追踪/iter-004 流失预警看板），继续支持**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-001「综合学习洞察面板」—— 作为支持者
+- **结果**: epic-069 iter-001 **完成并部署**，v0.79.0，2197/2202 测试通过（5 skipped，历史最高水位）
+- **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展 + useLearnInsights.ts 扩展 + App.tsx 集成
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: iter-001 完美体现 MVP 思维——综合面板完全复用 AbilityRadar/ProgressTrend/LearnInsightPanel 已有组件，零新增依赖。abilityModeAccuracy 和 trendData 完全从现有 storage 数据派生，无需新增存储。HealthGauge 作为独立组件，职责单一。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注数据聚合对 localStorage 读写压力的影响**

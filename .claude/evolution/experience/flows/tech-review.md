@@ -8,6 +8,38 @@
 
 ## 历史数据
 
+### 2026-05-26 (cycle-2026-05-26-189)
+- **迭代**: epic-069 iter-001「综合学习洞察面板」—— **技术审查通过**
+- **技术决策**:
+  - LearnInsightDashboard 作为综合面板容器，复用 AbilityRadar/ProgressTrend/LearnInsightPanel 已有组件，零新增依赖
+  - abilityModeAccuracy 和 trendData 完全从现有 storage 数据（history/session）派生，无需新增存储 key
+  - types.ts 添加 abilityModeAccuracy（ModesRecord）和 trendData（TrendDataPoint[]）到 LearnInsightData
+  - useLearnInsights.ts 扩展 calculateModeAccuracy（按模式聚合正确率）和 calculateTrendData（7日每日 XP/题数）
+  - App.tsx 添加 'learn-insight-dashboard' 视图 + onBackFromLearnInsightDashboard 回调，与现有视图模式一致
+- **质量门禁通过**: lint 0 errors (0 warnings), build 3.43s (比上轮 3.70s 减少 0.27s), 2197/2202 unit tests passed (5 skipped)
+- **观察**: epic-069 iter-001 零新增依赖、零构建体积增长，完全符合 tech-review 质量标准。2197 测试零回归，历史最高水位持续保持。Build 时间 3.43s 比上轮减少 0.27s。epic-069 完成度 1/4，iter-002~004 继续 pending。HealthGauge.test.tsx unused import 修复确保零 lint warnings。
+
+### 2026-05-13 (cycle-2026-05-13-183)
+- **迭代**: epic-058 iter-001「流失信号识别系统」—— **技术审查通过**
+- **技术决策**:
+  - ChurnSignal types 使用联合类型（SignalType/SignalSeverity/ChurnRiskLevel）确保类型安全
+  - calculateChurnSignals 纯函数从 storage 派生信号，零副作用，便于测试
+  - ChurnAlertBanner 作为内联 Banner 而非弹窗，不阻塞用户操作，符合 PM-UX 心流保护建议
+  - dismissible 设计使用 localStorage 持久化，避免重复打扰
+- **质量门禁通过**: lint 0 errors, build 3.38s, 1952/1957 unit tests passed (5 skipped, 历史最高水位)
+- **观察**: epic-058 零新增依赖、零构建体积增长，完全符合 tech-review 质量标准。83 个新增测试覆盖 5 种流失信号和 4 种风险等级边界条件。
+
+### 2026-05-13 (cycle-2026-05-13-186)
+- **迭代**: epic-058 iter-002「分级召回干预机制」—— **技术审查通过**
+- **技术决策**:
+  - getInterventionLevel 纯函数从 riskLevel 派生干预等级（critical/high/medium/low），无副作用
+  - snooze 机制使用 localStorage 持久化，与现有存储设计一致
+  - InterventionPanel 的 severity 分级视觉设计（4 种颜色/图标/文案）提供清晰信息层次
+  - App.tsx 条件渲染：riskLevel >= medium 时显示 InterventionPanel，避免低风险打扰用户
+- **质量门禁通过**: lint 0 errors, build 3.58s, 1996/2001 unit tests passed (5 skipped, 历史最高水位)
+- **技术债务修复**: 140 个 unused variables 修复（跨 47 个文件，`_` 前缀命名规范）+ 2 个 html2canvas mock bug 修复（top-level mock callback 问题）
+- **观察**: 1996 测试零回归。技术债务清理（140 unused vars）展现了持续代码健康度维护。
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **技术审查通过**
 - **技术决策**:

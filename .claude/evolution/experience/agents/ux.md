@@ -244,3 +244,10 @@
 - **完成内容**: InterventionPanel component (modal/severity styling/snooze/action buttons) + useChurnIntervention hook (snooze/localStorage) + App.tsx integration
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: InterventionPanel 的 severity 分级视觉设计（4 种颜色/图标/文案）让流失预警的视觉层次清晰，符合 UX 的「清晰信息层次」原则。snooze 按钮（24h/48h/1w）提供用户主动控制权，尊重用户体验。**epic-058 还有 2 个迭代（iter-003~004），继续支持**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-001「综合学习洞察面板」—— 作为支持者
+- **结果**: epic-069 iter-001 **完成并部署**，v0.79.0，2197/2202 测试通过（5 skipped，历史最高水位）
+- **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展 + useLearnInsights.ts 扩展 + App.tsx 集成
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: LearnInsightDashboard 的「一目了然」综合面板设计是 UX「学习心流」理念的「成果可视化」维度的关键延伸——HealthGauge（综合评分）+ AbilityRadar（能力分布）+ ProgressTrend（进步趋势）的三模块布局提供了清晰的视觉层次，让用户无需切换多个视图即可看到全局学习状态。**epic-069 还有 3 个迭代（iter-002~004 能力雷达与趋势联动/薄弱模式诊断/健康报告生成），继续支持，关注数据面板的心流友好设计**

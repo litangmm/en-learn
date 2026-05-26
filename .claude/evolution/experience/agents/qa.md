@@ -400,3 +400,13 @@
 - **技术债务修复**: 140 个 unused variables 修复（跨 47 个文件，`_` 前缀命名规范）+ 2 个 html2canvas mock bug 修复（top-level mock callback 问题）
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: 1996 测试零回归，新增 44 个测试（useChurnIntervention 25 + InterventionPanel 9 + App.churn-intervention 6）。技术债务清理（140 unused vars）展现了 QA 对代码健康度的持续关注。**epic-058 还有 2 个迭代（iter-003~004），继续关注测试覆盖完整性**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关质量门禁**: 单元测试回归、LearnInsightDashboard 组件测试、useLearnInsights hook 扩展测试、App.tsx 集成测试、构建稳定性
+- **本次验证**: epic-069 iter-001「综合学习洞察面板」质量门禁验证
+  - LearnInsightDashboard.test.tsx：HealthGauge + AbilityRadar + ProgressTrend 三模块集成测试
+  - useLearnInsights.abilityModeAccuracy.test.ts：各练习模式正确率派生测试
+  - App.learn-insight.test.tsx：视图导航和回调处理测试
+  - 全量回归：**2197/2202 单元测试通过**（5 skipped，历史最高水位），lint 0 errors，build 3.43s success（比上轮 3.70s 减少 0.27s）
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: 2197 测试零回归，历史最高水位持续保持。HealthGauge.test.tsx 的 unused import 修复（HealthScore）确保零 lint warnings。Build 3.43s 持续改善（比上轮 3.70s 减少 0.27s）。**epic-069 还有 3 个迭代（iter-002~004），继续关注新面板功能的测试覆盖完整性**

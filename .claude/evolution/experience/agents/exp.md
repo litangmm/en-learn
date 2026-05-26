@@ -267,3 +267,10 @@
 - **完成内容**: InterventionLevel type + InterventionAction type + useChurnIntervention hook (snooze/localStorage) + InterventionPanel component (modal/severity/snooze) + App.tsx integration + 44 tests
 - **当前状态**: **连续未被选中计数保持清零**（epic-058 支持者）
 - **观察**: iter-002 的分级干预机制（low/medium/high/critical）可作为 EXP「自适应学习」理念的重要数据维度——流失风险等级可驱动自适应出题策略（如高风险用户降低题目难度、延长单次学习时长）。snooze 机制（24h/48h/1w）避免重复打扰，数据可追踪用户响应率。**epic-058 还有 2 个迭代（iter-003 召回效果追踪/iter-004 流失预警看板），继续支持，关注与自适应学习的深度整合**
+
+### 2026-05-26 (cycle-2026-05-26-189) — epic-069 iter-001 完成 (2197 tests, 历史最高水位)
+- **相关 Epic**: epic-069 iter-001「综合学习洞察面板」—— 作为支持者
+- **结果**: epic-069 iter-001 **完成并部署**，v0.79.0，2197/2202 测试通过（5 skipped，历史最高水位）
+- **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展（abilityModeAccuracy/trendData）+ useLearnInsights.ts 扩展（calculateModeAccuracy/calculateTrendData）+ App.tsx 集成（'learn-insight-dashboard' 视图）+ 全面测试
+- **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
+- **观察**: epic-069 iter-001 的综合学习洞察面板是 EXP「自适应学习」理念的关键数据基础设施——abilityModeAccuracy（各模式正确率）和 trendData（7日趋势）共同构成自适应出题权重的核心输入。未来 iter-002 的「能力雷达图与趋势折线图深度联动」可直接利用这些数据驱动自适应推荐。2197 测试零回归，构建时间 3.43s（比上轮 3.70s 减少 0.27s）。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注 abilityModeAccuracy 数据在自适应出题中的落地**

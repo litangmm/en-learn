@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.85.0",
+      "tag": "v0.85.0",
+      "commit": "859ebe6",
+      "date": "2026-05-26T20:06:55.589Z",
+      "iterationId": "iter-001",
+      "title": "个人学习画像卡片",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-6pm9w12cq-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.84.0",
+      "tag": "v0.84.0",
+      "commit": "958a15b",
+      "date": "2026-05-26T18:57:08.526Z",
+      "iterationId": "iter-003",
+      "title": "ViewRouter schema 标准化（co-built with epic-086）",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-6q6ngweqt-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.83.0",
       "tag": "v0.83.0",
       "commit": "4481c24",

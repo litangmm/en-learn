@@ -216,6 +216,14 @@
 - **完成内容**: LearnInsightDashboard 综合面板（HealthGauge + AbilityRadar + ProgressTrend）+ types.ts 扩展 + useLearnInsights.ts 扩展 + App.tsx 集成
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: iter-001 完美体现 MVP 思维——综合面板完全复用 AbilityRadar/ProgressTrend/LearnInsightPanel 已有组件，零新增依赖。abilityModeAccuracy 和 trendData 完全从现有 storage 数据派生，无需新增存储。HealthGauge 作为独立组件，职责单一。**epic-069 还有 3 个迭代（iter-002~004），继续支持，关注数据聚合对 localStorage 读写压力的影响**
+### 2026-05-27 (cycle-2026-05-27-200) — epic-083 iter-001 完成 (2549 tests)
+- **提案 Epic**: epic-083「个人学习数据深度挖掘与复用」—— **提案者**
+- **结果**: epic-083 iter-001 **完成并部署**，v0.85.0，2549/2549 测试通过
+- **完成内容**: useLearningProfile Hook（聚合 XPProfile/SessionHistory/ModeStats/BadgeProgress/Milestones）+ LearningProfileCard（4 维度统计卡片）+ AbilityRadarMini（140px 紧凑雷达图）+ LearningCalendarHeatmap（GitHub 风格热力图）+ MilestoneTimeline（7 个里程碑）+ LearnProfilePanel（4 section 主面板）；VIEW_CONFIGS 扩展为 20 个视图；136 个新增测试全通过
+- **新增测试**: useLearningProfile (15) + LearningProfileCard (13) + AbilityRadarMini (18) + LearningCalendarHeatmap (15) + MilestoneTimeline (13) + LearnProfilePanel (62) = 136 tests
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 提案者）
+- **观察**: iter-001 完美体现 PM-Lean MVP 思维——所有组件完全复用现有 localStorage 数据（XPProfile/SessionHistory/ModeStats/BadgeProgress），零新增依赖、零新增存储。LearningProfileCard 的 4 维度（总学习天数/总题目数/总正确率/最高连击）和 MilestoneTimeline 的 7 个里程碑（首次练习/满级/首次满分等）都是数据聚合展示，无需修改任何数据存储。AbilityRadarMini 复用现有 AbilityRadar 逻辑，仅调整尺寸。**epic-083 完成度 1/4，剩余 iter-002（智能练习推荐引擎）、iter-003（个人词库效率分析）、iter-004（遗忘曲线可视化）继续推进，iter-002 可基于 ModeStats 提出薄弱模式推荐**
+
 ### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
 - **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— 作为支持者
 - **结果**: epic-069 iter-002 **完成并测试通过**，2253/2258 测试通过（5 skipped，历史最高水位）

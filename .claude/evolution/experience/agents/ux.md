@@ -8,6 +8,13 @@
 ## 历史提案
 
 
+### 2026-05-27 (cycle-2026-05-27-200) — epic-083 iter-001 完成
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: epic-083 iter-001 **完成并部署**，v0.85.0，2549/2549 测试通过
+- **完成内容**: LearningProfileCard（4 维度统计）+ AbilityRadarMini（能力雷达图）+ LearningCalendarHeatmap（GitHub 风格热力图）+ MilestoneTimeline（7 个学习里程碑）+ LearnProfilePanel（4 section 主面板）
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: iter-001 完美体现 UX「学习动机维持」理念——LearningProfileCard 提供清晰的学习数据概览，MilestoneTimeline 的 7 个里程碑（首次练习/满级/首次满分等）提供成就感触发点。学习日历热力图让用户看到「我的学习轨迹」，连续学习天数是强留存动机。AbilityRadarMini 复用现有雷达图，让用户感知自己在不同维度的能力分布。**epic-083 完成度 1/4，继续支持 iter-002~004**
+
 ### 2026-05-12 (cycle-2026-05-12-107) — epic-028 iter-004 完成
 - **相关 Epic**: epic-028 iter-004「学习效率数据面板」—— 作为支持者
 - **结果**: epic-028 iter-004 **完成并部署**，v0.48.0，1089/1089 测试通过

@@ -7,6 +7,13 @@
 
 ## 历史提案
 
+### 2026-05-27 (cycle-2026-05-27-200) — epic-083 iter-001 完成
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: epic-083 iter-001 **完成并部署**，v0.85.0，2549/2549 测试通过
+- **完成内容**: useLearningProfile Hook + LearningProfileCard + AbilityRadarMini + LearningCalendarHeatmap + MilestoneTimeline + LearnProfilePanel；VIEW_CONFIGS 扩展为 20 个视图
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: epic-079 的 ViewRouter 注册中心模式（epic-079）为 epic-083 提供了完美的架构基础。learn-profile 视图通过 ViewRegistry 注册，无需修改 App.tsx 核心逻辑，仅添加导航入口即可。AbilityRadarMini 复用现有 AbilityRadar，仅调整尺寸参数。136 个新增测试全通过，零新增依赖。**epic-083 完成度 1/4，继续支持 iter-002~004**
+
 ### 2026-05-27 (cycle-2026-05-27-195) — epic-079 iter-001 完成
 - **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— **提案者**
 - **结果**: epic-079 iter-001 **完成并部署**，v0.82.0，2405 测试通过（历史最高水位）

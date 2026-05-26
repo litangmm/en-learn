@@ -241,7 +241,8 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
                 days={7}
                 height={220}
                 onDayClick={(date) => {
-                  console.log('Day clicked:', date);
+                  // Reserved for future day detail view
+                  void date;
                 }}
               />
             </CardContent>

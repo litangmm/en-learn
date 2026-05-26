@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { AbilityRadar } from '../AbilityRadar';
 import type { ModeAccuracy } from '@/data/types';
 
@@ -79,5 +79,67 @@ describe('AbilityRadar', () => {
 
     const container = document.querySelector('[data-testid="ability-radar"]');
     expect(container).toBeInTheDocument();
+  });
+
+  describe('click interaction', () => {
+    it('calls onModeSelect when a data point is clicked', () => {
+      const dataWithContent = createMockData(true);
+      const onModeSelect = vi.fn();
+      render(<AbilityRadar data={dataWithContent} onModeSelect={onModeSelect} />);
+
+      // Find and click the first data point (g element with cursor-pointer containing circle)
+      const clickableGroups = document.querySelectorAll('g.cursor-pointer');
+      expect(clickableGroups.length).toBe(4); // 4 modes
+
+      fireEvent.click(clickableGroups[0]);
+      expect(onModeSelect).toHaveBeenCalledWith('fill-in-blanks');
+    });
+
+    it('calls onModeSelect with null when same mode is clicked twice', () => {
+      const dataWithContent = createMockData(true);
+      const onModeSelect = vi.fn();
+      render(<AbilityRadar data={dataWithContent} onModeSelect={onModeSelect} />);
+
+      const clickableGroups = document.querySelectorAll('g.cursor-pointer');
+      expect(clickableGroups.length).toBe(4);
+
+      // First click - selects the mode
+      fireEvent.click(clickableGroups[0]);
+      expect(onModeSelect).toHaveBeenLastCalledWith('fill-in-blanks');
+
+      // Second click on same mode - deselects
+      fireEvent.click(clickableGroups[0]);
+      expect(onModeSelect).toHaveBeenLastCalledWith(null);
+    });
+
+    it('calls onModeSelect with different mode when switching modes', () => {
+      const dataWithContent = createMockData(true);
+      const onModeSelect = vi.fn();
+      render(<AbilityRadar data={dataWithContent} onModeSelect={onModeSelect} />);
+
+      const clickableGroups = document.querySelectorAll('g.cursor-pointer');
+      expect(clickableGroups.length).toBe(4);
+
+      // Click first mode
+      fireEvent.click(clickableGroups[0]);
+      expect(onModeSelect).toHaveBeenLastCalledWith('fill-in-blanks');
+
+      // Click different mode - switches selection
+      fireEvent.click(clickableGroups[1]);
+      expect(onModeSelect).toHaveBeenLastCalledWith('multiple-choice');
+    });
+
+    it('does not call onModeSelect when there is no data', () => {
+      const emptyData = createMockData(false);
+      const onModeSelect = vi.fn();
+      render(<AbilityRadar data={emptyData} onModeSelect={onModeSelect} />);
+
+      // No clickable groups should be rendered in empty state
+      const clickableGroups = document.querySelectorAll('g.cursor-pointer');
+      expect(clickableGroups.length).toBe(0);
+
+      // onModeSelect should never be called
+      expect(onModeSelect).not.toHaveBeenCalled();
+    });
   });
 });

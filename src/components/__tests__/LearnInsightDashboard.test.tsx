@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LearnInsightDashboard } from '../LearnInsightDashboard';
-import type { DailyTrend } from '@/data/types';
+import type { DailyTrend, FilteredTrend } from '@/data/types';
 
 // Mock data for getDailyXP
 const mockDailyXP: DailyTrend[] = [
@@ -13,6 +13,17 @@ const mockDailyXP: DailyTrend[] = [
   { date: '2024-01-05', dayName: '周五', xp: 30, questions: 15, accuracy: 88 },
   { date: '2024-01-06', dayName: '周六', xp: 40, questions: 20, accuracy: 92 },
   { date: '2024-01-07', dayName: '周日', xp: 35, questions: 18, accuracy: 85 },
+];
+
+// Mock data for getFilteredTrend
+const mockFilteredTrend: FilteredTrend[] = [
+  { date: '2024-01-01', dayName: '周一', xp: 5, questions: 2, accuracy: 80, modesPracticed: ['fill-in-blanks'], hasActivity: true },
+  { date: '2024-01-02', dayName: '周二', xp: 0, questions: 0, accuracy: 0, modesPracticed: [], hasActivity: false },
+  { date: '2024-01-03', dayName: '周三', xp: 8, questions: 4, accuracy: 85, modesPracticed: ['fill-in-blanks'], hasActivity: true },
+  { date: '2024-01-04', dayName: '周四', xp: 0, questions: 0, accuracy: 0, modesPracticed: [], hasActivity: false },
+  { date: '2024-01-05', dayName: '周五', xp: 12, questions: 6, accuracy: 88, modesPracticed: ['fill-in-blanks'], hasActivity: true },
+  { date: '2024-01-06', dayName: '周六', xp: 0, questions: 0, accuracy: 0, modesPracticed: [], hasActivity: false },
+  { date: '2024-01-07', dayName: '周日', xp: 7, questions: 3, accuracy: 85, modesPracticed: ['fill-in-blanks'], hasActivity: true },
 ];
 
 // Mock the hooks
@@ -66,6 +77,13 @@ vi.mock('@/hooks/useProgressStats', () => ({
     ],
   })),
   getDailyXP: vi.fn(() => mockDailyXP),
+  getFilteredTrend: vi.fn(() => mockFilteredTrend),
+  MODE_LABELS: {
+    'fill-in-blanks': '填空',
+    'multiple-choice': '选择',
+    'sentence-reorder': '排序',
+    'dictation': '听写',
+  },
 }));
 
 // Mock framer-motion
@@ -344,6 +362,99 @@ describe('LearnInsightDashboard', () => {
         }
       }
       expect(foundGridLayout).toBe(true);
+    });
+  });
+
+  describe('Radar-Trend Integration', () => {
+    it('shows mode filter indicator when a mode is selected', () => {
+      render(<LearnInsightDashboard />);
+
+      // Find radar data points within the ability radar section
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+      expect(clickableGroups?.length).toBe(4); // 4 modes
+
+      // Click on first mode
+      fireEvent.click(clickableGroups![0]);
+
+      // Should show filter indicator with mode label (filter indicator span)
+      const filterIndicator = document.querySelector('.bg-blue-100.rounded-full');
+      expect(filterIndicator).toBeInTheDocument();
+      expect(screen.getByText('填空', { selector: '.bg-blue-100' })).toBeInTheDocument();
+    });
+
+    it('removes filter indicator when same mode is clicked again', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+
+      // Click on first mode - selects it
+      fireEvent.click(clickableGroups![0]);
+
+      // Filter indicator should exist
+      expect(document.querySelector('.bg-blue-100.rounded-full')).toBeInTheDocument();
+
+      // Click same mode again - deselects
+      fireEvent.click(clickableGroups![0]);
+
+      // Filter indicator should be gone
+      expect(document.querySelector('.bg-blue-100.rounded-full')).not.toBeInTheDocument();
+    });
+
+    it('switches filter when clicking different mode', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+
+      // Click first mode
+      fireEvent.click(clickableGroups![0]);
+      expect(document.querySelector('.bg-blue-100.rounded-full')).toBeInTheDocument();
+
+      // Click second mode
+      fireEvent.click(clickableGroups![1]);
+      // Should now show 选择 in the filter indicator
+      expect(screen.getByText('选择', { selector: '.bg-blue-100' })).toBeInTheDocument();
+      // 填空 should only be in the radar label now
+      expect(screen.queryByText('填空', { selector: '.bg-blue-100' })).not.toBeInTheDocument();
+    });
+
+    it('has clear filter button in filter indicator', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+      fireEvent.click(clickableGroups![0]);
+
+      // Should show clear button (×)
+      const clearButton = screen.getByRole('button', { name: '清除筛选' });
+      expect(clearButton).toBeInTheDocument();
+
+      // Click clear button
+      fireEvent.click(clearButton);
+
+      // Filter indicator should be gone
+      expect(document.querySelector('.bg-blue-100.rounded-full')).not.toBeInTheDocument();
+    });
+
+    it('renders with filter indicator showing correct mode label', () => {
+      render(<LearnInsightDashboard />);
+
+      const radarSection = document.querySelector('[data-testid="ability-radar"]');
+      const clickableGroups = radarSection?.querySelectorAll('g.cursor-pointer');
+
+      // Click different modes and check labels
+      fireEvent.click(clickableGroups![1]); // multiple-choice -> 选择
+      expect(screen.getByText('选择', { selector: '.bg-blue-100' })).toBeInTheDocument();
+
+      fireEvent.click(clickableGroups![2]); // sentence-reorder -> 排序
+      expect(screen.getByText('排序', { selector: '.bg-blue-100' })).toBeInTheDocument();
+      expect(screen.queryByText('选择', { selector: '.bg-blue-100' })).not.toBeInTheDocument();
+
+      fireEvent.click(clickableGroups![3]); // dictation -> 听写
+      expect(screen.getByText('听写', { selector: '.bg-blue-100' })).toBeInTheDocument();
+      expect(screen.queryByText('排序', { selector: '.bg-blue-100' })).not.toBeInTheDocument();
     });
   });
 

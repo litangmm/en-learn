@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
@@ -12,8 +13,9 @@ import { HealthGauge } from '@/components/HealthGauge';
 import { AbilityRadar } from '@/components/AbilityRadar';
 import { ProgressTrend } from '@/components/ProgressTrend';
 import { useLearnInsights } from '@/hooks/useLearnInsights';
-import { useProgressStats } from '@/hooks/useProgressStats';
+import { useProgressStats, getDailyXP, getFilteredTrend, MODE_LABELS } from '@/hooks/useProgressStats';
 import type { View } from './routing';
+import type { PracticeMode, DailyTrend } from '@/data/types';
 
 /**
  * Props for the LearnInsightDashboard component.
@@ -38,6 +40,29 @@ export interface LearnInsightDashboardProps {
 export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashboardProps) {
   const insights = useLearnInsights();
   const progressStats = useProgressStats();
+
+  // Track selected mode from radar for trend filtering
+  const [selectedMode, setSelectedMode] = useState<PracticeMode | null>(null);
+
+  // Get trend data - filtered by selected mode or all modes
+  const trendData = useMemo(() => {
+    if (selectedMode) {
+      return getFilteredTrend([selectedMode], 7);
+    }
+    return getDailyXP(7);
+  }, [selectedMode]);
+
+  // Convert filtered trend to daily trend format for ProgressTrend
+  const dailyTrendData = useMemo((): DailyTrend[] => {
+    return trendData.map((d) => ({
+      date: d.date,
+      dayName: d.dayName,
+      xp: d.xp,
+      questions: d.questions,
+      accuracy: d.accuracy,
+      modesPracticed: d.modesPracticed,
+    }));
+  }, [trendData]);
 
   // Determine if user is new (no data yet)
   const isNewUser = progressStats.totalQuestions === 0;
@@ -178,6 +203,7 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
               <AbilityRadar
                 data={progressStats.modeAccuracy}
                 size={220}
+                onModeSelect={setSelectedMode}
               />
             </CardContent>
           </Card>
@@ -194,10 +220,24 @@ export function LearnInsightDashboard({ onBack, onNavigate }: LearnInsightDashbo
               <CardTitle className="text-sm font-medium text-slate-500 flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-blue-500" />
                 学习趋势
+                {/* Mode filter indicator */}
+                {selectedMode && (
+                  <span className="ml-auto flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
+                    {MODE_LABELS[selectedMode]}
+                    <button
+                      onClick={() => setSelectedMode(null)}
+                      className="ml-1 hover:text-blue-900"
+                      aria-label="清除筛选"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center items-center flex-1 min-h-[280px]">
               <ProgressTrend
+                data={dailyTrendData}
                 days={7}
                 height={220}
                 onDayClick={(date) => {

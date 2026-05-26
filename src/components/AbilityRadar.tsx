@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { type ModeAccuracy, type PracticeMode } from '@/data/types';
 
 /**
@@ -10,6 +11,8 @@ export interface AbilityRadarProps {
   size?: number;
   /** Whether to show mode labels. Defaults to true. */
   showLabels?: boolean;
+  /** Callback when a mode is selected/deselected by clicking a data point. */
+  onModeSelect?: (_mode: PracticeMode | null) => void;
 }
 
 /** Mode labels in Chinese */
@@ -40,12 +43,16 @@ export function AbilityRadar({
   data,
   size = 240,
   showLabels = true,
+  onModeSelect,
 }: AbilityRadarProps) {
   // Use provided data or default empty data (storage fetch is handled by parent)
   const modeData = data ?? DEFAULT_MODE_DATA;
 
   // Check if there's any data
   const hasData = modeData.some(m => m.totalQuestions > 0);
+
+  // Track currently highlighted (selected) mode
+  const [highlightedMode, setHighlightedMode] = useState<PracticeMode | null>(null);
 
   // Calculate dimensions
   const center = size / 2;
@@ -171,15 +178,33 @@ export function AbilityRadar({
         />
 
         {/* Data points */}
-        {dataPolygon.map((point, i) => (
-          <circle
-            key={`point-${i}`}
-            cx={point.x}
-            cy={point.y}
-            r="4"
-            fill="#3b82f6"
-          />
-        ))}
+        {dataPolygon.map((point, i) => {
+          const mode = modeData[i].mode;
+          const isHighlighted = highlightedMode === mode;
+
+          return (
+            <g
+              key={`point-${i}`}
+              onClick={() => {
+                // Toggle selection: clicking same mode deselects, clicking different mode selects
+                const newMode = isHighlighted ? null : mode;
+                setHighlightedMode(newMode);
+                onModeSelect?.(newMode);
+              }}
+              className="cursor-pointer"
+            >
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r={isHighlighted ? 8 : 5}
+                fill={isHighlighted ? '#1d4ed8' : '#3b82f6'}
+                stroke={isHighlighted ? '#ffffff' : 'transparent'}
+                strokeWidth="2"
+                className="transition-all duration-150"
+              />
+            </g>
+          );
+        })}
 
         {/* Mode labels */}
         {showLabels && modeData.map((mode, i) => {

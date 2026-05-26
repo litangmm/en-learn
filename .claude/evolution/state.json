@@ -3,6 +3,13 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-27-203",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-083 iter-004 遗忘曲线可视化部署成功。v0.88.0 部署到 Vercel，git tag v0.88.0 已创建。URL: https://en-learn-ifdrazk4j-litangmms-projects.vercel.app。push --tags v0.81.0 已存在被拒绝，v0.88.0 推送成功。epic-083 完成度 4/4，advance to REPORT。"
+    },
+    {
       "id": "2026-05-27-202",
       "mode": "vision",
       "stage": "COMMIT",
@@ -255,7 +262,7 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "DEPLOY",
+  "status": "REPORT",
   "commit": "766a2f7",
   "cycleCount": 202,
   "nextMode": "vision",
@@ -316,8 +323,8 @@
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-jcdjdc31h-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-26T21:57:20.263Z",
+    "url": "https://en-learn-ifdrazk4j-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-27T06:24:00.000Z",
     "error": null
   },
   "plan": null,

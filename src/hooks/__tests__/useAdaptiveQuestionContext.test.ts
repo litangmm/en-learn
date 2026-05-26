@@ -37,10 +37,21 @@ describe('useAdaptiveQuestionContext', () => {
     vi.mocked(useXP).mockReturnValue({
       profile: { totalXP: 0, currentLevel: 1, levelProgress: 0 },
       streak: 0,
+      addXP: vi.fn(),
+      resetXPProfile: vi.fn(),
+      maxStreakReached: 0,
+      recordCorrectAnswer: vi.fn(),
+      recordWrongAnswer: vi.fn(),
+      resetStreak: vi.fn(),
     });
     vi.mocked(useFlowState).mockReturnValue({
       flowState: 'normal' as const,
       fatigueSignals: [],
+      recordCorrect: vi.fn(),
+      recordWrong: vi.fn(),
+      reset: vi.fn(),
+      consecutiveErrors: 0,
+      recentAccuracy: 0,
     });
   });
 
@@ -67,10 +78,21 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 500, currentLevel: 5, levelProgress: 50 },
         streak: 10,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 10,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'focused',
         fatigueSignals: [],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -100,6 +122,12 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 250, currentLevel: 3, levelProgress: 50 },
         streak: 5,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 5,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -113,6 +141,12 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: undefined as unknown as { totalXP: number; currentLevel: number; levelProgress: number },
         streak: undefined as unknown as number,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 0,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -131,6 +165,12 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 100, currentLevel: 2, levelProgress: 0 },
         streak: 3,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 3,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
 
       rerender();
@@ -145,21 +185,31 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'focused',
         fatigueSignals: [
-          { type: 'accuracy' as const, description: 'Accuracy improving', severity: 0.8, trend: 'stable' as const },
+          { type: 'accuracy' as const, trend: 'stable' as const, description: 'Accuracy improving', severity: 0.8 },
         ],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0.8,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
 
       expect(result.current.context.flowState).toBe('focused');
       expect(result.current.context.fatigueSignals).toHaveLength(1);
-      expect(result.current.context.fatigueSignals[0].type).toBe('accuracy');
+      expect(result.current.context.fatigueSignals![0].type).toBe('accuracy');
     });
 
     it('should handle undefined flowState gracefully', () => {
       vi.mocked(useFlowState).mockReturnValue({
         flowState: undefined as unknown as 'focused' | 'normal' | 'fatigued',
-        fatigueSignals: undefined as unknown as [],
+        fatigueSignals: undefined as unknown as Array<{ type: 'accuracy' | 'consecutive_errors' | 'speed'; trend: 'improving' | 'stable' | 'declining'; description: string; severity: number }>,
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -172,15 +222,20 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'fatigued',
         fatigueSignals: [
-          { type: 'consecutive_errors' as const, description: '3 consecutive errors', severity: 1, trend: 'stable' as const },
-          { type: 'accuracy' as const, description: '40% accuracy', severity: 0.6, trend: 'declining' as const },
+          { type: 'consecutive_errors' as const, trend: 'stable' as const, description: '3 consecutive errors', severity: 1 },
+          { type: 'accuracy' as const, trend: 'declining' as const, description: '40% accuracy', severity: 0.6 },
         ],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 3,
+        recentAccuracy: 0.4,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
 
-      expect(result.current.context.fatigueSignals).toHaveLength(2);
-      expect(result.current.context.fatigueSignals[0]).toEqual({
+      expect(result.current.context.fatigueSignals!).toHaveLength(2);
+      expect(result.current.context.fatigueSignals![0]).toEqual({
         type: 'consecutive_errors',
         description: '3 consecutive errors',
         severity: 1,
@@ -252,10 +307,21 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 100, currentLevel: 2, levelProgress: 0 },
         streak: 5,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 5,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'normal',
         fatigueSignals: [],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -269,10 +335,21 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 500, currentLevel: 5, levelProgress: 50 },
         streak: 15,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 15,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'focused',
         fatigueSignals: [],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0.8,
       });
 
       // Call refresh
@@ -354,6 +431,12 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 200, currentLevel: 3, levelProgress: 0 },
         streak: 5,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 5,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
 
       rerender();
@@ -438,10 +521,21 @@ describe('useAdaptiveQuestionContext', () => {
       vi.mocked(useXP).mockReturnValue({
         profile: { totalXP: 100, currentLevel: 2, levelProgress: 0 },
         streak: 5,
+        addXP: vi.fn(),
+        resetXPProfile: vi.fn(),
+        maxStreakReached: 5,
+        recordCorrectAnswer: vi.fn(),
+        recordWrongAnswer: vi.fn(),
+        resetStreak: vi.fn(),
       });
       vi.mocked(useFlowState).mockReturnValue({
         flowState: 'normal',
         fatigueSignals: [],
+        recordCorrect: vi.fn(),
+        recordWrong: vi.fn(),
+        reset: vi.fn(),
+        consecutiveErrors: 0,
+        recentAccuracy: 0,
       });
 
       const { result } = renderHook(() => useAdaptiveQuestionContext());
@@ -462,6 +556,12 @@ describe('useAdaptiveQuestionContext', () => {
         vi.mocked(useXP).mockReturnValue({
           profile: { totalXP: i * 100, currentLevel: i + 1, levelProgress: 0 },
           streak: i,
+          addXP: vi.fn(),
+          resetXPProfile: vi.fn(),
+          maxStreakReached: i,
+          recordCorrectAnswer: vi.fn(),
+          recordWrongAnswer: vi.fn(),
+          resetStreak: vi.fn(),
         });
         vi.advanceTimersByTime(50);
         rerender();
@@ -478,11 +578,11 @@ describe('useAdaptiveQuestionContext', () => {
     it('should preserve weaknesses and recommendations in context', () => {
       const contextWithExtras: AdaptiveQuestionContext = {
         ...defaultContext,
-        weaknesses: [{ sentenceId: 's1', weakType: 'high-error' }],
+        weaknesses: [{ sentenceId: 's1', weakType: 'high-error' as const, accuracy: 0.3, wrongCount: 5, correctCount: 2, reviewCount: 1, daysSinceLastReview: 10, detectedAt: Date.now(), dictionaryId: 'cet4' }],
         recommendations: [
           {
             id: 'r1',
-            type: 'weakness' as const,
+            type: 'high-error' as const,
             priority: 1 as const,
             reason: 'Focus on weak areas',
             targetSentenceId: 's1',

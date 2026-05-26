@@ -23,7 +23,7 @@ const mockContext = {
   recommendations: [
     {
       id: 'r1',
-      type: 'weakness' as const,
+      type: 'high-error' as const,
       priority: 1 as const,
       reason: 'High error rate',
       targetSentenceId: 'w1',
@@ -31,7 +31,7 @@ const mockContext = {
     },
     {
       id: 'r2',
-      type: 'weakness' as const,
+      type: 'low-accuracy' as const,
       priority: 2 as const,
       reason: 'Low accuracy',
       targetSentenceId: 'w2',
@@ -39,7 +39,7 @@ const mockContext = {
     },
     {
       id: 'r3',
-      type: 'new-content' as const,
+      type: 'new-word' as const,
       priority: 3 as const,
       reason: 'New vocabulary',
       targetSentenceId: 'n1',
@@ -213,7 +213,7 @@ describe('useAdaptiveQuestionSelector', () => {
           ...mockContext.recommendations,
           {
             id: 'r4',
-            type: 'weakness' as const,
+            type: 'high-error' as const,
             priority: 1 as const,
             reason: 'Test',
             targetSentenceId: 'non-existent',
@@ -325,7 +325,7 @@ describe('useAdaptiveQuestionSelector', () => {
   describe('flow state integration', () => {
     it('should apply focused flow state adjustments', () => {
       const focusedContext = { ...mockContext, flowState: 'focused' as const };
-      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(focusedContext as typeof mockContext);
+      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(focusedContext as unknown as typeof mockContext);
 
       const { result } = renderHook(() => useAdaptiveQuestionSelector());
 
@@ -336,7 +336,7 @@ describe('useAdaptiveQuestionSelector', () => {
 
     it('should apply normal flow state (no change)', () => {
       const normalContext = { ...mockContext, flowState: 'normal' as const };
-      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(normalContext as typeof mockContext);
+      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(normalContext as unknown as typeof mockContext);
 
       const { result } = renderHook(() => useAdaptiveQuestionSelector());
 
@@ -348,7 +348,7 @@ describe('useAdaptiveQuestionSelector', () => {
 
     it('should apply fatigued flow state adjustments', () => {
       const fatiguedContext = { ...mockContext, flowState: 'fatigued' as const };
-      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(fatiguedContext as typeof mockContext);
+      vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue(fatiguedContext as unknown as typeof mockContext);
 
       const { result } = renderHook(() => useAdaptiveQuestionSelector());
 
@@ -410,7 +410,7 @@ describe('useAdaptiveQuestionSelector', () => {
       vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue({
         ...mockContext,
         flowState: 'focused' as const,
-      } as typeof mockContext);
+      } as unknown as typeof mockContext);
 
       const { result: focusedResult } = renderHook(() => useAdaptiveQuestionSelector());
 
@@ -426,7 +426,7 @@ describe('useAdaptiveQuestionSelector', () => {
       vi.spyOn(storage, 'getAdaptiveQuestionContext').mockReturnValue({
         ...mockContext,
         flowState: 'fatigued' as const,
-      } as typeof mockContext);
+      } as unknown as typeof mockContext);
 
       const { result: fatiguedResult } = renderHook(() => useAdaptiveQuestionSelector());
 

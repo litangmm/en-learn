@@ -50,7 +50,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import type { PracticeMode, BadgeDefinition, LeaderboardCategory, LeaderboardTimeFilter, AchievementMoment } from '@/data/types';
-import { ViewRouter, NavigationProvider, type View } from '@/components/routing';
+import { ViewRouter, NavigationProvider, ViewNavigator, type View } from '@/components/routing';
 import { isRecentShareTrigger, type ShareTrigger } from '@/lib/shareTriggers';
 import { getModeHint, formatElapsedTime, APP_BRAND, ONBOARDING_DICTIONARIES } from '@/utils/appHelpers';
 import { getDictionaryById } from '@/data/dictionaries';
@@ -101,6 +101,48 @@ function App() {
 
   // Personal dictionary mode state
   const [isPersonalMode, setIsPersonalMode] = useState(false);
+
+  // Create ViewNavigator for centralized navigation management
+  const navigator = new ViewNavigator(setView);
+
+  // viewHandlers map for all view transitions - consolidates all navigation logic
+  const viewHandlers: Record<View, () => void> = {
+    'practice': () => setView('practice'),
+    'progress': () => setView('progress'),
+    'profile': () => setView('profile'),
+    'efficiency': () => setView('efficiency'),
+    'mistake-book': () => {
+      setMistakeCount(storage.getMistakeCount());
+      setView('mistake-book');
+    },
+    'history': () => {
+      setHistoryCount(storage.getHistoryCount());
+      setView('history');
+    },
+    'data': () => setView('data'),
+    'review': () => {
+      setReviewDueCount(storage.getReviewQueueCount());
+      setIsReviewMode(false);
+      setView('review');
+    },
+    'weakness': () => setView('weakness'),
+    'challenges': () => {
+      // Trigger weekly report check when trophy entrance is clicked
+      if (showWeeklyReport && !weeklyReportTrigger) {
+        requestAnimationFrame(() => {
+          setWeeklyReportTrigger({ key: Date.now() });
+        });
+      }
+      setView('challenges');
+    },
+    'badges': () => setView('badges'),
+    'leaderboard': () => setView('leaderboard'),
+    'invite': () => setView('invite'),
+    'dictionary-browser': () => setView('dictionary-browser'),
+    'goals': () => setView('goals'),
+    'churn-dashboard': () => setView('churn-dashboard'),
+    'learn-insight': () => setView('learn-insight'),
+  };
 
   // Initialize weekly report hook
   const { report: weeklyReport, shouldShow: showWeeklyReport, dismiss: dismissWeeklyReport, markShown: markWeeklyReportShown } = useWeeklyReport();
@@ -521,7 +563,7 @@ function App() {
       setPendingDictionaryId(null);
       setPracticeSentenceIds(undefined);
       setIsReviewMode(false);
-      setView('practice');
+      viewHandlers['practice']();
     }
     setShowConfirmDialog(false);
   };
@@ -560,187 +602,103 @@ function App() {
     setShowRecoveryDialog(false);
   };
 
-  const handleOpenProgress = () => {
-    setView('progress');
-  };
+  const handleOpenProgress = () => viewHandlers['progress']();
 
-  const handleBackFromProfile = () => {
-    setView('practice');
-  };
+  const handleBackFromProfile = () => viewHandlers['practice']();
 
-  const handleOpenMistakeBook = () => {
-    setView('mistake-book');
-  };
+  const handleOpenMistakeBook = () => viewHandlers['mistake-book']();
 
   const handleBackFromMistakeBook = () => {
-    setView('practice');
+    viewHandlers['practice']();
     setMistakeCount(storage.getMistakeCount());
   };
 
   const handlePracticeMistakes = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
-    setView('practice');
+    viewHandlers['practice']();
     setMistakeCount(storage.getMistakeCount());
   };
 
-  const handleOpenHistory = () => {
-    setView('history');
-    setHistoryCount(storage.getHistoryCount());
-  };
+  const handleOpenHistory = () => viewHandlers['history']();
 
   const handleBackFromHistory = () => {
-    setView('practice');
+    viewHandlers['practice']();
     setHistoryCount(storage.getHistoryCount());
   };
 
-  const handleOpenDataManager = () => {
-    setView('data');
-  };
+  const handleOpenDataManager = () => viewHandlers['data']();
 
   const handleBackFromDataManager = () => {
-    setView('practice');
+    viewHandlers['practice']();
     setHistoryCount(storage.getHistoryCount());
     setMistakeCount(storage.getMistakeCount());
   };
 
   const handleOpenSmartReview = () => {
     setReviewDueCount(storage.getReviewQueueCount());
-    setView('review');
+    viewHandlers['review']();
   };
 
   const handleBackFromSmartReview = () => {
-    setView('practice');
+    viewHandlers['practice']();
     setReviewDueCount(storage.getReviewQueueCount());
     setIsReviewMode(false);
   };
 
-  const handleOpenChallenges = () => {
-    // Trigger weekly report check when trophy entrance is clicked
-    if (showWeeklyReport && !weeklyReportTrigger) {
-      requestAnimationFrame(() => {
-        setWeeklyReportTrigger({ key: Date.now() });
-      });
-    }
-    setView('challenges');
-  };
+  const handleOpenChallenges = () => viewHandlers['challenges']();
 
-  const handleBackFromChallenges = () => {
-    setView('practice');
-  };
+  const handleBackFromChallenges = () => viewHandlers['practice']();
 
-  const handleOpenBadges = () => {
-    setView('badges');
-  };
+  const handleOpenBadges = () => viewHandlers['badges']();
 
-  const handleBackFromBadges = () => {
-    setView('practice');
-  };
+  const handleBackFromBadges = () => viewHandlers['practice']();
 
-  const handleOpenLeaderboard = () => {
-    setView('leaderboard');
-  };
+  const handleOpenLeaderboard = () => viewHandlers['leaderboard']();
 
-  const handleBackFromLeaderboard = () => {
-    setView('practice');
-  };
+  const handleBackFromLeaderboard = () => viewHandlers['practice']();
 
-  const handleOpenInvite = () => {
-    setView('invite');
-  };
+  const handleOpenInvite = () => viewHandlers['invite']();
 
-  const handleOpenGoals = () => {
-    setView('goals');
-  };
+  const handleOpenGoals = () => viewHandlers['goals']();
 
   const handleSaveGoals = (goals: import('@/data/types').Goal[]) => {
     updateGoals(goals);
-    setView('practice');
+    viewHandlers['practice']();
   };
 
-  const handleBackFromGoals = () => {
-    setView('practice');
-  };
+  const handleBackFromGoals = () => viewHandlers['practice']();
 
   const handleStartPersonalPractice = () => {
     setIsPersonalMode(true);
     setDictionaryId('personal');
     setPracticeSentenceIds(undefined);
-    setView('practice');
+    viewHandlers['practice']();
   };
 
-  const handleBackFromInvite = () => {
-    setView('practice');
-  };
+  const handleBackFromInvite = () => viewHandlers['practice']();
 
   const handlePracticeReview = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
     setIsReviewMode(true);
-    setView('practice');
+    viewHandlers['practice']();
     setReviewDueCount(storage.getReviewQueueCount());
   };
 
-  const handleOpenWeakness = () => {
-    setView('weakness');
-  };
+  const handleOpenWeakness = () => viewHandlers['weakness']();
 
-  const handleBackFromWeakness = () => {
-    setView('practice');
-  };
+  const handleBackFromWeakness = () => viewHandlers['practice']();
 
   const handlePracticeWeaknesses = (sentenceIds: string[], dictId: string) => {
     setDictionaryId(dictId);
     setPracticeSentenceIds(sentenceIds);
-    setView('practice');
+    viewHandlers['practice']();
   };
 
+  // Unified navigation handler using ViewNavigator
   const handleNavigate = (newView: View) => {
-    switch (newView) {
-      case 'practice':
-        setView('practice');
-        break;
-      case 'progress':
-        setView('progress');
-        break;
-      case 'profile':
-        setView('profile');
-        break;
-      case 'mistake-book':
-        setMistakeCount(storage.getMistakeCount());
-        setView('mistake-book');
-        break;
-      case 'history':
-        setHistoryCount(storage.getHistoryCount());
-        setView('history');
-        break;
-      case 'data':
-        setView('data');
-        break;
-      case 'review':
-        setReviewDueCount(storage.getReviewQueueCount());
-        setIsReviewMode(false);
-        setView('review');
-        break;
-      case 'weakness':
-        setView('weakness');
-        break;
-      case 'challenges':
-        setView('challenges');
-        break;
-      case 'badges':
-        setView('badges');
-        break;
-      case 'leaderboard':
-        setView('leaderboard');
-        break;
-      case 'invite':
-        setView('invite');
-        break;
-      case 'dictionary-browser':
-        setView('dictionary-browser');
-        break;
-    }
+    navigator.navigate(newView);
   };
 
   const currentDict = getDictionaryById(dictionaryId);
@@ -915,8 +873,8 @@ function App() {
                 onOpenWeakness={handleOpenWeakness}
                 onOpenInvite={handleOpenInvite}
                 onOpenGoals={handleOpenGoals}
-                onOpenChurnDashboard={() => setView('churn-dashboard')}
-                onOpenLearnInsight={() => setView('learn-insight')}
+                onOpenChurnDashboard={() => viewHandlers['churn-dashboard']()}
+                onOpenLearnInsight={() => viewHandlers['learn-insight']()}
               />
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
@@ -1156,8 +1114,8 @@ function App() {
           goals={goalsState.goals}
           onSaveGoals={handleSaveGoals}
           onBackFromGoals={handleBackFromGoals}
-          onBackFromChurnDashboard={() => setView('practice')}
-          onBackFromLearnInsight={() => setView('practice')}
+          onBackFromChurnDashboard={() => viewHandlers['practice']()}
+          onBackFromLearnInsight={() => viewHandlers['practice']()}
         />
         <main className={`relative max-w-4xl mx-auto px-4 pb-20 md:pb-0 ${isFocusMode ? 'py-8 md:py-16' : 'py-4 md:py-8'}`}>
           {view === 'practice' && !state.isComplete && (

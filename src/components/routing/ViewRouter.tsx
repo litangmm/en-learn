@@ -43,6 +43,8 @@ export type View =
 
 export interface ViewRouterProps {
   view: unknown;
+  // Optional unified navigation method
+  setView?: (_view: View) => void;
   // ProgressHub
   onNavigate: (_view: View) => void;
   // LearningProfile
@@ -218,5 +220,44 @@ export function ViewRouter(props: ViewRouterProps) {
     case 'practice':
     default:
       return null;
+  }
+}
+
+/**
+ * ViewNavigator provides a unified navigation interface for view transitions.
+ * It accepts a setView method to handle all view navigation centrally.
+ */
+export class ViewNavigator {
+  private readonly _setView: (_view: View) => void;
+  private readonly _viewHandlers: Map<View, () => void>;
+
+  constructor(setView: (_view: View) => void) {
+    if (typeof setView !== 'function') {
+      throw new Error('ViewNavigator requires a setView function');
+    }
+    this._setView = setView;
+    this._viewHandlers = new Map();
+  }
+
+  /**
+   * viewHandlers map for registering view-specific handlers
+   */
+  get viewHandlers(): Map<View, () => void> {
+    return this._viewHandlers;
+  }
+
+  /**
+   * Navigate to the specified view
+   * @param view - The target view to navigate to
+   */
+  navigate(view: View): void {
+    this._setView(view);
+  }
+
+  /**
+   * Navigate back to the practice view
+   */
+  goBack(): void {
+    this._setView('practice');
   }
 }

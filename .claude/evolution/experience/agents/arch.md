@@ -363,3 +363,14 @@
   - iter-003：SmartReview data-testid 修复 + App.recall.test.tsx getByTestId 修复（2423 tests，v0.84.0）
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 提案者 + 全部完成）
 - **观察**: epic-079 版本范围 v0.82.0-v0.84.0。ARCH 自 epic-006（cycle-38）「前端架构债务清理」提案以来持续追踪 App.tsx 复杂度问题，终于在 epic-079 中完整落地声明式视图注册体系。VIEW_CONFIGS 单例源设计确保所有视图元数据集中管理。ViewRegistryProvider 为 epic-085「路由驱动式自适应学习状态机」奠定基础。**epic-079 完成，ARCH 需提出新的架构提案**
+
+### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代支持完成 (2648 tests, 历史最高水位)
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）
+- **完成内容**:
+  - iter-001：useLearningProfile + LearningProfileCard + AbilityRadarMini + LearningCalendarHeatmap + MilestoneTimeline + LearnProfilePanel（2549 tests，v0.85.0）
+  - iter-002：usePracticeRecommendations + PracticeRecommendationCard + PracticeRecommendationPanel（2616 tests，v0.86.0）
+  - iter-003：usePersonalDictionaryStats + PersonalDictionaryStatsPanel（2616 tests，v0.87.0）
+  - iter-004：ForgettingCurveData + useForgettingCurve + ForgettingCurveChart + ForgettingCurvePanel（2648 tests，v0.88.0）
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: epic-083 的 4 个 iterations 复用 epic-079 的 ViewRouter 注册中心模式。learn-profile 视图通过 ViewRegistry 注册，无需修改 App.tsx 核心逻辑。epic-083 的学习数据结构（LearningProfile/PracticeRecommendation/PersonalDictionaryStats/ForgettingCurve）为 epic-085「路由驱动式自适应学习状态机」提供了完整数据基础。**epic-083 完成，epic-085 即将进入 PLAN，ARCH 作为提案者继续推进**

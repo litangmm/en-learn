@@ -318,3 +318,20 @@
   - iter-003：SmartReview data-testid 修复 + App.recall.test.tsx getByTestId 修复（2423 tests，v0.84.0）
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
 - **观察**: epic-079 完成度 3/3。ViewRouter 注册中心模式为 EXP 的「自适应学习」提供了新视角——ViewRegistry 的声明式设计允许动态视图状态转换，结合 useViewRegistry 的注册/注销能力，可实现「根据用户学习状态动态调整视图布局」。epic-079 为 epic-085「路由驱动式自适应学习状态机」提供了基础设施。**epic-079 完成，EXP 需提出新的自适应学习相关提案**
+
+### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代支持完成 + epic-085 即将进入 PLAN (2648 tests, 历史最高水位)
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）
+- **完成内容**:
+  - iter-001：LearningProfile + PracticeRecommendation + PersonalDictionaryStats + ForgettingCurve 数据基础（2549 tests，v0.85.0）
+  - iter-002：PracticeRecommendationCard + PracticeRecommendationPanel（2616 tests，v0.86.0）
+  - iter-003：PersonalDictionaryStatsPanel + useSpacedRepetition nextReviewAt（2616 tests，v0.87.0）
+  - iter-004：ForgettingCurveChart + ForgettingCurvePanel（2648 tests，v0.88.0）
+- **epic-085 即将进入 PLAN**: epic-085「路由驱动式自适应学习状态机」将在下次 BRAINSTORM 中进入 PLAN
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: epic-083 的 4 个 iterations 为 EXP「自适应学习」理念提供了完整数据基础：
+  - LearningProfile：用户能力画像
+  - PracticeRecommendation：高错误率词优先 + 薄弱模式推荐
+  - PersonalDictionaryStats：高错误率词统计
+  - ForgettingCurve：nextReviewAt 预测 + 复习时机建议
+  - epic-079 ViewRouter 注册中心模式为动态视图切换提供架构基础。**epic-083 + epic-079 为 epic-085 提供了「数据+架构」双重基础，EXP 作为提案者，epic-085 即将进入 PLAN**

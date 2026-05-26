@@ -271,3 +271,14 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: epic-069 iter-002 的 AbilityRadar onModeSelect + ProgressTrend 7d/14d/30d range selector 是 UX「清晰目标 + 即时进度」理念的关键落地——用户点击雷达轴高亮对应趋势线，直观感知各模式的能力分布；时间范围选择器让用户可从不同时间尺度审视学习趋势（7天短期/14天中期/30天长期），符合「渐进式目标设定」原则。Build 3.42s 比上轮 3.43s 减少 0.01s，持续改善。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续支持，关注数据面板的心流友好设计**
 
+### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代支持完成 (2648 tests, 历史最高水位)
+- **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
+- **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）
+- **完成内容**:
+  - iter-001：LearningProfileCard + AbilityRadarMini + LearningCalendarHeatmap + MilestoneTimeline + LearnProfilePanel（2549 tests，v0.85.0）
+  - iter-002：PracticeRecommendationCard + PracticeRecommendationPanel（2616 tests，v0.86.0）
+  - iter-003：PersonalDictionaryStatsPanel（6 种效率指标卡片）（2616 tests，v0.87.0）
+  - iter-004：ForgettingCurveChart + ForgettingCurvePanel（2648 tests，v0.88.0）
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 支持者）
+- **观察**: epic-083 的 learn-profile 视图为 UX「学习动机维持」理念提供了完整的数据展示体系——从个人学习画像（LearningProfileCard）到效率分析（PersonalDictionaryStatsPanel）到遗忘曲线可视化（ForgettingCurvePanel），用户可以在单一视图内看到自己的学习全貌。4 个 iterations 的卡片设计均符合「清晰目标+即时进度」原则。**epic-083 完成，epic-085 即将进入 PLAN，UX 作为支持者继续关注 learn-profile 视图的用户体验**
+

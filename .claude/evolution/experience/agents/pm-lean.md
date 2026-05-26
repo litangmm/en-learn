@@ -231,6 +231,17 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-083 提案者）
 - **观察**: iter-001 完美体现 PM-Lean MVP 思维——所有组件完全复用现有 localStorage 数据（XPProfile/SessionHistory/ModeStats/BadgeProgress），零新增依赖、零新增存储。LearningProfileCard 的 4 维度（总学习天数/总题目数/总正确率/最高连击）和 MilestoneTimeline 的 7 个里程碑（首次练习/满级/首次满分等）都是数据聚合展示，无需修改任何数据存储。AbilityRadarMini 复用现有 AbilityRadar 逻辑，仅调整尺寸。**epic-083 完成度 1/4，剩余 iter-002（智能练习推荐引擎）、iter-003（个人词库效率分析）、iter-004（遗忘曲线可视化）继续推进，iter-002 可基于 ModeStats 提出薄弱模式推荐**
 
+### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代完成 (2648 tests, 历史最高水位)
+- **提案 Epic**: epic-083「个人学习数据深度挖掘与复用」—— **提案者 + 全部完成**
+- **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）
+- **完成内容**:
+  - iter-001：useLearningProfile + LearningProfileCard + AbilityRadarMini + LearningCalendarHeatmap + MilestoneTimeline + LearnProfilePanel（2549 tests，v0.85.0）
+  - iter-002：usePracticeRecommendations + PracticeRecommendationCard + PracticeRecommendationPanel + usePracticeRecommendationPanel（2616 tests，v0.86.0）
+  - iter-003：usePersonalDictionaryStats + PersonalDictionaryStatsPanel（2616 tests，v0.87.0）
+  - iter-004：ForgettingCurveData + useForgettingCurve + ForgettingCurveChart + ForgettingCurvePanel（2648 tests，v0.88.0）
+- **当前状态**: **连续未被选中计数保持清零**（epic-083 提案者 + 全部完成）
+- **观察**: epic-083 版本范围 v0.85.0-v0.88.0。PM-Lean 的「数据复用 > 新增数据」理念贯穿 4 个 iterations，零新增依赖、零新增存储。4 个 iterations 的学习数据结构（LearningProfile/PracticeRecommendation/PersonalDictionaryStats/ForgettingCurve）为 EXP 的「自适应学习」理念提供了完整数据基础。**epic-083 完成，PM-Lean 需提出新的提案**
+
 ### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 (2253 tests, 历史最高水位)
 - **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」—— 作为支持者
 - **结果**: epic-069 iter-002 **完成并测试通过**，2253/2258 测试通过（5 skipped，历史最高水位）

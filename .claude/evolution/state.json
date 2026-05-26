@@ -3,6 +3,20 @@
   "pending": [],
   "history": [
     {
+      "id": "2026-05-27-204",
+      "mode": "vision",
+      "stage": "BRAINSTORM",
+      "status": "completed",
+      "summary": "Cycle-204 brainstorm 完成。9 个 Agent 参与提案，产出 3 个 Epic（epic-085~087）。epic-085「路由驱动式自适应学习状态机」（EXP 提案，3 支持：ARCH/PM-UX/QA）以 high 优先级当选——基于 epic-079 ViewRouter 注册中心和 epic-083 个人学习数据，实现「根据学习状态动态调整视图和出题」。epic-086「国际化基础设施」（PM-UX 提案，3 支持）和 epic-087「PWA 化」（ARCH 提案，3 支持）列为 medium 优先级储备。"
+    },
+    {
+      "id": "2026-05-27-203",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-083 全部 4 个迭代完成并部署。v0.88.0，2648 测试零回归。4 iterations 完整交付个人学习画像（LearningProfile）、智能推荐（PracticeRecommendation）、效率分析（PersonalDictionaryStats）、遗忘曲线（ForgettingCurve）。epic-083 完成度 4/4，全部收官。下一轮 epic-085 即将进入 PLAN。"
+    },
+    {
       "id": "2026-05-27-203",
       "mode": "vision",
       "stage": "DEPLOY",
@@ -262,64 +276,27 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "REPORT",
+  "status": "PLAN",
   "commit": "766a2f7",
-  "cycleCount": 202,
+  "cycleCount": 204,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": null,
-  "previousCycle": {
-    "id": "2026-05-27-202",
+  "currentCycle": {
+    "id": "2026-05-27-204",
     "mode": "vision",
-    "stage": "COMMIT"
+    "stage": "BRAINSTORM",
+    "startedAt": "2026-05-26T23:00:21.164Z"
+  },
+  "previousCycle": {
+    "id": "2026-05-27-203",
+    "mode": "vision",
+    "stage": "REPORT"
   },
   "selectedEpic": {
-    "id": "epic-083",
-    "title": "个人学习数据深度挖掘与复用"
+    "id": "epic-085",
+    "title": "路由驱动式自适应学习状态机"
   },
-  "currentEpic": {
-    "id": "epic-083",
-    "title": "个人学习数据深度挖掘与复用",
-    "description": "用户的学习数据（错题/历史/个人词库）分散在多个视图，缺乏统一的数据分析和使用入口。localStorage 数据已完全就绪。",
-    "proposedBy": "PM-Lean",
-    "supportedBy": [
-      "PM-Eco",
-      "UX"
-    ],
-    "status": "completed",
-    "iterations": [
-      {
-        "id": "iter-001",
-        "title": "个人学习画像卡片（Profile Card Dashboard）",
-        "scope": "frontend-only",
-        "status": "completed",
-        "version": "v0.85.0"
-      },
-      {
-        "id": "iter-002",
-        "title": "智能练习推荐引擎",
-        "scope": "frontend-only",
-        "status": "completed",
-        "version": "v0.86.0"
-      },
-      {
-        "id": "iter-003",
-        "title": "个人词库效率分析",
-        "scope": "frontend-only",
-        "status": "completed",
-        "version": "v0.87.0"
-      },
-      {
-        "id": "iter-004",
-        "title": "遗忘曲线可视化",
-        "scope": "frontend-only",
-        "status": "completed",
-        "version": "v0.88.0"
-      }
-    ],
-    "currentIterationIndex": 4,
-    "completedAt": "2026-05-27T06:25:00.000Z"
-  },
+  "currentEpic": null,
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
@@ -328,7 +305,104 @@
     "error": null
   },
   "plan": null,
-  "brainstormResults": [],
+  "brainstormResults": [
+    {
+      "id": "epic-085",
+      "title": "路由驱动式自适应学习状态机",
+      "description": "基于 ViewRouter 注册中心模式（epic-079）和个人学习数据（epic-083），实现「根据用户学习状态动态调整视图布局和出题策略」的自适应学习引擎。解决：用户学习数据已丰富但缺乏智能联动，用户不知道「现在该做什么」。",
+      "proposedBy": "EXP",
+      "supportedBy": [
+        "ARCH",
+        "PM-UX",
+        "QA"
+      ],
+      "concerns": "纯前端自适应算法的效果难以量化；需避免「过度个性化」干扰用户自主选择",
+      "priority": "high",
+      "estimatedEffort": "medium",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：自适应出题策略引擎",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：ViewRouter 动态视图状态",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：学习状态联动面板",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：自适应难度校准",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-086",
+      "title": "国际化(i18n)与多语言支持基础设施",
+      "description": "为 en-learn 建立国际化基础设施，支持多语言学习场景（中文用户学英文/英文界面显示）。解决：产品愿景提到「多模态学习」，但当前只有中文界面，限制了在其他语言用户中的可用性。",
+      "proposedBy": "PM-UX",
+      "supportedBy": [
+        "PM-Eco",
+        "UX",
+        "QA"
+      ],
+      "concerns": "i18n 框架增加构建体积；维护多语言资源增加工作量；需平衡翻译质量和开发速度",
+      "priority": "medium",
+      "estimatedEffort": "large",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：i18n 框架集成与基础配置",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：核心 UI 字符串提取",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：练习界面多语言支持",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：游戏化系统多语言",
+          "scope": "frontend-only"
+        }
+      ]
+    },
+    {
+      "id": "epic-087",
+      "title": "PWA 化与离线优先学习",
+      "description": "将 en-learn 改造为 Progressive Web App，支持离线使用和更好的移动端体验。解决：无网络时无法使用；移动端「添加到主屏幕」体验缺失；推送通知无法实现。",
+      "proposedBy": "ARCH",
+      "supportedBy": [
+        "PM-Mon",
+        "PM-Growth",
+        "QA"
+      ],
+      "concerns": "iOS PWA 支持有限；service worker 缓存策略维护成本；离线数据同步复杂度",
+      "priority": "medium",
+      "estimatedEffort": "large",
+      "iterationsPreview": [
+        {
+          "title": "迭代1：PWA manifest 与应用壳",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代2：Service Worker 缓存策略",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代3：离线数据同步",
+          "scope": "frontend-only"
+        },
+        {
+          "title": "迭代4：添加到主屏幕体验",
+          "scope": "frontend-only"
+        }
+      ]
+    }
+  ],
   "epicHistory": [
     {
       "id": "epic-083",

@@ -306,9 +306,15 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: epic-069 iter-002 全程零新增依赖、零构建体积增长，完全符合 ARCH 倡导的「依赖最小化」原则。ModeStats 扩展（新增 en-learn-mode-stats）以最小侵入方式记录模式答题数据，getModeAccuracy 纯函数设计无副作用，架构扩展性好。LearnInsightDashboard 的 radar-trend wiring 展示了组件间数据联动的最佳实践。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续支持，关注 iter-002 完成后 epic-078 能否推进**
 
-### 2026-05-26 (cycle-2026-05-26-191) — epic-069 iter-002 完成 / epic-078 备选
-- **相关 Epic**: epic-069 iter-002「能力雷达图与趋势折线图深度联动」完成 / epic-078 备选
-- **结果**: epic-069 iter-002 完成并部署，v0.80.0，2253 测试通过；epic-078 作为下次 BRAINSTORM 首选候选
-- **当前状态**: **连续未被选中计数保持清零**（支持 epic-069）
-- **观察**: epic-069 iter-002 的 LearnInsightDashboard 新增 'learn-insight-dashboard' 视图入口进一步累积 App.tsx 复杂度。epic-078「App.tsx 视图路由配置中心重构」将在下次 BRAINSTORM 候选（4 支持：ARCH/PM-UX/QA/PM-Mon）。ViewRouter.tsx 接管视图路由声明的模式已在 epic-069 中得到验证，为 epic-078 的架构重构奠定了基础。**epic-078 作为下次 BRAINSTORM 首选，继续推动 App.tsx 复杂度治理**
+### 2026-05-26 (cycle-2026-05-26-193) — epic-079 当选提案者 + epic-069 iter-003 支持完成
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— **提案者 + 高优先级胜出**
+- **结果**: epic-079 **当选**，4 支持（ARCH 提案，PM-UX/EXP/PM-Growth 支持，QA co-validator）
+- **提案 Epic**: epic-079 App.tsx 视图路由配置中心重构
+- **迭代思路**:
+  - iter-001：迁移首批视图注册至 ViewRouter，App.tsx 条件分支数减半
+  - iter-002：完成全部视图迁移，App.tsx 删除旧分支逻辑
+  - iter-003：ViewRouter schema 标准化（与 epic-086 并行）
+- **epic-069 iter-003 支持完成**：epic-069 iter-003「薄弱模式诊断与个性化建议」完成，useLearnInsights.ts ModeStats 感知增强（使用 getModeAccuracy），weakModeRecommendation 测试扩展（40 tests），weaknessPatterns 测试文件（35 tests），LearnInsightDashboard 组件测试扩展（51 tests），2340 测试零回归（历史最高水位），Build 3.59s，Lint 0 errors，v0.81.0 已部署。
+- **当前状态**: **epic-079 提案者 + 胜出，epic-069 完成度 3/4**
+- **观察**: epic-079 是 ARCH 自 epic-006（cycle-38）完成以来持续追踪的架构债务的延续。App.tsx 复杂度已达 60，接近可维护性临界点。epic-079 当选后，epic-080/083/087 等 CI 门禁的告警疲劳问题将得到缓解（因为门禁与代码清理同步推进）。epic-086 声明式路由元数据规范建议与 epic-079 iter-001 并行开发，schema 规范可独立推进。**epic-079 还有 3 个迭代（iter-001~003），epic-069 iter-004（学习健康报告生成）pending，ARCH 将继续推进 App.tsx 复杂度治理**
 

@@ -281,3 +281,11 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 支持者）
 - **观察**: epic-069 iter-002 的 ModeStats 扩展（getModeAccuracy 计算各模式正确率）为 EXP「自适应学习」提供了关键数据基础——用户在各模式的正确率分布（normal/fill-in-blanks/dictation/multiple-choice/sentence-reorder）可作为自适应出题权重的数据源。onModeSelect 回调让用户可点击雷达轴高亮对应趋势线，实现了「数据联动」理念。7d/14d/30d 时间范围选择器让用户可从不同时间尺度审视学习趋势。**epic-069 完成度 2/4，剩余 iter-003~004（薄弱模式诊断 + 学习健康报告生成），继续支持，关注 abilityModeAccuracy 数据在自适应出题中的深度落地**
 
+### 2026-05-26 (cycle-2026-05-26-193) — epic-069 iter-003 支持完成 + epic-079 支持
+- **相关 Epic**: epic-069 iter-003「薄弱模式诊断与个性化建议」—— 作为支持者
+- **结果**: epic-069 iter-003 **完成并测试通过**，v0.81.0，2340/2345 测试通过（5 skipped，历史最高水位）
+- **epic-079 支持**: epic-079「App.tsx 视图路由配置中心强制落地」当选，EXP 作为支持者（4 支持：ARCH/PM-UX/EXP/PM-Growth）
+- **epic-085 后续**: epic-085「路由驱动式自适应学习状态机」需待 epic-079 完成后启动
+- **当前状态**: **epic-069 完成度 3/4，iter-004 pending；epic-079 支持者**
+- **观察**: epic-069 iter-003 的 weaknessPatterns（pattern/reason/mode/recommendation）直接为自适应学习提供了「薄弱点归因」数据。模式级别的 pattern 识别（accuracy 低于平均值）可用于调节该模式的出题权重。**epic-069 还有 1 个迭代（iter-004），epic-079 已当选，epic-085 需待 epic-079 完成后方可推进**
+

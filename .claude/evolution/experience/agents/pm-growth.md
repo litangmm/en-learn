@@ -249,3 +249,11 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-069 提案者）
 - **观察**: epic-069 iter-002 完成了 PM-Growth「数据联动」理念的关键落地——AbilityRadar onModeSelect 让用户点击雷达轴高亮对应趋势线，直观对比各模式的学习表现。getModeAccuracy 的纯函数设计（无副作用）便于未来扩展为个性化推荐。7d/14d/30d 时间范围选择器增加了「时间维度」的自定义空间，用户可看短期（7天）或长期（30天）趋势，数据洞察更完整。**epic-069 完成度 2/4，剩余 iter-003（薄弱模式诊断）+ iter-004（学习健康报告生成），继续推进**
 
+### 2026-05-26 (cycle-2026-05-26-193) — epic-069 iter-003 完成 + epic-079 支持
+- **相关 Epic**: epic-069 iter-003「薄弱模式诊断与个性化建议」—— **提案者**
+- **结果**: epic-069 iter-003 **完成并测试通过**，v0.81.0，2340/2345 测试通过（5 skipped，历史最高水位）
+- **完成内容**: useLearnInsights.ts ModeStats 感知增强（使用 getModeAccuracy）+ weakModeRecommendation 测试扩展（40 tests）+ weaknessPatterns 测试文件（35 tests）+ LearnInsightDashboard 组件测试扩展（51 tests）+ 2340 测试零回归
+- **epic-079 支持**: epic-079「App.tsx 视图路由配置中心强制落地」当选，PM-Growth 作为支持者（4 支持：ARCH/PM-UX/EXP/PM-Growth）
+- **当前状态**: **epic-069 完成度 3/4，iter-004（学习健康报告生成）pending；epic-079 支持者**
+- **观察**: epic-069 iter-003 的薄弱模式诊断基于 ModeStats 的 getModeAccuracy 函数，为自适应学习提供了「薄弱点识别」的数据基础。iter-004「学习健康报告生成与分享」将整合 ModeStats、trendData、weaknessPatterns 生成完整健康报告。**epic-069 还有 1 个迭代（iter-004），epic-079 已当选作为下一优先 Epic，PM-Growth 将持续支持**
+

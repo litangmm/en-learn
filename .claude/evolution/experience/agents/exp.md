@@ -303,3 +303,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
 - **观察**: epic-079 iter-001 的声明式路由注册模式为 EXP 的「自适应学习」提供了新视角——ViewRouter 注册中心模式让新视图可通过配置而非代码修改来添加，这意味着自适应学习相关的视图（如「薄弱点练习推荐」）可以声明式注册，与现有视图体系无缝集成。VIEW_CONFIGS 的可扩展 schema 为未来动态视图（如「根据用户流失风险动态生成的干预视图」）提供了基础设施。**epic-079 完成度 1/3，剩余 iter-002（全部视图迁移）+ iter-003（Schema 标准化），epic-085 需待 epic-079 完成后方可推进，继续支持**
 
+
+### 2026-05-27 (cycle-2026-05-27-198) — epic-079 全部 3 个迭代完成 (2423 tests, 历史最高水位)
+- **相关 Epic**: epic-079「App.tsx 视图路由配置中心强制落地」—— 作为支持者
+- **结果**: **epic-079 全部 3 个迭代完成并部署**，v0.84.0，2423/2428 测试通过（5 skipped，历史最高水位）
+- **完成内容**:
+  - iter-001：VIEW_CONFIGS（19 views）+ ViewRegistryProvider + useViewRegistry + NavigationProviderWithRegistry（2405 tests，v0.82.0）
+  - iter-002：移除 App.tsx 中 9 处 `view === 'practice'` 条件（4795 tests，v0.83.0）
+  - iter-003：SmartReview data-testid 修复 + App.recall.test.tsx getByTestId 修复（2423 tests，v0.84.0）
+- **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
+- **观察**: epic-079 完成度 3/3。ViewRouter 注册中心模式为 EXP 的「自适应学习」提供了新视角——ViewRegistry 的声明式设计允许动态视图状态转换，结合 useViewRegistry 的注册/注销能力，可实现「根据用户学习状态动态调整视图布局」。epic-079 为 epic-085「路由驱动式自适应学习状态机」提供了基础设施。**epic-079 完成，EXP 需提出新的自适应学习相关提案**

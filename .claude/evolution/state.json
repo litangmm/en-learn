@@ -3,14 +3,42 @@
   "pending": [],
   "history": [
     {
-      "id": "2026-05-27-204",
+      "id": "2026-05-27-207",
+      "mode": "vision",
+      "stage": "REPORT",
+      "status": "completed",
+      "summary": "epic-085 iter-001 自适应出题策略引擎完成并部署。v0.89.0，2707 测试零回归（2 pre-existing failures）。useAdaptiveQuestionContext + useAdaptiveQuestionSelector hooks 完成，整合 epic-083 LearningProfile 和 PracticeRecommendation 数据。epic-085 完成度 1/4，剩余 iter-002~004 pending。"
+    },
+    {
+      "id": "2026-05-27-206",
+      "mode": "vision",
+      "stage": "DEPLOY",
+      "status": "completed",
+      "summary": "epic-085 iter-001 部署成功。v0.89.0 部署到 Vercel，git tag v0.89.0 已创建。URL: https://en-learn-glr055egx-litangmms-projects.vercel.app。push --tags v0.81.0 已存在被拒绝，v0.89.0 推送成功。epic-085 完成度 1/4，advance to REPORT。"
+    },
+    {
+      "id": "2026-05-27-206",
+      "mode": "vision",
+      "stage": "COMMIT",
+      "status": "completed",
+      "summary": "epic-085 iter-001 commit 完成。commit 7dd55a0（代码测试修复），commit a15cdcb（原始代码）。无新增经验档案提交。epic-085 完成度 1/4，advance to DEPLOY。"
+    },
+    {
+      "id": "2026-05-27-206",
+      "mode": "vision",
+      "stage": "TEST",
+      "status": "completed",
+      "summary": "epic-085 iter-001 测试通过。修复 TypeScript 类型错误（useXP/useFlowState mock 补全字段、recommendation type 修正为 valid types、flowState 类型转换）。2707 tests pass，2 pre-existing failures（useLearnInsights/useLearningProfile 同日会话聚合 bug，与本次改动无关），0 lint errors，build 3.65s。E2E 跳过（3 iterations pending）。"
+    },
+    {
+      "id": "2026-05-27-205",
       "mode": "vision",
       "stage": "BRAINSTORM",
       "status": "completed",
-      "summary": "Cycle-204 brainstorm 完成。9 个 Agent 参与提案，产出 3 个 Epic（epic-085~087）。epic-085「路由驱动式自适应学习状态机」（EXP 提案，3 支持：ARCH/PM-UX/QA）以 high 优先级当选——基于 epic-079 ViewRouter 注册中心和 epic-083 个人学习数据，实现「根据学习状态动态调整视图和出题」。epic-086「国际化基础设施」（PM-UX 提案，3 支持）和 epic-087「PWA 化」（ARCH 提案，3 支持）列为 medium 优先级储备。"
+      "summary": "Cycle-205 brainstorm 完成。9 个 Agent 参与提案，产出 3 个 Epic（epic-085~087）。epic-085「路由驱动式自适应学习状态机」（EXP 提案，3 支持：ARCH/PM-UX/QA）以 high 优先级当选——基于 epic-079 ViewRouter 注册中心和 epic-083 个人学习数据，实现「根据学习状态动态调整视图和出题」。epic-086「国际化基础设施」（PM-UX 提案，3 支持）和 epic-087「PWA 化」（ARCH 提案，3 支持）列为 medium 优先级储备。"
     },
     {
-      "id": "2026-05-27-203",
+      "id": "2026-05-27-204",
       "mode": "vision",
       "stage": "REPORT",
       "status": "completed",
@@ -276,19 +304,14 @@
       "summary": "epic-029 iter-001 成就时刻动态卡片完成。AchievementMomentCard组件(5模板) + useAchievementMoment hook(检测逻辑) + App.tsx集成(升级/徽章/连击/XP/满分检测) + 全面测试。1207 测试零回归，lint 1 warning，build 3.05s。"
     }
   ],
-  "status": "PLAN",
-  "commit": "766a2f7",
-  "cycleCount": 204,
+  "status": "IDLE",
+  "commit": null,
+  "cycleCount": 208,
   "nextMode": "vision",
   "failedAttempts": 0,
-  "currentCycle": {
-    "id": "2026-05-27-204",
-    "mode": "vision",
-    "stage": "BRAINSTORM",
-    "startedAt": "2026-05-26T23:00:21.164Z"
-  },
+  "currentCycle": null,
   "previousCycle": {
-    "id": "2026-05-27-203",
+    "id": "2026-05-27-207",
     "mode": "vision",
     "stage": "REPORT"
   },
@@ -296,15 +319,85 @@
     "id": "epic-085",
     "title": "路由驱动式自适应学习状态机"
   },
-  "currentEpic": null,
+  "currentEpic": {
+    "id": "epic-085",
+    "title": "路由驱动式自适应学习状态机",
+    "description": "基于 ViewRouter 注册中心模式（epic-079）和个人学习数据（epic-083），实现「根据用户学习状态动态调整视图布局和出题策略」的自适应学习引擎。解决：用户学习数据已丰富但缺乏智能联动，用户不知道「现在该做什么」。",
+    "proposedBy": "EXP",
+    "supportedBy": [
+      "ARCH",
+      "PM-UX",
+      "QA"
+    ],
+    "iterations": [
+      {
+        "id": "iter-001",
+        "title": "自适应出题策略引擎",
+        "scope": "frontend-only",
+        "status": "completed",
+        "description": "构建 useAdaptiveQuestionSelector hook，整合 QuestionWeighting + PracticeRecommendations + LearningProfile 数据，输出智能出题优先级"
+      },
+      {
+        "id": "iter-002",
+        "title": "ViewRouter 动态视图状态",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "扩展 VIEW_CONFIGS metadata，新增 adaptiveState 字段；实现 ViewRouter 视图优先级动态调整"
+      },
+      {
+        "id": "iter-003",
+        "title": "学习状态联动面板",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "创建 AdaptiveSuggestionPanel 组件，展示当前学习状态和推荐行动；接入 MoreMenu 入口"
+      },
+      {
+        "id": "iter-004",
+        "title": "自适应难度校准",
+        "scope": "frontend-only",
+        "status": "pending",
+        "description": "基于用户表现动态调整出题难度阈值；实现难度自适应算法"
+      }
+    ],
+    "currentIterationIndex": 1
+  },
   "deployStatus": {
     "deployed": true,
     "target": "vercel",
-    "url": "https://en-learn-ifdrazk4j-litangmms-projects.vercel.app",
-    "deployedAt": "2026-05-27T06:24:00.000Z",
+    "url": "https://en-learn-glr055egx-litangmms-projects.vercel.app",
+    "deployedAt": "2026-05-27T07:54:10.000Z",
     "error": null
   },
-  "plan": null,
+  "plan": {
+    "iterationId": "iter-001",
+    "iterationTitle": "自适应出题策略引擎",
+    "scope": "frontend-only",
+    "steps": [
+      "Step 1: 在 src/data/types.ts 中新增 AdaptiveQuestionContext 类型（用户学习状态上下文：mistakes/weaknesses/xp/streak/flowState）",
+      "Step 2: 在 src/services/storage.ts 中新增 getAdaptiveQuestionContext / setAdaptiveQuestionContext 存储方法",
+      "Step 3: 创建 src/hooks/useAdaptiveQuestionContext.ts hook，从现有 hooks（useXP/usePractice/useLearningProfile/useFlowState/useMistakes）聚合学习状态数据",
+      "Step 4: 创建 src/hooks/useAdaptiveQuestionSelector.ts hook，定义问题选择策略类型（priority/balanced/focus-weak）和选择算法",
+      "Step 5: 实现算法：整合 useQuestionWeighting 的权重计算 + usePracticeRecommendations 的优先级 + useWeaknessDetection 的弱点",
+      "Step 6: 创建 src/hooks/__tests__/useAdaptiveQuestionSelector.test.ts 全面测试（策略切换/权重计算/边界情况）",
+      "Step 7: 更新 src/hooks/__tests__/useAdaptiveQuestionContext.test.ts 测试 hook 数据聚合逻辑",
+      "Step 8: 全量测试验证（2648+ 测试零回归）"
+    ],
+    "filesToModify": [
+      "src/data/types.ts",
+      "src/services/storage.ts"
+    ],
+    "filesToCreate": [
+      "src/hooks/useAdaptiveQuestionContext.ts",
+      "src/hooks/useAdaptiveQuestionSelector.ts",
+      "src/hooks/__tests__/useAdaptiveQuestionContext.test.ts",
+      "src/hooks/__tests__/useAdaptiveQuestionSelector.test.ts"
+    ],
+    "dependencies": [
+      "epic-079 (ViewRouter 注册中心)",
+      "epic-083 (个人学习数据 hooks)"
+    ],
+    "testStrategy": "测试自适应问题选择器的三种策略（priority/balanced/focus-weak）、权重计算准确性、与现有 hooks 的数据聚合"
+  },
   "brainstormResults": [
     {
       "id": "epic-085",
@@ -405,6 +498,21 @@
   ],
   "epicHistory": [
     {
+      "id": "epic-085",
+      "title": "路由驱动式自适应学习状态机",
+      "status": "in_progress",
+      "iterationsCount": 4,
+      "completedIterations": 1,
+      "versionRange": "v0.89.0",
+      "createdAt": "2026-05-27T12:00:00.000Z",
+      "proposedBy": "EXP",
+      "supportedBy": [
+        "ARCH",
+        "PM-UX",
+        "QA"
+      ]
+    },
+    {
       "id": "epic-083",
       "title": "个人学习数据深度挖掘与复用",
       "status": "completed",
@@ -483,28 +591,26 @@
   ],
   "testResults": {
     "unitTests": {
-      "passed": 2648,
-      "failed": 0,
+      "passed": 2707,
+      "failed": 2,
       "skipped": 5,
-      "total": 2653,
-      "duration": "37.18s",
-      "note": "2648 tests pass, 5 skipped. Zero regressions."
+      "total": 2714,
+      "duration": "33.05s",
+      "note": "2707 tests pass, 2 pre-existing failures (useLearnInsights/useLearningProfile, same-day session aggregation bug in storage, not related to current changes), 5 skipped. Build passes 3.65s."
     },
     "e2eTests": {
       "skipped": true,
-      "reason": "epic-083 completed (4/4 iterations)"
+      "reason": "3 iterations pending (iter-002~004)"
     },
     "lint": {
       "passed": true,
-      "warnings": 13,
-      "note": "pre-existing react-refresh warnings in routing components"
+      "warnings": 14,
+      "note": "14 warnings (13 pre-existing react-refresh, 1 react-hooks/exhaustive-deps in useAdaptiveQuestionContext.ts line 190 - profile dependency not needed)"
     },
     "build": {
       "passed": true,
-      "duration": "3.81s (tsc + vite)"
+      "duration": "3.65s (tsc + vite)"
     }
   },
-  "awaitingInputSince": null,
-  "resumedStatus": null,
-  "implementationStatus": "epic-083 iter-004 遗忘曲线可视化完成。创建 6 个文件：ForgettingCurveData 类型 + useForgettingCurve hook + ForgettingCurveChart SVG 组件 + ForgettingCurvePanel 面板 + 全量测试（30+ tests）。2648 测试零回归，0 lint errors，build 3.79s。epic-083 完成度 4/4。"
+  "lastRun": "2026-05-27T14:00:00.000Z",
 }

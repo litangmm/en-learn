@@ -4,9 +4,189 @@ import {
   getStandardizedProps,
   createViewConfig,
   type StandardizedViewConfig,
+  type ViewAdaptiveConfig,
+  type ViewDifficultyLevel,
 } from '../schema';
+import type { FlowState } from '@/hooks/useAdaptiveQuestionSelector';
 
 describe('ViewConfig Schema', () => {
+  // ========================================================================
+  // Adaptive State Type Tests
+  // ========================================================================
+
+  describe('adaptiveState type', () => {
+    it('should accept valid difficulty levels', () => {
+      const configEasy: ViewAdaptiveConfig = { difficulty: 'easy' };
+      const configNormal: ViewAdaptiveConfig = { difficulty: 'normal' };
+      const configHard: ViewAdaptiveConfig = { difficulty: 'hard' };
+
+      expect(configEasy.difficulty).toBe('easy');
+      expect(configNormal.difficulty).toBe('normal');
+      expect(configHard.difficulty).toBe('hard');
+    });
+
+    it('should accept priority values', () => {
+      const config: ViewAdaptiveConfig = { priority: 100 };
+      expect(config.priority).toBe(100);
+
+      const configZero: ViewAdaptiveConfig = { priority: 0 };
+      expect(configZero.priority).toBe(0);
+
+      const configNegative: ViewAdaptiveConfig = { priority: -50 };
+      expect(configNegative.priority).toBe(-50);
+    });
+
+    it('should accept valid flow states array', () => {
+      const flowStates: FlowState[] = ['focused', 'normal', 'fatigued'];
+      const config: ViewAdaptiveConfig = { flowStates };
+      expect(config.flowStates).toEqual(['focused', 'normal', 'fatigued']);
+    });
+
+    it('should accept partial flow states', () => {
+      const config: ViewAdaptiveConfig = { flowStates: ['focused'] };
+      expect(config.flowStates).toEqual(['focused']);
+    });
+
+    it('should accept empty adaptive config', () => {
+      const config: ViewAdaptiveConfig = {};
+      expect(config.difficulty).toBeUndefined();
+      expect(config.priority).toBeUndefined();
+      expect(config.flowStates).toBeUndefined();
+    });
+
+    it('should accept full adaptive config', () => {
+      const config: ViewAdaptiveConfig = {
+        difficulty: 'hard',
+        priority: 50,
+        flowStates: ['focused', 'normal'],
+      };
+      expect(config.difficulty).toBe('hard');
+      expect(config.priority).toBe(50);
+      expect(config.flowStates).toEqual(['focused', 'normal']);
+    });
+
+    it('should work with StandardizedViewConfig', () => {
+      const config: StandardizedViewConfig = {
+        id: 'practice',
+        title: '练习',
+        adaptiveState: {
+          difficulty: 'normal',
+          priority: 20,
+          flowStates: ['normal', 'fatigued'],
+        },
+      };
+
+      expect(config.adaptiveState?.difficulty).toBe('normal');
+      expect(config.adaptiveState?.priority).toBe(20);
+      expect(config.adaptiveState?.flowStates).toEqual(['normal', 'fatigued']);
+    });
+
+    it('should support multiple views with different adaptive configs', () => {
+      const practiceConfig: StandardizedViewConfig = {
+        id: 'practice',
+        title: '练习',
+        adaptiveState: { difficulty: 'normal', priority: 10, flowStates: ['normal'] },
+      };
+
+      const challengeConfig: StandardizedViewConfig = {
+        id: 'challenges',
+        title: '挑战',
+        adaptiveState: { difficulty: 'hard', priority: 30, flowStates: ['focused'] },
+      };
+
+      const progressConfig: StandardizedViewConfig = {
+        id: 'progress',
+        title: '进度',
+        adaptiveState: { difficulty: 'easy', priority: 5, flowStates: ['fatigued'] },
+      };
+
+      expect(practiceConfig.adaptiveState?.difficulty).toBe('normal');
+      expect(challengeConfig.adaptiveState?.difficulty).toBe('hard');
+      expect(progressConfig.adaptiveState?.difficulty).toBe('easy');
+
+      expect(practiceConfig.adaptiveState?.priority).toBe(10);
+      expect(challengeConfig.adaptiveState?.priority).toBe(30);
+      expect(progressConfig.adaptiveState?.priority).toBe(5);
+    });
+
+    it('should support adaptive config in createViewConfig', () => {
+      const config = createViewConfig({
+        id: 'practice' as const,
+        title: '练习',
+        adaptiveState: {
+          difficulty: 'hard',
+          priority: 25,
+          flowStates: ['focused'],
+        },
+      });
+
+      expect(config.adaptiveState).toBeDefined();
+      expect(config.adaptiveState?.difficulty).toBe('hard');
+      expect(config.adaptiveState?.priority).toBe(25);
+      expect(config.adaptiveState?.flowStates).toEqual(['focused']);
+    });
+
+    it('should allow undefined adaptiveState', () => {
+      const config: StandardizedViewConfig = {
+        id: 'practice',
+        title: '练习',
+      };
+
+      expect(config.adaptiveState).toBeUndefined();
+    });
+
+    it('should support mixed metadata and adaptiveState', () => {
+      const config: StandardizedViewConfig = {
+        id: 'practice',
+        title: '练习',
+        adaptiveState: { difficulty: 'normal', priority: 10 },
+        metadata: { primary: true, requiresAuth: false },
+      };
+
+      expect(config.adaptiveState?.difficulty).toBe('normal');
+      expect(config.metadata?.primary).toBe(true);
+    });
+  });
+
+  describe('ViewDifficultyLevel type guard', () => {
+    it('should accept all valid difficulty levels as ViewDifficultyLevel', () => {
+      const checkDifficulty = (level: ViewDifficultyLevel): boolean => {
+        return ['easy', 'normal', 'hard'].includes(level);
+      };
+
+      expect(checkDifficulty('easy')).toBe(true);
+      expect(checkDifficulty('normal')).toBe(true);
+      expect(checkDifficulty('hard')).toBe(true);
+    });
+  });
+
+  describe('FlowState integration with adaptive config', () => {
+    it('should correctly map flow states for view optimization', () => {
+      const viewForFocused: ViewAdaptiveConfig = {
+        difficulty: 'hard',
+        flowStates: ['focused'],
+      };
+
+      const viewForFatigued: ViewAdaptiveConfig = {
+        difficulty: 'easy',
+        flowStates: ['fatigued'],
+      };
+
+      const viewForAll: ViewAdaptiveConfig = {
+        difficulty: 'normal',
+        flowStates: ['focused', 'normal', 'fatigued'],
+      };
+
+      expect(viewForFocused.flowStates).toContain('focused');
+      expect(viewForFatigued.flowStates).toContain('fatigued');
+      expect(viewForAll.flowStates).toHaveLength(3);
+    });
+  });
+
+  // ========================================================================
+  // Legacy Schema Tests
+  // ========================================================================
+
   describe('hasLegacyMetadata', () => {
     it('should return true when metadata is defined', () => {
       const config = {

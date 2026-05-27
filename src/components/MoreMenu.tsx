@@ -1,14 +1,16 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity, User } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity, User, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAdaptiveViewRegistry } from '@/hooks/useAdaptiveViewRegistry';
 
-interface MoreMenuProps {
+export interface MoreMenuProps {
   mistakeCount: number;
   historyCount: number;
   reviewDueCount: number;
@@ -29,6 +31,77 @@ interface MoreMenuProps {
   onOpenChurnDashboard?: () => void;
   onOpenLearnInsight?: () => void;
   onOpenLearnProfile?: () => void;
+}
+
+// ---------------------------------------------------------------------------
+// View ID to Chinese Title Mapping
+// ---------------------------------------------------------------------------
+
+const VIEW_TITLE_MAP: Record<string, string> = {
+  practice: '练习',
+  review: '复习',
+  'learn-insight': '学习洞察',
+  learnInsight: '学习洞察',
+  'learn-profile': '学习画像',
+  learnProfile: '学习画像',
+  challenge: '挑战',
+  challenges: '挑战',
+  badges: '成就',
+  leaderboard: '排行',
+};
+
+/**
+ * Get Chinese title from view ID
+ */
+function getViewTitle(viewId: string): string {
+  return VIEW_TITLE_MAP[viewId] ?? viewId;
+}
+
+/**
+ * Get priority label from priority score
+ */
+function getPriorityLabel(priority: number): string {
+  if (priority >= 80) return '高优先级';
+  if (priority >= 50) return '待复习';
+  if (priority >= 20) return '可学习';
+  return '低优先级';
+}
+
+// ---------------------------------------------------------------------------
+// AdaptivePrioritySection Component
+// ---------------------------------------------------------------------------
+
+interface AdaptivePrioritySectionProps {
+  views: Array<{ id: string; priority: number }>;
+}
+
+function AdaptivePrioritySection({ views }: AdaptivePrioritySectionProps) {
+  // Show only top 3 views
+  const displayViews = views.slice(0, 3);
+
+  return (
+    <div className="px-2 py-1.5">
+      <div className="flex items-center gap-1.5 mb-1.5 text-xs text-muted-foreground">
+        <Sparkles className="w-3 h-3" />
+        <span className="font-medium">为你推荐</span>
+      </div>
+      <div className="space-y-0.5">
+        {displayViews.map((view, index) => {
+          const isLast = index === displayViews.length - 1;
+          const prefix = isLast ? '└' : '├';
+          const priorityLabel = getPriorityLabel(view.priority);
+
+          return (
+            <div key={view.id} className="flex items-center gap-2 text-xs pl-1">
+              <span className="text-muted-foreground font-mono">{prefix}</span>
+              <span className="flex-1 text-foreground">{getViewTitle(view.id)}</span>
+              <span className="text-muted-foreground text-[10px]">({priorityLabel})</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 export function MoreMenu({
@@ -53,6 +126,9 @@ export function MoreMenu({
   onOpenLearnInsight,
   onOpenLearnProfile,
 }: MoreMenuProps) {
+  // Get top views from adaptive view registry (internally uses useViewRegistry which is available via ViewRegistryProvider)
+  const { topViews: recommendedViews } = useAdaptiveViewRegistry(3);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -62,6 +138,13 @@ export function MoreMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={8} className="w-48 sm:w-52" data-testid="more-menu-content">
+        {/* Adaptive Priority Recommendation Section */}
+        {recommendedViews && recommendedViews.length > 0 && (
+          <>
+            <AdaptivePrioritySection views={recommendedViews} />
+            <DropdownMenuSeparator />
+          </>
+        )}
         {/* 错题本 */}
         <DropdownMenuItem onClick={onOpenMistakeBook} className="cursor-pointer" data-testid="menuitem-mistake-book">
           <BookOpen className="w-4 h-4 text-slate-500" />

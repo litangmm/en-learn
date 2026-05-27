@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { MoreMenu } from '../MoreMenu';
+import type { MoreMenuProps } from '../MoreMenu';
+import { ViewRegistryProvider } from '@/components/routing';
+import { VIEW_CONFIGS } from '@/components/routing/viewConfigs';
 
 // Mock shadcn UI components with state tracking for dropdown
 let dropdownIsOpen = false;
@@ -49,6 +52,7 @@ vi.mock('@/components/ui/dropdown-menu', () => ({
       </div>
     );
   }),
+  DropdownMenuSeparator: vi.fn(() => <div data-testid="dropdown-separator" />),
 }));
 
 describe('MoreMenu', () => {
@@ -79,6 +83,14 @@ describe('MoreMenu', () => {
     onOpenWeakness: mockOnOpenWeakness,
   };
 
+  const renderWithRegistry = (props: MoreMenuProps) => {
+    return render(
+      <ViewRegistryProvider initialConfigs={VIEW_CONFIGS}>
+        <MoreMenu {...props} />
+      </ViewRegistryProvider>
+    );
+  };
+
   beforeEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -86,7 +98,7 @@ describe('MoreMenu', () => {
   });
 
   it('Dropdown menu opens when 更多 button is clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     // Initially only trigger is visible, dropdown items are not in the DOM
     // because DropdownMenuContent is inside the trigger (controlled component pattern)
@@ -104,21 +116,21 @@ describe('MoreMenu', () => {
   });
 
   it('renders dropdown menu with trigger button', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     expect(screen.getByTestId('dropdown-menu')).toBeInTheDocument();
     expect(screen.getByTestId('dropdown-trigger')).toBeInTheDocument();
   });
 
   it('renders button with 更多 text and icon', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const button = screen.getByRole('button', { name: /更多/ });
     expect(button).toBeInTheDocument();
   });
 
   it('renders all 7 nav items with correct labels', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     expect(screen.getByText('错题本')).toBeInTheDocument();
     expect(screen.getByText('学习记录')).toBeInTheDocument();
@@ -130,7 +142,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenMistakeBook when 错题本 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const mistakeBookItem = screen.getByText('错题本').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(mistakeBookItem!);
@@ -139,7 +151,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenHistory when 学习记录 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const historyItem = screen.getByText('学习记录').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(historyItem!);
@@ -148,7 +160,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenDataManager when 数据管理 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const dataManagerItem = screen.getByText('数据管理').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(dataManagerItem!);
@@ -157,7 +169,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenSmartReview when 智能复习 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const smartReviewItem = screen.getByText('智能复习').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(smartReviewItem!);
@@ -166,7 +178,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenChallenges when 每日挑战 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const challengesItem = screen.getByText('每日挑战').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(challengesItem!);
@@ -175,7 +187,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenBadges when 成就 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const badgesItem = screen.getByText('成就').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(badgesItem!);
@@ -184,7 +196,7 @@ describe('MoreMenu', () => {
   });
 
   it('calls onOpenLeaderboard when 排行 item clicked', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     const leaderboardItem = screen.getByText('排行').closest('[data-testid-base="dropdown-item"]');
     fireEvent.click(leaderboardItem!);
@@ -200,7 +212,7 @@ describe('MoreMenu', () => {
     };
 
     it('shows mistake count badge when mistakeCount > 0', () => {
-      render(<MoreMenu {...defaultProps} mistakeCount={5} />);
+      renderWithRegistry({ ...defaultProps, mistakeCount: 5 });
 
       const item = openDropdownAndGetItem('错题本');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -209,7 +221,7 @@ describe('MoreMenu', () => {
     });
 
     it('shows history count badge when historyCount > 0', () => {
-      render(<MoreMenu {...defaultProps} historyCount={3} />);
+      renderWithRegistry({ ...defaultProps, historyCount: 3 });
 
       const item = openDropdownAndGetItem('学习记录');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -218,7 +230,7 @@ describe('MoreMenu', () => {
     });
 
     it('shows review due count badge when reviewDueCount > 0', () => {
-      render(<MoreMenu {...defaultProps} reviewDueCount={7} />);
+      renderWithRegistry({ ...defaultProps, reviewDueCount: 7 });
 
       const item = openDropdownAndGetItem('智能复习');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -227,7 +239,7 @@ describe('MoreMenu', () => {
     });
 
     it('shows unclaimed count badge when unclaimedCount > 0', () => {
-      render(<MoreMenu {...defaultProps} unclaimedCount={2} />);
+      renderWithRegistry({ ...defaultProps, unclaimedCount: 2 });
 
       const item = openDropdownAndGetItem('每日挑战');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -236,7 +248,7 @@ describe('MoreMenu', () => {
     });
 
     it('shows unlocked count badge when unlockedCount > 0', () => {
-      render(<MoreMenu {...defaultProps} unlockedCount={4} />);
+      renderWithRegistry({ ...defaultProps, unlockedCount: 4 });
 
       const item = openDropdownAndGetItem('成就');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -245,7 +257,7 @@ describe('MoreMenu', () => {
     });
 
     it('hides mistake badge when mistakeCount = 0', () => {
-      render(<MoreMenu {...defaultProps} mistakeCount={0} />);
+      renderWithRegistry({ ...defaultProps, mistakeCount: 0 });
 
       const item = openDropdownAndGetItem('错题本');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -253,7 +265,7 @@ describe('MoreMenu', () => {
     });
 
     it('hides history badge when historyCount = 0', () => {
-      render(<MoreMenu {...defaultProps} historyCount={0} />);
+      renderWithRegistry({ ...defaultProps, historyCount: 0 });
 
       const item = openDropdownAndGetItem('学习记录');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -261,7 +273,7 @@ describe('MoreMenu', () => {
     });
 
     it('hides review badge when reviewDueCount = 0', () => {
-      render(<MoreMenu {...defaultProps} reviewDueCount={0} />);
+      renderWithRegistry({ ...defaultProps, reviewDueCount: 0 });
 
       const item = openDropdownAndGetItem('智能复习');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -269,7 +281,7 @@ describe('MoreMenu', () => {
     });
 
     it('hides unclaimed badge when unclaimedCount = 0', () => {
-      render(<MoreMenu {...defaultProps} unclaimedCount={0} />);
+      renderWithRegistry({ ...defaultProps, unclaimedCount: 0 });
 
       const item = openDropdownAndGetItem('每日挑战');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -277,7 +289,7 @@ describe('MoreMenu', () => {
     });
 
     it('hides unlocked badge when unlockedCount = 0', () => {
-      render(<MoreMenu {...defaultProps} unlockedCount={0} />);
+      renderWithRegistry({ ...defaultProps, unlockedCount: 0 });
 
       const item = openDropdownAndGetItem('成就');
       const badge = item?.querySelector('[data-testid="badge"]');
@@ -287,7 +299,7 @@ describe('MoreMenu', () => {
 
   describe('isReviewMode icon display', () => {
     it('shows Brain icon when isReviewMode = false', () => {
-      render(<MoreMenu {...defaultProps} isReviewMode={false} />);
+      renderWithRegistry({ ...defaultProps, isReviewMode: false });
 
       // Open dropdown first to see the icon
       fireEvent.click(screen.getByTestId('dropdown-trigger'));
@@ -299,7 +311,7 @@ describe('MoreMenu', () => {
     });
 
     it('shows RefreshCw icon when isReviewMode = true', () => {
-      render(<MoreMenu {...defaultProps} isReviewMode={true} />);
+      renderWithRegistry({ ...defaultProps, isReviewMode: true });
 
       // Open dropdown first to see the icon
       fireEvent.click(screen.getByTestId('dropdown-trigger'));
@@ -312,7 +324,7 @@ describe('MoreMenu', () => {
   });
 
   it('renders all items with cursor-pointer class', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     // Use base testid that all items share
     const baseItems = screen.queryAllByTestId('dropdown-item-base');
@@ -322,7 +334,7 @@ describe('MoreMenu', () => {
   });
 
   it('renders items with flex-1 class on text span', () => {
-    render(<MoreMenu {...defaultProps} />);
+    renderWithRegistry(defaultProps);
 
     // Check that spans with flex-1 exist for items that have badges
     const mistakeBookItem = screen.getByText('错题本').closest('[data-testid-base="dropdown-item"]');

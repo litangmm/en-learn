@@ -24,6 +24,7 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     primary: true,
     defaultRoute: true,
     requiresAuth: false,
+    adaptiveState: { difficulty: 'normal', priority: 10, flowStates: ['normal', 'focused'] },
     metadata: { primary: true, defaultRoute: true, requiresAuth: false },
   }),
   createViewConfig({
@@ -101,6 +102,7 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     navigationOrder: 4,
     menuGroup: 'review',
     requiresAuth: false,
+    adaptiveState: { difficulty: 'easy', priority: 6, flowStates: ['normal', 'fatigued'] },
     metadata: { requiresAuth: false },
   }),
   createViewConfig({
@@ -112,6 +114,7 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     navigationOrder: 13,
     menuGroup: 'progress',
     requiresAuth: false,
+    adaptiveState: { difficulty: 'hard', priority: 8, flowStates: ['focused'] },
     metadata: { requiresAuth: false },
   }),
   createViewConfig({
@@ -123,6 +126,7 @@ export const VIEW_CONFIGS: ViewConfig[] = [
     navigationOrder: 20,
     menuGroup: 'gamification',
     requiresAuth: false,
+    adaptiveState: { difficulty: 'normal', priority: 7, flowStates: ['focused', 'normal'] },
     metadata: { requiresAuth: false },
   }),
   createViewConfig({

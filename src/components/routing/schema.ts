@@ -1,4 +1,21 @@
 import type { View } from './ViewRouter';
+import type { FlowState } from '@/hooks/useAdaptiveQuestionSelector';
+
+/** View difficulty level for adaptive content selection */
+export type ViewDifficultyLevel = 'easy' | 'normal' | 'hard';
+
+/**
+ * Adaptive configuration for dynamic view content selection.
+ * Controls how views adapt to user state (difficulty, priority, flow states).
+ */
+export interface ViewAdaptiveConfig {
+  /** Difficulty level for this view's content (default: 'normal') */
+  difficulty?: ViewDifficultyLevel;
+  /** Base priority for this view (higher = more important, default: 0) */
+  priority?: number;
+  /** Flow states this view is optimized for */
+  flowStates?: FlowState[];
+}
 
 /** View category for grouping and filtering */
 export type ViewCategory = 'learning' | 'progress' | 'achievement' | 'social' | 'system';
@@ -79,6 +96,10 @@ export interface StandardizedViewConfig {
   primary?: boolean;
   /** Whether this is the default landing route (default: false) */
   defaultRoute?: boolean;
+
+  // Adaptive configuration
+  /** Adaptive configuration for dynamic view behavior */
+  adaptiveState?: ViewAdaptiveConfig;
 
   // Legacy metadata (deprecated but supported for backward compatibility)
   /** Optional metadata - prefer top-level properties instead */

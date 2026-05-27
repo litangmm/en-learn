@@ -889,28 +889,30 @@ function AppWithProviders() {
                   </Button>
                 </>
               )}
-              <MoreMenu
-                mistakeCount={mistakeCount}
-                historyCount={historyCount}
-                reviewDueCount={reviewDueCount}
-                unclaimedCount={unclaimedCount}
-                unlockedCount={unlockedCount}
-                weaknessCount={weaknessStats.totalWeakCount}
-                isReviewMode={isReviewMode}
-                onOpenMistakeBook={handleOpenMistakeBook}
-                onOpenHistory={handleOpenHistory}
-                onOpenDataManager={handleOpenDataManager}
-                onOpenSmartReview={handleOpenSmartReview}
-                onOpenChallenges={handleOpenChallenges}
-                onOpenBadges={handleOpenBadges}
-                onOpenLeaderboard={handleOpenLeaderboard}
-                onOpenWeakness={handleOpenWeakness}
-                onOpenInvite={handleOpenInvite}
-                onOpenGoals={handleOpenGoals}
-                onOpenChurnDashboard={() => viewHandlers['churn-dashboard']()}
-                onOpenLearnInsight={() => viewHandlers['learn-insight']()}
-                onOpenLearnProfile={() => viewHandlers['learn-profile']()}
-              />
+              <ViewRegistryProvider initialConfigs={VIEW_CONFIGS}>
+                <MoreMenu
+                  mistakeCount={mistakeCount}
+                  historyCount={historyCount}
+                  reviewDueCount={reviewDueCount}
+                  unclaimedCount={unclaimedCount}
+                  unlockedCount={unlockedCount}
+                  weaknessCount={weaknessStats.totalWeakCount}
+                  isReviewMode={isReviewMode}
+                  onOpenMistakeBook={handleOpenMistakeBook}
+                  onOpenHistory={handleOpenHistory}
+                  onOpenDataManager={handleOpenDataManager}
+                  onOpenSmartReview={handleOpenSmartReview}
+                  onOpenChallenges={handleOpenChallenges}
+                  onOpenBadges={handleOpenBadges}
+                  onOpenLeaderboard={handleOpenLeaderboard}
+                  onOpenWeakness={handleOpenWeakness}
+                  onOpenInvite={handleOpenInvite}
+                  onOpenGoals={handleOpenGoals}
+                  onOpenChurnDashboard={() => viewHandlers['churn-dashboard']()}
+                  onOpenLearnInsight={() => viewHandlers['learn-insight']()}
+                  onOpenLearnProfile={() => viewHandlers['learn-profile']()}
+                />
+              </ViewRegistryProvider>
               {/* Review streak indicator - desktop only */}
               <div className="hidden md:flex items-center gap-2 text-sm">
                 {dueCount > 0 && (

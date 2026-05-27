@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useReducer, type ReactNode } fr
 import type { View } from './ViewRouter';
 import type { ViewConfig } from './index';
 import { getStandardizedProps, type ViewAuthConfig, type ViewRouteConfig } from './schema';
+import type { AdaptiveViewState } from '@/hooks/useAdaptiveViewContext';
 
 // View Registry State
 interface ViewRegistryState {
@@ -72,6 +73,8 @@ interface ViewRegistryContextValue {
   getViewsByAuth: (_requiresAuth: boolean) => ViewConfig[];
   getAuthRequiredViews: () => ViewConfig[];
   getPublicViews: () => ViewConfig[];
+  // Adaptive priority calculation
+  getAdaptivePriority: (_viewId: string, _adaptiveState: AdaptiveViewState) => number;
 }
 
 const ViewRegistryContext = createContext<ViewRegistryContextValue | null>(null);
@@ -166,6 +169,53 @@ export function ViewRegistryProvider({ children, initialConfigs = [] }: ViewRegi
     return getViewsByAuth(false);
   }, [getViewsByAuth]);
 
+  /**
+   * Calculate dynamic view priority based on current adaptive state.
+   *
+   * Priority calculation factors:
+   * 1. Base priority from view's adaptiveState config (default: 0)
+   * 2. Difficulty match bonus (+10 if view difficulty matches current level)
+   * 3. Flow state optimization bonus (+15 if view optimized for current flow)
+   * 4. Recommended view bonus (+20 if view is in recommended views list)
+   * 5. Priority adjustment multiplier from adaptive state
+   */
+  const getAdaptivePriority = useCallback(
+    (viewId: string, adaptiveState: AdaptiveViewState): number => {
+      const config = state.registry[viewId];
+      if (!config) {
+        return 0;
+      }
+
+      // 1. Base priority
+      const basePriority = config.adaptiveState?.priority ?? 0;
+
+      // 2. Difficulty match bonus
+      const viewDifficulty = config.adaptiveState?.difficulty;
+      let difficultyBonus = 0;
+      if (viewDifficulty && viewDifficulty === adaptiveState.difficultyLevel) {
+        difficultyBonus = 10;
+      }
+
+      // 3. Flow state optimization bonus
+      const viewFlowStates = config.adaptiveState?.flowStates ?? [];
+      let flowBonus = 0;
+      if (viewFlowStates.includes(adaptiveState.flowState)) {
+        flowBonus = 15;
+      }
+
+      // 4. Recommended view bonus
+      let recommendedBonus = 0;
+      if (adaptiveState.recommendedViews.includes(viewId)) {
+        recommendedBonus = 20;
+      }
+
+      // 5. Apply priority adjustment multiplier and sum all bonuses
+      const totalBonus = (difficultyBonus + flowBonus + recommendedBonus) * adaptiveState.priorityAdjustment;
+      return basePriority + totalBonus;
+    },
+    [state.registry]
+  );
+
   const value: ViewRegistryContextValue = {
     registry: state.registry,
     registeredViews: state.registeredViews,
@@ -181,6 +231,8 @@ export function ViewRegistryProvider({ children, initialConfigs = [] }: ViewRegi
     getViewsByAuth,
     getAuthRequiredViews,
     getPublicViews,
+    // Adaptive priority calculation
+    getAdaptivePriority,
   };
 
   return (

@@ -1,4 +1,5 @@
-import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity, User, Sparkles } from 'lucide-react';
+import { BookOpen, History, Database, Brain, RefreshCw, Trophy, Award, TrendingUp, MoreHorizontal, AlertTriangle, Users, Target, ShieldAlert, Activity, User, Sparkles, Lightbulb } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -8,7 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { useAdaptiveViewRegistry } from '@/hooks/useAdaptiveViewRegistry';
+import { AdaptiveSuggestionPanel } from './AdaptiveSuggestionPanel';
 
 export interface MoreMenuProps {
   mistakeCount: number;
@@ -129,23 +137,32 @@ export function MoreMenu({
   // Get top views from adaptive view registry (internally uses useViewRegistry which is available via ViewRegistryProvider)
   const { topViews: recommendedViews } = useAdaptiveViewRegistry(3);
 
+  // Dialog state for adaptive suggestions
+  const [showAdaptiveSuggestions, setShowAdaptiveSuggestions] = useState(false);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="text-slate-500 gap-2" data-testid="more-menu-trigger">
-          <MoreHorizontal className="w-4 h-4" />
-          <span className="hidden lg:inline">更多</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={8} className="w-48 sm:w-52" data-testid="more-menu-content">
-        {/* Adaptive Priority Recommendation Section */}
-        {recommendedViews && recommendedViews.length > 0 && (
-          <>
-            <AdaptivePrioritySection views={recommendedViews} />
-            <DropdownMenuSeparator />
-          </>
-        )}
-        {/* 错题本 */}
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="sm" className="text-slate-500 gap-2" data-testid="more-menu-trigger">
+            <MoreHorizontal className="w-4 h-4" />
+            <span className="hidden lg:inline">更多</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" sideOffset={8} className="w-48 sm:w-52" data-testid="more-menu-content">
+          {/* Adaptive Priority Recommendation Section */}
+          {recommendedViews && recommendedViews.length > 0 && (
+            <>
+              <AdaptivePrioritySection views={recommendedViews} />
+              <DropdownMenuSeparator />
+            </>
+          )}
+          {/* 学习建议 */}
+          <DropdownMenuItem onClick={() => setShowAdaptiveSuggestions(true)} className="cursor-pointer" data-testid="menuitem-adaptive-suggestions">
+            <Lightbulb className="w-4 h-4 text-amber-500" />
+            <span className="flex-1">学习建议</span>
+          </DropdownMenuItem>
+          {/* 错题本 */}
         <DropdownMenuItem onClick={onOpenMistakeBook} className="cursor-pointer" data-testid="menuitem-mistake-book">
           <BookOpen className="w-4 h-4 text-slate-500" />
           <span className="flex-1">错题本</span>
@@ -266,7 +283,21 @@ export function MoreMenu({
             <span>邀请好友</span>
           </DropdownMenuItem>
         )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Adaptive Suggestions Dialog */}
+      <Dialog open={showAdaptiveSuggestions} onOpenChange={setShowAdaptiveSuggestions}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lightbulb className="w-5 h-5 text-amber-500" />
+              学习建议
+            </DialogTitle>
+          </DialogHeader>
+          <AdaptiveSuggestionPanel />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

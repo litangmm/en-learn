@@ -2,6 +2,30 @@
   "version": "1.0",
   "releases": [
     {
+      "version": "v0.90.0",
+      "tag": "v0.90.0",
+      "commit": "fcda48f",
+      "date": "2026-05-27T01:27:19.161Z",
+      "iterationId": "iter-002",
+      "title": "ViewRouter 动态视图状态",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-67ij7kboi-litangmms-projects.vercel.app"
+    },
+    {
+      "version": "v0.89.0",
+      "tag": "v0.89.0",
+      "commit": "7dd55a0",
+      "date": "2026-05-26T23:54:10.643Z",
+      "iterationId": "iter-001",
+      "title": "自适应出题策略引擎",
+      "features": [
+        "迭代实现"
+      ],
+      "deployUrl": "https://en-learn-glr055egx-litangmms-projects.vercel.app"
+    },
+    {
       "version": "v0.88.0",
       "tag": "v0.88.0",
       "commit": "a3ecbac",

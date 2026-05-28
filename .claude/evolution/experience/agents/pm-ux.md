@@ -291,3 +291,10 @@
   - iter-003：SmartReview data-testid 修复 + App.recall.test.tsx getByTestId 修复（2423 tests，v0.84.0）
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
 - **观察**: epic-079 完成度 3/3。声明式路由注册模式完全符合 PM-UX 的「学习心流」理念——新视图注册无需修改 App.tsx 条件渲染，对现有用户学习体验的侵入性降到最低。VIEW_CONFIGS 的 i18nKey 和 a11yRole 字段为未来国际化提供了数据结构基础。**epic-079 完成，PM-UX 可提出新的用户体验优化提案**
+
+### 2026-05-27 (cycle-2026-05-27-207) — epic-085 iter-001 支持完成 (2707 tests, 历史最高水位)
+- **相关 Epic**: epic-085「路由驱动式自适应学习状态机」—— 作为支持者
+- **结果**: epic-085 iter-001 **完成并测试通过**，v0.89.0，2707/2714 测试通过（5 skipped，历史最高水位）
+- **完成内容**: useAdaptiveQuestionContext hook + useAdaptiveQuestionSelector hook（priority/balanced/focus-weak 三种策略）+ 全面测试覆盖
+- **当前状态**: **epic-085 完成度 1/4，剩余 iter-002~004（3 pending）**
+- **观察**: epic-085 iter-001 的自适应出题策略引擎与 PM-UX「学习心流」理念高度一致——三种自适应策略（priority 优先薄弱点/balanced 平衡兼顾/focus-weak 聚焦弱点）为用户提供了清晰的学习方向选择，避免「不知道该做什么」的困惑。useAdaptiveQuestionContext 从多个数据源聚合学习状态，让用户对自己的学习状态一目了然。**epic-085 完成度 1/4，剩余 iter-002（ViewRouter 动态视图状态）+ iter-003（学习状态联动面板）+ iter-004（自适应难度校准）继续支持，关注自适应学习对用户心流的保护**

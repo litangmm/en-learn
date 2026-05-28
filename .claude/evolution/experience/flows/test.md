@@ -6,6 +6,14 @@
 ## 常见问题
 （由进化引擎自动总结）
 
+### 2026-05-27 (cycle-2026-05-27-206)
+- **迭代**: epic-085 iter-001「自适应出题策略引擎」—— **全部测试通过**
+- **测试覆盖**: 2707/2714 单元测试通过（历史最高水位，零回归）
+  - useAdaptiveQuestionContext.test.ts: 聚合逻辑测试（从 useXP/usePractice/useLearningProfile/useFlowState/useMistakes 聚合）+ 空数据回退 + 边界情况覆盖
+  - useAdaptiveQuestionSelector.test.ts: 三种策略（priority/balanced/focus-weak）测试 + 权重计算准确性 + 边界条件（无学习数据/权重归一化）
+  - 全量回归：之前 2707 个测试全部通过（5 skipped）
+- **观察**: 2707 测试零回归，历史最高水位持续保持（连续 4 cycle）。useAdaptiveQuestionContext 的聚合逻辑测试覆盖了多个数据源的边界情况（空存储/部分数据/全部数据）。useAdaptiveQuestionSelector 的策略切换测试验证了三种自适应出题策略的正确性。**epic-085 完成度 1/4，剩余 iter-002~004（3 pending iterations）继续推进**
+
 ### 2026-05-13 (cycle-2026-05-13-155)
 - **迭代**: epic-043 iter-003「搜索性能优化（debounce + 索引查询）」—— **全部测试通过**
 - **测试覆盖**: 1806/1807 单元测试通过（历史最高水位，零回归）

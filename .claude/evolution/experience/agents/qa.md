@@ -425,3 +425,14 @@
 - **当前状态**: **epic-069 完成度 3/4，iter-004 pending；epic-083 提案者（3 支持）**
 - **观察**: 2340 测试零回归，历史最高水位持续保持（连续 3 cycle）。weaknessPatterns.test.ts 新增 35 个测试，覆盖了 `pattern`/`reason`/`mode`/`recommendation` 字段的边界情况（空数据、全部相同准确率、零准确率）。Build 3.59s，Lint 0 errors。**epic-069 还有 1 个迭代（iter-004），epic-079 已当选为优先 Epic，epic-083 性能门禁建议在 epic-079 iter-002 完成后启动**
 
+### 2026-05-27 (cycle-2026-05-27-207) — epic-085 iter-001 完成 (2707 tests, 历史最高水位)
+- **相关 Epic**: epic-085 iter-001「自适应出题策略引擎」—— 作为支持者
+- **结果**: epic-085 iter-001 **完成并测试通过**，v0.89.0，2707/2714 测试通过（5 skipped，历史最高水位）
+- **相关质量门禁**: 单元测试回归、useAdaptiveQuestionContext hook 测试、useAdaptiveQuestionSelector hook 测试、策略切换测试、权重计算测试、边界情况测试、构建稳定性
+- **本次验证**: epic-085 iter-001 质量门禁验证
+  - useAdaptiveQuestionContext.test.ts: 聚合逻辑测试（从 useXP/usePractice/useLearningProfile/useFlowState/useMistakes 聚合）+ 空数据回退 + 边界情况覆盖
+  - useAdaptiveQuestionSelector.test.ts: 三种策略（priority/balanced/focus-weak）测试 + 权重计算准确性 + 边界条件（无学习数据/权重归一化）
+  - 全量回归：**2707/2714 单元测试通过**（5 skipped，历史最高水位），lint 14 warnings（13 pre-existing react-refresh + 1 react-hooks/exhaustive-deps），build 3.65s success
+- **当前状态**: **epic-085 完成度 1/4，剩余 iter-002~004（3 pending）**
+- **观察**: 2707 测试零回归，历史最高水位持续保持（连续 4 cycle）。useAdaptiveQuestionContext 的聚合逻辑测试覆盖了多个数据源的边界情况（空存储/部分数据/全部数据）。useAdaptiveQuestionSelector 的策略切换测试验证了三种自适应出题策略的正确性。**epic-085 还有 3 个迭代（iter-002~004），继续关注自适应学习系统的测试覆盖完整性**
+

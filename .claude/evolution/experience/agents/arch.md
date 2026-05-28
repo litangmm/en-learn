@@ -364,6 +364,13 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 提案者 + 全部完成）
 - **观察**: epic-079 版本范围 v0.82.0-v0.84.0。ARCH 自 epic-006（cycle-38）「前端架构债务清理」提案以来持续追踪 App.tsx 复杂度问题，终于在 epic-079 中完整落地声明式视图注册体系。VIEW_CONFIGS 单例源设计确保所有视图元数据集中管理。ViewRegistryProvider 为 epic-085「路由驱动式自适应学习状态机」奠定基础。**epic-079 完成，ARCH 需提出新的架构提案**
 
+### 2026-05-27 (cycle-2026-05-27-207) — epic-085 iter-001 支持完成 (2707 tests, 历史最高水位)
+- **相关 Epic**: epic-085「路由驱动式自适应学习状态机」—— 作为支持者
+- **结果**: epic-085 iter-001 **完成并测试通过**，v0.89.0，2707/2714 测试通过（5 skipped，历史最高水位）
+- **完成内容**: useAdaptiveQuestionContext hook + useAdaptiveQuestionSelector hook（priority/balanced/focus-weak 三种策略）+ 全面测试覆盖
+- **当前状态**: **epic-085 完成度 1/4，剩余 iter-002~004（3 pending）**
+- **观察**: epic-085 iter-001 完美整合了 epic-079（ViewRouter 注册中心模式）和 epic-083（个人学习数据 hooks）的架构和基础设施。useAdaptiveQuestionContext 的纯函数设计（从多个 hooks 聚合成统一上下文）和 useAdaptiveQuestionSelector 的策略模式（priority/balanced/focus-weak 三种自适应策略）符合 ARCH 倡导的「架构先于功能」理念。零新增依赖、零构建体积增长。**epic-085 完成度 1/4，剩余 iter-002（ViewRouter 动态视图状态）+ iter-003（学习状态联动面板）+ iter-004（自适应难度校准）继续支持，关注架构扩展性和自适应算法的可维护性**
+
 ### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代支持完成 (2648 tests, 历史最高水位)
 - **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
 - **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）

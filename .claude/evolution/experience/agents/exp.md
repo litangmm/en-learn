@@ -319,6 +319,14 @@
 - **当前状态**: **连续未被选中计数保持清零**（epic-079 支持者）
 - **观察**: epic-079 完成度 3/3。ViewRouter 注册中心模式为 EXP 的「自适应学习」提供了新视角——ViewRegistry 的声明式设计允许动态视图状态转换，结合 useViewRegistry 的注册/注销能力，可实现「根据用户学习状态动态调整视图布局」。epic-079 为 epic-085「路由驱动式自适应学习状态机」提供了基础设施。**epic-079 完成，EXP 需提出新的自适应学习相关提案**
 
+### 2026-05-27 (cycle-2026-05-27-206) — epic-085 iter-001 完成 (2707 tests, 历史最高水位)
+- **相关 Epic**: epic-085「路由驱动式自适应学习状态机」—— **提案者 + 支持完成**
+- **结果**: epic-085 iter-001 **完成并测试通过**，v0.89.0，2707/2714 测试通过（5 skipped，历史最高水位）
+- **完成内容**: useAdaptiveQuestionContext hook（从 useXP/usePractice/useLearningProfile/useFlowState/useMistakes 聚合学习状态数据）+ useAdaptiveQuestionSelector hook（实现 priority/balanced/focus-weak 三种出题策略）+ 整合 QuestionWeighting 权重计算 + PracticeRecommendations 优先级 + 弱点检测 + 全面测试覆盖
+- **epic-085 后续**: iter-002（ViewRouter 动态视图状态）即将 PLAN
+- **当前状态**: **epic-085 完成度 1/4，剩余 iter-002~004（3 pending）**
+- **观察**: epic-085 iter-001 完美整合了 epic-079 ViewRouter 注册中心模式（架构基础）和 epic-083 个人学习数据（数据基础）：useAdaptiveQuestionContext 从 LearningProfile（用户能力画像）+ PracticeRecommendation（练习推荐）+ ForgettingCurve（nextReviewAt 复习时机）+ PersonalDictionaryStats（高错误率词统计）聚合学习状态数据。三种自适应策略（priority/balanced/focus-weak）为不同学习场景提供灵活选择。**epic-085 完成度 1/4，剩余 iter-002（ViewRouter 动态视图状态）+ iter-003（学习状态联动面板）+ iter-004（自适应难度校准）继续推进，EXP 作为提案者持续关注自适应算法在实际学习场景中的效果**
+
 ### 2026-05-27 (cycle-2026-05-27-203) — epic-083 全部 4 个迭代支持完成 + epic-085 即将进入 PLAN (2648 tests, 历史最高水位)
 - **相关 Epic**: epic-083「个人学习数据深度挖掘与复用」—— 作为支持者
 - **结果**: **epic-083 全部 4 个迭代完成并部署**，v0.88.0，2648/2653 测试通过（5 skipped，历史最高水位）

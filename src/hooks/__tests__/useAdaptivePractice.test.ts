@@ -60,6 +60,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         // Create mock mistakes: user confused sentence X with correct sentence Y multiple times
@@ -94,6 +95,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         // User confused sentence 3 more times than sentence 4
@@ -128,6 +130,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         // Only one mistake record
@@ -159,6 +162,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         // Even with mistake history that would normally influence selection
@@ -191,6 +195,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -237,6 +242,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -285,6 +291,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         // No mistake history
@@ -304,6 +311,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -321,6 +329,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -338,6 +347,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -358,6 +368,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -383,6 +394,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'random',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -404,6 +416,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
         vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
 
@@ -412,6 +425,7 @@ describe('useAdaptivePractice', () => {
         expect(result.current.config).toEqual({
           strategy: 'history-based',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
       });
 
@@ -419,6 +433,7 @@ describe('useAdaptivePractice', () => {
         vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({
           strategy: 'mixed',
           historyWeight: 0.5,
+          difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 },
         });
 
         const mockMistakes = [

@@ -1,6 +1,6 @@
 import type { PracticeState } from '@/hooks/usePractice';
-import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics, ModeStats, PracticeMode, AdaptiveQuestionContext } from '@/data/types';
-import { MILESTONE_DEFINITIONS, DEFAULT_CHURN_METRICS } from '@/data/types';
+import type { Mistake, SessionHistory, XPProfile, DailyChallenge, DailyChallengeState, BadgeProgress, BadgeState, BadgeDefinition, UnlockedBadge, ShareMetrics, PersonalWord, AdaptiveConfig, HintConfig, DailyReviewState, WeeklyReportConfig, InviteMetrics, InviteConfig, Goal, GoalState, Milestone, MilestoneState, PersonalDictionary, ChurnMetrics, ModeStats, PracticeMode, AdaptiveQuestionContext, DifficultyCalibrationConfig, SentenceDifficultyLevel, AdaptiveDifficultyProfile } from '@/data/types';
+import { MILESTONE_DEFINITIONS, DEFAULT_CHURN_METRICS, DEFAULT_DIFFICULTY_CALIBRATION, MAX_SESSION_ACCURACY_HISTORY } from '@/data/types';
 import { REVIEW_INTERVALS, DEFAULT_HINT_CONFIG, DEFAULT_WEEKLY_REPORT_CONFIG, DEFAULT_INVITE_METRICS, DEFAULT_INVITE_CONFIG } from '@/data/types';
 import { calculateNextReviewInterval, createReviewResult } from './spaced-repetition';
 import { clearDictionaryCache, getCachedDictionary } from '@/data/dictionaryCache';
@@ -46,6 +46,7 @@ const PERSONAL_DICTIONARY_KEY = 'en-learn-personal-dictionary';
 const CHURN_METRICS_KEY = 'en-learn-churn-metrics';
 const MODE_STATS_KEY = 'en-learn-mode-stats';
 const ADAPTIVE_QUESTION_CONTEXT_KEY = 'en-learn-adaptive-context';
+const DIFFICULTY_PROFILE_KEY = 'en-learn-difficulty-profile';
 const MAX_HISTORY_ENTRIES = 100;
 const INVITE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const INVITE_CODE_LENGTH = 8;
@@ -473,6 +474,85 @@ function isValidPersonalDictionary(data: unknown): data is PersonalDictionary {
 }
 
 // ---------------------------------------------------------------------------
+// Adaptive Difficulty Profile Validator (epic-085 iter-004)
+// ---------------------------------------------------------------------------
+
+/**
+ * Default empty adaptive difficulty profile.
+ */
+const DEFAULT_ADAPTIVE_DIFFICULTY_PROFILE: AdaptiveDifficultyProfile = {
+  inferredDifficultyBand: 'normal',
+  easyAccuracyRate: 0,
+  mediumAccuracyRate: 0,
+  hardAccuracyRate: 0,
+  sessionAccuracyHistory: [],
+};
+
+function isValidSessionAccuracyEntry(data: unknown): data is { timestamp: number; accuracy: number; mode: PracticeMode } {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  if (typeof obj.timestamp !== 'number') {
+    return false;
+  }
+
+  if (typeof obj.accuracy !== 'number' || obj.accuracy < 0 || obj.accuracy > 1) {
+    return false;
+  }
+
+  if (typeof obj.mode !== 'string') {
+    return false;
+  }
+
+  const validModes = ['fill-in-blanks', 'dictation', 'multiple-choice', 'sentence-reorder'];
+  if (!validModes.includes(obj.mode)) {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidAdaptiveDifficultyProfile(data: unknown): data is AdaptiveDifficultyProfile {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  const validBands = ['easy', 'normal', 'hard'];
+  if (typeof obj.inferredDifficultyBand !== 'string' || !validBands.includes(obj.inferredDifficultyBand)) {
+    return false;
+  }
+
+  if (typeof obj.easyAccuracyRate !== 'number' || obj.easyAccuracyRate < 0 || obj.easyAccuracyRate > 1) {
+    return false;
+  }
+
+  if (typeof obj.mediumAccuracyRate !== 'number' || obj.mediumAccuracyRate < 0 || obj.mediumAccuracyRate > 1) {
+    return false;
+  }
+
+  if (typeof obj.hardAccuracyRate !== 'number' || obj.hardAccuracyRate < 0 || obj.hardAccuracyRate > 1) {
+    return false;
+  }
+
+  if (!Array.isArray(obj.sessionAccuracyHistory)) {
+    return false;
+  }
+
+  if (!obj.sessionAccuracyHistory.every(isValidSessionAccuracyEntry)) {
+    return false;
+  }
+
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Adaptive Question Context Validator (epic-085 iter-001)
+// ---------------------------------------------------------------------------
 // Adaptive Question Context Validator (epic-085 iter-001)
 // ---------------------------------------------------------------------------
 
@@ -772,6 +852,7 @@ export const DEFAULT_BADGE_PROGRESS: BadgeProgress = {
 export const DEFAULT_ADAPTIVE_CONFIG: AdaptiveConfig = {
   strategy: 'random',
   historyWeight: 0.5,
+  difficultyCalibration: { ...DEFAULT_DIFFICULTY_CALIBRATION },
 };
 
 export const BADGE_DEFINITIONS: BadgeDefinition[] = [
@@ -982,6 +1063,42 @@ function _saveAdaptiveQuestionContext(ctx: AdaptiveQuestionContext): void {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Adaptive Difficulty Profile Load/Save (epic-085 iter-004)
+// ---------------------------------------------------------------------------
+
+function loadDifficultyProfile(): AdaptiveDifficultyProfile {
+  const raw = localStorage.getItem(DIFFICULTY_PROFILE_KEY);
+  if (raw === null) {
+    return { ...DEFAULT_ADAPTIVE_DIFFICULTY_PROFILE };
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.warn('[StorageService] Corrupted difficulty profile data, clearing');
+    localStorage.removeItem(DIFFICULTY_PROFILE_KEY);
+    return { ...DEFAULT_ADAPTIVE_DIFFICULTY_PROFILE };
+  }
+
+  if (isValidAdaptiveDifficultyProfile(parsed)) {
+    return parsed;
+  }
+
+  console.warn('[StorageService] Invalid difficulty profile schema, clearing');
+  localStorage.removeItem(DIFFICULTY_PROFILE_KEY);
+  return { ...DEFAULT_ADAPTIVE_DIFFICULTY_PROFILE };
+}
+
+function saveDifficultyProfile(profile: AdaptiveDifficultyProfile): void {
+  try {
+    localStorage.setItem(DIFFICULTY_PROFILE_KEY, JSON.stringify(profile));
+  } catch (error) {
+    console.warn('[StorageService] Failed to save difficulty profile:', error);
+  }
+}
+
 function loadAdaptiveConfig(): AdaptiveConfig | null {
   const raw = localStorage.getItem(ADAPTIVE_CONFIG_KEY);
   if (raw === null) {
@@ -1001,7 +1118,32 @@ function loadAdaptiveConfig(): AdaptiveConfig | null {
     const obj = parsed as Record<string, unknown>;
     const validStrategies = ['random', 'history-based', 'mixed'];
     if (typeof obj.strategy === 'string' && validStrategies.includes(obj.strategy) && typeof obj.historyWeight === 'number') {
-      return parsed as AdaptiveConfig;
+      // Ensure difficultyCalibration has default values if not present or invalid
+      let difficultyCalibration = DEFAULT_DIFFICULTY_CALIBRATION;
+      if (typeof obj.difficultyCalibration === 'object' && obj.difficultyCalibration !== null) {
+        const calibration = obj.difficultyCalibration as Record<string, unknown>;
+        if (
+          typeof calibration.targetAccuracy === 'number' &&
+          calibration.targetAccuracy >= 0 && calibration.targetAccuracy <= 1 &&
+          typeof calibration.toleranceBand === 'number' &&
+          calibration.toleranceBand >= 0 && calibration.toleranceBand <= 1 &&
+          typeof calibration.calibrationSpeed === 'number' &&
+          calibration.calibrationSpeed >= 0 && calibration.calibrationSpeed <= 1 &&
+          typeof calibration.enabled === 'boolean'
+        ) {
+          difficultyCalibration = {
+            enabled: calibration.enabled,
+            targetAccuracy: calibration.targetAccuracy,
+            toleranceBand: calibration.toleranceBand,
+            calibrationSpeed: calibration.calibrationSpeed,
+          };
+        }
+      }
+      return {
+        strategy: obj.strategy as 'random' | 'history-based' | 'mixed',
+        historyWeight: obj.historyWeight,
+        difficultyCalibration,
+      };
     }
   }
 
@@ -2271,6 +2413,88 @@ export const StorageService = {
       updatedAt: Date.now(),
     };
     _saveAdaptiveQuestionContext(updated);
+  },
+
+  // ---------------------------------------------------------------------------
+  // Adaptive Difficulty Profile (epic-085 iter-004)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Gets the adaptive difficulty profile from storage.
+   * Returns default profile if none exists or data is corrupted.
+   */
+  getDifficultyProfile(): AdaptiveDifficultyProfile {
+    return loadDifficultyProfile();
+  },
+
+  /**
+   * Saves the adaptive difficulty profile to storage.
+   * Automatically trims sessionAccuracyHistory to MAX_SESSION_ACCURACY_HISTORY (50) entries.
+   */
+  saveDifficultyProfile(profile: AdaptiveDifficultyProfile): void {
+    // Ensure sessionAccuracyHistory is limited to max entries
+    const trimmedHistory = profile.sessionAccuracyHistory.slice(-MAX_SESSION_ACCURACY_HISTORY);
+    saveDifficultyProfile({
+      ...profile,
+      sessionAccuracyHistory: trimmedHistory,
+    });
+  },
+
+  /**
+   * Updates the difficulty profile with a new session accuracy entry.
+   * Uses exponential moving average for calibration speed.
+   */
+  updateDifficultyProfile(
+    mode: PracticeMode,
+    accuracy: number,
+    config: DifficultyCalibrationConfig = DEFAULT_DIFFICULTY_CALIBRATION
+  ): AdaptiveDifficultyProfile {
+    const current = loadDifficultyProfile();
+    const { calibrationSpeed } = config;
+
+    // Apply exponential moving average to update accuracy rates
+    const updateRate = (prev: number, newVal: number): number => {
+      return prev * (1 - calibrationSpeed) + newVal * calibrationSpeed;
+    };
+
+    // Determine difficulty band based on average accuracy
+    const recentHistory = current.sessionAccuracyHistory.slice(-10);
+    let avgRecentAccuracy = 0;
+    if (recentHistory.length > 0) {
+      const sum = recentHistory.reduce((acc, entry) => acc + entry.accuracy, 0);
+      avgRecentAccuracy = sum / recentHistory.length;
+    }
+
+    // Infer difficulty band
+    let inferredBand: SentenceDifficultyLevel;
+    if (avgRecentAccuracy > 0.75) {
+      inferredBand = 'easy';
+    } else if (avgRecentAccuracy >= 0.5) {
+      inferredBand = 'normal';
+    } else {
+      inferredBand = 'hard';
+    }
+
+    // Create new entry
+    const newEntry: { timestamp: number; accuracy: number; mode: PracticeMode } = {
+      timestamp: Date.now(),
+      accuracy,
+      mode,
+    };
+
+    // Trim history to max entries
+    const updatedHistory = [...current.sessionAccuracyHistory, newEntry].slice(-MAX_SESSION_ACCURACY_HISTORY);
+
+    const updated: AdaptiveDifficultyProfile = {
+      inferredDifficultyBand: inferredBand,
+      easyAccuracyRate: updateRate(current.easyAccuracyRate, accuracy),
+      mediumAccuracyRate: updateRate(current.mediumAccuracyRate, accuracy),
+      hardAccuracyRate: updateRate(current.hardAccuracyRate, accuracy),
+      sessionAccuracyHistory: updatedHistory,
+    };
+
+    saveDifficultyProfile(updated);
+    return updated;
   },
 
   exportAllData(): ExportData {

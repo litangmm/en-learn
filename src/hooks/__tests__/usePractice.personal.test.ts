@@ -70,6 +70,24 @@ vi.mock('@/services/storage', () => ({
     getMistakes: vi.fn(() => []),
     addMistake: vi.fn(),
     addHistory: vi.fn(),
+    getHistory: vi.fn(() => []),
+    getModeStats: vi.fn(() => []),
+    getXPProfile: vi.fn(() => ({
+      level: 2,
+      currentXP: 50,
+      totalXP: 50,
+    })),
+    getBadgeProgress: vi.fn(() => ({})),
+    getMilestones: vi.fn(() => ({ unlockedMilestones: [], lastUpdated: Date.now() })),
+    getAdaptiveConfig: vi.fn(() => ({
+      difficultyCalibration: {
+        enabled: false,
+        targetAccuracy: 0.75,
+        toleranceBand: 0.05,
+        calibrationSpeed: 0.1,
+      },
+    })),
+    getReviewQueue: vi.fn(() => []),
   },
 }));
 

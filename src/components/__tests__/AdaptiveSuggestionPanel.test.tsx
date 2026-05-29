@@ -2,7 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { AdaptiveSuggestionPanel } from '../AdaptiveSuggestionPanel';
 import { useAdaptiveSuggestions } from '@/hooks/useAdaptiveSuggestions';
+import { useAdaptiveDifficulty } from '@/hooks/useAdaptiveDifficulty';
 import type { SuggestedAction } from '@/hooks/useAdaptiveSuggestions';
+import type { SentenceDifficultyLevel } from '@/data/types';
 
 const defaultMockActions: SuggestedAction[] = [
   {
@@ -38,6 +40,11 @@ vi.mock('@/hooks/useAdaptiveSuggestions', () => ({
   useAdaptiveSuggestions: vi.fn(),
 }));
 
+// Mock useAdaptiveDifficulty hook at module level
+vi.mock('@/hooks/useAdaptiveDifficulty', () => ({
+  useAdaptiveDifficulty: vi.fn(),
+}));
+
 describe('AdaptiveSuggestionPanel', () => {
   beforeEach(() => {
     cleanup();
@@ -46,6 +53,22 @@ describe('AdaptiveSuggestionPanel', () => {
     vi.mocked(useAdaptiveSuggestions).mockReturnValue({
       statusSummary: defaultStatusSummary,
       suggestedActions: defaultMockActions,
+    });
+    // Default mock for useAdaptiveDifficulty
+    vi.mocked(useAdaptiveDifficulty).mockReturnValue({
+      calibrateSessionBand: vi.fn().mockReturnValue('normal' as SentenceDifficultyLevel),
+      getUserDifficultyProfile: vi.fn().mockReturnValue({
+        inferredDifficultyBand: 'normal' as SentenceDifficultyLevel,
+        easyAccuracyRate: 0.8,
+        mediumAccuracyRate: 0.7,
+        hardAccuracyRate: 0.5,
+        sessionAccuracyHistory: [
+          { timestamp: Date.now(), accuracy: 0.75, mode: 'fill-in-blanks' },
+        ],
+      }),
+      inferSentenceDifficulty: vi.fn(),
+      getDifficultyAdjustedSentenceIds: vi.fn(),
+      trackSessionAccuracy: vi.fn(),
     });
   });
 
@@ -315,5 +338,130 @@ describe('AdaptiveSuggestionPanel', () => {
     // Should render without errors
     render(<AdaptiveSuggestionPanel />);
     expect(screen.getAllByTestId('action-item')).toHaveLength(11);
+  });
+
+  // ---------------------------------------------------------------------------
+  // Difficulty Calibration Section Tests
+  // ---------------------------------------------------------------------------
+
+  describe('DifficultyCalibrationSection', () => {
+    it('does not render calibration section when isPracticeMode is false', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={false} />);
+      expect(screen.queryByTestId('difficulty-calibration-section')).not.toBeInTheDocument();
+    });
+
+    it('renders calibration section when isPracticeMode is true', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      expect(screen.getByTestId('difficulty-calibration-section')).toBeInTheDocument();
+    });
+
+    it('renders current difficulty badge with correct label', () => {
+      // Set easy band
+      vi.mocked(useAdaptiveDifficulty).mockReturnValue({
+        calibrateSessionBand: vi.fn().mockReturnValue('easy' as SentenceDifficultyLevel),
+        getUserDifficultyProfile: vi.fn().mockReturnValue({
+          inferredDifficultyBand: 'easy' as SentenceDifficultyLevel,
+          easyAccuracyRate: 0.8,
+          mediumAccuracyRate: 0.7,
+          hardAccuracyRate: 0.5,
+          sessionAccuracyHistory: [],
+        }),
+        inferSentenceDifficulty: vi.fn(),
+        getDifficultyAdjustedSentenceIds: vi.fn(),
+        trackSessionAccuracy: vi.fn(),
+      });
+
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      expect(screen.getByTestId('current-difficulty-badge')).toHaveTextContent('简单');
+    });
+
+    it('renders normal difficulty badge', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      expect(screen.getByTestId('current-difficulty-badge')).toHaveTextContent('适中');
+    });
+
+    it('renders hard difficulty badge', () => {
+      vi.mocked(useAdaptiveDifficulty).mockReturnValue({
+        calibrateSessionBand: vi.fn().mockReturnValue('hard' as SentenceDifficultyLevel),
+        getUserDifficultyProfile: vi.fn().mockReturnValue({
+          inferredDifficultyBand: 'hard' as SentenceDifficultyLevel,
+          easyAccuracyRate: 0.8,
+          mediumAccuracyRate: 0.7,
+          hardAccuracyRate: 0.5,
+          sessionAccuracyHistory: [],
+        }),
+        inferSentenceDifficulty: vi.fn(),
+        getDifficultyAdjustedSentenceIds: vi.fn(),
+        trackSessionAccuracy: vi.fn(),
+      });
+
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      expect(screen.getByTestId('current-difficulty-badge')).toHaveTextContent('困难');
+    });
+
+    it('renders expand/collapse trigger button', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      expect(screen.getByTestId('calibration-expand-trigger')).toBeInTheDocument();
+    });
+
+    it('shows calibration progress when expanded', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+
+      // Click to expand
+      const expandTrigger = screen.getByTestId('calibration-expand-trigger');
+      fireEvent.click(expandTrigger);
+
+      // Should show calibration progress
+      expect(screen.getByTestId('calibration-progress')).toBeInTheDocument();
+      expect(screen.getByTestId('calibration-progress-bar')).toBeInTheDocument();
+    });
+
+    it('renders difficulty adjustment buttons when expanded', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+
+      // Click to expand
+      const expandTrigger = screen.getByTestId('calibration-expand-trigger');
+      fireEvent.click(expandTrigger);
+
+      // Should show adjustment buttons
+      expect(screen.getByTestId('adjust-down-button')).toBeInTheDocument();
+      expect(screen.getByTestId('adjust-up-button')).toBeInTheDocument();
+    });
+
+    it('renders adjust up button with correct text', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      const expandTrigger = screen.getByTestId('calibration-expand-trigger');
+      fireEvent.click(expandTrigger);
+
+      expect(screen.getByTestId('adjust-up-button')).toHaveTextContent('提高难度');
+    });
+
+    it('renders adjust down button with correct text', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+      const expandTrigger = screen.getByTestId('calibration-expand-trigger');
+      fireEvent.click(expandTrigger);
+
+      expect(screen.getByTestId('adjust-down-button')).toHaveTextContent('降低难度');
+    });
+
+    it('shows collapsed by default', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+
+      // Progress should not be visible when collapsed
+      expect(screen.queryByTestId('calibration-progress')).not.toBeInTheDocument();
+    });
+
+    it('collapses when trigger is clicked again', () => {
+      render(<AdaptiveSuggestionPanel isPracticeMode={true} />);
+
+      // Expand
+      const expandTrigger = screen.getByTestId('calibration-expand-trigger');
+      fireEvent.click(expandTrigger);
+      expect(screen.getByTestId('calibration-progress')).toBeInTheDocument();
+
+      // Collapse
+      fireEvent.click(expandTrigger);
+      expect(screen.queryByTestId('calibration-progress')).not.toBeInTheDocument();
+    });
   });
 });

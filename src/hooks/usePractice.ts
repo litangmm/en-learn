@@ -5,6 +5,7 @@ import { loadDictionary } from '@/data/loader';
 import { getDictionaryById } from '@/data/dictionaries';
 import { storage } from '@/services/storage';
 import { useAdaptivePractice } from '@/hooks/useAdaptivePractice';
+import { useAdaptiveDifficulty } from '@/hooks/useAdaptiveDifficulty';
 import { useHintLevel } from '@/hooks/useHintLevel';
 import { useQuestionWeighting } from '@/hooks/useQuestionWeighting';
 import { usePersonalWordIndex } from '@/hooks/usePersonalWordIndex';
@@ -42,6 +43,8 @@ export interface PracticeState {
 export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?: PracticeMode) {
   // Adaptive practice hook for smart distractor selection
   const { getSmartDistractors } = useAdaptivePractice();
+  // Adaptive difficulty hook for difficulty-calibrated sentence selection
+  const { getDifficultyAdjustedSentenceIds, trackSessionAccuracy } = useAdaptiveDifficulty();
   // Hint level hook for dynamic hint adjustment
   const { recordCorrectAnswer, recordWrongAnswer, shouldShowHint } = useHintLevel();
   // Question weighting hook for adaptive sentence selection
@@ -173,23 +176,32 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
       }
     }
 
-    // Get all mistakes from storage for weighting
-    const allMistakes = storage.getMistakes();
-    const hasMistakes = allMistakes.length > 0;
-
     // Get all sentence IDs from target sentences
     const allSentenceIds = targetSentences.map((s) => s.id);
 
-    // Use weighted shuffle if mistakes exist, otherwise simple shuffle
+    // Check if adaptive difficulty is enabled in config
+    const adaptiveConfig = storage.getAdaptiveConfig();
+    const adaptiveEnabled = adaptiveConfig.difficultyCalibration.enabled;
+
+    // Use adaptive difficulty filtering when enabled
     let selectedIds: string[];
-    if (hasMistakes) {
-      // Use weighted selection to prioritize problematic sentences
-      // Pass Date.now() for accurate spaced repetition state evaluation
-      selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10, Date.now());
+    if (adaptiveEnabled) {
+      // Use difficulty-adjusted selection for calibrated sentence selection
+      selectedIds = getDifficultyAdjustedSentenceIds(allSentenceIds, dictionaryId);
     } else {
-      // Fallback to simple shuffle when no mistakes exist
-      const shuffled = [...allSentenceIds].sort(() => Math.random() - 0.5);
-      selectedIds = shuffled.slice(0, 10);
+      // Fallback to existing weighted shuffle when adaptive is disabled
+      const allMistakes = storage.getMistakes();
+      const hasMistakes = allMistakes.length > 0;
+
+      if (hasMistakes) {
+        // Use weighted selection to prioritize problematic sentences
+        // Pass Date.now() for accurate spaced repetition state evaluation
+        selectedIds = getWeightedSentenceIds(allSentenceIds, allMistakes, 10, Date.now());
+      } else {
+        // Fallback to simple shuffle when no mistakes exist
+        const shuffled = [...allSentenceIds].sort(() => Math.random() - 0.5);
+        selectedIds = shuffled.slice(0, 10);
+      }
     }
 
     // Map IDs back to Sentence objects, maintaining the selected order
@@ -200,7 +212,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
     return result;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sentences, sentenceIds, shuffleSeed, isPersonalMode]);
+  }, [sentences, sentenceIds, shuffleSeed, isPersonalMode, dictionaryId, getDifficultyAdjustedSentenceIds]);
 
   // Debounced save session
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -404,6 +416,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
             },
           ],
         }));
+
+        // Track accuracy for adaptive difficulty calibration
+        trackSessionAccuracy(true, mode ?? 'fill-in-blanks');
       } else {
         setState((prev) => ({
           ...prev,
@@ -422,6 +437,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
             dictionaryId,
           },
         }));
+
+        // Track accuracy for adaptive difficulty calibration
+        trackSessionAccuracy(false, mode ?? 'fill-in-blanks');
       }
       return;
     }
@@ -451,6 +469,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
         // Record for hint level adjustment
         recordCorrectAnswer();
+
+        // Track accuracy for adaptive difficulty calibration
+        trackSessionAccuracy(true, mode ?? 'multiple-choice');
       } else {
         setState((prev) => ({
           ...prev,
@@ -473,6 +494,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
         // Record for hint level adjustment
         recordWrongAnswer();
+
+        // Track accuracy for adaptive difficulty calibration
+        trackSessionAccuracy(false, mode ?? 'multiple-choice');
       }
       return;
     }
@@ -519,6 +543,9 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
       // Record for hint level adjustment
       recordCorrectAnswer();
+
+      // Track accuracy for adaptive difficulty calibration
+      trackSessionAccuracy(true, mode ?? 'fill-in-blanks');
     } else {
       setState((prev) => ({
         ...prev,
@@ -541,8 +568,11 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
 
       // Record for hint level adjustment
       recordWrongAnswer();
+
+      // Track accuracy for adaptive difficulty calibration
+      trackSessionAccuracy(false, mode ?? 'fill-in-blanks');
     }
-  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens, recordCorrectAnswer, recordWrongAnswer]);
+  }, [currentSentence, state.currentInputs, state.attempts, dictionaryId, sentenceTokens, recordCorrectAnswer, recordWrongAnswer, trackSessionAccuracy, mode]);
 
   const nextSentence = useCallback(() => {
     setState((prev) => {
@@ -603,7 +633,7 @@ export function usePractice(dictionaryId: string, sentenceIds?: string[], mode?:
       orderedTokenIds: [],
     });
     setPendingMistakes({});
-    sessionStartTimeRef.current = Date.now();
+    // Don't reset sessionStartTimeRef — if session was restored, don't record history
   }, [shuffledSentences]);
 
   const progress = useMemo(() => {

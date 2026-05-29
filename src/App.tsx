@@ -898,6 +898,7 @@ function AppWithProviders() {
                   unlockedCount={unlockedCount}
                   weaknessCount={weaknessStats.totalWeakCount}
                   isReviewMode={isReviewMode}
+                  isPracticeMode={view === 'practice'}
                   onOpenMistakeBook={handleOpenMistakeBook}
                   onOpenHistory={handleOpenHistory}
                   onOpenDataManager={handleOpenDataManager}

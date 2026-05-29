@@ -291,6 +291,31 @@ export interface PersonalWord {
 export type AdaptiveDistractorStrategy = 'random' | 'history-based' | 'mixed';
 
 /**
+ * Configuration for difficulty calibration behavior.
+ * Controls how the system adjusts sentence difficulty based on user performance.
+ */
+export interface DifficultyCalibrationConfig {
+  /** Whether adaptive difficulty calibration is enabled (default true) */
+  enabled: boolean;
+  /** Target accuracy rate (0-1, default 0.75) */
+  targetAccuracy: number;
+  /** Tolerance band for accuracy (e.g., 0.05 = ±5 percentage points, default 0.05) */
+  toleranceBand: number;
+  /** Smoothing factor for exponential moving average (0-1, default 0.1) */
+  calibrationSpeed: number;
+}
+
+/**
+ * Default difficulty calibration configuration values.
+ */
+export const DEFAULT_DIFFICULTY_CALIBRATION: DifficultyCalibrationConfig = {
+  enabled: true,
+  targetAccuracy: 0.75,
+  toleranceBand: 0.05,
+  calibrationSpeed: 0.1,
+};
+
+/**
  * Configuration for adaptive distractor selection.
  */
 export interface AdaptiveConfig {
@@ -298,6 +323,8 @@ export interface AdaptiveConfig {
   strategy: AdaptiveDistractorStrategy;
   /** Weight for history-based selection (0-1), used in 'mixed' mode */
   historyWeight: number;
+  /** Configuration for difficulty calibration */
+  difficultyCalibration: DifficultyCalibrationConfig;
 }
 
 /**
@@ -1441,6 +1468,50 @@ export const DEFAULT_LEARN_INSIGHT_DATA: LearnInsightData = {
 // ============================================================================
 // Adaptive Learning Types (epic-085 iter-001)
 // ============================================================================
+
+/**
+ * Sentence difficulty levels for adaptive practice.
+ * - 'easy': User has high accuracy (>75%) on this sentence
+ * - 'normal': User has moderate accuracy (50-75%) on this sentence
+ * - 'hard': User has low accuracy (<50%) or struggles with this sentence
+ */
+export type SentenceDifficultyLevel = 'easy' | 'normal' | 'hard';
+
+/**
+ * Session accuracy entry for tracking practice history.
+ */
+export interface SessionAccuracyEntry {
+  /** Timestamp of the session (milliseconds) */
+  timestamp: number;
+  /** Accuracy rate for this session (0-1) */
+  accuracy: number;
+  /** The practice mode used in this session */
+  mode: PracticeMode;
+}
+
+/**
+ * Maximum number of session accuracy entries to keep.
+ * Limited to last 50 entries for memory efficiency.
+ */
+export const MAX_SESSION_ACCURACY_HISTORY = 50;
+
+/**
+ * User's adaptive difficulty profile.
+ * Derived from mode accuracy breakdown and learning history.
+ * Used for calibrating sentence difficulty selection.
+ */
+export interface AdaptiveDifficultyProfile {
+  /** The inferred difficulty band for current practice */
+  inferredDifficultyBand: SentenceDifficultyLevel;
+  /** Accuracy rate for easy sentences (0-1) */
+  easyAccuracyRate: number;
+  /** Accuracy rate for medium/difficult sentences (0-1) */
+  mediumAccuracyRate: number;
+  /** Accuracy rate for hard sentences (0-1) */
+  hardAccuracyRate: number;
+  /** History of session accuracy for calibration (limited to last 50) */
+  sessionAccuracyHistory: SessionAccuracyEntry[];
+}
 
 /**
  * User's learning state context for adaptive question selection.

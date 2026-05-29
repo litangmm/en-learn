@@ -1,8 +1,52 @@
+// Mock useAdaptivePractice - must be before the import
+vi.mock('@/hooks/useAdaptivePractice', () => ({
+  useAdaptivePractice: vi.fn(() => ({
+    getSmartDistractors: vi.fn(() => []),
+  })),
+}));
+
+// Mock useAdaptiveDifficulty - must be before the import
+vi.mock('@/hooks/useAdaptiveDifficulty', () => ({
+  useAdaptiveDifficulty: vi.fn(() => ({
+    getDifficultyAdjustedSentenceIds: vi.fn((ids) => ids.slice(0, 10)),
+    trackSessionAccuracy: vi.fn(),
+  })),
+}));
+
+// Mock useHintLevel
+vi.mock('@/hooks/useHintLevel', () => ({
+  useHintLevel: vi.fn(() => ({
+    recordCorrectAnswer: vi.fn(),
+    recordWrongAnswer: vi.fn(),
+    shouldShowHint: vi.fn(() => false),
+  })),
+}));
+
+// Mock useQuestionWeighting
+vi.mock('@/hooks/useQuestionWeighting', () => ({
+  useQuestionWeighting: vi.fn(() => ({
+    getSentenceWeight: vi.fn(() => 1.0),
+    getWeightedSentenceIds: vi.fn((ids) => ids.slice(0, 10)),
+    getWeightExplanation: vi.fn(() => null),
+  })),
+}));
+
+// Mock usePersonalWordIndex
+vi.mock('@/hooks/usePersonalWordIndex', () => ({
+  usePersonalWordIndex: vi.fn(() => ({
+    getAllAsSentences: vi.fn(() => []),
+  })),
+}));
+
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { usePractice } from '../usePractice';
 import { storage } from '@/services/storage';
 import { loadDictionary } from '@/data/loader';
+
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { renderHook, act, waitFor } from '@testing-library/react';
+import { usePractice } from '../usePractice';
 
 const mockSentences = [
   {
@@ -98,7 +142,7 @@ describe('usePractice multiple-choice', () => {
     vi.spyOn(storage, 'getPersonalWords').mockReturnValue([]);
     // Mock getMistakes and getAdaptiveConfig for useAdaptivePractice
     vi.spyOn(storage, 'getMistakes').mockReturnValue([]);
-    vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({ strategy: 'random', historyWeight: 0.5 });
+    vi.spyOn(storage, 'getAdaptiveConfig').mockReturnValue({ strategy: 'random', historyWeight: 0.5, difficultyCalibration: { enabled: true, targetAccuracy: 0.75, toleranceBand: 0.05, calibrationSpeed: 0.1 } });
   });
 
   afterEach(() => {

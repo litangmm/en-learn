@@ -99,6 +99,8 @@ interface PracticeCardProps {
   isMarked?: boolean;
   /** Callback when user marks/unmarks this word as a personal word */
   onMark?: (_word: string, _translation: string, _english: string, _chinese: string, _sentenceId: string) => void;
+  /** Difficulty level for visual badge - only shown for 'easy' and 'hard' */
+  difficultyBadge?: 'easy' | 'normal' | 'hard' | null;
 }
 
 export function PracticeCard({
@@ -131,6 +133,7 @@ export function PracticeCard({
   shouldShowHint,
   isMarked = false,
   onMark,
+  difficultyBadge = null,
 }: PracticeCardProps) {
   const isDictation = mode === 'dictation';
   const isMultipleChoice = mode === 'multiple-choice';
@@ -285,6 +288,17 @@ export function PracticeCard({
             </div>
           )}
           <div className="flex items-center gap-2">
+            {difficultyBadge && (
+              difficultyBadge === 'easy' ? (
+                <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full font-medium">
+                  简单
+                </span>
+              ) : (
+                <span className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded-full font-medium">
+                  困难
+                </span>
+              )
+            )}
             {onMark && (
               <Button
                 variant={isMarked ? 'default' : 'ghost'}

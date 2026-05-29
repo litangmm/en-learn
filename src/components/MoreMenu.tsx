@@ -26,6 +26,8 @@ export interface MoreMenuProps {
   unlockedCount: number;
   weaknessCount: number;
   isReviewMode: boolean;
+  /** Whether the user is currently in practice mode (used for calibration visibility) */
+  isPracticeMode?: boolean;
   onOpenMistakeBook: () => void;
   onOpenHistory: () => void;
   onOpenDataManager: () => void;
@@ -120,6 +122,7 @@ export function MoreMenu({
   unlockedCount,
   weaknessCount,
   isReviewMode,
+  isPracticeMode = false,
   onOpenMistakeBook,
   onOpenHistory,
   onOpenDataManager,
@@ -295,7 +298,7 @@ export function MoreMenu({
               学习建议
             </DialogTitle>
           </DialogHeader>
-          <AdaptiveSuggestionPanel />
+          <AdaptiveSuggestionPanel isPracticeMode={isPracticeMode && !isReviewMode} />
         </DialogContent>
       </Dialog>
     </>

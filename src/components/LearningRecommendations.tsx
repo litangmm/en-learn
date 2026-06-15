@@ -128,31 +128,22 @@ export function LearningRecommendations({
   }
 
   return (
-    <div className="space-y-3">
-      {/* Section header */}
-      <div className="flex items-center gap-2 mb-4">
-        <Lightbulb className="w-4 h-4 text-amber-500" />
-        <h2 className="text-sm font-medium text-slate-700">智能建议</h2>
-      </div>
-
-      {/* Recommendation cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {recommendations.map((recommendation, index) => {
-          const perf = accuracyMap.get(recommendation.mode) ?? {
-            accuracy: 0,
-            totalQuestions: 0,
-          };
-          return (
-            <RecommendationCard
-              key={recommendation.mode}
-              recommendation={recommendation}
-              index={index}
-              accuracy={perf.accuracy}
-              totalQuestions={perf.totalQuestions}
-            />
-          );
-        })}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {recommendations.map((recommendation, index) => {
+        const perf = accuracyMap.get(recommendation.mode) ?? {
+          accuracy: 0,
+          totalQuestions: 0,
+        };
+        return (
+          <RecommendationCard
+            key={recommendation.mode}
+            recommendation={recommendation}
+            index={index}
+            accuracy={perf.accuracy}
+            totalQuestions={perf.totalQuestions}
+          />
+        );
+      })}
     </div>
   );
 }

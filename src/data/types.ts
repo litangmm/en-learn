@@ -359,6 +359,16 @@ export interface ModeAccuracy {
 }
 
 /**
+ * Recommendation for a practice mode with priority and reasoning.
+ */
+export interface ModeRecommendation {
+  mode: PracticeMode;
+  preferred: boolean;
+  reason: string;
+  priority: number;
+}
+
+/**
  * Daily trend data for progress chart display.
  */
 export interface DailyTrend {

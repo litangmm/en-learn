@@ -1,8 +1,10 @@
-import { Star, Trophy, Target, Calendar, TrendingUp, Award, ChevronLeft, Zap } from 'lucide-react';
+import { Star, Trophy, Target, Calendar, TrendingUp, Award, ChevronLeft, Zap, Lightbulb } from 'lucide-react';
 import { AbilityRadar } from './AbilityRadar';
 import { ProgressTrend } from './ProgressTrend';
+import { LearningRecommendations } from './LearningRecommendations';
 import { useProgressStats } from '@/hooks/useProgressStats';
 import { useBadges } from '@/hooks/useBadges';
+import { useLearningRecommendations } from '@/hooks/useLearningRecommendations';
 import type { View } from './routing';
 
 interface LearningProfileProps {
@@ -13,6 +15,7 @@ interface LearningProfileProps {
 export function LearningProfile({ onNavigate, onBack }: LearningProfileProps) {
   const stats = useProgressStats();
   const { badgeState, BADGE_DEFINITIONS } = useBadges();
+  const recommendations = useLearningRecommendations();
 
   // Get recent badges (last 5 unlocked)
   const recentBadges = [...badgeState.unlocked]
@@ -151,6 +154,18 @@ export function LearningProfile({ onNavigate, onBack }: LearningProfileProps) {
               <ProgressTrend height={140} />
             </div>
           </div>
+        </div>
+
+        {/* Learning Recommendations Section */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Lightbulb className="w-4 h-4 text-amber-500" />
+            <h2 className="text-sm font-medium text-slate-700">推荐学习路径</h2>
+          </div>
+          <LearningRecommendations
+            recommendations={recommendations}
+            modeAccuracy={stats.modeAccuracy}
+          />
         </div>
 
         {/* Learning Summary */}

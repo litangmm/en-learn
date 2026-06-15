@@ -2,16 +2,14 @@ import { useMemo } from 'react';
 import type { ModeRecommendation, PracticeMode, ModeAccuracy } from '@/data/types';
 import type { ProgressStats } from './useProgressStats';
 import type { WeaknessStats } from '@/data/types';
-import { useProgressStats, MODE_LABELS } from './useProgressStats';
+import { useProgressStats, MODE_LABELS, ALL_MODES } from './useProgressStats';
 import { useWeaknessStats } from './useWeaknessStats';
-
-/** All practice modes for recommendations */
-const ALL_PRACTICE_MODES: PracticeMode[] = ['fill-in-blanks', 'multiple-choice', 'sentence-reorder', 'dictation'];
 
 /**
  * Generate a natural language reason for a mode recommendation.
+ * Uses overallStrength (0-100, higher is better) to tailor the message.
  */
-function generateReason(mode: PracticeMode, accuracy: number, totalQuestions: number, weaknessCount: number): string {
+function generateReason(mode: PracticeMode, accuracy: number, totalQuestions: number, overallStrength: number): string {
   const modeLabel = MODE_LABELS[mode];
 
   // No data case
@@ -19,13 +17,9 @@ function generateReason(mode: PracticeMode, accuracy: number, totalQuestions: nu
     return `你还没有练习过「${modeLabel}」模式，建议尝试一下`;
   }
 
-  // Very low accuracy or high weakness
+  // Very low accuracy
   if (accuracy < 40) {
     return `「${modeLabel}」正确率仅${accuracy}%，需要重点加强`;
-  }
-
-  if (weaknessCount > 5) {
-    return `「${modeLabel}」有${weaknessCount}个薄弱句子，建议专项练习`;
   }
 
   // Low accuracy
@@ -39,13 +33,11 @@ function generateReason(mode: PracticeMode, accuracy: number, totalQuestions: nu
   }
 
   // Good accuracy
-  if (accuracy >= 75 && weaknessCount === 0) {
+  if (accuracy >= 75) {
+    if (overallStrength < 50) {
+      return `「${modeLabel}」正确率${accuracy}%，整体偏弱需继续努力`;
+    }
     return `「${modeLabel}」表现不错，正确率${accuracy}%，继续保持`;
-  }
-
-  // Has some weaknesses but decent accuracy
-  if (weaknessCount > 0) {
-    return `「${modeLabel}」正确率${accuracy}%，有${weaknessCount}个薄弱点可以改进`;
   }
 
   // Default
@@ -67,7 +59,7 @@ export function getRecommendations(stats: ProgressStats, weaknessStats: Weakness
   });
 
   // Calculate priority for each mode
-  const recommendations: ModeRecommendation[] = ALL_PRACTICE_MODES.map((mode) => {
+  const recommendations: ModeRecommendation[] = ALL_MODES.map((mode) => {
     const modeData = accuracyMap.get(mode);
     const accuracy = modeData?.accuracy ?? 0;
     const totalQuestions = modeData?.totalQuestions ?? 0;
@@ -103,7 +95,7 @@ export function getRecommendations(stats: ProgressStats, weaknessStats: Weakness
     // Round priority to integer for cleaner output
     priority = Math.round(priority);
 
-    const reason = generateReason(mode, accuracy, totalQuestions, 0);
+    const reason = generateReason(mode, accuracy, totalQuestions, overallStrength);
 
     return {
       mode,

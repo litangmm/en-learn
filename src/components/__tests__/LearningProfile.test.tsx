@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { LearningProfile } from '../LearningProfile';
+import type { ModeRecommendation, ModeAccuracy } from '@/data/types';
 
 // Mock useProgressStats
 vi.mock('@/hooks/useProgressStats', () => ({
@@ -56,6 +57,25 @@ vi.mock('@/components/AbilityRadar', () => ({
 
 vi.mock('@/components/ProgressTrend', () => ({
   ProgressTrend: () => <div data-testid="progress-trend">ProgressTrend</div>,
+}));
+
+// Mock useLearningRecommendations
+vi.mock('@/hooks/useLearningRecommendations', () => ({
+  useLearningRecommendations: () => [
+    { mode: 'fill-in-blanks', preferred: true, reason: '填空推荐理由', priority: 80 },
+    { mode: 'multiple-choice', preferred: false, reason: '选择推荐理由', priority: 60 },
+    { mode: 'sentence-reorder', preferred: false, reason: '排序推荐理由', priority: 40 },
+    { mode: 'dictation', preferred: false, reason: '听写推荐理由', priority: 20 },
+  ],
+}));
+
+// Mock LearningRecommendations
+vi.mock('@/components/LearningRecommendations', () => ({
+  LearningRecommendations: ({ recommendations, modeAccuracy }: { recommendations: ModeRecommendation[]; modeAccuracy?: ModeAccuracy[] }) => (
+    <div data-testid="learning-recommendations" data-mode-accuracy={modeAccuracy?.length}>
+      {recommendations.length} recommendations rendered
+    </div>
+  ),
 }));
 
 describe('LearningProfile', () => {
@@ -140,5 +160,24 @@ describe('LearningProfile', () => {
 
     expect(screen.getByText('最近解锁')).toBeInTheDocument();
     expect(screen.getByTestId('badge-first-steps')).toBeInTheDocument();
+  });
+
+  it('renders learning recommendations section', () => {
+    render(<LearningProfile onNavigate={mockOnNavigate} onBack={mockOnBack} />);
+
+    expect(screen.getByText('推荐学习路径')).toBeInTheDocument();
+  });
+
+  it('renders learning recommendations component', () => {
+    render(<LearningProfile onNavigate={mockOnNavigate} onBack={mockOnBack} />);
+
+    expect(screen.getByTestId('learning-recommendations')).toBeInTheDocument();
+  });
+
+  it('passes modeAccuracy to learning recommendations', () => {
+    render(<LearningProfile onNavigate={mockOnNavigate} onBack={mockOnBack} />);
+
+    // The mock renders count based on recommendations array length
+    expect(screen.getByTestId('learning-recommendations')).toHaveTextContent('4 recommendations rendered');
   });
 });

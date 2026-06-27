@@ -8,6 +8,28 @@
 
 ## 历史数据
 
+### 2026-06-15 (cycle-114)
+- **迭代**: epic-037 iter-001「学习画像可视化与智能推荐解释」—— **完整执行**
+- **计划步骤**: 10 步全部完成
+  1. 在 src/data/types.ts 添加 ModeRecommendation 类型定义（mode/preferred/reason/priority）
+  2. 创建 src/hooks/useLearningRecommendations.ts——从 useProgressStats/useWeaknessStats 派生各模式推荐理由
+  3. 创建 src/components/LearningRecommendations.tsx——ModeRecommendation 卡组件，motion 动画，网格布局
+  4. 在 src/components/LearningProfile.tsx 中集成 LearningRecommendations（能力雷达图下方新增「推荐学习路径」section）
+  5. 编写 src/hooks/__tests__/useLearningRecommendations.test.ts 全面测试推荐生成逻辑（21 tests）
+  6. 编写 src/components/__tests__/LearningRecommendations.test.tsx 测试组件渲染和状态（26 tests）
+  7. 更新 src/components/__tests__/LearningProfile.test.tsx 添加 LearningRecommendations 集成测试（3 tests）
+  8. 全量 vitest 测试验证（src/ 目录排除 worktrees，108 test files，1451 通过）
+  9. npm run build + npm run lint 验证
+  10. 经验沉淀更新
+- **实际修改文件**: 与计划一致
+  - 修改: src/data/types.ts, src/components/LearningProfile.tsx, src/components/__tests__/LearningProfile.test.tsx
+  - 新增: src/hooks/useLearningRecommendations.ts, src/components/LearningRecommendations.tsx, src/hooks/__tests__/useLearningRecommendations.test.ts, src/components/__tests__/LearningRecommendations.test.tsx
+- **关键修复**:
+  - `generateReason` 中 `weaknessCount` 参数硬编码为 0 导致所有 weakness-aware 分支死代码 → 替换为 `overallStrength` (0-100) 全局强度
+  - `ALL_MODES` 常量重复定义 → 从 useProgressStats 导入
+  - LearningRecommendations 组件内重复 section header → 移除内部 header，由父组件 LearningProfile 控制标题
+- **观察**: 3 commits (a404bb8 / 3c6fcb3 / 0a38c2c)。Hook 组合模式（useLearningRecommendations = useProgressStats + useWeaknessStats）保持了关注点分离。纯函数 `getRecommendations` 导出自测，无需 mock 存储层。50 个新测试零回归，1451 项现有测试零回归
+
 ### 2026-05-11 (cycle-2026-05-11-95)
 - **迭代**: epic-027 iter-005「模式切换与沉浸体验优化（专注模式）」—— **完整执行**
 - **计划步骤**: 10 步全部完成

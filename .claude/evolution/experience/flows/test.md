@@ -3,6 +3,15 @@
 ## 有效模式
 （由进化引擎自动总结）
 
+### 2026-06-27 (cycle-2026-06-27-115)
+- **迭代**: epic-037 iter-001「学习画像可视化与智能推荐解释」—— **TEST 阶段通过**
+- **测试覆盖**: 1459/1460 单元测试通过（108 test files, 25.90s, 1 skipped）
+- **关键修复**: LearningProfile.test.tsx 的 TS2307 错误（`@/types` 应为 `@/data/types`）。TS 错误不影响 vitest（esbuild 编译），但阻断 `tsc -b && vite build`
+- **Vitest 配置陷阱**: 默认 `exclude` 不包含 `.claude/worktrees/`，导致 worktree 中的失败测试混入主项目结果。解决方案：自定义 `vitest.exclude.config.ts` 加 `exclude: ['.claude/**']`，或运行时用 `--exclude .claude/**`
+- **E2E 跳过**: epic-037 iter-001 不是最后一个 pending iteration（iter-002~005 仍 pending），按规则跳过 E2E
+- **Pre-existing lint 警告**: App.tsx:166 的 `useRef<number>(Date.now())` 触发 react-hooks/purity 错误（来自 epic-030 iter-002），与本迭代无关。已记录为技术债（dir-20260627115-01）待后续处理
+- **观察**: 主项目测试 1459 通过（含 iter-001 新增 47 测试）已超过历史基线 1451。108 test files 是当前最大规模
+
 ## 常见问题
 （由进化引擎自动总结）
 
